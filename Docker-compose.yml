@@ -1,0 +1,18 @@
+
+services:
+  mail-dev:
+    container_name: mail-dev-bsn
+    image: maildev/maildev
+    ports:
+      - "1080:1080"
+      - "1025:1025"
+    networks:
+      - spring-demo
+
+networks:
+  spring-demo:
+    driver: bridge
+
+
+
+      # Các biến môi trường để tùy chỉnh cấu hình Maildev
