@@ -1,15 +1,12 @@
 package poly.com.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import poly.com.dto.SchoolDto;
 import poly.com.dto.response.SchoolResponse;
 import poly.com.exception.ApiResponse;
-import poly.com.model.School;
 import poly.com.service.SchoolService;
 
 import java.util.List;
@@ -58,7 +55,7 @@ public class SchoolController {
 
     @PatchMapping("/{id}")
     public ApiResponse<SchoolResponse> updateSchool(@PathVariable Long id, @Valid @RequestBody SchoolDto schoolDto,
-                                             BindingResult result) {
+                                                    BindingResult result) {
         if (result.hasErrors()) {
             String errors = result.getFieldErrors().stream()
             .map(fieldError -> fieldError.getField() + ": " + fieldError.getDefaultMessage())

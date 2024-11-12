@@ -1,11 +1,22 @@
 package poly.com.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import java.util.Optional;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 import poly.com.model.Token;
-import poly.com.model.User2;
 
+import java.util.List;
+import java.util.Optional;
+
+@Repository
 public interface TokenRepository extends JpaRepository<Token, Long> {
+
+    @Query(value = """
+  select t from Token t inner join User u\s
+  on t.user.id = u.id\s
+  where u.id = :userId and (t.expired = false or t.revoked = false)\s
+  """)
+    List<Token> findAllValidByUserId(Long userId);
+
     Optional<Token> findByToken(String token);
-    Optional<Token> findByUser(User2 user);
 }

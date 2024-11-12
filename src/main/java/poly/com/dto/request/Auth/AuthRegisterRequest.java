@@ -1,4 +1,4 @@
-package poly.com.dto;
+package poly.com.dto.request.Auth;
 
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.*;
@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-public class AuthRegisterDTO {
+public class AuthRegisterRequest {
 
     @NotEmpty(message = "First name cannot be empty")
     @NotBlank(message = "First name cannot be blank")
@@ -30,4 +30,9 @@ public class AuthRegisterDTO {
     @NotBlank(message = "Password cannot be blank")
     @Size(min = 6, message = "Password should have at least 6 characters")
     private String password;
+
+    @NotEmpty(message = "Password cannot be empty")
+    @NotBlank(message = "Password cannot be blank")
+    @Size(min = 6, max = 20, message = "Password should have at least 6 characters")
+    private String isPassword;
 }

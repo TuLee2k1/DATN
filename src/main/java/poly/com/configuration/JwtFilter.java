@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.filter.OncePerRequestFilter;
+import poly.com.repository.TokenRepository;
 
 import java.io.IOException;
 
@@ -22,6 +23,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
     private final UserDetailsServiceImpl userDetailsService;
+    private final TokenRepository tokenRepository;
 
 
     @Override
@@ -30,41 +32,29 @@ public class JwtFilter extends OncePerRequestFilter {
     @NotNull HttpServletResponse response,
     @NotNull FilterChain filterChain) throws ServletException, IOException {
 
-        // Bỏ qua các route xác thực
-        if (request.getServletPath().contains("/api/v1/auth")) {
-            filterChain.doFilter(request, response);
-            return;
-        }
-
         final String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
 
-        // Kiểm tra header
         if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        final String jwt = authorizationHeader.substring(7);
+        final String jwt = authorizationHeader.substring(7).trim(); // Trim the token to remove any spaces
         final String userEmail = jwtService.extractUsername(jwt);
 
-        // Kiểm tra authentication
         if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = userDetailsService.loadUserByUsername(userEmail);
+            var isTokenValid = tokenRepository.findByToken(jwt).map(t -> !t.isExpired() && !t.isRevoked()).orElse(false);
 
-            // Xác thực token
-            if (jwtService.isTokenValid(jwt, userDetails)) {
+            if (jwtService.isTokenValid(jwt, userDetails) && isTokenValid) {
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                userDetails,
-                null,
-                userDetails.getAuthorities()
+                userDetails, null, userDetails.getAuthorities()
                 );
-
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             }
         }
 
-        // Luôn chuyển request tiếp theo
         filterChain.doFilter(request, response);
     }
 }

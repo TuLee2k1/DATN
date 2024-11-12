@@ -1,5 +1,5 @@
 package poly.com.Enum;
 
-public enum AuthProvider {
+public enum ProviderEnum {
     LOCAL, GOOGLE
 }
