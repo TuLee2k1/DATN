@@ -1,37 +1,40 @@
 package poly.com.exception;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import java.time.format.DateTimeParseException;
 import java.util.stream.Collectors;
 
+@RequiredArgsConstructor
 @ControllerAdvice
-public class GlobalExceptionHandler extends RuntimeException{
-    @Autowired
-    private ApiResponse apiResponse;
+public class GlobalExceptionHandler  {
 
-    @ExceptionHandler(value = Exception.class)
-    ResponseEntity<ApiResponse> runtimeExceptionHandler(Exception e) {
-        apiResponse.setStatus(HttpStatus.BAD_REQUEST.value());
-        apiResponse.setMessage(e.getMessage());
-        return ResponseEntity.badRequest().body(apiResponse);
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ApiResponse<String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
+        String errors = ex.getBindingResult().getFieldErrors().stream()
+         .map(FieldError::getDefaultMessage)
+         .collect(Collectors.joining(", "));
+
+        ApiResponse<String> apiResponse = ApiResponse.<String>builder()
+         .status(HttpStatus.BAD_REQUEST.value())
+         .message("Validation failed")
+         .Result(errors)
+         .build();
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiResponse);
     }
-    @ExceptionHandler(value = DateTimeParseException.class)
-    public ResponseEntity<Object> handleDateTimeParseException(DateTimeParseException ex) {
-        ApiResponse apiError = new ApiResponse(HttpStatus.BAD_REQUEST.value(), "Invalid date format. Please use 'dd-MM-yyyy'.",
-        ex.getMessage());
-        return new ResponseEntity<>(apiError, HttpStatus.BAD_REQUEST);
+
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<ApiResponse<String>> handleRuntimeException(RuntimeException ex) {
+        ApiResponse<String> apiResponse = ApiResponse.<String>builder()
+         .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
+         .message(ex.getMessage())
+         .build();
+
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(apiResponse);
     }
-
-
-
 }
