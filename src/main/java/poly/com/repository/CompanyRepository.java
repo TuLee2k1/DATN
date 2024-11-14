@@ -17,7 +17,8 @@ public interface CompanyRepository extends JpaRepository<Company, Long> {
     @Query("select c from Company c where c.id = ?1")
     Optional<Company> findById(Long id);
 
+    List<Company> findByNameContainsIgnoreCase(String name);
 
-
+    List<Company> findByIdNotAndNameContainsIgnoreCase(Long id, String name);
 
 }

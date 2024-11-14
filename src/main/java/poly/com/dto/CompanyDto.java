@@ -1,7 +1,9 @@
 package poly.com.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.Serializable;
 
@@ -26,6 +28,10 @@ public class CompanyDto implements Serializable {
     @NotEmpty(message = "Company taxcode is require")
     private String tax_code;
 
+
     private String logo;
+
+    @JsonIgnore
+    private MultipartFile logoFile;
 
 }

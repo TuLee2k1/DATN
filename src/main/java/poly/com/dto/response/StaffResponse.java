@@ -1,11 +1,8 @@
 package poly.com.dto.response;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import jakarta.persistence.Column;
 import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
-import poly.com.model.User;
 
 import java.time.LocalDate;
 

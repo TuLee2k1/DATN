@@ -1,10 +1,13 @@
 package poly.com.service;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.Valid;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import poly.com.dto.CompanyDto;
 import poly.com.exception.CompanyException;
 import poly.com.model.Company;
 import poly.com.repository.CompanyRepository;
@@ -18,7 +21,27 @@ public class CompanyService {
     @Autowired
     CompanyRepository companyRepository;
 
-    public  Company  save(Company entity) {
+    @Autowired
+    private FileStorageService fileStorageService;
+
+
+    public  Company  save(@Valid CompanyDto dto) {
+
+        List<?> foudedList = companyRepository.findByNameContainsIgnoreCase(dto.getName());
+
+        if (foudedList.size()>0) {
+            throw new CompanyException("Company name already exist");
+        }
+
+        Company entity = new Company();
+
+        BeanUtils.copyProperties(dto, entity);
+
+        if (dto.getLogoFile() != null){
+            String fileName = fileStorageService.storeImageCompanyFile(dto.getLogoFile());
+            entity.setLogo(fileName);
+            dto.setLogo(null);
+        }
         return companyRepository.save(entity);
     }
 
@@ -35,6 +58,7 @@ public class CompanyService {
            existedCompany.setAddress(entity.getAddress());
            existedCompany.setPhone(entity.getPhone());
            existedCompany.setEmail(entity.getEmail());
+           existedCompany.setLogo(entity.getLogo());
 
            return companyRepository.save(existedCompany);
 

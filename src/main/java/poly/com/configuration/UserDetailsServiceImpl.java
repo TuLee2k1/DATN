@@ -6,13 +6,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import poly.com.repository.User2Repository;
+import poly.com.repository.UserRepository;
 
 
 @Service
 @RequiredArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
-    private final User2Repository userRepository;
+    private final UserRepository userRepository;
 
     @Override
     @Transactional

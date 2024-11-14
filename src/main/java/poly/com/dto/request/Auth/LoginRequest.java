@@ -1,4 +1,4 @@
-package poly.com.dto;
+package poly.com.dto.request.Auth;
 
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.Email;
@@ -12,7 +12,7 @@ import lombok.Setter;
 @Setter
 @Getter
 @Builder
-public class AuthenticationDTO {
+public class LoginRequest {
     @Email(message = "Email should be valid")
     @NotEmpty(message = "Email cannot be empty")
     @NotBlank(message = "Email cannot be blank")

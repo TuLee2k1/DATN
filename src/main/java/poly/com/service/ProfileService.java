@@ -1,10 +1,14 @@
 package poly.com.service;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.Valid;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import poly.com.dto.CompanyDto;
+import poly.com.dto.ProfileDTO;
 import poly.com.exception.CompanyException;
 import poly.com.exception.ProfileException;
 import poly.com.model.Company;
@@ -18,7 +22,27 @@ import java.util.Optional;
 public class ProfileService {
     @Autowired
     private ProfileRepository profileRepository;
-    public Profile save(Profile entity) {
+
+    @Autowired
+    private FileStorageService fileStorageService;
+
+    public  Profile  save(@Valid ProfileDTO dto) {
+
+//        List<?> foudedList = profileRepository.findByNameContainsIgnoreCase(dto.getName());
+//
+//        if (foudedList.size()>0) {
+//            throw new CompanyException("Company name already exist");
+//        }
+
+        Profile entity = new Profile();
+
+        BeanUtils.copyProperties(dto, entity);
+
+        if (dto.getLogoFile() != null){
+            String fileName = fileStorageService.storeImageProfileFile(dto.getLogoFile());
+            entity.setLogo(fileName);
+            dto.setLogo(null);
+        }
         return profileRepository.save(entity);
     }
 
@@ -36,6 +60,7 @@ public class ProfileService {
             existedProfile.setEmail(entity.getEmail());
             existedProfile.setSex(entity.getSex());
             existedProfile.setDateOfBirth(entity.getDateOfBirth());
+            existedProfile.setLogo(entity.getLogo());
 
 
             return profileRepository.save(existedProfile);

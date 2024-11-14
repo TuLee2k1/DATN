@@ -1,30 +1,29 @@
 package poly.com.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.persistence.*;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
+import poly.com.Enum.TokenType;
 
-import java.time.LocalDateTime;
-
-@Entity
-@AllArgsConstructor
-@NoArgsConstructor
-@Setter
 @Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @SuperBuilder
+@Entity
+@Table(name = "token")
 public class Token extends AbstractEntity{
 
     private String token;
-    private LocalDateTime createdAt;
-    private LocalDateTime expiredAt;
-    private LocalDateTime validateAt;
+
+    @Enumerated(EnumType.STRING)
+    private TokenType tokenType;
+
+    private boolean expired;
+
+    private boolean revoked;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User2 user;
+    @JoinColumn(name = "user_id")
+    private User user;
 }

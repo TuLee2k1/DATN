@@ -16,4 +16,8 @@ public interface ProfileRepository extends JpaRepository<Profile, Long> {
 
     @Query("select c from Profile c where c.id = ?1")
     Optional<Profile> findById(Long id);
+
+    List<Profile> findByNameContainsIgnoreCase(String name);
+
+    List<Profile> findByIdNotAndNameContainsIgnoreCase(Long id, String name);
 }

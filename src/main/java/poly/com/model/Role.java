@@ -9,7 +9,6 @@ import lombok.experimental.SuperBuilder;
 import poly.com.Enum.RoleType;
 
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @AllArgsConstructor
@@ -25,7 +24,7 @@ public class Role extends AbstractEntity{
     private RoleType role;  // Kiểu vai trò
 
     @ManyToMany(mappedBy = "roles", cascade = CascadeType.ALL)
-    private List<User2> users;
+    private List<User> users;
 
 
 }

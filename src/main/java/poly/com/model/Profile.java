@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -30,8 +31,11 @@ public class Profile extends AbstractEntity{
     private String sex;
 
     @Column(name = "dateOfBirth")
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private Date dateOfBirth;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private LocalDate dateOfBirth;
+
+    @Column(name = "logo", length = 100)
+    private String logo;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
