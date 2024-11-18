@@ -54,7 +54,9 @@ public class AuthenticationService {
     public AuthenticationResponse registerUser(AuthRegisterRequest request) throws MessagingException, IllegalAccessException {
         validateEmailAndPassword(request.getEmail(), request.getPassword(), request.getIsPassword());
 
-        User user = createUser(request.getFirstname(), request.getLastname(), request.getEmail(), request.getPassword(), RoleType.ROLE_USER);
+        User user = createUser(request.getFirstname(),
+         request.getLastname(), request.getEmail(),
+         request.getPassword(), RoleType.ROLE_USER);
         userRepository.save(user);
         sendValidationEmail(user);
 
@@ -326,7 +328,7 @@ public class AuthenticationService {
         if (userRepository.existsByEmail(email)) {
             throw new IllegalArgumentException("Email already in use");
         }
-        if (password.equals(confirmPassword)) {
+        if (!password.equals(confirmPassword)) {
             throw new IllegalArgumentException("Password and confirm password do not match");
         }
     }

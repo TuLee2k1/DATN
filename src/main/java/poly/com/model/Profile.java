@@ -6,6 +6,7 @@ import lombok.*;
 
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Getter
@@ -40,5 +41,8 @@ public class Profile extends AbstractEntity{
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user_id;
+
+    @OneToMany(mappedBy = "profile", fetch = FetchType.LAZY)
+    private List<Experience> experiences;
 
 }

@@ -1,6 +1,9 @@
 package poly.com.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,6 +22,7 @@ import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Entity
@@ -62,15 +66,26 @@ public class User implements UserDetails, Principal {
     )
     private List<Role> roles;
 
-    @OneToMany(mappedBy = "user")
-    private List<VerifyUser> verifyUsers;
+    @JsonIgnore // Thêm annotation này
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private Set<VerifyUser> verifyUsers;
 
+    @JsonIgnore // Thêm annotation này
     @OneToMany(mappedBy = "user")
     private List<Token> tokens;
+
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @OneToOne(mappedBy = "user", fetch = FetchType.EAGER)
+    @JoinColumn(name = "company_id")
+    private Company company;
 
     @PrePersist
     public void prePersist() {
         createdDate = LocalDateTime.now();
+    }
+
+    public Company getCompanyDetails() {
+        return this.company != null ? this.company : null;
     }
 
     @Override

@@ -22,9 +22,9 @@ public class JobProfile extends AbstractEntity {
     @Column(name = "dateApply")
     private Date dateApply;
 
-    @ManyToOne
-    @JoinColumn(name = "job_id")
-    private JobPost job;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "jobPost_id")
+    private JobPost jobPost;
 
     @ManyToOne
     @JoinColumn(name = "profile_id")

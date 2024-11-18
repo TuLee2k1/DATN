@@ -36,12 +36,17 @@ public class SecurityConfig  {
         .authorizeHttpRequests(auth -> auth
         .requestMatchers("/auth/**", "/login/**", "/logout","v3/**", "/swagger-ui/**" )
         .permitAll()
+          .requestMatchers(("Company/**")).hasRole("COMPANY")
         .anyRequest().authenticated()
         )
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authenticationProvider(authenticationProvider)
         .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-        .oauth2Login(oauth2 -> oauth2
+         .formLogin(form -> form
+          .loginProcessingUrl("/authenticate")
+            .permitAll()
+         )
+         .oauth2Login(oauth2 -> oauth2
         .defaultSuccessUrl("/loginSuccess", true)  // Redirect to homepage after successful login
         .failureUrl("/loginFailure")  // Redirect to failure page if login fails
         )
