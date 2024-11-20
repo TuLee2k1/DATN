@@ -34,7 +34,7 @@ public class SecurityConfig  {
         .csrf(AbstractHttpConfigurer::disable)
          .cors(cors -> cors.configurationSource(corsConfigurationSource()))
         .authorizeHttpRequests(auth -> auth
-        .requestMatchers("/auth/**", "/login/**", "/logout")
+        .requestMatchers("/auth/**", "/login/**", "/logout","/v3/**","/swagger-ui/**","**")
         .permitAll()
         .anyRequest().authenticated()
         )
@@ -65,7 +65,7 @@ public class SecurityConfig  {
     @Bean
     public UrlBasedCorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.addAllowedOrigin("http://localhost:3000");
+        configuration.addAllowedOrigin("http://localhost:3001");
         configuration.addAllowedMethod("*");
         configuration.addAllowedHeader("*");
         configuration.setAllowCredentials(true);

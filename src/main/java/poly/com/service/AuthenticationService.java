@@ -74,15 +74,15 @@ public class AuthenticationService {
         User user = createUser(request.getFirstname(), request.getLastname(), request.getEmail(), request.getPassword(), RoleType.ROLE_COMPANY);
         User savedUser = userRepository.save(user);
 
-        Company company = Company.builder()
-         .name(request.getCompanyName())
-         .city(request.getCity())
-         .district(request.getDistrict())
-         .user(savedUser)
-         .phone(request.getCompanyPhone())
-         .status(StatusEnum.PENDING)
-         .build();
-        companyRepository.save(company);
+//        Company company = Company.builder()
+//         .name(request.getCompanyName())
+//         .city(request.getCity())
+//         .district(request.getDistrict())
+//         .user(savedUser)
+//         .phone(request.getCompanyPhone())
+//         .status(StatusEnum.PENDING)
+//         .build();
+//        companyRepository.save(company);
 
         sendValidationEmail(user);
 
@@ -251,21 +251,28 @@ public class AuthenticationService {
      */
     @Transactional
     public void activateAccount(String verifyCode) throws MessagingException {
-        VerifyUser savedVerifyUser = verifyRepository.findByToken(verifyCode)
-         .orElseThrow(() -> new IllegalArgumentException("Invalid token"));
+        VerifyUser  savedVerifyUser  = verifyRepository.findByToken(verifyCode)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid token"));
 
-        if (LocalDateTime.now().isAfter(savedVerifyUser.getExpiredAt())) {
-            sendValidationEmail(savedVerifyUser.getUser());
+        if (LocalDateTime.now().isAfter(savedVerifyUser .getExpiredAt())) {
+            sendValidationEmail(savedVerifyUser .getUser ());
             throw new IllegalArgumentException("Activation token has expired. A new token has been sent to the same email address");
         }
 
-        User user = userRepository.findById(savedVerifyUser.getUser().getId())
-         .orElseThrow(() -> new UserNotFoundException("User not found"));
+        User user = userRepository.findById(savedVerifyUser .getUser ().getId())
+                .orElseThrow(() -> new UserNotFoundException("User  not found"));
+        System.out.println(user.isEnabled());
+        // Kiểm tra xem người dùng có bị vô hiệu hóa không
+        if (!user.isEnabled()) {
+            // Nếu bạn muốn kích hoạt tài khoản cho người dùng đã bị vô hiệu hóa
+            user.setEnabled(true); // Kích hoạt tài khoản
+            System.out.println(user.isEnabled());
+        }
 
-        user.setEnabled(true);
+        // Cập nhật thông tin người dùng
         userRepository.save(user);
-        savedVerifyUser.setValidateAt(LocalDateTime.now());
-        verifyRepository.save(savedVerifyUser);
+        savedVerifyUser .setValidateAt(LocalDateTime.now());
+        verifyRepository.save(savedVerifyUser );
     }
 
     /**
@@ -326,7 +333,7 @@ public class AuthenticationService {
         if (userRepository.existsByEmail(email)) {
             throw new IllegalArgumentException("Email already in use");
         }
-        if (password.equals(confirmPassword)) {
+        if (!password.equals(confirmPassword)) {
             throw new IllegalArgumentException("Password and confirm password do not match");
         }
     }
