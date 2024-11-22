@@ -11,6 +11,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import poly.com.Enum.*;
@@ -73,16 +74,16 @@ public class AuthenticationService {
 
         User user = createUser(request.getFirstname(), request.getLastname(), request.getEmail(), request.getPassword(), RoleType.ROLE_COMPANY);
         User savedUser = userRepository.save(user);
+        Company company = Company.builder()
+                .name(request.getCompanyName())
+                .city(request.getCity())
+                .district(request.getDistrict())
+                .user(savedUser)
+                .phone(request.getCompanyPhone())
+                .status(StatusEnum.PENDING)
+                .build();
 
-//        Company company = Company.builder()
-//         .name(request.getCompanyName())
-//         .city(request.getCity())
-//         .district(request.getDistrict())
-//         .user(savedUser)
-//         .phone(request.getCompanyPhone())
-//         .status(StatusEnum.PENDING)
-//         .build();
-//        companyRepository.save(company);
+        companyRepository.save(company);
 
         sendValidationEmail(user);
 
@@ -162,7 +163,9 @@ public class AuthenticationService {
     @Transactional
     public AuthenticationResponse authenticate(LoginRequest request) {
         var auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
-        User user = (User) auth.getPrincipal();
+        UserDetails userDetails = (UserDetails) auth.getPrincipal(); // Lấy thông tin người dùng
+        User user = (User ) userDetails; // Nếu bạn cần truy cập thêm thông tin từ User
+
         HashMap<String, Object> claims = new HashMap<>();
         claims.put("id", user.getId());
         claims.put("fullName", user.getFullName());
@@ -172,7 +175,9 @@ public class AuthenticationService {
 
         revokeUserToken(user);
         saveUserToken(user, jwtToken);
-        return createAuthResponse(jwtToken, refreshToken);
+
+        // Trả về AuthenticationResponse với thông tin người dùng
+        return new AuthenticationResponse(jwtToken, refreshToken, userDetails);
     }
 
     /**
