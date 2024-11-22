@@ -1,0 +1,469 @@
+body {
+  background-color: #f8f9fa;
+  font-family: Arial, sans-serif;
+}
+.job-section {
+  background-color: white;
+  border-radius: 8px;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+.job-section h5 {
+  font-weight: bold;
+}
+.job-section .empty-state {
+  text-align: center;
+  color: #6c757d;
+}
+.job-section .empty-state img {
+  max-width: 100%;
+  height: auto;
+}
+.job-suggestion {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+.job-card {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 15px;
+  margin-bottom: 15px;
+  position: relative;
+}
+.job-card:hover {
+  box-shadow: 0 4px 8px rgba(168, 160, 236, 0.1);
+  border: 1px solid #007bff;
+}
+.job-card h5 {
+  font-size: 18px;
+  font-weight: bold;
+  display: inline-block;
+}
+.job-card .company {
+  font-size: 14px;
+  color: #888;
+}
+.job-card .salary {
+  font-size: 14px;
+  color: #007bff;
+}
+.job-card .location {
+  font-size: 14px;
+  color: #888;
+}
+.job-card .urgent {
+  color: #ff0000;
+  font-weight: bold;
+}
+.job-card .response-time {
+  font-size: 12px;
+  color: #888;
+}
+.job-card .remaining-days {
+  font-size: 12px;
+  color: #888;
+}
+
+.job-card .favorite {
+  color: #007bff;
+  font-size: 20px;
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  cursor: pointer;
+}
+.card {
+  border-radius: 10px;
+}
+.card .card-header {
+  background-color: white;
+}
+.card img {
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.header img {
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
+}
+.header h2 {
+  font-size: 24px;
+  font-weight: bold;
+}
+.card-body {
+  text-align: center;
+}
+.btn-follow {
+  background-color: #6f42c1;
+  color: white;
+}
+.btn-follow:hover {
+  background-color: #5a34a1;
+}
+.btn-share {
+  background-color: #e9ecef;
+  color: #6c757d;
+}
+.btn-share:hover {
+  background-color: #d6d8db;
+}
+.icon {
+  color: #6c757d;
+}
+.notification-card {
+  background-color: #ffffff;
+  border: 1px solid #e9ecef;
+  border-radius: 0.25rem;
+  padding: 1rem;
+}
+.notification-header {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+.notification-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem;
+  border: 1px solid #e9ecef;
+  border-radius: 0.25rem;
+  margin-top: 0.5rem;
+}
+.notification-date {
+  color: #6c757d;
+  font-size: 0.875rem;
+}
+.notification-link {
+  color: #000000;
+  text-decoration: none;
+}
+.delete-link {
+  color: #000000;
+  text-decoration: none;
+  cursor: pointer;
+}
+.delete-link:hover {
+  color: blue;
+}
+.section-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #000;
+  text-decoration: none;
+}
+.list-unstyled li {
+  margin-bottom: 10px;
+}
+.list-item {
+  color: #000;
+  text-decoration: none;
+}
+.list-item:hover {
+  text-decoration: underline;
+}
+.show-more {
+  color: #6a0dad;
+  font-weight: bold;
+  text-decoration: none;
+}
+.show-more:hover {
+  text-decoration: none;
+  color: blue;
+}
+.hidden {
+  display: none;
+}
+.custom-hr {
+  border: 0;
+  height: 1px;
+  background: #e0e0e0;
+  margin: 0;
+}
+
+.following-employer {
+  display: flex; /* Chọn layout linh hoạt */
+  align-items: center; /* Căn giữa theo chiều dọc */
+  margin-bottom: 5px; /* Khoảng cách giữa các phần tử */
+  padding: 5px; /* Khoảng cách trong phần tử */
+  border: 1px solid #ddd; /* Đường viền cho rõ ràng */
+  border-radius: 5px; /* Bo góc mịn */
+  background-color: #f9f9f9; /* Màu nền nhẹ cho phần tử */
+}
+
+.following-employer img {
+  margin-right: 10px; /* Khoảng cách giữa hình và tên công ty */
+  border-radius: 0;
+}
+.nav-tabs .nav-link.active {
+  background-color: #6c63ff;
+  color: #fff;
+}
+.nav-tabs .nav-link.active::after {
+  content: "";
+  display: block;
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 10px solid #6c63ff;
+  margin: 0 auto;
+}
+.event-card {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.event-time {
+  color: #6c757d;
+}
+.event-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+.event-description {
+  color: #6c757d;
+  margin-bottom: 10px;
+}
+.event-speaker {
+  color: #6c63ff;
+  font-weight: bold;
+}
+.notification-item {
+  border: 1px solid #9895d7;
+}
+.notification-item:hover {
+  border: 1px solid rgb(6, 6, 53);
+}
+.alert-custom {
+  background-color: #f8d7da;
+  color: #721c24;
+  border-color: #f5c6cb;
+}
+.card-custom {
+  border-radius: 10px;
+  color: white;
+  text-align: center;
+  padding: 20px;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+.card-green {
+  background-color: #28a745;
+}
+.card-blue {
+  background-color: #007bff;
+}
+.card-orange {
+  background-color: #fd7e14;
+}
+.card-shadow {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.recent-activities,
+.recent-bookmarks {
+  background-color: white;
+  border-radius: 10px;
+  padding: 20px;
+  margin-top: 20px;
+  border: 1px solid navy;
+}
+.activity-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.activity-item i {
+  font-size: 1.5rem;
+  margin-right: 10px;
+}
+.badge-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  margin: 0.5rem;
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 50px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-size: 1rem;
+  color: #6c757d;
+  cursor: pointer;
+}
+.badge-pill i {
+  margin-left: 0.5rem;
+}
+.badge-pill:hover {
+  background-color: #efe3e3;
+}
+
+.search-bar,
+.filter-bar,
+.job-tags,
+.job-card-apply,
+.calendar-card {
+  background-color: white;
+  border-radius: 10px;
+  padding: 15px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.calendar-info {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.job-card-apply {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  transition: transform 0.2s;
+}
+.job-card-apply:hover {
+  transform: translateY(-5px);
+}
+.job-card-apply img {
+  width: 50px;
+  height: 50px;
+}
+.job-card-apply .job-info {
+  flex-grow: 1;
+  margin-left: 20px;
+}
+.job-card-apply .job-info h5 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+.job-card-apply .job-info p {
+  margin: 0;
+  color: gray;
+}
+.job-card-apply .job-info .salary {
+  color: #343a40;
+  font-weight: bold;
+}
+.job-card-apply .status {
+  padding: 10px 20px;
+  border-radius: 20px;
+  color: white;
+  font-weight: bold;
+}
+.status-rejected {
+  background-color: #dc3545;
+}
+.status-in-process {
+  background-color: #ffc107;
+}
+.calendar-card img {
+  width: 100%;
+  border-radius: 10px;
+}
+.calendar-card .calendar-info {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+}
+.calendar-card .calendar-info img {
+  width: 50px;
+  height: 50px;
+}
+.calendar-card .calendar-info .info {
+  margin-left: 20px;
+}
+.calendar-card .calendar-info .info h6 {
+  margin: 0;
+  font-size: 1rem;
+}
+.calendar-card .calendar-info .info p {
+  margin: 0;
+  color: gray;
+}
+.dropdown-item:hover {
+  background-color: rgb(9, 16, 19);
+  color: white;
+}
+.status-in-process:hover {
+  -webkit-box-shadow: 0px 0px 24px 5px rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: 0px 0px 24px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 0px 24px 5px rgba(0, 0, 0, 0.1);
+  border: none;
+}
+
+@media (max-width: 767px) {
+  .job-card {
+    padding: 10px;
+  }
+  .job-card h5 {
+    font-size: 16px;
+  }
+  .job-card .company,
+  .job-card .salary,
+  .job-card .location,
+  .job-card .response-time,
+  .job-card .remaining-days {
+    font-size: 12px;
+  }
+  .job-card .favorite {
+    font-size: 18px;
+  }
+  .card img {
+    height: 150px;
+  }
+  .card-body img {
+    height: 80px;
+    width: 80px;
+  }
+  .event-card {
+    padding: 15px;
+  }
+  .event-title {
+    font-size: 1rem;
+  }
+  .card-custom {
+    font-size: 1rem;
+    padding: 15px;
+  }
+  .recent-activities,
+  .recent-bookmarks {
+    padding: 15px;
+  }
+  .job-card-apply {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .job-card-apply .job-info {
+    margin-left: 0;
+    margin-top: 10px;
+  }
+  .calendar-card .calendar-info {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .calendar-card .calendar-info .info {
+    margin-left: 0;
+    margin-top: 10px;
+  }
+}
+@media (max-width: 576px) {
+  .notification-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .delete-link {
+    margin-top: 0.5rem;
+  }
+  .badge-pill {
+    font-size: 0.875rem;
+    padding: 0.4rem 0.8rem;
+  }
+}

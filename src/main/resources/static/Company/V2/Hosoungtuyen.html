@@ -1,0 +1,182 @@
+<html>
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f9fa;
+        }
+        .header {
+            font-size: 24px;
+            font-weight: bold;
+            color: #6c63ff;
+            margin: 20px 0;
+        }
+        .sub-header {
+            font-size: 18px;
+            color: #ff6b6b;
+        }
+        .filter-section {
+            margin: 20px 0;
+        }
+        .filter-section select, .filter-section button {
+            margin-right: 10px;
+        }
+        .table th, .table td {
+            vertical-align: middle;
+        }
+        .table th {
+            font-weight: bold;
+        }
+        .table td .fa-check-circle {
+            color: #00c851;
+        }
+        .table td .text-danger {
+            color: #ff4444 !important;
+        }
+        .btn-purple {
+            background-color: #6c63ff;
+            color: white;
+        }
+        @media (max-width: 768px) {
+            .filter-section {
+                flex-direction: column;
+            }
+            .filter-section select, .filter-section button {
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">Hồ sơ ứng tuyển</div>
+        <div class="sub-header">Trợ lý dự án (Project Assistant) <span>(23 hồ sơ nộp)</span></div>
+        <div class="filter-section d-flex align-items-center flex-wrap">
+            <select class="form-select mb-2" aria-label="Lọc vị trí">
+                <option selected>Trợ lý dự án (Project Assistant)</option>
+            </select>
+            <select class="form-select mb-2" aria-label="Tất cả thời gian nộp">
+                <option selected>Tất cả thời gian nộp</option>
+            </select>
+            <button class="btn btn-outline-success mb-2">Lọc nâng cao</button>
+            <button class="btn btn-outline-primary mb-2">Tải danh sách</button>
+        </div>
+        <div class="alert alert-warning" role="alert">
+            Hồ sơ sẽ bị xóa khỏi trang hồ sơ ứng tuyển sau 6 tháng
+        </div>
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <div>Bạn đã chọn <span class="text-primary" id="selected-count">1</span> hồ sơ</div>
+            <div>
+                <button class="btn btn-outline-danger">Xóa</button>
+                <button class="btn btn-purple">Gửi email</button>
+            </div>
+        </div>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col"><input type="checkbox" id="select-all"></th>
+                    <th scope="col">Tên hồ sơ</th>
+                    <th scope="col">Vị trí ứng tuyển</th>
+                    <th scope="col">Thời gian nộp</th>
+                    <th scope="col">Loại hồ sơ</th>
+                    <th scope="col">Trạng thái tuyển dụng</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><input type="checkbox" class="select-item" checked></td>
+                    <td>
+                        <div>Lê Văn Mạnh (25 tuổi) <i class="fa fa-check-circle"></i></div>
+                        <div class="text-muted">Project Manager</div>
+                    </td>
+                    <td>Trợ lý dự án (Project Assistant)</td>
+                    <td>30/10/2021</td>
+                    <td>Nộp trực tuyến</td>
+                    <td>
+                        <select class="form-select">
+                            <option selected>Chọn</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox" class="select-item"></td>
+                    <td>
+                        <div>Lê Văn Thành (22 tuổi)</div>
+                        <div class="text-muted">Project Manager</div>
+                    </td>
+                    <td>Trợ lý dự án (Project Assistant)</td>
+                    <td>30/10/2021</td>
+                    <td>Nộp nhanh</td>
+                    <td class="text-danger">Chưa được kiểm duyệt</td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox" class="select-item"></td>
+                    <td>
+                        <div>Nguyễn Thị Kim Sương (27 tuổi)</div>
+                        <div class="text-muted">Project Assistant</div>
+                    </td>
+                    <td>Trợ lý dự án (Project Assistant)</td>
+                    <td>30/10/2021</td>
+                    <td>Nộp nhanh</td>
+                    <td class="text-danger">Chưa được kiểm duyệt</td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox" class="select-item"></td>
+                    <td>
+                        <div>Nguyễn Thùy Vân (22 tuổi) <i class="fa fa-check-circle"></i></div>
+                        <div class="text-muted">Trợ lý dự án</div>
+                    </td>
+                    <td>Trợ lý dự án (Project Assistant)</td>
+                    <td>30/10/2021</td>
+                    <td>CV đính kèm</td>
+                    <td>
+                        <select class="form-select">
+                            <option selected>Chọn</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox" class="select-item"></td>
+                    <td>
+                        <div>Nguyễn Thanh Bình (24 tuổi) <i class="fa fa-check-circle"></i></div>
+                        <div class="text-muted">Trợ lý dự án</div>
+                    </td>
+                    <td>Trợ lý dự án (Project Assistant)</td>
+                    <td>30/10/2021</td>
+                    <td>CV đính kèm</td>
+                    <td>
+                        <select class="form-select">
+                            <option selected>Chọn</option>
+                        </select>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const selectAllCheckbox = document.getElementById('select-all');
+            const itemCheckboxes = document.querySelectorAll('.select-item');
+            const selectedCount = document.getElementById('selected-count');
+
+            selectAllCheckbox.addEventListener('change', function () {
+                itemCheckboxes.forEach(checkbox => {
+                    checkbox.checked = selectAllCheckbox.checked;
+                });
+                updateSelectedCount();
+            });
+
+            itemCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', updateSelectedCount);
+            });
+
+            function updateSelectedCount() {
+                const count = document.querySelectorAll('.select-item:checked').length;
+                selectedCount.textContent = count;
+            }
+        });
+    </script>
+</body>
+</html>
