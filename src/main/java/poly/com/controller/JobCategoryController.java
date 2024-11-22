@@ -71,7 +71,7 @@ public class JobCategoryController {
     @Operation(summary = "Get all Company", description = "API get all company")
     @GetMapping()
     public ResponseEntity<?> getJobCategory() {
-        return new ResponseEntity<>(jobCategoryService.findAll(), HttpStatus.OK);
+        return new ResponseEntity<>(jobCategoryService.getAllJobCategories(), HttpStatus.OK);
     }
 
 

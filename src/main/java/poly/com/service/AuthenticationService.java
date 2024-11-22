@@ -1,15 +1,20 @@
 package poly.com.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.mail.AuthenticationFailedException;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -18,10 +23,7 @@ import poly.com.configuration.JwtService;
 import poly.com.dto.request.Auth.*;
 import poly.com.dto.response.Auth.AuthenticationResponse;
 import poly.com.exception.UserNotFoundException;
-import poly.com.model.Company;
-import poly.com.model.Token;
-import poly.com.model.VerifyUser;
-import poly.com.model.User;
+import poly.com.model.*;
 import poly.com.repository.*;
 
 import java.io.IOException;
@@ -30,9 +32,11 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class AuthenticationService {
 
     private final RoleRepository roleRepository;
@@ -74,15 +78,15 @@ public class AuthenticationService {
         User user = createUser(request.getFirstname(), request.getLastname(), request.getEmail(), request.getPassword(), RoleType.ROLE_COMPANY);
         User savedUser = userRepository.save(user);
 
-//        Company company = Company.builder()
-//         .name(request.getCompanyName())
-//         .city(request.getCity())
-//         .district(request.getDistrict())
-//         .user(savedUser)
-//         .phone(request.getCompanyPhone())
-//         .status(StatusEnum.PENDING)
-//         .build();
-//        companyRepository.save(company);
+        Company company = Company.builder()
+         .name(request.getCompanyName())
+         .city(request.getCity())
+         .district(request.getDistrict())
+         .user(savedUser)
+         .phone(request.getCompanyPhone())
+         .status(StatusEnum.PENDING)
+         .build();
+        companyRepository.save(company);
 
         sendValidationEmail(user);
 
@@ -160,22 +164,82 @@ public class AuthenticationService {
      * Xác thực người dùng
      */
     @Transactional
-    public AuthenticationResponse authenticate(LoginRequest request) {
-        var auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
-        User user = (User) auth.getPrincipal();
-        HashMap<String, Object> claims = new HashMap<>();
-        claims.put("id", user.getId());
-        claims.put("fullName", user.getFullName());
+    public AuthenticationResponse authenticate(LoginRequest request, HttpServletRequest httpRequest)
+     throws AuthenticationFailedException {
+        try {
+            // Xác thực người dùng
+            Authentication authentication = authenticationManager.authenticate(
+             new UsernamePasswordAuthenticationToken(
+              request.getEmail(),
+              request.getPassword()
+             )
+            );
 
-        String jwtToken = jwtService.generateToken(claims, user);
-        String refreshToken = jwtService.generateRefreshToken(user);
+            // Lấy thông tin người dùng
+            User user = userRepository.findByEmail(request.getEmail())
+             .orElseThrow(() -> new UserNotFoundException("Không tìm thấy người dùng"));
 
-        revokeUserToken(user);
-        saveUserToken(user, jwtToken);
-        return createAuthResponse(jwtToken, refreshToken);
+            // Kiểm tra trạng thái tài khoản
+            if (!user.isEnabled()) {
+                throw new AuthenticationFailedException("Tài khoản chưa được kích hoạt");
+            }
+
+            if (user.isAccountLocked()) {
+                throw new AuthenticationFailedException("Tài khoản đã bị khóa");
+            }
+
+            // Lấy danh sách roles
+            List<RoleType> userRoles = user.getRoles().stream()
+             .map(Role::getRole)
+             .collect(Collectors.toList());
+
+            // Đặt authentication vào SecurityContext
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+
+            // Lưu thông tin vào session
+            HttpSession session = httpRequest.getSession(true); // Tạo session mới nếu chưa tồn tại
+            session.setMaxInactiveInterval(30 * 60); // Set thời gian timeout session (30 phút)
+
+            // Lưu thông tin cần thiết vào session
+            session.setAttribute("user", user);
+            session.setAttribute("userId", user.getId());
+            session.setAttribute("userEmail", user.getEmail());
+            session.setAttribute("userRoles", userRoles);
+            session.setAttribute("SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext());
+
+            // Kiểm tra role và set URL chuyển hướng
+            String redirectUrl = determineRedirectUrl(userRoles);
+
+            // Xây dựng response
+            return AuthenticationResponse.builder()
+             .id(user.getId())
+             .email(user.getEmail())
+             .fullName(user.getFullName())
+             .roles(userRoles)
+             .redirectUrl(redirectUrl) // Thêm URL chuyển hướng vào response
+             .build();
+
+        } catch (AuthenticationException e) {
+            log.error("Đăng nhập thất bại: {}", e.getMessage(), e);
+            throw new AuthenticationFailedException("Email hoặc mật khẩu không chính xác");
+        }
     }
 
-    /**
+    // Phương thức hỗ trợ xác định URL chuyển hướng dựa trên role
+    private String determineRedirectUrl(List<RoleType> roles) {
+        if (roles.contains(RoleType.ROLE_COMPANY)) {
+            return "/JobPost";
+        } else if (roles.contains(RoleType.ROLE_ADMIN)) {
+            return "/admin/dashboard";
+        } else if (roles.contains(RoleType.ROLE_USER)) {
+            return "/user/dashboard";
+        }
+        return "/home"; // URL mặc định
+    }
+
+
+
+/**
      * Thay đổi mật khẩu của người dùng đã đăng nhập
      */
     public AuthenticationResponse changePassword(UserChangepasswordDTO request) {
