@@ -2,7 +2,9 @@ package poly.com.dto.response.Auth;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
-import org.springframework.security.core.userdetails.UserDetails;
+import poly.com.Enum.RoleType;
+
+import java.util.List;
 
 @Data
 @Builder
@@ -15,6 +17,9 @@ public class AuthenticationResponse {
     @JsonProperty("refresh_token")
     private String refreshToken;
 
-    private UserDetails userDetails;
-
+    private Long id;
+    private String email;
+    private String fullName;
+    private List<RoleType> roles;
+    private String redirectUrl;
 }
