@@ -1,18 +1,26 @@
 package poly.com.controller;
 
+import com.microsoft.sqlserver.jdbc.StringUtils;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.mail.AuthenticationFailedException;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import poly.com.Enum.RoleType;
 import poly.com.dto.request.Auth.AuthRegisterRequest;
 import poly.com.dto.request.Auth.LoginRequest;
 import poly.com.dto.request.Auth.RegisterCompanyRequest;
@@ -27,9 +35,12 @@ import static org.springframework.http.ResponseEntity.status;
 @Tag(name = "Authentication Controller")
 @Controller
 @RequiredArgsConstructor
+@Slf4j
 @RequestMapping("/auth")
+@SessionAttributes("user")
 public class AuthenticationController {
 
+    private static final Logger logger = LoggerFactory.getLogger(AuthenticationController.class);
     private final AuthenticationService authenticationService;
 
     @PostMapping("/user")
@@ -67,24 +78,66 @@ public class AuthenticationController {
     }
 
     @PostMapping("/authenticate")
-    public void authenticate(@RequestParam String email, @RequestParam String password, HttpServletResponse response) throws IOException {
-        LoginRequest loginRequest = new LoginRequest(email, password); // Tạo đối tượng LoginRequest từ các tham số
+    public String authenticate(
+     @RequestParam String email,
+     @RequestParam String password,
+     Model model,
+     HttpServletRequest request,
+     RedirectAttributes redirectAttributes
+    ) {
+        try {
+            LoginRequest loginRequest = new LoginRequest(email, password);
+            AuthenticationResponse authResponse = authenticationService.authenticate(loginRequest, request);
 
-        AuthenticationResponse authResponse = authenticationService.authenticate(loginRequest);
+            // Lưu thông tin chi tiết vào session
+            HttpSession session = request.getSession(true);
+            session.setAttribute("user", authResponse);
+            session.setAttribute("userId", authResponse.getId());
+            session.setAttribute("userEmail", authResponse.getEmail());
+            session.setAttribute("userRoles", authResponse.getRoles());
 
-        // Kiểm tra xem xác thực có thành công không
-        if (authResponse != null) {
-            // Nếu xác thực thành công, chuyển hướng đến trang dashboard
-            response.sendRedirect("/auth/dashboard"); // Thay đổi '/dashboard' thành URL của trang dashboard của bạn
-        } else {
-            // Nếu xác thực không thành công, bạn có thể trả về mã lỗi hoặc thông báo
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Authentication failed");
+
+            // Thêm thông tin vào redirectAttributes
+            redirectAttributes.addFlashAttribute("user", authResponse);
+
+            return determineRedirectPage(authResponse);
+
+        } catch (AuthenticationFailedException e) {
+            model.addAttribute("error", e.getMessage());
+            return "user/login";
         }
     }
+
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request, RedirectAttributes redirectAttributes) {
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            session.invalidate();
+        }
+        SecurityContextHolder.clearContext();
+        redirectAttributes.addFlashAttribute("message", "Đăng xuất thành công");
+        return "redirect:/auth/login";
+    }
+
+    private String determineRedirectPage(AuthenticationResponse authResponse) {
+        // Logic chuyển hướng dựa trên vai trò
+        if (authResponse.getRoles().contains(RoleType.ROLE_COMPANY)) {
+            System.out.println("Company =============================");
+            return "redirect:/job-posts";
+        } else if (authResponse.getRoles().contains(RoleType.ROLE_EMPLOYEE)) {
+            return "redirect:/dashboard";
+        } else {
+            return "redirect:/dashboard";
+        }
+    }
+
+
     @GetMapping("/dashboard")
     @ResponseStatus(HttpStatus.OK)
     public String dashboard (Model model) {
-        return "user/dashboard";
+        return
+
+                "user/dashboard";
     }
 
     @PostMapping("/refresh-token")
@@ -92,7 +145,7 @@ public class AuthenticationController {
                               HttpServletResponse response) throws IOException {
         authenticationService.refreshToken(request, response);
     }
-    private static final Logger logger = LoggerFactory.getLogger(AuthenticationController.class);
+    private static final Logger logger1 = LoggerFactory.getLogger(AuthenticationController.class);
 
     @PostMapping("/activate-account")
     public String activateAccountUser (@RequestParam String token, Model model) {
@@ -126,7 +179,6 @@ public class AuthenticationController {
     public String changePassword(@RequestBody @Valid UserChangepasswordDTO request) {
             authenticationService.changePassword(request);
            return "user/home";
-
     }
 
     @PostMapping("/forgot-password")
@@ -138,12 +190,66 @@ public class AuthenticationController {
                 .build();
     }
 
-    @PreAuthorize("hasRole('ROLE_COMPANY')")
-    @GetMapping("/company")
-    public ApiResponse<String> com(){
-        return ApiResponse.<String>builder()
-                .status(HttpStatus.OK.value())
-                .message("Company")
-                .build();
-    }
+//    @PreAuthorize("hasRole('ROLE_COMPANY')")
+//    @GetMapping("/company")
+//    public ApiResponse<String> com(){
+//        return ApiResponse.<String>builder()
+//                .status(HttpStatus.OK.value())
+//                .message("Company")
+//                .build();
+    //}
+
+//    @PostMapping("/authenticate")
+//    public String authenticate(
+//     @RequestParam String email,
+//     @RequestParam String password,
+//     Model model,
+//     RedirectAttributes redirectAttributes,
+//     HttpSession session
+//    ) {
+//        try {
+//            // Validate email và password
+//            if (StringUtils.isEmpty(email) || StringUtils.isEmpty(password)) {
+//                redirectAttributes.addFlashAttribute("error", "Email và mật khẩu không được để trống");
+//                return "redirect:/login";
+//            }
+//
+//            // Tạo đối tượng LoginRequest với email và password người dùng nhập
+//            LoginRequest loginRequest = new LoginRequest(email, password);
+//
+//            // Gọi service xác thực đăng nhập
+//            var authResponse = authenticationUtil.getAuthenticatedUser()
+//
+//            if (authResponse != null) {
+//                // Lưu thông tin người dùng vào session
+//                session.setAttribute("currentUser", authResponse);
+//
+//                // Phân quyền điều hướng dựa trên vai trò
+//                switch (authResponse.getRoles()) {
+//                    case COMPANY:
+//                        return "redirect:/company/dashboard";
+//                    case CANDIDATE:
+//                        return "redirect:/candidate/profile";
+//                    case ADMIN:
+//                        return "redirect:/admin/dashboard";
+//                    default:
+//                        redirectAttributes.addFlashAttribute("error", "Vai trò không hợp lệ");
+//                        return "redirect:/login";
+//                }
+//            } else {
+//                // Xác thực thất bại
+//                redirectAttributes.addFlashAttribute("error", "Email hoặc mật khẩu không đúng");
+//                return "redirect:/login";
+//            }
+//        } catch (BadCredentialsException e) {
+//            // Xử lý ngoại lệ xác thực
+//            redirectAttributes.addFlashAttribute("error", "Đăng nhập thất bại: " + e.getMessage());
+//            return "redirect:/login";
+//        } catch (Exception e) {
+//            // Ghi log lỗi
+//            log.error("Lỗi đăng nhập: ", e);
+//            redirectAttributes.addFlashAttribute("error", "Có lỗi xảy ra. Vui lòng thử lại.");
+//            return "redirect:/login";
+//        }
+//    }
 }
