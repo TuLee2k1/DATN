@@ -63,7 +63,7 @@
         </form>
     </div>
     <div class="form-container sign-in">
-        <form action="/auth/authenticate" method="post">
+        <form onsubmit="logIn(event)">
             <h1 class="text-center">Sign In</h1>
             <label for="email">Email:</label>
             <input type="email" id="email" name="email" required />
@@ -110,7 +110,7 @@
                 <div class="img-content">
                     <h1>Hello, Friend!</h1>
                     <p>
-                        Register with your personal details to use all of site features
+                        Bạn chưa có tài khoản? nhấn bên dưới để đăng kí ngay.
                     </p>
                 </div>
                 <button class="hidden" id="register">Sign Up</button>
@@ -120,20 +120,54 @@
 </div>
 <script>
 
-    document.getElementById('signupForm').addEventListener('submit', function(event) {
+    async function logIn(event) {
         event.preventDefault(); // Ngăn chặn hành vi mặc định của form
 
-        const password = document.querySelector('input[name="password"]').value.trim();
-        const isPassword = document.querySelector('input[name="isPassword"]').value.trim();
-        // Kiểm tra xem password và isPassword có khớp nhau không
-        if (password !== isPassword) {
-            alert("Passwords do not match!");
-            return;
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+
+        try {
+            const response = await fetch('/auth/authenticate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams({
+                    'email': email,
+                    'password': password
+                })
+            });
+
+            if (response.ok) {
+                const data = await response.json(); // Nhận dữ liệu JSON từ server
+                console.log('User  Info:', data); // Ghi lại thông tin người dùng vào console
+                localStorage.setItem('userInfo', JSON.stringify(data));
+
+                // Chuyển hướng đến trang dựa trên vai trò
+                if (data.roles.includes("ROLE_ADMIN")) {
+                    window.location.href = "/auth/admin/dashboard";
+                } else if (data.roles.includes("ROLE_USER")) {
+                    window.location.href = "/auth/user/dashboard";
+                } else if (data.roles.includes("ROLE_COMPANY")) {
+                    window.location.href = "/job-posts";
+                } else {
+                    window.location.href = "/auth/default/dashboard";
+                }
+            } else {
+                const errorText = await response.text();
+                console.error('Authentication failed:', errorText);
+                alert('Đăng nhập không thành công. Vui lòng kiểm tra lại thông tin.');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Có lỗi xảy ra. Vui lòng thử lại.');
         }
-        console.log(password);
-        console.log(isPassword);
-        // Nếu khớp, gửi form
-        this.submit();
+    }
+</script>
+<script>
+    document.getElementById('register').addEventListener('click', function() {
+        // Chuyển hướng đến trang đăng ký
+        window.location.href = 'register/user'; // Thay đổi '/register' thành URL của trang đăng ký của bạn
     });
 </script>
 <script

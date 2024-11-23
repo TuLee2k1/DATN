@@ -4,7 +4,10 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import lombok.experimental.SuperBuilder;
+import poly.com.Enum.Exp;
+import poly.com.Enum.JobLevel;
 import poly.com.Enum.StatusEnum;
+import poly.com.Enum.WorkType;
 
 import java.util.Date;
 import java.util.List;
@@ -56,21 +59,31 @@ public class JobPost extends AbstractEntity{
     @Column(name = "address") // Địa chỉ
     private String address;
 
-
     @Column(name = "applied_count")
     private Integer appliedCount = 0;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "workType")
+    private WorkType workType; // Loại công việc
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "experience")
+    private Exp exp; // Kinh nghiệm
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "jobLevel") // Cấp độ công việc
+    private JobLevel jobLevel;
 
     @ManyToOne
-    @JoinColumn(name = "company_id")
+    @JoinColumn(name = "company_id") // Khóa ngoại liên kết đến Company
     private Company company;
 
     @ManyToOne
-    @JoinColumn(name = "job_category_id")
+    @JoinColumn(name = "job_category_id") // Khóa ngoại liên kết đến JobCategory
     private JobCategory jobCategory;
 
     @ManyToOne
-    @JoinColumn(name = "sub_category_id")
+    @JoinColumn(name = "sub_category_id") // Khóa ngoại liên kết đến SubCategory
     private SubCategory subCategory;
 
     @OneToMany(mappedBy = "jobPost",fetch = FetchType.LAZY) // khóa ngoại liên kết đến JobProfile np CV

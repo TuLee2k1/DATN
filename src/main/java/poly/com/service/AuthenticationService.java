@@ -56,7 +56,7 @@ public class AuthenticationService {
      * Đăng ký tài khoản người dùng mới với vai trò là User
      */
     public AuthenticationResponse registerUser(AuthRegisterRequest request) throws MessagingException, IllegalAccessException {
-        validateEmailAndPassword(request.getEmail(), request.getPassword(), request.getIsPassword());
+        validateEmailAndPasswordUser(request.getEmail(), request.getPassword(), request.getIsPassword());
 
         User user = createUser(request.getFirstname(), request.getLastname(), request.getEmail(), request.getPassword(), RoleType.ROLE_USER);
         userRepository.save(user);
@@ -165,19 +165,21 @@ public class AuthenticationService {
      */
     @Transactional
     public AuthenticationResponse authenticate(LoginRequest request, HttpServletRequest httpRequest)
-     throws AuthenticationFailedException {
+            throws AuthenticationFailedException {
         try {
             // Xác thực người dùng
             Authentication authentication = authenticationManager.authenticate(
-             new UsernamePasswordAuthenticationToken(
-              request.getEmail(),
-              request.getPassword()
-             )
+                    new UsernamePasswordAuthenticationToken(
+                            request.getEmail(),
+                            request.getPassword()
+                    )
             );
 
+            // Đặt authentication vào SecurityContext
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+
             // Lấy thông tin người dùng
-            User user = userRepository.findByEmail(request.getEmail())
-             .orElseThrow(() -> new UserNotFoundException("Không tìm thấy người dùng"));
+            User user = (User ) authentication.getPrincipal();
 
             // Kiểm tra trạng thái tài khoản
             if (!user.isEnabled()) {
@@ -190,11 +192,21 @@ public class AuthenticationService {
 
             // Lấy danh sách roles
             List<RoleType> userRoles = user.getRoles().stream()
-             .map(Role::getRole)
-             .collect(Collectors.toList());
+                    .map(Role::getRole)
+                    .collect(Collectors.toList());
 
-            // Đặt authentication vào SecurityContext
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+            // Tạo claims cho JWT
+            HashMap<String, Object> claims = new HashMap<>();
+            claims.put("id", user.getId());
+            claims.put("fullName", user.getFullName());
+
+            // Tạo JWT token và refresh token
+            String jwtToken = jwtService.generateToken(claims, user);
+            String refreshToken = jwtService.generateRefreshToken(user);
+
+            // Hủy token cũ nếu có
+            revokeUserToken(user);
+            saveUserToken(user, jwtToken);
 
             // Lưu thông tin vào session
             HttpSession session = httpRequest.getSession(true); // Tạo session mới nếu chưa tồn tại
@@ -212,16 +224,18 @@ public class AuthenticationService {
 
             // Xây dựng response
             return AuthenticationResponse.builder()
-             .id(user.getId())
-             .email(user.getEmail())
-             .fullName(user.getFullName())
-             .roles(userRoles)
-             .redirectUrl(redirectUrl) // Thêm URL chuyển hướng vào response
-             .build();
+                    .id(user.getId())
+                    .accessToken(jwtToken)
+                    .refreshToken(refreshToken) // Thêm refresh token vào response
+                    .email(user.getEmail())
+                    .fullName(user.getFullName())
+                    .roles(userRoles)
+                    .redirectUrl(redirectUrl) // Thêm URL chuyển hướng vào response
+                    .build();
 
-        } catch (AuthenticationException e) {
-            log.error("Đăng nhập thất bại: {}", e.getMessage(), e);
-            throw new AuthenticationFailedException("Email hoặc mật khẩu không chính xác");
+        } catch (Exception e) {
+            log.error("Đã xảy ra lỗi trong quá trình đăng nhập: {}", e.getMessage(), e);
+            throw new AuthenticationFailedException("Đã xảy ra lỗi trong quá trình đăng nhập");
         }
     }
 
@@ -232,7 +246,7 @@ public class AuthenticationService {
         } else if (roles.contains(RoleType.ROLE_ADMIN)) {
             return "/admin/dashboard";
         } else if (roles.contains(RoleType.ROLE_USER)) {
-            return "/user/dashboard";
+            return "/auth/user/dashboard";
         }
         return "/home"; // URL mặc định
     }
@@ -325,12 +339,17 @@ public class AuthenticationService {
 
         User user = userRepository.findById(savedVerifyUser .getUser ().getId())
                 .orElseThrow(() -> new UserNotFoundException("User  not found"));
-        System.out.println(user.isEnabled());
+        System.out.println("user bị vô hiệu quá: "+user.isEnabled());
         // Kiểm tra xem người dùng có bị vô hiệu hóa không
         if (!user.isEnabled()) {
             // Nếu bạn muốn kích hoạt tài khoản cho người dùng đã bị vô hiệu hóa
             user.setEnabled(true); // Kích hoạt tài khoản
-            System.out.println(user.isEnabled());
+            System.out.println("đã kích hoạt: "+user.isEnabled());
+        }
+        System.out.println("user có bị khoá không: "+ user.isAccountLocked());
+        if (user.isAccountLocked()){
+            user.setAccountLocked(false);
+            System.out.println("mở khoá user: "+user.isAccountLocked());
         }
 
         // Cập nhật thông tin người dùng
@@ -394,8 +413,26 @@ public class AuthenticationService {
 
     // Phương thức phụ trợ để xác nhận email và mật khẩu
     private void validateEmailAndPassword(String email, String password, String confirmPassword) {
-        if (userRepository.existsByEmail(email)) {
+        System.out.println("Validating email: " + email);
+        boolean emailExists = userRepository.existsByEmail(email);
+        System.out.println("Email exists: " + emailExists);
+
+        if (emailExists) {
             throw new IllegalArgumentException("Email already in use");
+        }
+        if (!password.equals(confirmPassword)) {
+            throw new IllegalArgumentException("Password and confirm password do not match");
+        }
+    }
+
+    // Phương thức phụ trợ để xác nhận email và mật khẩu
+    private void validateEmailAndPasswordUser(String email, String password, String confirmPassword) {
+        System.out.println("Validating email: " + email);
+        boolean emailExists = userRepository.existsByEmail(email);
+        System.out.println("Email exists: " + emailExists);
+
+        if (emailExists) {
+            throw new IllegalArgumentException("Email already in use validate");
         }
         if (!password.equals(confirmPassword)) {
             throw new IllegalArgumentException("Password and confirm password do not match");

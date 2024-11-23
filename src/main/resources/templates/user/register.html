@@ -33,8 +33,7 @@
 <body>
 <div class="container" id="container">
     <div class="form-container sign-up">
-        <form action="/auth/user" method="POST">
-            <h1 class="text-center">Get Started Now!</h1>
+        <form action="/auth/company" method="post">
             <b>First Name</b>
             <input type="text" name="firstname" placeholder="Enter your first name" required minlength="2" maxlength="50" />
             <b>Last Name</b>
@@ -45,6 +44,14 @@
             <input type="password" name="password" placeholder="Enter your password" required minlength="6" />
             <b>Confirm Password</b>
             <input type="password" name="isPassword" placeholder="Confirm your password" required minlength="6" maxlength="20" />
+            <b>Company Name</b>
+            <input type="text" name="companyName" placeholder="Enter your company name" required minlength="2" maxlength="50" />
+            <b>City</b>
+            <input type="text" name="city" placeholder="Enter your city" required minlength="2" maxlength="50" />
+            <b>District</b>
+            <input type="text" name="district" placeholder="Enter your district" required />
+            <b>CompanyPhone</b>
+            <input type="number" name="companyPhone" placeholder="Enter your Company Phone" required />
             <div class="agree">
                 <input class="checkbox" type="checkbox" required />
                 <label for="">
@@ -63,19 +70,36 @@
         </form>
     </div>
     <div class="form-container sign-in">
-        <form action="auth/authenticate" method="post">
-            <h1 class="text-center">Sign In</h1>
+        <form action="/auth/user" method="post">
+            <h1 class="text-center">Đăng kí người tìm việc</h1>
+            <b>First Name</b>
+            <input type="text" name="firstname" placeholder="Enter your first name" required minlength="2" maxlength="50" />
+            <b>Last Name</b>
+            <input type="text" name="lastname" placeholder="Enter your last name" required minlength="2" maxlength="50" />
             <b>Email</b>
-            <input type="email" name="email" placeholder="Enter your email" />
+            <input type="email" name="email" placeholder="Enter your email" required />
             <b>Password</b>
-            <input type="password" name="password" placeholder="Enter your password" />
+            <input type="password" name="password" placeholder="Enter your password" required minlength="6" />
+            <b>Confirm Password</b>
+            <input type="password" name="isPassword" placeholder="Confirm your password" required minlength="6" maxlength="20" />
             <div class="agree">
-                <input class="checkbox" type="checkbox" />
+                <input class="checkbox" type="checkbox" required />
                 <label for="">
                     <small> I agree to </small> <a href="">terms &amp; policy </a>
                 </label>
             </div>
-            <button type="submit">Sign In</button>
+<!--            <h1 class="text-center">Sign In</h1>-->
+<!--            <b>Email</b>-->
+<!--            <input type="email" name="email" placeholder="Enter your email" />-->
+<!--            <b>Password</b>-->
+<!--            <input type="password" name="password" placeholder="Enter your password" />-->
+<!--            <div class="agree">-->
+<!--                <input class="checkbox" type="checkbox" />-->
+<!--                <label for="">-->
+<!--                    <small> I agree to </small> <a href="">terms &amp; policy </a>-->
+<!--                </label>-->
+<!--            </div>-->
+            <button type="submit">Sign Up</button>
             <span class="text-center">Or use your email for register</span>
 
             <div class="social-icons">
@@ -97,7 +121,7 @@
                     <p>Enter your personal details to use all of site features</p>
                 </div>
 
-                <button class="hidden" id="login">Sign In</button>
+                <button class="hidden" id="login">Đăng kí người tìm việc</button>
             </div>
 
             <div class="toggle-panel toggle-right">
@@ -112,29 +136,48 @@
                         Register with your personal details to use all of site features
                     </p>
                 </div>
-                <button class="hidden" id="register">Sign Up</button>
+                <button class="hidden" id="register">Đăng kí nhà tuyển dụng</button>
             </div>
         </div>
     </div>
 </div>
-<script>
+<!--<script>-->
 
-    document.getElementById('signupForm').addEventListener('submit', function(event) {
-        event.preventDefault(); // Ngăn chặn hành vi mặc định của form
+<!--    document.getElementById('signupForm').addEventListener('submit', function(event) {-->
+<!--        event.preventDefault(); // Ngăn chặn hành vi mặc định của form-->
 
-        const password = document.querySelector('input[name="password"]').value.trim();
-        const isPassword = document.querySelector('input[name="isPassword"]').value.trim();
-        // Kiểm tra xem password và isPassword có khớp nhau không
-        if (password !== isPassword) {
-            alert("Passwords do not match!");
-            return;
-        }
-        console.log(password);
-        console.log(isPassword);
-        // Nếu khớp, gửi form
-        this.submit();
-    });
-</script>
+<!--        const formData = new FormData(this);-->
+<!--        const jsonData = {};-->
+
+<!--        console.log('Success:', jsonData);-->
+
+<!--        formData.forEach((value, key) => {-->
+<!--            jsonData[key] = value;-->
+<!--        });-->
+
+<!--        fetch('/auth/register/company', {-->
+<!--            method: 'POST',-->
+<!--            headers: {-->
+<!--                'Content-Type': 'application/json'-->
+<!--            },-->
+<!--            body: JSON.stringify(jsonData)-->
+<!--        })-->
+<!--            .then(response => {-->
+<!--                if (!response.ok) {-->
+<!--                    throw new Error('Network response was not ok');-->
+<!--                }-->
+<!--                return response.json();-->
+<!--            })-->
+<!--            .then(data => {-->
+<!--                console.log('Success:', data);-->
+<!--                // Chuyển hướng hoặc xử lý phản hồi-->
+<!--                window.location.href = '/auth/company/vertical';-->
+<!--            })-->
+<!--            .catch((error) => {-->
+<!--                console.error('Error:', error);-->
+<!--            });-->
+<!--    });-->
+<!--</script>-->
 <script
         src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
         integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
