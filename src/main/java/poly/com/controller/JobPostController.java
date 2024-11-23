@@ -1,44 +1,40 @@
 package poly.com.controller;
 
-import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.validation.BindingResult;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import poly.com.Enum.StatusEnum;
-import poly.com.dto.CompanyDto;
-import poly.com.dto.JobPostDto;
 import poly.com.dto.request.JobPost.JobPostRequest;
 import poly.com.dto.request.JobPost.JobPostTitleResponse;
-import poly.com.dto.request.PageRequestDTO;
 import poly.com.dto.response.JobPost.JobListingResponse;
 import poly.com.dto.response.JobPost.JobPostResponse;
 import poly.com.dto.response.PageResponse;
 import poly.com.model.Company;
 import poly.com.model.JobPost;
+import poly.com.service.JobCategoryService;
 import poly.com.service.JobPostService;
-import poly.com.service.MapValidationErrorService;
+import poly.com.service.SubCategoryService;
 
 import java.util.List;
 
 @Tag(name = "JobPost Controller")
-@RestController
+@Controller
+@Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/Company")
 public class JobPostController {
 
     private final JobPostService jobPostService;
+    private final JobCategoryService jobCategoryService;
+    private final SubCategoryService subCategoryService;
 
 //    @Autowired
 //    JobPostService jobPostService;
@@ -114,6 +110,16 @@ public class JobPostController {
 //
 //        return new ResponseEntity<>("Jop Post with Id " + id + " was deleted", HttpStatus.OK);
 //    }
+
+    @GetMapping("/JobPost") // /Company/getJobPost?id=1
+    @PreAuthorize("hasRole('COMPANY')")
+    @ResponseStatus(HttpStatus.OK)
+    public String getJobPost(Model model) {
+        model.addAttribute("jobPostRequest", new JobPostRequest());
+        model.addAttribute("jobCategories", jobCategoryService.getAllJobCategories());
+        model.addAttribute("subCategories", subCategoryService.getAllSubCategories());
+        return "Company/Taotintuyendung";
+    }
 
     @PostMapping("/createJobPost") // /Company/createJobPost
     @PreAuthorize("hasRole('COMPANY')")

@@ -144,12 +144,12 @@
                 localStorage.setItem('userInfo', JSON.stringify(data));
 
                 // Chuyển hướng đến trang dựa trên vai trò
-                if (data.authorities.includes("ROLE_ADMIN")) {
+                if (data.roles.includes("ROLE_ADMIN")) {
                     window.location.href = "/auth/admin/dashboard";
-                } else if (data.authorities.includes("ROLE_USER")) {
-                    window.location.href = "/auth/dashboard";
-                } else if (data.authorities.includes("ROLE_COMPANY")) {
-                    window.location.href = "/auth/company/dashboard";
+                } else if (data.roles.includes("ROLE_USER")) {
+                    window.location.href = "/auth/user/dashboard";
+                } else if (data.roles.includes("ROLE_COMPANY")) {
+                    window.location.href = "/job-posts";
                 } else {
                     window.location.href = "/auth/default/dashboard";
                 }

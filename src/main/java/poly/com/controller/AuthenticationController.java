@@ -1,6 +1,5 @@
 package poly.com.controller;
 
-import com.microsoft.sqlserver.jdbc.StringUtils;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.mail.AuthenticationFailedException;
 import jakarta.mail.MessagingException;
@@ -13,8 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -59,16 +57,14 @@ public class AuthenticationController {
         return "user/register"; // Đảm bảo rằng bạn có file register.html trong thư mục templates
     }
 
-    @PostMapping("/register/company")
+    @PostMapping("/company")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public ApiResponse<AuthenticationResponse> createCompany(@Valid @RequestBody RegisterCompanyRequest request) throws IllegalAccessException,
-    MessagingException {
-        //authenticationService.registerCompany(request);
-        return ApiResponse.<AuthenticationResponse>builder()
-                .status(HttpStatus.OK.value())
-                .message("Company registered successfully")
-         .Result(authenticationService.registerCompany(request))
-                .build();
+    public String authUser (@Valid @ModelAttribute RegisterCompanyRequest Request)
+            throws IllegalAccessException, MessagingException {
+        System.out.println("Password: " + Request.getPassword());
+        System.out.println("Confirm Password: " + Request.getIsPassword());
+        var result = authenticationService.registerCompany (Request);
+        return "user/authentication"; // Trả về trang xác nhận đăng ký
     }
 
     @GetMapping("login")
@@ -77,16 +73,29 @@ public class AuthenticationController {
         return "user/login";
     }
 
+    @GetMapping("/company/vertical")
+    @ResponseStatus(HttpStatus.OK)
+    public String authCompany (){
+        return "user/authentication";
+    }
+
+    @GetMapping("/user/dashboard")
+    @ResponseStatus(HttpStatus.OK)
+    public String dashboardUser (){
+        return "user/dashboard";
+    }
+
     @PostMapping("/authenticate")
-    public String authenticate(
-     @RequestParam String email,
-     @RequestParam String password,
-     Model model,
-     HttpServletRequest request,
-     RedirectAttributes redirectAttributes
+    public ResponseEntity<?> authenticate(
+            @RequestParam String email,
+            @RequestParam String password,
+            HttpServletRequest request
     ) {
         try {
+            // Tạo đối tượng LoginRequest từ thông tin đăng nhập
             LoginRequest loginRequest = new LoginRequest(email, password);
+
+            // Gọi phương thức authenticate từ AuthenticationService
             AuthenticationResponse authResponse = authenticationService.authenticate(loginRequest, request);
 
             // Lưu thông tin chi tiết vào session
@@ -96,15 +105,15 @@ public class AuthenticationController {
             session.setAttribute("userEmail", authResponse.getEmail());
             session.setAttribute("userRoles", authResponse.getRoles());
 
-
-            // Thêm thông tin vào redirectAttributes
-            redirectAttributes.addFlashAttribute("user", authResponse);
-
-            return determineRedirectPage(authResponse);
+            // Trả về thông tin người dùng dưới dạng JSON
+            return ResponseEntity.ok(authResponse); // Trả về mã 200 OK và đối tượng authResponse
 
         } catch (AuthenticationFailedException e) {
-            model.addAttribute("error", e.getMessage());
-            return "user/login";
+            // Trả về mã lỗi 401 và thông điệp lỗi
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+        } catch (Exception e) {
+            // Bắt tất cả các ngoại lệ khác
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Đã xảy ra lỗi trong quá trình đăng nhập");
         }
     }
 
@@ -127,7 +136,7 @@ public class AuthenticationController {
         } else if (authResponse.getRoles().contains(RoleType.ROLE_EMPLOYEE)) {
             return "redirect:/dashboard";
         } else {
-            return "redirect:/dashboard";
+            return "redirect:/auth/user/dashboard";
         }
     }
 

@@ -33,7 +33,7 @@
 <body>
 <div class="container" id="container">
     <div class="form-container sign-up">
-        <form id="signupForm" action="/auth/register/company" method="POST">
+        <form action="/auth/company" method="post">
             <b>First Name</b>
             <input type="text" name="firstname" placeholder="Enter your first name" required minlength="2" maxlength="50" />
             <b>Last Name</b>
@@ -141,43 +141,43 @@
         </div>
     </div>
 </div>
-<script>
+<!--<script>-->
 
-    document.getElementById('signupForm').addEventListener('submit', function(event) {
-        event.preventDefault(); // Ngăn chặn hành vi mặc định của form
+<!--    document.getElementById('signupForm').addEventListener('submit', function(event) {-->
+<!--        event.preventDefault(); // Ngăn chặn hành vi mặc định của form-->
 
-        const formData = new FormData(this);
-        const jsonData = {};
+<!--        const formData = new FormData(this);-->
+<!--        const jsonData = {};-->
 
-        console.log('Success:', jsonData);
+<!--        console.log('Success:', jsonData);-->
 
-        formData.forEach((value, key) => {
-            jsonData[key] = value;
-        });
+<!--        formData.forEach((value, key) => {-->
+<!--            jsonData[key] = value;-->
+<!--        });-->
 
-        fetch('/auth/register/company', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(jsonData)
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                // return response.json();
-            })
-            .then(data => {
-                console.log('Success:', data);
-                // Chuyển hướng hoặc xử lý phản hồi
-                window.location.href = '/auth/company/vertical';
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
-    });
-</script>
+<!--        fetch('/auth/register/company', {-->
+<!--            method: 'POST',-->
+<!--            headers: {-->
+<!--                'Content-Type': 'application/json'-->
+<!--            },-->
+<!--            body: JSON.stringify(jsonData)-->
+<!--        })-->
+<!--            .then(response => {-->
+<!--                if (!response.ok) {-->
+<!--                    throw new Error('Network response was not ok');-->
+<!--                }-->
+<!--                return response.json();-->
+<!--            })-->
+<!--            .then(data => {-->
+<!--                console.log('Success:', data);-->
+<!--                // Chuyển hướng hoặc xử lý phản hồi-->
+<!--                window.location.href = '/auth/company/vertical';-->
+<!--            })-->
+<!--            .catch((error) => {-->
+<!--                console.error('Error:', error);-->
+<!--            });-->
+<!--    });-->
+<!--</script>-->
 <script
         src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
         integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"

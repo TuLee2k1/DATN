@@ -12,7 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import poly.com.Enum.StatusEnum;
-import poly.com.Util.AuthenticationUtil;
+import poly.com.util.AuthenticationUtil;
 import poly.com.dto.request.JobPost.JobPostRequest;
 import poly.com.dto.request.JobPost.JobPostTitleResponse;
 import poly.com.dto.request.PageRequestDTO;
@@ -40,40 +40,16 @@ public class JobPostService {
     private final AuthenticationUtil authenticationUtil;
 
     public JobPostResponse createJobPost(JobPostRequest request) {
-
-//        var authentication = SecurityContextHolder.getContext().getAuthentication();
-//
-//        // Kiểm tra xem đã đăng nhập chưa
-//        if (authentication == null ||
-//         !authentication.isAuthenticated() ||
-//         "anonymousUser".equals(authentication.getName())) {
-//            throw new RuntimeException("Bạn cần đăng nhập để thực hiện chức năng này");
-//        }
-
-        // Lấy user hiện tại
         User authenticatedUser = authenticationUtil.getAuthenticatedUser();
-
-        // Kiểm tra company
         Company company = authenticatedUser.getCompany();
         if (company == null) {
-            throw new RuntimeException("Người dùng chưa có thông tin công ty");
+            throw new EntityNotFoundException("Người dùng chưa có thông tin công ty");
         }
 
-        // Validate dates
-        if (request.getEndDate().before(request.getCreateDate())) {
-            throw new RuntimeException("Ngày kết thúc phải sau ngày tạo");
-        }
+        validateJobPostRequest(request);
 
-        // Validate salary
-        if (request.getMaxSalary() < request.getMinSalary()) {
-            throw new RuntimeException("Lương tối đa phải lớn hơn lương tối thiểu");
-        }
-
-        var jobCategory = jobCategoryRepository.findById(request.getJobCategoryId())
-                .orElseThrow(() -> new RuntimeException("Không tìm thấy ngành nghề"));
-
-        SubCategory subCategory = subCategoryRepository.findById(request.getSubCategoryIds())
-                .orElseThrow(() -> new RuntimeException("Không tìm thấy chuyên ngành"));
+        var jobCategory = findJobCategory(request.getJobCategoryId());
+        var subCategory = findSubCategory(request.getSubCategoryIds());
 
         var jobPost = JobPost.builder()
                 .jobTitle(request.getJobTitle())
@@ -81,7 +57,7 @@ public class JobPostService {
                 .quantity(request.getQuantity())
                 .jobRequire(request.getJobRequire())
                 .jobBenefit(request.getJobBenefit())
-                .createDate(new Date()) // set ngày tạo
+                .createDate(new Date())
                 .endDate(request.getEndDate())
                 .minSalary(request.getMinSalary())
                 .maxSalary(request.getMaxSalary())
@@ -91,60 +67,72 @@ public class JobPostService {
                 .company(company)
                 .jobCategory(jobCategory)
                 .subCategory(subCategory)
-                .status(JobPostStatus.Open) // trạng thái mặc định cho hiển thị trên view
-                .statusEnum(StatusEnum.PENDING) // Chờ duyệt
+                .workType(request.getWorkType())
+                .jobLevel(request.getJobLevel())
+                .exp(request.getExp())
+                .status(JobPostStatus.Open)
+                .statusEnum(StatusEnum.PENDING)
                 .build();
 
         var savedJobPost = jobPostRepository.save(jobPost);
         return JobPostResponse.fromEntity(savedJobPost);
     }
 
+    public JobPostResponse updateJobPost(Long id, JobPostRequest request) {
+        var jobPost = jobPostRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Không tìm thấy công việc"));
+
+        validateJobPostRequest(request);
+
+        var jobCategory = findJobCategory(request.getJobCategoryId());
+        var subCategory = findSubCategory(request.getSubCategoryIds());
+
+        jobPost.setJobTitle(request.getJobTitle());
+        jobPost.setJobDescription(request.getJobDescription());
+        jobPost.setQuantity(request.getQuantity());
+        jobPost.setJobRequire(request.getJobRequire());
+        jobPost.setJobBenefit(request.getJobBenefit());
+        jobPost.setEndDate(request.getEndDate());
+        jobPost.setMinSalary(request.getMinSalary());
+        jobPost.setMaxSalary(request.getMaxSalary());
+        jobPost.setCity(request.getCity());
+        jobPost.setDistrict(request.getDistrict());
+        jobPost.setAddress(request.getAddress());
+        jobPost.setWorkType(request.getWorkType());
+        jobPost.setJobLevel(request.getJobLevel());
+        jobPost.setExp(request.getExp());
+        jobPost.setJobCategory(jobCategory);
+        jobPost.setSubCategory(subCategory);
+
+        // Không cần cập nhật company, jobCategory, subCategory nếu không thay đổi
+
+        var savedJobPost = jobPostRepository.save(jobPost);
+        return JobPostResponse.fromEntity(savedJobPost);
+    }
+
+    private void validateJobPostRequest(JobPostRequest request) {
+        if (request.getEndDate().before(new Date())) {
+            throw new IllegalArgumentException("Ngày kết thúc phải sau ngày tạo");
+        }
+        if (request.getMaxSalary() < request.getMinSalary()) {
+            throw new IllegalArgumentException("Lương tối đa phải lớn hơn lương tối thiểu");
+        }
+    }
+
+    private JobCategory findJobCategory(Long id) {
+        return jobCategoryRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Không tìm thấy ngành nghề"));
+    }
+
+    private SubCategory findSubCategory(Long id) {
+        return subCategoryRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Không tìm thấy chuyên ngành"));
+    }
 
     public JobPostResponse getJobPost (Long id) {
         var jobPost = jobPostRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Không tìm thấy công việc"));
         return JobPostResponse.fromEntity(jobPost);
-    }
-
-    public JobPostResponse updateJobPost(Long id, JobPostRequest request) {
-        var jobPost = jobPostRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Không tìm thấy công việc"));
-
-        // Validate dates
-        if (request.getEndDate().before(request.getCreateDate())) {
-            throw new RuntimeException("Ngày kết thúc phải sau ngày tạo");
-        }
-
-        // Validate salary
-        if (request.getMaxSalary() < request.getMinSalary()) {
-            throw new RuntimeException("Lương tối đa phải lớn hơn lương tối thiểu");
-        }
-
-        var jobCategory = jobCategoryRepository.findById(request.getJobCategoryId()).orElseThrow(() -> new RuntimeException("Không tìm thấy ngành nghề"));
-
-        SubCategory subCategory = subCategoryRepository.findById(request.getSubCategoryIds()).orElseThrow(() -> new RuntimeException("Không tìm thấy chuyên ngành"));
-
-        var updatedJobPost = JobPost.builder()
-                .id(jobPost.getId())
-                .jobTitle(request.getJobTitle())
-                .jobDescription(request.getJobDescription())
-                .quantity(request.getQuantity())
-                .jobRequire(request.getJobRequire())
-                .jobBenefit(request.getJobBenefit())
-                .createDate(request.getCreateDate())
-                .endDate(request.getEndDate())
-                .minSalary(request.getMinSalary())
-                .maxSalary(request.getMaxSalary())
-                .city(request.getCity())
-                .district(request.getDistrict())
-                .address(request.getAddress())
-                .company(jobPost.getCompany())
-                .jobCategory(jobCategory)
-                .subCategory(subCategory)
-                .status(jobPost.getStatus())
-                .statusEnum(jobPost.getStatusEnum()).build();
-        var savedJobPost = jobPostRepository.save(updatedJobPost);
-        return JobPostResponse.fromEntity(savedJobPost);
-
     }
 
 
@@ -218,6 +206,4 @@ public class JobPostService {
                 .statusEnum(jobPost.getStatusEnum() != null ? jobPost.getStatusEnum() : null)
                 .build();
     }
-
-
 }
