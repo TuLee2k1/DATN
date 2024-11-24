@@ -1,0 +1,73 @@
+ .search-bar {
+            margin-top: 20px;
+        }
+        .search-bar input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+        }
+        .search-bar select {
+            padding: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+        }
+        .search-bar button {
+            padding: 10px 20px;
+            background-color: #6f42c1;
+            color: white;
+            border: none;
+            border-radius: 4px;
+        }
+        .filter-section {
+            background-color: white;
+            padding: 20px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+        .filter-section h5 {
+            margin-bottom: 20px;
+        }
+        .filter-section .form-check {
+            margin-bottom: 10px;
+        }
+        .results-section {
+            background-color: white;
+            padding: 20px;
+            border-radius: 4px;
+        }
+        .results-section .result-item {
+            border-bottom: 1px solid #ced4da;
+            padding: 10px 0;
+        }
+        .results-section .result-item:last-child {
+            border-bottom: none;
+        }
+        .results-section .result-item h6 {
+            margin: 0;
+        }
+        .results-section .result-item .details {
+            color: #6c757d;
+        }
+        .results-section .result-item .actions {
+            text-align: right;
+        }
+        .results-section .result-item .actions button {
+            background-color: #6f42c1;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 5px 10px;
+        }
+        .pagination {
+            justify-content: flex-end;
+        }
+        .pagination .page-item .page-link {
+            border: none;
+            color: #6c757d;
+        }
+        @media (max-width: 576px) {
+            .pagination {
+                justify-content: center;
+            }
+        }

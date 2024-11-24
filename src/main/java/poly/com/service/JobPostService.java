@@ -176,12 +176,35 @@ public class JobPostService {
     public PageResponse<JobListingResponse> getJobListings(String jobTitle, StatusEnum statusEnum, Integer pageNo) {
         Pageable pageable = PageRequest.of(pageNo - 1, 10);
 
-        Page<JobPost> jobPosts = jobPostRepository.findAllByJobTitleContainingAndStatusEnum(jobTitle, statusEnum, pageable);
+        // Retrieve the authenticated user
+        User authenticatedUser = authenticationUtil.getAuthenticatedUser();
+        Company company = authenticatedUser.getCompany();
+        if (company == null) {
+            throw new EntityNotFoundException("Người dùng chưa có thông tin công ty");
+        }
 
-        Page<JobListingResponse> responsePage = jobPosts.map(this::convertToJobListingResponse);
+        // Filter job posts by company
+        Page<JobListingResponse> jobPosts = jobPostRepository.findAllByJobTitleContainingAndStatusEnum(jobTitle, statusEnum,
+                pageable, company);
 
-        return new PageResponse<>(responsePage);
+        return new PageResponse<>(jobPosts);
     }
+
+//    public PageResponse<JobListingResponse> getJobList( Integer pageNo) {
+//        Pageable pageable = PageRequest.of(pageNo - 1, 10);
+//
+//        // Retrieve the authenticated user
+//        User authenticatedUser = authenticationUtil.getAuthenticatedUser();
+//        Company company = authenticatedUser.getCompany();
+//        if (company == null) {
+//            throw new EntityNotFoundException("Người dùng chưa có thông tin công ty");
+//        }
+//
+//        // Filter job posts by company
+//        Page<JobListingResponse> jobPosts = jobPostRepository.findAll();
+//
+//        return new PageResponse<>(jobPosts);
+//    }
 
     public List<JobPostTitleResponse> getJobPostTitle() {
         return jobPostRepository.getJobPostTitle();

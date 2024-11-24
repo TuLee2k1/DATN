@@ -9,7 +9,7 @@ import java.util.Date;
 @Getter
 @Setter
 @Builder
-public class JobListingResponse { // những class đuôi response là đẩy dữ liệu lên view
+public class  JobListingResponse { // những class đuôi response là đẩy dữ liệu lên view
     private Long id;
     private String jobTitle;
     private Date createDate;

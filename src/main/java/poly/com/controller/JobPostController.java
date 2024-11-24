@@ -205,11 +205,11 @@ public class JobPostController {
         return ResponseEntity.ok(responses);
     }
 
-    @GetMapping("/getJobPostTitle")
-    public ResponseEntity<List<JobPostTitleResponse>> getJobPostTitle() {
-        List<JobPostTitleResponse> responses = jobPostService.getJobPostTitle();
-        return ResponseEntity.ok(responses);
-    }
+//    @GetMapping("/getJobPostTitle")
+//    public ResponseEntity<List<JobPostTitleResponse>> getJobPostTitle() {
+//        List<JobPostTitleResponse> responses = jobPostService.getJobPostTitle();
+//        return ResponseEntity.ok(responses);
+//    }
 
 
 

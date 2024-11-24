@@ -4,9 +4,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import poly.com.Enum.StatusEnum;
 import poly.com.dto.request.JobPost.JobPostTitleResponse;
 import poly.com.dto.response.JobPost.JobListingResponse;
+import poly.com.model.Company;
 import poly.com.model.JobPost;
 
 import java.util.List;
@@ -20,8 +22,22 @@ public interface JobPostRepository extends JpaRepository<JobPost, Long> {
   @Query("select c from JobPost c where c.id = ?1")
   Optional<JobPost> findById(Long id);
 
-
-  Page<JobPost> findAllByJobTitleContainingAndStatusEnum(String jobTitle, StatusEnum statusEnum, Pageable pageable);
+  @Query("SELECT new poly.com.dto.response.JobPost.JobListingResponse(" +
+          "c.id, c.jobTitle, c.createDate, c.endDate, c.appliedCount, c.status, c.statusEnum) " +
+          "FROM JobPost c " +
+          "WHERE c.company = :company " +
+          "AND (:jobTitle IS NULL OR c.jobTitle LIKE %:jobTitle%) " +
+          "AND (:statusEnum IS NULL OR c.statusEnum = :statusEnum)")
+  Page<JobListingResponse> findAllByJobTitleContainingAndStatusEnum(
+          @Param("jobTitle") String jobTitle,
+          @Param("statusEnum") StatusEnum statusEnum,
+          Pageable pageable,
+          @Param("company") Company company
+  );
+  @Query("SELECT new poly.com.dto.response.JobPost.JobListingResponse(" +
+          "c.id, c.jobTitle, c.createDate, c.endDate, c.appliedCount, c.status, c.statusEnum) " +
+          "FROM JobPost c")
+  Page<JobPost> findAll(Pageable pageable);
 
   @Query("SELECT new poly.com.dto.request.JobPost.JobPostTitleResponse(c.id, c.jobTitle) FROM JobPost c")
   List<JobPostTitleResponse> getJobPostTitle();

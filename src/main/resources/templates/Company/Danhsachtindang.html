@@ -11,12 +11,12 @@
 	<link rel="preconnect" href="https://fonts.gstatic.com">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 	<link rel="shortcut icon" href="img/icons/icon-48x48.png" />
-    <link href="/static/Company/css/danhsach.css" rel="stylesheet"/>	
+    <link th:href="@{../Company/css/danhsach.css}" rel="stylesheet"/>
 	<link rel="canonical" href="https://demo-basic.adminkit.io/" />
 
 	<title>Quản lý tin đăng</title>
 
-	<link href="/static/css/app.css" rel="stylesheet">
+	<link th:href="@{../css/app.css}"  rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 	<style>
         body {
@@ -59,12 +59,14 @@
 					<span>Tạo tin tuyển dụng</span>
 				  </a>
 				</li>
-				<li class="sidebar-item">
-				  <a class="sidebar-link" href="Danhsachtindang.html">
-					<i class="align-middle" data-feather="file-text"></i>
-					<span>Quản lý tin đăng</span>
-				  </a>
-				</li>
+				  <li class="sidebar-item">
+					  <a class="sidebar-link" href="javascript:void(0)"
+						 th:onclick="'fetchArticles()'"
+						 th:href="@{/Danhsachtindang}">
+						  <i class="align-middle" data-feather="file-text"></i>
+						  <span>Quản lý tin đăng</span>
+					  </a>
+				  </li>
 		  
 				<li class="sidebar-header">
 				  <div class="d-flex align-items-center">
@@ -327,76 +329,97 @@
 				<div class="container custom-container mt-1">
 					<div class="filter-bar">
 						<label>Bộ lọc</label>
-						<select class="form-select form-select-sm">
-							<option selected>Tất cả tin đăng</option>
-						</select>
-						<select class="form-select form-select-sm">
-							<option selected>Tất cả trạng thái</option>
-						</select>
-						<select class="form-select form-select-sm">
-							<option selected>Tất cả loại tin</option>
-						</select>
-						<select class="form-select form-select-sm">
-							<option selected>Tất cả nguồn tin</option>
-						</select>
-						<button class="btn btn-outline-secondary btn-sm ms-auto">
-							<i class="fas fa-download"></i> Tải danh sách
-						</button>
+						<form th:action="@{/job-posts/Listing}" method="get" class="d-flex gap-2">
+							<select class="form-select form-select-sm" name="jobTitle">
+								<option value="">Tất cả tin đăng</option>
+								<option th:each="title : ${jobTitles}"
+										th:value="${title.jobTitle}"
+										th:text="${title.jobTitle}"
+										th:selected="${title.jobTitle == selectedJobTitle}">
+								</option>
+							</select>
+							<select class="form-select form-select-sm" name="statusEnum">
+								<option value="">Tất cả trạng thái</option>
+								<option th:each="status : ${statusEnums}"
+										th:value="${status}"
+										th:text="${status.name()}"
+										th:selected="${status == selectedStatus}">
+								</option>
+							</select>
+							<button type="submit" class="btn btn-primary btn-sm">Lọc</button>
+						</form>
+<!--						<button class="btn btn-outline-secondary btn-sm ms-auto">-->
+<!--							<i class="fas fa-download"></i> Tải danh sách-->
+<!--						</button>-->
 					</div>
-					<div class="table-container">
+
+					<div class="table-container" th:if="${not #lists.isEmpty(jobListings)}">
 						<table class="table table-bordered">
-							<thead>													
-								<tr>
-									<th>#</th>
-									<th>Tên tin đăng</th>
-									<th class="sortable" onclick="sortTable(2, 'date')">Thời hạn <i class="fas fa-sort"></i></th>
-                                    <th class="sortable" onclick="sortTable(3, 'number')">Lượt xem <i class="fas fa-sort"></i></th>
-                                    <th class="sortable" onclick="sortTable(4, 'number')">Lượt ứng tuyển <i class="fas fa-sort"></i></th>
-									<th>Tỉ lệ phản hồi</th>
-									<th>Hành động</th>
-								</tr>
+							<thead>
+							<tr>
+								<th>Ẩn/Hiện</th>
+								<th>Tên tin đăng</th>
+								<th class="sortable">Ngày tạo</th>
+								<th class="sortable">Thời hạn</th>
+								<th>Trạng thái duyệt</th>
+								<th>Hành động</th>
+							</tr>
 							</thead>
 							<tbody>
-								<tr>
-									<td data-label="#">1</td>
-									<td data-label="Tên tin đăng">Nhân viên kinh doanh</td>
-									<td data-label="Thời hạn">30/09/2023</td>
-									<td data-label="Lượt xem">150</td>
-									<td data-label="Lượt ứng tuyển">20</td>
-									<td data-label="Tỉ lệ phản hồi">80%</td>
-									<td data-label="Hành động">
-										<button class="btn btn-sm btn-primary"><i class="fas fa-edit"></i></button>
-										<button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
-									</td>
-								</tr>
-								<tr>
-									<td data-label="#">2</td>
-									<td data-label="Tên tin đăng">Kế toán</td>
-									<td data-label="Thời hạn">15/10/2023</td>
-									<td data-label="Lượt xem">200</td>
-									<td data-label="Lượt ứng tuyển">30</td>
-									<td data-label="Tỉ lệ phản hồi">90%</td>
-									<td data-label="Hành động">
-										<button class="btn btn-sm btn-primary"><i class="fas fa-edit"></i></button>
-										<button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
-									</td>
-								</tr>
-								<tr>
-									<td data-label="#">3</td>
-									<td data-label="Tên tin đăng">Nhân viên IT</td>
-									<td data-label="Thời hạn">01/11/2023</td>
-									<td data-label="Lượt xem">300</td>
-									<td data-label="Lượt ứng tuyển">50</td>
-									<td data-label="Tỉ lệ phản hồi">70%</td>
-									<td data-label="Hành động">
-										<button class="btn btn-sm btn-primary"><i class="fas fa-edit"></i></button>
-										<button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
-									</td>
-								</tr>
+							<tr th:each="job : ${jobListings}">
+								<td data-label="Ẩn/Hiện">
+									<div class="form-check form-switch">
+										<input class="form-check-input toggle-view"
+											   type="checkbox"
+											   role="switch"
+											   th:checked="${job.status == T(poly.com.model.JobPostStatus).Open}"
+											   th:data-id="${job.id}">
+									</div>
+								</td>
+								<td data-label="Tên tin đăng" th:text="${job.jobTitle}"></td>
+								<td data-label="Ngày tạo" th:text="${#dates.format(job.createDate, 'dd/MM/yyyy')}"></td>
+								<td data-label="Thời hạn" th:text="${#dates.format(job.endDate, 'dd/MM/yyyy')}"></td>
+								<td data-label="Trạng thái duyệt">
+    <span th:with="status=${job.statusEnum.name()}"
+		  th:class="${'badge ' +
+                     (status == 'APPROVED' ? 'bg-success' :
+                      status == 'PENDING' ? 'bg-warning' : 'bg-danger')}"
+		  th:text="${status}">
+    </span>
+								</td>
+								<td data-label="Hành động">
+									<button class="btn btn-sm btn-primary">
+										<i class="fas fa-edit"></i>
+									</button>
+									<button class="btn btn-sm btn-danger">
+										<i class="fas fa-trash"></i>
+									</button>
+								</td>
+							</tr>
 							</tbody>
 						</table>
+
+						<!-- Pagination -->
+						<nav th:if="${totalPages > 1}">
+							<ul class="pagination justify-content-center">
+								<li class="page-item" th:classappend="${currentPage == 1 ? 'disabled' : ''}">
+									<a class="page-link" th:href="@{/job-posts(pageNo=${currentPage - 1}, jobTitle=${selectedJobTitle}, statusEnum=${selectedStatus})}">Previous</a>
+								</li>
+								<li class="page-item" th:each="pageNumber : ${#numbers.sequence(1, totalPages)}"
+									th:classappend="${pageNumber == currentPage ? 'active' : ''}">
+									<a class="page-link" th:href="@{/job-posts(pageNo=${pageNumber}, jobTitle=${selectedJobTitle}, statusEnum=${selectedStatus})}"
+									   th:text="${pageNumber}">
+									</a>
+								</li>
+								<li class="page-item" th:classappend="${currentPage == totalPages ? 'disabled' : ''}">
+									<a class="page-link" th:href="@{/job-posts(pageNo=${currentPage + 1}, jobTitle=${selectedJobTitle}, statusEnum=${selectedStatus})}">Next</a>
+								</li>
+							</ul>
+						</nav>
 					</div>
-					<div class="content-section">
+
+					<!-- Empty state -->
+					<div class="content-section" th:if="${#lists.isEmpty(jobListings)}">
 						<p>Bạn chưa có tin tuyển dụng nào!</p>
 						<p>Tạo tin đăng tuyển để tìm kiếm nhân tài ngay!</p>
 						<button class="btn btn-primary" id="create-job-btn">Tạo tin ngay</button>
@@ -436,9 +459,43 @@
 			</footer> -->
 		</div>
 	</div>
+	<script th:inline="javascript">
+		document.addEventListener('DOMContentLoaded', function() {
+			const toggleButtons = document.querySelectorAll('.toggle-view');
 
-	<script src="/static/js/app.js"></script>
-	<script src="/static/Company/js/danhsach.js"></script>
+			toggleButtons.forEach(button => {
+				button.addEventListener('change', function() {
+					const jobId = this.getAttribute('data-id');
+					const enabled = this.checked;
+
+					fetch(`/job-posts/${jobId}/toggle-view?enable=${enabled}`, {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json',
+							// Add CSRF token if you're using Spring Security
+							// 'X-CSRF-TOKEN': document.querySelector('meta[name="_csrf"]').content
+						}
+					})
+							.then(response => {
+								if (!response.ok) {
+									throw new Error('Network response was not ok');
+								}
+								// Optionally refresh the page or update the UI
+								location.reload();
+							})
+							.catch(error => {
+								console.error('Error:', error);
+								// Revert the toggle if there was an error
+								this.checked = !enabled;
+								alert('Có lỗi xảy ra khi cập nhật trạng thái');
+							});
+				});
+			});
+		});
+
+	</script>
+	<script th:src="@{../js/app.js}"></script>
+	<script th:src="@{../Company/js/danhsach.js}"></script>
 
 
 </body>
