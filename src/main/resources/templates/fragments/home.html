@@ -19,8 +19,142 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
 
+    <script src="https://cdn.tailwindcss.com">
+    </script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
     <!-- MAIN CSS -->
     <link rel="stylesheet" href="/css/style.css">
+    <style>
+
+        .relative {
+            position: relative; /* Đặt vị trí cho phần tử cha */
+        }
+
+        #username {
+            display: inline-block; /* Để có thể áp dụng max-width */
+            max-width: 60px; /* Chiều rộng tối đa của tên người dùng */
+            overflow: hidden; /* Ẩn nội dung vượt quá */
+            white-space: nowrap; /* Ngăn chặn xuống dòng */
+        }
+
+        #dropdownMenu {
+            display: none; /* Ẩn danh sách thả xuống mặc định */
+            z-index: 1000; /* Đảm bảo danh sách thả xuống nằm trên các phần tử khác */
+            min-width: 150px; /* Đặt chiều rộng tối thiểu cho menu */
+            top: 100%; /* Đặt vị trí của menu ngay phía dưới tên người dùng */
+            right: 0; /* Căn phải menu với tên người dùng */
+            margin-top: 0px; /* Khoảng cách giữa tên người dùng và menu */
+            background-color: white; /* Màu nền của menu */
+            border: 1px solid #ccc; /* Đường viền cho menu */
+            border-radius: 4px; /* Bo góc cho menu */
+        }
+
+        a {
+            text-decoration: none; /* Xóa gạch chân cho liên kết */
+            color: black; /* Màu chữ cho liên kết */
+        }
+
+
+
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // document.getElementById('userInfo').classList.add('d-none');
+            // Kiểm tra xem có thông tin người dùng trong localStorage không
+            const userInfo = localStorage.getItem('userInfo');
+            // const defaultAvatar = 'Admin/images/person_1';
+            if (userInfo) {
+                // Nếu có, chuyển đổi chuỗi JSON thành đối tượng
+                const user = JSON.parse(userInfo);
+
+                // Hiển thị thông tin người dùng
+                // Kiểm tra avatar và gán giá trị
+                // const avatarSrc = user.avatar ? user.avatar : defaultAvatar;
+                // document.getElementById('userAvatar').src = avatarSrc;
+                document.getElementById('username').textContent = user.userInfo.fullName; // Giả sử username là thuộc tính trong user
+console.log(user.userInfo.fullName);
+                document.getElementById('authButtons').style.display = 'none';
+                document.getElementById('userInfo').style.display = 'flex'; // Hoặc 'block' tùy thuộc vào layout
+            } else {
+                // Nếu không có thông tin người dùng, đảm bảo rằng các nút vẫn hiển thị
+                document.getElementById('authButtons').style.display = 'flex';
+                document.getElementById('userInfo').style.display = 'none'; // Hoặc 'block' tùy thuộc vào layout
+            }
+        });
+
+        function checkActivity() {
+            let data;
+            try {
+                data = JSON.parse(localStorage.getItem('userInfo'));
+            } catch (error) {
+                console.error("Error parsing userInfo from localStorage:", error);
+                return; // Dừng hàm nếu có lỗi
+            }
+
+            if (data) {
+                const currentTime = Date.now();
+                const inactivityTime = currentTime - data.lastActive;
+
+                // Nếu không hoạt động quá 5 phút (300000 ms), xóa thông tin người dùng
+                if (inactivityTime > 300000) {
+                    localStorage.removeItem('userInfo');
+                    console.log("User  info removed due to inactivity.");
+                } else {
+                    // Cập nhật thời gian hoạt động
+                    data.lastActive = currentTime;
+                    localStorage.setItem('userInfo', JSON.stringify(data));
+                }
+            }
+        }
+
+        // Lắng nghe các sự kiện để cập nhật thời gian hoạt động
+        window.addEventListener('mousemove', checkActivity);
+        window.addEventListener('keydown', checkActivity);
+        window.addEventListener('scroll', checkActivity);
+        window.addEventListener('click', checkActivity);
+
+        // Kiểm tra định kỳ mỗi phút (60000 ms)
+        setInterval(checkActivity, 60000);
+
+        // Giả sử bạn đã có hàm setUser Info và checkActivity như đã nêu ở trên
+
+        // Thêm sự kiện cho nút đăng xuất
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            // Xóa thông tin người dùng khỏi localStorage
+            localStorage.removeItem('userInfo');
+            // Cập nhật giao diện người dùng
+            document.getElementById('authButtons').style.display = 'block';
+            document.getElementById('userInfo').style.display = 'none';
+            console.log("User  logged out.");
+        });
+
+        // Lấy các phần tử cần thiết
+        const usernameElement = document.getElementById('username');
+        const dropdownMenu = document.getElementById('dropdownMenu');
+
+        // Biến để theo dõi trạng thái hiển thị của menu
+        let isMenuVisible = false;
+
+        // Hiển thị hoặc ẩn menu thả xuống khi nhấp vào tên người dùng
+        usernameElement.addEventListener('click', function(event) {
+            event.stopPropagation(); // Ngăn chặn sự kiện click truyền lên tài liệu
+            isMenuVisible = !isMenuVisible; // Đảo ngược trạng thái hiển thị
+            if (isMenuVisible) {
+                dropdownMenu.classList.add('show'); // Thêm lớp show để hiển thị menu
+            } else {
+                dropdownMenu.classList.remove('show'); // Xóa lớp show để ẩn menu
+            }
+        });
+
+        // Ẩn menu thả xuống khi nhấp ra ngoài menu
+        document.addEventListener('click', function() {
+            if (isMenuVisible) {
+                dropdownMenu.classList.remove('show'); // Ẩn menu
+                isMenuVisible = false; // Cập nhật trạng thái
+            }
+        });
+    </script>
+
 </head>
 
 <body id="top">
@@ -58,15 +192,55 @@
                     </nav>
 
                     <div class="right-cta-menu text-right d-flex aligin-items-center col-6">
-                        <div class="ml-auto">
+                        <div id="authButtons" class="ml-auto">
                             <button id="signupBtn"
                                 class="btn btn-outline-white border-width-2 d-none d-lg-inline-block" ><span
                                     class="mr-2 icon-add"></span>Đăng Ký</button>
                             <button id="loginBtn" class="btn btn-primary border-width-2 d-none d-lg-inline-block"><span
                                     class="mr-2 icon-lock_outline" ></span>Đăng Nhập</button>
                         </div>
-                        <a href="#" class="site-menu-toggle js-menu-toggle d-inline-block d-xl-none mt-lg-2 ml-3"><span
-                                class="icon-menu h3 m-0 p-0 mt-2"></span></a>
+
+                        <div id="userInfo" class="flex items-center p-4" style="display: none; position: absolute; right: -10px;margin-top: -60px">
+                            <!-- Notification Bell -->
+                            <div class="relative">
+                                <i class="fas fa-bell text-white text-xl"></i>
+                                <button class="absolute top-0 right-0 bg-red-600 text-white text-xs rounded-full px-1">1</button>
+                            </div>
+                            <!-- User Icon -->
+                            <div class="ml-4">
+                                <div class="w-8 h-8 bg-white rounded-full flex items-center justify-center">
+                                    <i class="fas fa-user text-purple-800"></i>
+                                </div>
+                            </div>
+                            <!-- User Name -->
+
+                            <div class="ml-2 text-white flex items-center relative">
+                                <span id="username" class="cursor-pointer">Lê</span>
+                                <i class="fas fa-caret-down ml-1"></i>
+
+                                <!-- Dropdown menu -->
+                                <div id="dropdownMenu" class="absolute right-0 bg-white text-black shadow-lg mt-2 rounded hidden">
+                                    <a href="#" class="block px-4 py-2 hover:bg-gray-200">Tài khoản</a>
+                                    <a href="#" class="block px-4 py-2 hover:bg-gray-200" id="logoutBtn">Đăng xuất</a>
+                                </div>
+                            </div>
+
+                            <!-- Divider -->
+                            <div class="ml-4 border-l border-white h-6"></div>
+                            <!-- Employer Section -->
+                            <div class="ml-4 text-white flex items-center">
+                                <i class="fas fa-briefcase text-blue-400"></i>
+                                <div id="tuyendung" class="ml-2">
+                                    <div class="text-xs">DÀNH CHO</div>
+                                    <div class="text-lg font-semibold">Nhà Tuyển Dụng</div>
+                                    <div class="text-xs">Đăng tin miễn phí</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <a href="#" class="site-menu-toggle js-menu-toggle d-inline-block d-xl-none mt-lg-2 ml-3">
+                            <span class="icon-menu h3 m-0 p-0 mt-2"></span>
+                        </a>
                     </div>
 
                 </div>
