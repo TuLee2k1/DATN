@@ -95,7 +95,7 @@
                 })
                 .then(data => {
                     alert('Mã xác thực đã được gửi: ' + code);
-                    window.location.href = 'login'; // Chuyển hướng đến trang đăng nhập
+                    window.location.href = '/auth/login'; // Chuyển hướng đến trang đăng nhập
                 })
                 .catch(error => {
                     errorDiv.textContent = 'Có lỗi xảy ra: ' + error.message;

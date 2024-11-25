@@ -37,7 +37,7 @@ public class JobCategoryService {
 
     }
 
-    public List<JobCategory> findAll() {
+    public List<JobCategory> getAllJobCategories() {
         return jobCategoryRepository.findAll();
     }
 
