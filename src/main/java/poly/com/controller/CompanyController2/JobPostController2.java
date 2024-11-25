@@ -119,8 +119,8 @@ public class JobPostController2 {
     @PreAuthorize("hasRole('ROLE_COMPANY')")
     @GetMapping("/Listing")
     public String getJobPostPage(
-            @RequestParam(defaultValue = "Công nghệ thông tin") String jobTitle,
-            @RequestParam(defaultValue = "PENDING") StatusEnum statusEnum,
+            @RequestParam(defaultValue = "") String jobTitle,
+            @RequestParam(defaultValue = "") StatusEnum statusEnum,
             @RequestParam(defaultValue = "1") Integer pageNo,
             HttpSession session,
             Model model
@@ -173,33 +173,33 @@ public class JobPostController2 {
         }
     }
 
-//    @PreAuthorize("hasRole('ROLE_COMPANY')")
-//    @GetMapping("/List")
-//    public String getJobPostList(
-//            HttpSession session,
-//            Model model
-//    ) {
-//        AuthenticationResponse user = (AuthenticationResponse) session.getAttribute("user");
-//
-//        if (user == null || !user.getRoles().contains(RoleType.ROLE_COMPANY)) {
-//            return "redirect:/auth/login";
-//        }
-//
-//        // Add data for filters
-//        model.addAttribute("jobTitles", jobPostService.getJobPostTitle());
-//        model.addAttribute("statusEnums", StatusEnum.values());
-//
-//
-//
-//
-//        // Add pagination data
-//        PageResponse<JobListingResponse> jobList = jobPostService.getJobList(1);
-//        model.addAttribute("jobListings", jobList.getContent());
-//        model.addAttribute("totalPages", jobList.getTotalPages());
-//
-//
-//
-//        model.addAttribute("user", user);
-//        return "Company/Danhsachtindang";
-//    }
+    //    @PreAuthorize("hasRole('ROLE_COMPANY')")
+    //    @GetMapping("/List")
+    //    public String getJobPostList(
+    //            HttpSession session,
+    //            Model model
+    //    ) {
+    //        AuthenticationResponse user = (AuthenticationResponse) session.getAttribute("user");
+    //
+    //        if (user == null || !user.getRoles().contains(RoleType.ROLE_COMPANY)) {
+    //            return "redirect:/auth/login";
+    //        }
+    //
+    //        // Add data for filters
+    //        model.addAttribute("jobTitles", jobPostService.getJobPostTitle());
+    //        model.addAttribute("statusEnums", StatusEnum.values());
+    //
+    //
+    //
+    //
+    //        // Add pagination data
+    //        PageResponse<JobListingResponse> jobList = jobPostService.getJobList(1);
+    //        model.addAttribute("jobListings", jobList.getContent());
+    //        model.addAttribute("totalPages", jobList.getTotalPages());
+    //
+    //
+    //
+    //        model.addAttribute("user", user);
+    //        return "Company/Danhsachtindang";
+    //    }
 }

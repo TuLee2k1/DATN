@@ -39,8 +39,8 @@ public interface JobPostRepository extends JpaRepository<JobPost, Long> {
           "FROM JobPost c")
   Page<JobPost> findAll(Pageable pageable);
 
-  @Query("SELECT new poly.com.dto.request.JobPost.JobPostTitleResponse(c.id, c.jobTitle) FROM JobPost c")
-  List<JobPostTitleResponse> getJobPostTitle();
+  @Query("SELECT new poly.com.dto.request.JobPost.JobPostTitleResponse(c.id, c.jobTitle) FROM JobPost c WHERE c.company = :company")
+  List<JobPostTitleResponse> getJobPostTitleByCompany(@Param("company") Company company);
 
   @Query("SELECT new poly.com.dto.response.JobPost.JobListingResponse(c.id,c.jobTitle,c.createDate,c.endDate,c" +
           ".appliedCount,c.status,c.statusEnum) " +

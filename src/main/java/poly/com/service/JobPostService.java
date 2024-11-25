@@ -207,7 +207,7 @@ public class JobPostService {
 //    }
 
     public List<JobPostTitleResponse> getJobPostTitle() {
-        return jobPostRepository.getJobPostTitle();
+        return jobPostRepository.getJobPostTitleByCompany(authenticationUtil.getAuthenticatedUser().getCompany());
     }
 
     private JobPostTitleResponse convertToJobPostTitleResponse (JobPost jobPost) {
