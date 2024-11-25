@@ -1,19 +1,19 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <title>JobBoard &mdash; Website Template by Colorlib</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="" />
-    <meta name="keywords" content="" />
-    <meta name="author" content="Free-Template.co" />
+    <meta name="description" content=""/>
+    <meta name="keywords" content=""/>
+    <meta name="author" content="Free-Template.co"/>
     <link rel="shortcut icon" href="/Admin/images/ftco-32x32.png">
 
     <link rel="stylesheet" href="/css/custom-bs.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css">
     <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/css/bootstrap-select.min.css">
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/css/bootstrap-select.min.css">
     <link rel="stylesheet" href="fonts/icomoon/style.css">
     <link rel="stylesheet" href="fonts/line-icons/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
@@ -28,6 +28,12 @@
 
         .relative {
             position: relative; /* Đặt vị trí cho phần tử cha */
+        }
+
+        #userInfo {
+            display: none; /* Ẩn thông tin người dùng trên thiết bị nhỏ */
+            align-items: center; /* Căn giữa các phần tử trong userInfo */
+            margin-left: auto; /* Đẩy toàn bộ userInfo sang bên phải */
         }
 
         #username {
@@ -54,7 +60,9 @@
             color: black; /* Màu chữ cho liên kết */
         }
 
-
+        .hidden {
+            display: none;
+        }
 
     </style>
     <script>
@@ -72,7 +80,7 @@
                 // const avatarSrc = user.avatar ? user.avatar : defaultAvatar;
                 // document.getElementById('userAvatar').src = avatarSrc;
                 document.getElementById('username').textContent = user.userInfo.fullName; // Giả sử username là thuộc tính trong user
-console.log(user.userInfo.fullName);
+                console.log(user.userInfo.fullName);
                 document.getElementById('authButtons').style.display = 'none';
                 document.getElementById('userInfo').style.display = 'flex'; // Hoặc 'block' tùy thuộc vào layout
             } else {
@@ -118,656 +126,536 @@ console.log(user.userInfo.fullName);
 
         // Giả sử bạn đã có hàm setUser Info và checkActivity như đã nêu ở trên
 
-        // Thêm sự kiện cho nút đăng xuất
-        document.getElementById('logoutBtn').addEventListener('click', function() {
-            // Xóa thông tin người dùng khỏi localStorage
-            localStorage.removeItem('userInfo');
-            // Cập nhật giao diện người dùng
-            document.getElementById('authButtons').style.display = 'block';
-            document.getElementById('userInfo').style.display = 'none';
-            console.log("User  logged out.");
-        });
-
-        // Lấy các phần tử cần thiết
-        const usernameElement = document.getElementById('username');
-        const dropdownMenu = document.getElementById('dropdownMenu');
-
-        // Biến để theo dõi trạng thái hiển thị của menu
-        let isMenuVisible = false;
-
-        // Hiển thị hoặc ẩn menu thả xuống khi nhấp vào tên người dùng
-        usernameElement.addEventListener('click', function(event) {
-            event.stopPropagation(); // Ngăn chặn sự kiện click truyền lên tài liệu
-            isMenuVisible = !isMenuVisible; // Đảo ngược trạng thái hiển thị
-            if (isMenuVisible) {
-                dropdownMenu.classList.add('show'); // Thêm lớp show để hiển thị menu
-            } else {
-                dropdownMenu.classList.remove('show'); // Xóa lớp show để ẩn menu
-            }
-        });
-
-        // Ẩn menu thả xuống khi nhấp ra ngoài menu
-        document.addEventListener('click', function() {
-            if (isMenuVisible) {
-                dropdownMenu.classList.remove('show'); // Ẩn menu
-                isMenuVisible = false; // Cập nhật trạng thái
-            }
-        });
     </script>
 
 </head>
 
 <body id="top">
 
-    <div class="site-wrap">
+<div class="site-wrap">
 
-        <div class="site-mobile-menu site-navbar-target">
-            <div class="site-mobile-menu-header">
-                <div class="site-mobile-menu-close mt-3">
-                    <span class="icon-close2 js-menu-toggle"></span>
-                </div>
+    <div class="site-mobile-menu site-navbar-target">
+        <div class="site-mobile-menu-header">
+            <div class="site-mobile-menu-close mt-3">
+                <span class="icon-close2 js-menu-toggle"></span>
             </div>
-            <div class="site-mobile-menu-body"></div>
-        </div> <!-- .site-mobile-menu -->
-
-        <header class="site-navbar mt-3">
-            <div class="container-fluid">
-                <div class="row align-items-center">
-                    <div class="site-logo col-6"><a href="index.html">Dreams Jobs</a></div>
-
-                    <nav class="mx-auto site-navigation">
-                        <ul class="site-menu js-clone-nav d-none d-xl-block ml-0 pl-0">
-                            <li><a href="index.html" class="nav-link active">Trang Chủ</a></li>
-                            <li><a href="about.html">Về Chúng Tôi</a></li>
-                            <li class="has-children">
-                                <a href="job-listings.html">Công Việc</a>
-                                <ul class="dropdown">
-                                    <li><a href="job-single.html">Danh Sách Công Việc</a></li>
-                                    <li><a href="post-job.html">Bài đăng công việc</a></li>
-                                </ul>
-                            </li>
-                            <li><a href="contact.html">Liên Hệ</a></li>
-
-                        </ul>
-                    </nav>
-
-                    <div class="right-cta-menu text-right d-flex aligin-items-center col-6">
-                        <div id="authButtons" class="ml-auto">
-                            <button id="signupBtn"
-                                class="btn btn-outline-white border-width-2 d-none d-lg-inline-block" ><span
-                                    class="mr-2 icon-add"></span>Đăng Ký</button>
-                            <button id="loginBtn" class="btn btn-primary border-width-2 d-none d-lg-inline-block"><span
-                                    class="mr-2 icon-lock_outline" ></span>Đăng Nhập</button>
-                        </div>
-
-                        <div id="userInfo" class="flex items-center p-4" style="display: none; position: absolute; right: -10px;margin-top: -60px">
-                            <!-- Notification Bell -->
-                            <div class="relative">
-                                <i class="fas fa-bell text-white text-xl"></i>
-                                <button class="absolute top-0 right-0 bg-red-600 text-white text-xs rounded-full px-1">1</button>
-                            </div>
-                            <!-- User Icon -->
-                            <div class="ml-4">
-                                <div class="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                                    <i class="fas fa-user text-purple-800"></i>
-                                </div>
-                            </div>
-                            <!-- User Name -->
-
-                            <div class="ml-2 text-white flex items-center relative">
-                                <span id="username" class="cursor-pointer">Lê</span>
-                                <i class="fas fa-caret-down ml-1"></i>
-
-                                <!-- Dropdown menu -->
-                                <div id="dropdownMenu" class="absolute right-0 bg-white text-black shadow-lg mt-2 rounded hidden">
-                                    <a href="#" class="block px-4 py-2 hover:bg-gray-200">Tài khoản</a>
-                                    <a href="#" class="block px-4 py-2 hover:bg-gray-200" id="logoutBtn">Đăng xuất</a>
-                                </div>
-                            </div>
-
-                            <!-- Divider -->
-                            <div class="ml-4 border-l border-white h-6"></div>
-                            <!-- Employer Section -->
-                            <div class="ml-4 text-white flex items-center">
-                                <i class="fas fa-briefcase text-blue-400"></i>
-                                <div id="tuyendung" class="ml-2">
-                                    <div class="text-xs">DÀNH CHO</div>
-                                    <div class="text-lg font-semibold">Nhà Tuyển Dụng</div>
-                                    <div class="text-xs">Đăng tin miễn phí</div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <a href="#" class="site-menu-toggle js-menu-toggle d-inline-block d-xl-none mt-lg-2 ml-3">
-                            <span class="icon-menu h3 m-0 p-0 mt-2"></span>
-                        </a>
-                    </div>
-
-                </div>
-            </div>
-        </header>
-
-
-
-        <!-- HOME -->
-        <section class="home-section section-hero overlay bg-image"
-            style="background-image: url('/Admin/images/hero_1.jpg');" id="home-section">
-
-            <div class="container">
-                <div class="row align-items-center justify-content-center">
-                    <div class="col-md-12">
-                        <div class="mb-5 text-center">
-                            <h1 class="text-white font-weight-bold">The Easiest Way To Get Your Dream Job</h1>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate est, consequuntur
-                                perferendis.</p>
-                        </div>
-                        <form method="post" class="search-jobs-form">
-                            <div class="row mb-5">
-                                <div class="col-12 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
-                                    <input type="text" class="form-control form-control-lg"
-                                        placeholder="Job title, Company...">
-                                </div>
-                                <div class="col-12 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
-                                    <select class="selectpicker" data-style="btn-white btn-lg" data-width="100%"
-                                        data-live-search="true" title="Select Region">
-                                        <option>Anywhere</option>
-                                        <option>San Francisco</option>
-                                        <option>Palo Alto</option>
-                                        <option>New York</option>
-                                        <option>Manhattan</option>x
-                                        <option>Ontario</option>
-                                        <option>Toronto</option>
-                                        <option>Kansas</option>
-                                        <option>Mountain View</option>
-                                    </select>
-                                </div>
-                                <div class="col-12 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
-                                    <select class="selectpicker" data-style="btn-white btn-lg" data-width="100%"
-                                        data-live-search="true" title="Select Job Type">
-                                        <option>Part Time</option>
-                                        <option>Full Time</option>
-                                    </select>
-                                </div>
-                                <div class="col-12 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
-                                    <button type="submit"
-                                        class="btn btn-primary btn-lg btn-block text-white btn-search"><span
-                                            class="icon-search icon mr-2"></span>Search Job</button>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12 popular-keywords">
-                                    <h3>Trending Keywords:</h3>
-                                    <ul class="keywords list-unstyled m-0 p-0">
-                                        <li><a href="#" class="">UI Designer</a></li>
-                                        <li><a href="#" class="">Python</a></li>
-                                        <li><a href="#" class="">Developer</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-
-            <a href="#next" class="scroll-button smoothscroll">
-                <span class=" icon-keyboard_arrow_down"></span>
-            </a>
-
-        </section>
-
-        <section class="py-5 bg-image overlay-primary fixed overlay" id="next"
-            style="background-image: url('images/hero_1.jpg');">
-            <div class="container">
-                <div class="row mb-5 justify-content-center">
-                    <div class="col-md-7 text-center">
-                        <h2 class="section-title mb-2 text-white">JobBoard Site Stats</h2>
-                        <p class="lead text-white">Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita
-                            unde officiis
-                            recusandae sequi excepturi corrupti.</p>
-                    </div>
-                </div>
-                <div class="row pb-0 block__19738 section-counter">
-
-                    <div class="col-6 col-md-6 col-lg-3 mb-5 mb-lg-0">
-                        <div class="d-flex align-items-center justify-content-center mb-2">
-                            <strong class="number" data-number="1930">0</strong>
-                        </div>
-                        <span class="caption">Candidates</span>
-                    </div>
-
-                    <div class="col-6 col-md-6 col-lg-3 mb-5 mb-lg-0">
-                        <div class="d-flex align-items-center justify-content-center mb-2">
-                            <strong class="number" data-number="54">0</strong>
-                        </div>
-                        <span class="caption">Jobs Posted</span>
-                    </div>
-
-                    <div class="col-6 col-md-6 col-lg-3 mb-5 mb-lg-0">
-                        <div class="d-flex align-items-center justify-content-center mb-2">
-                            <strong class="number" data-number="120">0</strong>
-                        </div>
-                        <span class="caption">Jobs Filled</span>
-                    </div>
-
-                    <div class="col-6 col-md-6 col-lg-3 mb-5 mb-lg-0">
-                        <div class="d-flex align-items-center justify-content-center mb-2">
-                            <strong class="number" data-number="550">0</strong>
-                        </div>
-                        <span class="caption">Companies</span>
-                    </div>
-
-
-                </div>
-            </div>
-        </section>
-
-
-
-        <section class="site-section">
-            <div class="container">
-
-                <div class="row mb-5 justify-content-center">
-                    <div class="col-md-7 text-center">
-                        <h2 class="section-title mb-2">43,167 Job Listed</h2>
-                    </div>
-                </div>
-
-                <ul class="job-listings mb-5">
-                    <li class="job-listing d-block d-sm-flex pb-3 pb-sm-0 align-items-center">
-                        <a href="job-single.html"></a>
-                        <div class="job-listing-logo">
-                            <img src="/Admin/images/job_logo_1.jpg" alt="Free Website Template by Free-Template.co"
-                                class="img-fluid">
-                        </div>
-
-                        <div class="job-listing-about d-sm-flex custom-width w-100 justify-content-between mx-4">
-                            <div class="job-listing-position custom-width w-50 mb-3 mb-sm-0">
-                                <h2>Product Designer</h2>
-                                <strong>Adidas</strong>
-                            </div>
-                            <div class="job-listing-location mb-3 mb-sm-0 custom-width w-25">
-                                <span class="icon-room"></span> New York, New York
-                            </div>
-                            <div class="job-listing-meta">
-                                <span class="badge badge-danger">Part Time</span>
-                            </div>
-                        </div>
-
-                    </li>
-                    <li class="job-listing d-block d-sm-flex pb-3 pb-sm-0 align-items-center">
-                        <a href="job-single.html"></a>
-                        <div class="job-listing-logo">
-                            <img src="/Admin/images/job_logo_2.jpg" alt="Free Website Template by Free-Template.co"
-                                class="img-fluid">
-                        </div>
-
-                        <div class="job-listing-about d-sm-flex custom-width w-100 justify-content-between mx-4">
-                            <div class="job-listing-position custom-width w-50 mb-3 mb-sm-0">
-                                <h2>Digital Marketing Director</h2>
-                                <strong>Sprint</strong>
-                            </div>
-                            <div class="job-listing-location mb-3 mb-sm-0 custom-width w-25">
-                                <span class="icon-room"></span> Overland Park, Kansas
-                            </div>
-                            <div class="job-listing-meta">
-                                <span class="badge badge-success">Full Time</span>
-                            </div>
-                        </div>
-                    </li>
-
-                    <li class="job-listing d-block d-sm-flex pb-3 pb-sm-0 align-items-center">
-                        <a href="job-single.html"></a>
-                        <div class="job-listing-logo">
-                            <img src="/Admin/images/job_logo_3.jpg" alt="Free Website Template by Free-Template.co"
-                                class="img-fluid">
-                        </div>
-
-                        <div class="job-listing-about d-sm-flex custom-width w-100 justify-content-between mx-4">
-                            <div class="job-listing-position custom-width w-50 mb-3 mb-sm-0">
-                                <h2>Back-end Engineer (Python)</h2>
-                                <strong>Amazon</strong>
-                            </div>
-                            <div class="job-listing-location mb-3 mb-sm-0 custom-width w-25">
-                                <span class="icon-room"></span> Overland Park, Kansas
-                            </div>
-                            <div class="job-listing-meta">
-                                <span class="badge badge-success">Full Time</span>
-                            </div>
-                        </div>
-                    </li>
-
-                    <li class="job-listing d-block d-sm-flex pb-3 pb-sm-0 align-items-center">
-                        <a href="job-single.html"></a>
-                        <div class="job-listing-logo">
-                            <img src="/Admin/images/job_logo_4.jpg" alt="Free Website Template by Free-Template.co"
-                                class="img-fluid">
-                        </div>
-
-                        <div class="job-listing-about d-sm-flex custom-width w-100 justify-content-between mx-4">
-                            <div class="job-listing-position custom-width w-50 mb-3 mb-sm-0">
-                                <h2>Senior Art Director</h2>
-                                <strong>Microsoft</strong>
-                            </div>
-                            <div class="job-listing-location mb-3 mb-sm-0 custom-width w-25">
-                                <span class="icon-room"></span> Anywhere
-                            </div>
-                            <div class="job-listing-meta">
-                                <span class="badge badge-success">Full Time</span>
-                            </div>
-                        </div>
-                    </li>
-
-                    <li class="job-listing d-block d-sm-flex pb-3 pb-sm-0 align-items-center">
-                        <a href="job-single.html"></a>
-                        <div class="job-listing-logo">
-                            <img src="/Admin/images/job_logo_5.jpg" alt="Free Website Template by Free-Template.co"
-                                class="img-fluid">
-                        </div>
-
-                        <div class="job-listing-about d-sm-flex custom-width w-100 justify-content-between mx-4">
-                            <div class="job-listing-position custom-width w-50 mb-3 mb-sm-0">
-                                <h2>Product Designer</h2>
-                                <strong>Puma</strong>
-                            </div>
-                            <div class="job-listing-location mb-3 mb-sm-0 custom-width w-25">
-                                <span class="icon-room"></span> San Mateo, CA
-                            </div>
-                            <div class="job-listing-meta">
-                                <span class="badge badge-success">Full Time</span>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="job-listing d-block d-sm-flex pb-3 pb-sm-0 align-items-center">
-                        <a href="job-single.html"></a>
-                        <div class="job-listing-logo">
-                            <img src="/Admin/images/job_logo_1.jpg" alt="Free Website Template by Free-Template.co"
-                                class="img-fluid">
-                        </div>
-
-                        <div class="job-listing-about d-sm-flex custom-width w-100 justify-content-between mx-4">
-                            <div class="job-listing-position custom-width w-50 mb-3 mb-sm-0">
-                                <h2>Product Designer</h2>
-                                <strong>Adidas</strong>
-                            </div>
-                            <div class="job-listing-location mb-3 mb-sm-0 custom-width w-25">
-                                <span class="icon-room"></span> New York, New York
-                            </div>
-                            <div class="job-listing-meta">
-                                <span class="badge badge-danger">Part Time</span>
-                            </div>
-                        </div>
-
-                    </li>
-                    <li class="job-listing d-block d-sm-flex pb-3 pb-sm-0 align-items-center">
-                        <a href="job-single.html"></a>
-                        <div class="job-listing-logo">
-                            <img src="/Admin/images/job_logo_2.jpg" alt="Free Website Template by Free-Template.co"
-                                class="img-fluid">
-                        </div>
-
-                        <div class="job-listing-about d-sm-flex custom-width w-100 justify-content-between mx-4">
-                            <div class="job-listing-position custom-width w-50 mb-3 mb-sm-0">
-                                <h2>Digital Marketing Director</h2>
-                                <strong>Sprint</strong>
-                            </div>
-                            <div class="job-listing-location mb-3 mb-sm-0 custom-width w-25">
-                                <span class="icon-room"></span> Overland Park, Kansas
-                            </div>
-                            <div class="job-listing-meta">
-                                <span class="badge badge-success">Full Time</span>
-                            </div>
-                        </div>
-                    </li>
-
-
-
-
-                </ul>
-
-                <div class="row pagination-wrap">
-                    <div class="col-md-6 text-center text-md-left mb-4 mb-md-0">
-                        <span>Showing 1-7 Of 43,167 Jobs</span>
-                    </div>
-                    <div class="col-md-6 text-center text-md-right">
-                        <div class="custom-pagination ml-auto">
-                            <a href="#" class="prev">Prev</a>
-                            <div class="d-inline-block">
-                                <a href="#" class="active">1</a>
-                                <a href="#">2</a>
-                                <a href="#">3</a>
-                                <a href="#">4</a>
-                            </div>
-                            <a href="#" class="next">Next</a>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </section>
-
-        <section class="py-5 bg-image overlay-primary fixed overlay"
-            style="background-image: url('/Admin/images/hero_1.jpg');">
-            <div class="container">
-                <div class="row align-items-center">
-                    <div class="col-md-8">
-                        <h2 class="text-white">Looking For A Job?</h2>
-                        <p class="mb-0 text-white lead">Lorem ipsum dolor sit amet consectetur adipisicing elit tempora
-                            adipisci
-                            impedit.</p>
-                    </div>
-                    <div class="col-md-3 ml-auto">
-                        <a href="#" class="btn btn-warning btn-block btn-lg">Sign Up</a>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-
-        <section class="site-section py-4">
-            <div class="container">
-
-                <div class="row align-items-center">
-                    <div class="col-12 text-center mt-4 mb-5">
-                        <div class="row justify-content-center">
-                            <div class="col-md-7">
-                                <h2 class="section-title mb-2">Company We've Helped</h2>
-                                <p class="lead">Porro error reiciendis commodi beatae omnis similique voluptate rerum
-                                    ipsam fugit
-                                    mollitia ipsum facilis expedita tempora suscipit iste</p>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="col-6 col-lg-3 col-md-6 text-center">
-                        <img src="/Admin/images/logo_mailchimp.svg" alt="Image" class="img-fluid logo-1">
-                    </div>
-                    <div class="col-6 col-lg-3 col-md-6 text-center">
-                        <img src="/Admin/images/logo_paypal.svg" alt="Image" class="img-fluid logo-2">
-                    </div>
-                    <div class="col-6 col-lg-3 col-md-6 text-center">
-                        <img src="/Admin/images/logo_stripe.svg" alt="Image" class="img-fluid logo-3">
-                    </div>
-                    <div class="col-6 col-lg-3 col-md-6 text-center">
-                        <img src="/Admin/images/logo_visa.svg" alt="Image" class="img-fluid logo-4">
-                    </div>
-                </div>
-            </div>
-    </div>
-    </section>
-
-
-    <section class="bg-light pt-5 testimony-full">
-
-        <div class="owl-carousel single-carousel">
-
-
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-6 align-self-center text-center text-lg-left">
-                        <blockquote>
-                            <p>&ldquo;Soluta quasi cum delectus eum facilis recusandae nesciunt molestias accusantium
-                                libero dolores
-                                repellat id in dolorem laborum ad modi qui at quas dolorum voluptatem voluptatum
-                                repudiandae.&rdquo;</p>
-                            <p><cite> &mdash; Corey Woods, @Dribbble</cite></p>
-                        </blockquote>
-                    </div>
-                    <div class="col-lg-6 align-self-end text-center text-lg-right">
-                        <img src="/Admin/images/person_transparent_2.png" alt="Image" class="img-fluid mb-0">
-                    </div>
-                </div>
-            </div>
-
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-6 align-self-center text-center text-lg-left">
-                        <blockquote>
-                            <p>&ldquo;Soluta quasi cum delectus eum facilis recusandae nesciunt molestias accusantium
-                                libero dolores
-                                repellat id in dolorem laborum ad modi qui at quas dolorum voluptatem voluptatum
-                                repudiandae.&rdquo;</p>
-                            <p><cite> &mdash; Chris Peters, @Google</cite></p>
-                        </blockquote>
-                    </div>
-                    <div class="col-lg-6 align-self-end text-center text-lg-right">
-                        <img src="/Admin/images/person_transparent.png" alt="Image" class="img-fluid mb-0">
-                    </div>
-                </div>
-            </div>
-
         </div>
+        <div class="site-mobile-menu-body"></div>
+    </div> <!-- .site-mobile-menu -->
 
-    </section>
+    <header class="site-navbar mt-3">
+        <div class="container-fluid">
+            <div class="row align-items-center">
+                <div class="site-logo col-6"><a href="index.html">Dreams Jobs</a></div>
 
-    <section class="pt-5 bg-image overlay-primary fixed overlay" style="background-image: url('images/hero_1.jpg');">
+                <nav class="mx-auto site-navigation">
+                    <ul class="site-menu js-clone-nav d-none d-xl-block ml-0 pl-0">
+                        <li><a href="index.html" class="nav-link active">Trang Chủ</a></li>
+                        <li><a href="about.html">Về Chúng Tôi</a></li>
+                        <li class="has-children">
+                            <a href="job-listings.html">Công Việc</a>
+                            <ul class="dropdown">
+                                <li><a href="job-single.html">Danh Sách Công Việc</a></li>
+                                <li><a href="post-job.html">Bài đăng công việc</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="contact.html">Liên Hệ</a></li>
+                    </ul>
+                </nav>
+
+                <div class="right-cta-menu text-right d-flex align-items-center col-6">
+                    <div id="authButtons" class="ml-auto">
+                        <button id="signupBtn" class="btn btn-outline-white border-width-2 d-none d-lg-inline-block">
+                            <span class="mr-2 icon-add"></span>Đăng Ký
+                        </button>
+                        <button id="loginBtn" class="btn btn-primary border-width-2 d-none d-lg-inline-block">
+                            <span class="mr-2 icon-lock_outline"></span>Đăng Nhập
+                        </button>
+                    </div>
+
+                    <div id="userInfo" class="flex items-center p-4" style="display: flex; position: relative;">
+                        <!-- Notification Bell -->
+                        <!--                            <div class="relative">-->
+                        <!--                                <i class="fas fa-bell text-white text-xl"></i>-->
+                        <!--                                <button class="absolute top-0 right-0 bg-red-600 text-white text-xs rounded-full px-1">1</button>-->
+                        <!--                            </div>-->
+                        <!-- User Icon -->
+                        <div class="ml-4">
+                            <div class="w-8 h-8 bg-white rounded-full flex items-center justify-center">
+                                <i class="fas fa-user text-purple-800"></i>
+                            </div>
+                        </div>
+                        <div class="ml-2 text-white flex items-center relative">
+                            <span id="username" class="cursor-pointer truncate" style="max-width: 100px;">Lê</span>
+                            <i class="fas fa-caret-down ml-1"></i>
+
+                            <!-- Dropdown menu -->
+                            <div id="dropdownMenu"
+                                 class="absolute right-0 bg-white text-black shadow-lg mt-2 rounded hidden">
+                                <a href="#" class="block px-4 py-2 hover:bg-gray-200" id="dashboard">Tài khoản</a>
+                                <a href="#" class="block px-4 py-2 hover:bg-gray-200" id="logoutBtn">Đăng xuất</a>
+                            </div>
+                        </div>
+                        <!-- Divider -->
+                        <div class="ml-4 border-l border-white h-6"></div>
+                        <!-- Employer Section -->
+                        <div class="ml-4 text-white flex items-center">
+                            <i class="fas fa-briefcase text-blue-400"></i>
+                            <div id="tuyendung" class="ml-2">
+                                <div class="text-xs">DÀNH CHO</div>
+                                <div class="text-lg font-semibold">Nhà Tuyển Dụng</div>
+                                <div class="text-xs">Đăng tin miễn phí</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <a href="#" class="site-menu-toggle js-menu-toggle d-inline-block d-xl-none mt-lg-2 ml-3">
+                        <span class="icon-menu h3 m-0 p-0 mt-2"></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+
+    <!-- HOME -->
+    <section class="home-section section-hero overlay bg-image"
+             style="background-image: url('/Admin/images/hero_1.jpg');" id="home-section">
+
         <div class="container">
-            <div class="row">
-                <div class="col-md-6 align-self-center text-center text-md-left mb-5 mb-md-0">
-                    <h2 class="text-white">Get The Mobile Apps</h2>
-                    <p class="mb-5 lead text-white">Lorem ipsum dolor sit amet consectetur adipisicing elit tempora
-                        adipisci
-                        impedit.</p>
-                    <p class="mb-0">
-                        <a href="#" class="btn btn-dark btn-md px-4 border-width-2"><span
-                                class="icon-apple mr-3"></span>App
-                            Store</a>
-                        <a href="#" class="btn btn-dark btn-md px-4 border-width-2"><span
-                                class="icon-android mr-3"></span>Play
-                            Store</a>
-                    </p>
-                </div>
-                <div class="col-md-6 ml-auto align-self-end">
-                    <img src="/Admin/images/apps.png" alt="Free Website Template by Free-Template.co" class="img-fluid">
+            <div class="row align-items-center justify-content-center">
+                <div class="col-md-12">
+                    <div class="mb-5 text-center">
+                        <h1 class="text-white font-weight-bold">The Easiest Way To Get Your Dream Job</h1>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate est, consequuntur
+                            perferendis.</p>
+                    </div>
+                    <form method="post" class="search-jobs-form">
+                        <div class="row mb-5">
+                            <div class="col-12 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
+                                <input type="text" class="form-control form-control-lg"
+                                       placeholder="Job title, Company...">
+                            </div>
+                            <div class="col-12 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
+                                <select class="selectpicker" data-style="btn-white btn-lg" data-width="100%"
+                                        data-live-search="true" title="Select Region">
+                                    <option>Anywhere</option>
+                                    <option>San Francisco</option>
+                                    <option>Palo Alto</option>
+                                    <option>New York</option>
+                                    <option>Manhattan</option>
+                                    x
+                                    <option>Ontario</option>
+                                    <option>Toronto</option>
+                                    <option>Kansas</option>
+                                    <option>Mountain View</option>
+                                </select>
+                            </div>
+                            <div class="col-12 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
+                                <select class="selectpicker" data-style="btn-white btn-lg" data-width="100%"
+                                        data-live-search="true" title="Select Job Type">
+                                    <option>Part Time</option>
+                                    <option>Full Time</option>
+                                </select>
+                            </div>
+                            <div class="col-12 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
+                                <button type="submit"
+                                        class="btn btn-primary btn-lg btn-block text-white btn-search"><span
+                                        class="icon-search icon mr-2"></span>Search Job
+                                </button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 popular-keywords">
+                                <h3>Trending Keywords:</h3>
+                                <ul class="keywords list-unstyled m-0 p-0">
+                                    <li><a href="#" class="">UI Designer</a></li>
+                                    <li><a href="#" class="">Python</a></li>
+                                    <li><a href="#" class="">Developer</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
-    </section>
 
-
-    <!-- FOOTER -->
-    <footer class="site-footer" >
-
-        <a href="#top" class="smoothscroll scroll-top">
-            <span class="icon-keyboard_arrow_up"></span>
+        <a href="#next" class="scroll-button smoothscroll">
+            <span class=" icon-keyboard_arrow_down"></span>
         </a>
 
+    </section>
+
+    <section class="py-5 bg-image overlay-primary fixed overlay" id="next"
+             style="background-image: url('images/hero_1.jpg');">
         <div class="container">
-            <div class="row mb-5">
-                <div class="col-6 col-md-3 mb-4 mb-md-0">
-                    <h3>Search Trending</h3>
-                    <ul class="list-unstyled">
-                        <li><a href="#">Web Design</a></li>
-                        <li><a href="#">Graphic Design</a></li>
-                        <li><a href="#">Web Developers</a></li>
-                        <li><a href="#">Python</a></li>
-                        <li><a href="#">HTML5</a></li>
-                        <li><a href="#">CSS3</a></li>
-                    </ul>
+            <div class="row mb-5 justify-content-center">
+                <div class="col-md-7 text-center">
+                    <h2 class="section-title mb-2 text-white">JobBoard Site Stats</h2>
+                    <p class="lead text-white">Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita
+                        unde officiis
+                        recusandae sequi excepturi corrupti.</p>
                 </div>
-                <div class="col-6 col-md-3 mb-4 mb-md-0">
-                    <h3>Company</h3>
-                    <ul class="list-unstyled">
-                        <li><a href="#">About Us</a></li>
-                        <li><a href="#">Career</a></li>
-                        <li><a href="#">Blog</a></li>
-                        <li><a href="#">Resources</a></li>
-                    </ul>
+            </div>
+            <div class="row pb-0 block__19738 section-counter">
+
+                <div class="col-6 col-md-6 col-lg-3 mb-5 mb-lg-0">
+                    <div class="d-flex align-items-center justify-content-center mb-2">
+                        <strong class="number" data-number="1930">0</strong>
+                    </div>
+                    <span class="caption">Candidates</span>
                 </div>
-                <div class="col-6 col-md-3 mb-4 mb-md-0">
-                    <h3>Support</h3>
-                    <ul class="list-unstyled">
-                        <li><a href="#">Support</a></li>
-                        <li><a href="#">Privacy</a></li>
-                        <li><a href="#">Terms of Service</a></li>
-                    </ul>
+
+                <div class="col-6 col-md-6 col-lg-3 mb-5 mb-lg-0">
+                    <div class="d-flex align-items-center justify-content-center mb-2">
+                        <strong class="number" data-number="54">0</strong>
+                    </div>
+                    <span class="caption">Jobs Posted</span>
                 </div>
-                <div class="col-6 col-md-3 mb-4 mb-md-0">
-                    <h3>Contact Us</h3>
-                    <div class="footer-social">
-                        <a href="#"><span class="icon-facebook"></span></a>
-                        <a href="#"><span class="icon-twitter"></span></a>
-                        <a href="#"><span class="icon-instagram"></span></a>
-                        <a href="#"><span class="icon-linkedin"></span></a>
+
+                <div class="col-6 col-md-6 col-lg-3 mb-5 mb-lg-0">
+                    <div class="d-flex align-items-center justify-content-center mb-2">
+                        <strong class="number" data-number="120">0</strong>
+                    </div>
+                    <span class="caption">Jobs Filled</span>
+                </div>
+
+                <div class="col-6 col-md-6 col-lg-3 mb-5 mb-lg-0">
+                    <div class="d-flex align-items-center justify-content-center mb-2">
+                        <strong class="number" data-number="550">0</strong>
+                    </div>
+                    <span class="caption">Companies</span>
+                </div>
+
+
+            </div>
+        </div>
+    </section>
+
+
+    <section class="site-section">
+        <div class="container">
+
+            <div class="row mb-5 justify-content-center">
+                <div class="col-md-7 text-center">
+                    <h2 class="section-title mb-2">43,167 Job Listed</h2>
+                </div>
+            </div>
+
+            <ul class="job-listings mb-5" th:each="job : ${jobListings}">
+                <li class="job-listing d-block d-sm-flex pb-3 pb-sm-0 align-items-center">
+                    <a th:href="@{/job-single/{id}(id=${job.id})}"></a>
+                    <div class="job-listing-logo">
+                        <img th:src="@{${job.companyLogoUrl}}" alt="Logo của công ty"
+                             class="img-fluid">
+                    </div>
+
+                    <div class="job-listing-about d-sm-flex custom-width w-100 justify-content-between mx-4">
+                        <div class="job-listing-position custom-width w-50 mb-3 mb-sm-0">
+                            <h2 th:text="${job.jobTitle}">Tên công việc</h2>
+                            <strong th:text="${job.companyName}">Tên công ty</strong>
+                        </div>
+                        <div class="job-listing-location mb-3 mb-sm-0 custom-width w-25">
+                            <span class="icon-room"></span> <span th:text="${job.getCity()}">Vị trí</span>
+                        </div>
+                        <div class="job-listing-meta">
+                                <span th:if="${job.workType == 'PART_TIME'}" class="badge badge-danger">
+                                    <span th:text="${job.workType}">Trạng thái</span>
+                                </span>
+                            <span th:if="${job.workType != 'PART_TIME'}" class="badge badge-success">
+                                <span th:text="${job.workType}">Trạng thái</span>
+                            </span>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+
+            <div class="row pagination-wrap">
+                <div class="col-md-6 text-center text-md-left mb-4 mb-md-0">
+                    <span>Showing 1-7 Of 43,167 Jobs</span>
+                </div>
+                <div class="col-md-6 text-center text-md-right">
+                    <div class="custom-pagination ml-auto">
+                        <a href="#" class="prev">Prev</a>
+                        <div class="d-inline-block">
+                            <a href="#" class="active">1</a>
+                            <a href="#">2</a>
+                            <a href="#">3</a>
+                            <a href="#">4</a>
+                        </div>
+                        <a href="#" class="next">Next</a>
                     </div>
                 </div>
             </div>
 
-
         </div>
-    </footer>
+    </section>
 
+    <section class="py-5 bg-image overlay-primary fixed overlay"
+             style="background-image: url('/Admin/images/hero_1.jpg');">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h2 class="text-white">Looking For A Job?</h2>
+                    <p class="mb-0 text-white lead">Lorem ipsum dolor sit amet consectetur adipisicing elit tempora
+                        adipisci
+                        impedit.</p>
+                </div>
+                <div class="col-md-3 ml-auto">
+                    <a href="#" class="btn btn-warning btn-block btn-lg">Sign Up</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <section class="site-section py-4">
+        <div class="container">
+
+            <div class="row align-items-center">
+                <div class="col-12 text-center mt-4 mb-5">
+                    <div class="row justify-content-center">
+                        <div class="col-md-7">
+                            <h2 class="section-title mb-2">Company We've Helped</h2>
+                            <p class="lead">Porro error reiciendis commodi beatae omnis similique voluptate rerum
+                                ipsam fugit
+                                mollitia ipsum facilis expedita tempora suscipit iste</p>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-6 col-lg-3 col-md-6 text-center">
+                    <img src="/Admin/images/logo_mailchimp.svg" alt="Image" class="img-fluid logo-1">
+                </div>
+                <div class="col-6 col-lg-3 col-md-6 text-center">
+                    <img src="/Admin/images/logo_paypal.svg" alt="Image" class="img-fluid logo-2">
+                </div>
+                <div class="col-6 col-lg-3 col-md-6 text-center">
+                    <img src="/Admin/images/logo_stripe.svg" alt="Image" class="img-fluid logo-3">
+                </div>
+                <div class="col-6 col-lg-3 col-md-6 text-center">
+                    <img src="/Admin/images/logo_visa.svg" alt="Image" class="img-fluid logo-4">
+                </div>
+            </div>
+        </div>
+</div>
+</section>
+
+
+<section class="bg-light pt-5 testimony-full">
+
+    <div class="owl-carousel single-carousel">
+
+
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 align-self-center text-center text-lg-left">
+                    <blockquote>
+                        <p>&ldquo;Soluta quasi cum delectus eum facilis recusandae nesciunt molestias accusantium
+                            libero dolores
+                            repellat id in dolorem laborum ad modi qui at quas dolorum voluptatem voluptatum
+                            repudiandae.&rdquo;</p>
+                        <p><cite> &mdash; Corey Woods, @Dribbble</cite></p>
+                    </blockquote>
+                </div>
+                <div class="col-lg-6 align-self-end text-center text-lg-right">
+                    <img src="/Admin/images/person_transparent_2.png" alt="Image" class="img-fluid mb-0">
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 align-self-center text-center text-lg-left">
+                    <blockquote>
+                        <p>&ldquo;Soluta quasi cum delectus eum facilis recusandae nesciunt molestias accusantium
+                            libero dolores
+                            repellat id in dolorem laborum ad modi qui at quas dolorum voluptatem voluptatum
+                            repudiandae.&rdquo;</p>
+                        <p><cite> &mdash; Chris Peters, @Google</cite></p>
+                    </blockquote>
+                </div>
+                <div class="col-lg-6 align-self-end text-center text-lg-right">
+                    <img src="/Admin/images/person_transparent.png" alt="Image" class="img-fluid mb-0">
+                </div>
+            </div>
+        </div>
 
     </div>
 
+</section>
 
-    <!-- SCRIPTS -->
-    <!-- jQuery -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<section class="pt-5 bg-image overlay-primary fixed overlay" style="background-image: url('images/hero_1.jpg');">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 align-self-center text-center text-md-left mb-5 mb-md-0">
+                <h2 class="text-white">Get The Mobile Apps</h2>
+                <p class="mb-5 lead text-white">Lorem ipsum dolor sit amet consectetur adipisicing elit tempora
+                    adipisci
+                    impedit.</p>
+                <p class="mb-0">
+                    <a href="#" class="btn btn-dark btn-md px-4 border-width-2"><span
+                            class="icon-apple mr-3"></span>App
+                        Store</a>
+                    <a href="#" class="btn btn-dark btn-md px-4 border-width-2"><span
+                            class="icon-android mr-3"></span>Play
+                        Store</a>
+                </p>
+            </div>
+            <div class="col-md-6 ml-auto align-self-end">
+                <img src="/Admin/images/apps.png" alt="Free Website Template by Free-Template.co" class="img-fluid">
+            </div>
+        </div>
+    </div>
+</section>
 
-    <!-- Bootstrap Bundle -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Isotope -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js"></script>
+<!-- FOOTER -->
+<footer class="site-footer">
 
-    <!-- Stickyfill -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/stickyfill/2.1.0/stickyfill.min.js"></script>
+    <a href="#top" class="smoothscroll scroll-top">
+        <span class="icon-keyboard_arrow_up"></span>
+    </a>
 
-    <!-- Fancybox -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+    <div class="container">
+        <div class="row mb-5">
+            <div class="col-6 col-md-3 mb-4 mb-md-0">
+                <h3>Search Trending</h3>
+                <ul class="list-unstyled">
+                    <li><a href="#">Web Design</a></li>
+                    <li><a href="#">Graphic Design</a></li>
+                    <li><a href="#">Web Developers</a></li>
+                    <li><a href="#">Python</a></li>
+                    <li><a href="#">HTML5</a></li>
+                    <li><a href="#">CSS3</a></li>
+                </ul>
+            </div>
+            <div class="col-6 col-md-3 mb-4 mb-md-0">
+                <h3>Company</h3>
+                <ul class="list-unstyled">
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Career</a></li>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">Resources</a></li>
+                </ul>
+            </div>
+            <div class="col-6 col-md-3 mb-4 mb-md-0">
+                <h3>Support</h3>
+                <ul class="list-unstyled">
+                    <li><a href="#">Support</a></li>
+                    <li><a href="#">Privacy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                </ul>
+            </div>
+            <div class="col-6 col-md-3 mb-4 mb-md-0">
+                <h3>Contact Us</h3>
+                <div class="footer-social">
+                    <a href="#"><span class="icon-facebook"></span></a>
+                    <a href="#"><span class="icon-twitter"></span></a>
+                    <a href="#"><span class="icon-instagram"></span></a>
+                    <a href="#"><span class="icon-linkedin"></span></a>
+                </div>
+            </div>
+        </div>
 
-    <!-- jQuery Easing -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
 
-    <!-- jQuery Waypoints -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.min.js"></script>
+    </div>
+</footer>
 
-    <!-- jQuery Animate Number -->
-    <script
+
+</div>
+
+
+<!-- SCRIPTS -->
+<!-- jQuery -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+
+<!-- Bootstrap Bundle -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
+<!-- Isotope -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js"></script>
+
+<!-- Stickyfill -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stickyfill/2.1.0/stickyfill.min.js"></script>
+
+<!-- Fancybox -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+
+<!-- jQuery Easing -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+
+<!-- jQuery Waypoints -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.min.js"></script>
+
+<!-- jQuery Animate Number -->
+<script
         src="https://cdnjs.cloudflare.com/ajax/libs/jquery-animateNumber/0.0.14/jquery.animateNumber.min.js"></script>
 
-    <!-- Owl Carousel -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+<!-- Owl Carousel -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
 
-    <!-- Bootstrap Select -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/js/bootstrap-select.min.js"></script>
+<!-- Bootstrap Select -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/js/bootstrap-select.min.js"></script>
 
 
-    <script src="js/custom.js"></script>
+<script src="js/custom.js"></script>
 
-    <script>
-        document.getElementById('loginBtn').addEventListener('click', function() {
-            alert('Chuyển đến trang đăng nhập');
-            // Chuyển hướng đến trang đăng nhập
-            window.location.href = '/auth/login';
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        console.log('DOM fully loaded and parsed'); // Thông báo khi DOM đã được tải xong
+        const username = document.getElementById('username');
+        const dropdownMenu = document.getElementById('dropdownMenu');
+
+        username.addEventListener('click', (event) => {
+            event.stopPropagation(); // Ngăn chặn sự kiện click lan truyền
+            dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block'; // Chuyển đổi trạng thái hiển thị
         });
 
-        document.getElementById('signupBtn').addEventListener('click', function() {
-            alert('Chuyển đến trang đăng ký');
-            // Chuyển hướng đến trang đăng ký
-            window.location.href = '/auth/register/user';
+        document.addEventListener('click', () => {
+            dropdownMenu.style.display = 'none'; // Ẩn menu khi nhấp ra ngoài
         });
-    </script>
+    });
+
+    // Thêm sự kiện cho nút đăng xuất
+    document.getElementById('logoutBtn').addEventListener('click', function () {
+        // Xóa thông tin người dùng khỏi localStorage
+        localStorage.removeItem('userInfo');
+        // Cập nhật giao diện người dùng
+        document.getElementById('authButtons').style.display = 'block';
+        document.getElementById('userInfo').style.display = 'none';
+        console.log("User  logged out.");
+        window.location.href = "http://localhost:8080";
+    });
+
+    document.getElementById('dashboard').addEventListener('click', function () {
+        window.location.href = "auth/user/dashboard";
+    });
+
+
+    // Thêm sự kiện cho nút đăng xuất
+    document.getElementById('tuyendung').addEventListener('click', function () {
+        // Xóa thông tin người dùng khỏi localStorage
+        localStorage.removeItem('userInfo');
+        // Cập nhật giao diện người dùng
+        document.getElementById('authButtons').style.display = 'block';
+        document.getElementById('userInfo').style.display = 'none';
+        console.log("User  logged out.");
+        window.location.href = '/auth/login';
+    });
+</script>
+
+<script>
+    document.getElementById('loginBtn').addEventListener('click', function () {
+        // Chuyển hướng đến trang đăng nhập
+        window.location.href = '/auth/login';
+    });
+
+    document.getElementById('signupBtn').addEventListener('click', function () {
+        // Chuyển hướng đến trang đăng ký
+        window.location.href = '/auth/register/user';
+    });
+</script>
 
 </body>
 

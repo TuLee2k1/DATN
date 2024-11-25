@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import poly.com.Enum.StatusEnum;
 import poly.com.dto.request.JobPost.JobPostTitleResponse;
+import poly.com.dto.response.JobPost.JobListActiveResponse;
 import poly.com.dto.response.JobPost.JobListingResponse;
 import poly.com.model.JobPost;
 
@@ -30,4 +31,9 @@ public interface JobPostRepository extends JpaRepository<JobPost, Long> {
           ".appliedCount,c.status,c.statusEnum) " +
           "FROM JobPost c")
   List<JobListingResponse> getJobListings();
+
+
+
+  // Phương thức tìm kiếm theo trạng thái
+  Page<JobPost> findByStatusEnum(StatusEnum statusEnum, Pageable pageable);
 }
