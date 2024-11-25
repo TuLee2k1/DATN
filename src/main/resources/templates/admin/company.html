@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{admin/layout.html.html}">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Responsive Admin &amp; Dashboard Template based on Bootstrap 5">
+    <meta name="author" content="AdminKit">
+    <meta name="keywords"
+          content="admin, bootstrap, bootstrap 5, admin, dashboard, template, responsive, css, sass, html, theme, front-end, ui kit, web">
+
+    <link href="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="shortcut icon" href="/img/icons/icon-48x48.png" />
+    <link rel="canonical" href="https://demo-basic.adminkit.io/" />
+
+
+
+    <title>Admin </title>
+
+    <link href="/css/app.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        .sidebar-items:hover .sidebar-link {
+            background-color: #187644;
+            /* Màu nền khi hover */
+            color: #f1f3f6;
+            /* Màu chữ khi hover */
+        }
+
+        .sidebar-item.active .sidebar-link {
+            background-color: #187644;
+            color: #ffffff;
+        }
+
+        .sidebar-items {
+            margin-bottom: 15px;
+            /* Khoảng cách giữa các mục */
+        }
+    </style>
+
+</head>
+
+<body>
+<div class="wrapper">
+
+
+
+        <!-- PHẦN CONTENT -->
+        <main class="content" layout:fragment="conten">
+
+            <h1 class="h3 mb-3"><strong>Company</strong></h1>
+            <!-- Form nhập thông tin công ty -->
+            <div class="card mb-5">
+                <div class="card-body">
+                    <form id="companyForm">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="companyName" class="form-label">Company Name</label>
+                                <input type="text" class="form-control" id="companyName"
+                                       placeholder="Enter company name">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="companyAddress" class="form-label">Address</label>
+                                <input type="text" class="form-control" id="companyAddress"
+                                       placeholder="Enter address">
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="companyPhone" class="form-label">Phone</label>
+                                <input type="text" class="form-control" id="companyPhone"
+                                       placeholder="Enter phone number">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="companyEmail" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="companyEmail"
+                                       placeholder="Enter email">
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="companyTaxCode" class="form-label">Tax Code</label>
+                                <input type="text" class="form-control" id="companyTaxCode"
+                                       placeholder="Enter tax code">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="companyLogo" class="form-label">Logo</label>
+                                <input type="file" class="form-control" id="companyLogo">
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-end">
+                            <button type="reset" class="btn btn-secondary me-2">Clear</button>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Table hiển thị -->
+
+            <div class="row">
+
+                <div class="d-flex">
+                    <div class="card flex-fill">
+
+
+
+                        <table class="table table-hover my-0">
+                            <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th class="d-none d-xl-table-cell">Address</th>
+                                <th class="d-none d-xl-table-cell">Phone</th>
+                                <th class="d-none d-xl-table-cell">Email</th>
+                                <th class="d-none d-md-table-cell">Tax_code</th>
+                                <th class="d-none d-md-table-cell">Logo</th>
+
+                                <th>Actions</th> <!-- Thêm cột mới cho các nút -->
+
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr> <!--href="#company-detail" onclick="navigate('company-detail')" -->
+                                <td>KMS Technology</td>
+                                <td class="d-none d-xl-table-cell">02 Quang Trung-DaNang</td>
+                                <td class="d-none d-xl-table-cell">0987654321</td>
+                                <td class="d-none d-xl-table-cell">company1@gmail.com</td>
+                                <td class="d-none d-md-table-cell">12345</td>
+                                <td></td>
+                                <td>
+                                    <div class=" align-items-center gap-2">
+
+                                        <button class="btn btn-outline-danger btn-sm rounded-circle"
+                                                style="width: 40px; height: 40px;">
+                                            <i class="align-middle" data-feather="lock"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Paradox</td>
+                                <td class="d-none d-xl-table-cell">02 Quang Trung-DaNang</td>
+                                <td class="d-none d-xl-table-cell">0987654321</td>
+                                <td class="d-none d-xl-table-cell">company2@gmail.com</td>
+                                <td class="d-none d-md-table-cell">12345</td>
+                                <td></td>
+                                <td>
+                                    <div class=" align-items-center gap-2">
+
+                                        <button class="btn btn-outline-danger btn-sm rounded-circle"
+                                                style="width: 40px; height: 40px;">
+                                            <i class="align-middle" data-feather="lock"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>FPT Polytechnic</td>
+                                <td class="d-none d-xl-table-cell">02 Quang Trung-DaNang</td>
+                                <td class="d-none d-xl-table-cell">0987654321</td>
+                                <td class="d-none d-xl-table-cell">company3@gmail.com</td>
+                                <td class="d-none d-md-table-cell">12345</td>
+                                <td></td>
+                                <td>
+                                    <div class=" align-items-center gap-2">
+
+                                        <button class="btn btn-outline-danger btn-sm rounded-circle"
+                                                style="width: 40px; height: 40px;">
+                                            <i class="align-middle" data-feather="lock"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>FPT IS</td>
+                                <td class="d-none d-xl-table-cell">02 Quang Trung-DaNang</td>
+                                <td class="d-none d-xl-table-cell">0987654321</td>
+                                <td class="d-none d-xl-table-cell">company4@gmail.com</td>
+                                <td class="d-none d-md-table-cell">12345</td>
+                                <td></td>
+                                <td>
+                                    <div class=" align-items-center gap-2">
+
+                                        <button class="btn btn-outline-danger btn-sm rounded-circle"
+                                                style="width: 40px; height: 40px;">
+                                            <i class="align-middle" data-feather="lock"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>BRAVO</td>
+                                <td class="d-none d-xl-table-cell">02 Quang Trung-DaNang</td>
+                                <td class="d-none d-xl-table-cell">0987654321</td>
+                                <td class="d-none d-xl-table-cell">company6@gmail.com</td>
+                                <td class="d-none d-md-table-cell">12345</td>
+                                <td></td>
+                                <td>
+                                    <div class=" align-items-center gap-2">
+
+                                        <button class="btn btn-outline-danger btn-sm rounded-circle"
+                                                style="width: 40px; height: 40px;">
+                                            <i class="align-middle" data-feather="lock"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+        </main>
+
+
+    </div>
+</div>
+
+<script src="/js/app.js"></script>
+<!-- <script src="/static/Admin/admin.js"></script> -->
+
+
+</body>
+
+</html>

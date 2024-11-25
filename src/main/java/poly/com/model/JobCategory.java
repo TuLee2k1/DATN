@@ -23,12 +23,4 @@ public class JobCategory extends AbstractEntity {
     @Column(name = "categoryName") // danh mục cha
     private String categoryName;
 
-    @Column(name = "description") // mô tả
-    private String description;
-
-    @Column(name = "status") // trạng thái
-    private Boolean status = true; // true: active, false: deactive
-
-    @OneToMany(mappedBy = "jobCategory") // Sửa đổi ở đây
-    private List<SubCategory> subCategories; // Danh sách danh mục con
 }

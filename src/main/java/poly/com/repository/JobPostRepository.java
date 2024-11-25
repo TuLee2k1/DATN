@@ -16,4 +16,7 @@ public interface JobPostRepository extends JpaRepository<JobPost, Long> {
 
   @Query("select c from JobPost c where c.id = ?1")
   Optional<JobPost> findById(Long id);
+
+  @Query("SELECT COUNT(j) FROM JobPost j")
+  Long countAllJobPosts();
 }
