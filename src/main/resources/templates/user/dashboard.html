@@ -42,7 +42,7 @@
     <!-- sidebar -->
     <nav id="sidebar" class="sidebar js-sidebar">
         <div class="sidebar-content js-simplebar">
-            <a class="sidebar-brand" href="index.html">
+            <a class="sidebar-brand">
                 <img
                         alt="Logo"
                         class="rounded-circle me-3"
@@ -51,7 +51,7 @@
                         src="/img/icons/logo2.jpg"
                         width="50"
                 />
-                <span class="align-middle">Dreamers</span>
+                <span id="dreamers" class="align-middle">Dreamers</span>
             </a>
 
             <ul class="sidebar-nav">
@@ -331,7 +331,7 @@
                                     class="avatar img-fluid rounded me-1"
                                     alt="Charles Hall"
                             />
-                            <span class="text-dark">Charles Hall</span>
+                            <span id="username" class="text-dark">Charles Hall</span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-end">
                             <a class="dropdown-item" href="/User/V3/profile.html"
@@ -365,9 +365,9 @@
                                 Help Center</a
                             >
                             <div class="dropdown-divider"></div>
-                            <a
+                            <a  id="logout"
                                     class="dropdown-item"
-                                    href="/User/V3/login&register.html"
+                                    href=""
                             ><i class="align-middle me-1" data-feather="log-out"></i>Log
                                 out</a
                             >
@@ -496,6 +496,48 @@
 
 <script>
     feather.replace();
+</script>
+
+<script>
+    document.getElementById('logout').addEventListener('click', function(event) {
+        event.preventDefault(); // Ngăn chặn hành động mặc định nếu cần
+
+        // Xóa thông tin người dùng khỏi localStorage
+        localStorage.removeItem('userInfo');
+
+        // Chuyển hướng trang
+        window.location.href = "http://localhost:8080";
+
+        // Cập nhật giao diện người dùng
+        document.getElementById('authButtons').style.display = 'block';
+        document.getElementById('userInfo').style.display = 'none';
+        console.log("User  logged out.");
+    });
+
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // document.getElementById('userInfo').classList.add('d-none');
+        // Kiểm tra xem có thông tin người dùng trong localStorage không
+        const userInfo = localStorage.getItem('userInfo');
+        // const defaultAvatar = 'Admin/images/person_1';
+        if (userInfo) {
+            // Nếu có, chuyển đổi chuỗi JSON thành đối tượng
+            const user = JSON.parse(userInfo);
+
+            // Hiển thị thông tin người dùng
+            // Kiểm tra avatar và gán giá trị
+            // const avatarSrc = user.avatar ? user.avatar : defaultAvatar;
+            // document.getElementById('userAvatar').src = avatarSrc;
+            document.getElementById('username').textContent = user.userInfo.fullName; // Giả sử username là thuộc tính trong user
+            console.log(user.userInfo.fullName);
+        }
+        });
+
+    document.getElementById('dreamers').addEventListener('click', function() {
+        // Chuyển hướng đến trang home
+        window.location.href = "http://localhost:8080";
+    });
 </script>
 </body>
 </html>
