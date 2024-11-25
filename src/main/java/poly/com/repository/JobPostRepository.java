@@ -20,7 +20,8 @@ public interface JobPostRepository extends JpaRepository<JobPost, Long> {
   @Query("select c from JobPost c where c.id = ?1")
   Optional<JobPost> findById(Long id);
 
-
+  @Query("SELECT COUNT(j) FROM JobPost j")
+  Long countAllJobPosts();
   Page<JobPost> findAllByJobTitleContainingAndStatusEnum(String jobTitle, StatusEnum statusEnum, Pageable pageable);
 
   @Query("SELECT new poly.com.dto.request.JobPost.JobPostTitleResponse(c.id, c.jobTitle) FROM JobPost c")

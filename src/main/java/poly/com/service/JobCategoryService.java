@@ -54,5 +54,16 @@ public class JobCategoryService {
 
         jobCategoryRepository.delete(existed);
     }
+
+    public JobCategory findByCategoryName(String categoryName) {
+        Optional<JobCategory> found = jobCategoryRepository.findByCategoryName(categoryName);
+        if (found.isEmpty()) {
+            throw new JobCategoryException("Job Category with name '" + categoryName + "' not found!");
+        }
+        return found.get();
+    }
+
+
+
 }
 

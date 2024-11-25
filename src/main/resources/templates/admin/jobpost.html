@@ -1,0 +1,204 @@
+
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{admin/layout.html.html}">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Responsive Admin &amp; Dashboard Template based on Bootstrap 5">
+    <meta name="author" content="AdminKit">
+    <meta name="keywords"
+          content="admin, bootstrap, bootstrap 5, admin, dashboard, template, responsive, css, sass, html, theme, front-end, ui kit, web">
+
+    <link href="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="shortcut icon" href="/img/icons/icon-48x48.png" />
+    <link rel="canonical" href="https://demo-basic.adminkit.io/" />
+
+
+
+    <title>Admin </title>
+
+    <link href="/css/app.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        .sidebar-items:hover .sidebar-link {
+            background-color: #187644;
+            /* Màu nền khi hover */
+            color: #f1f3f6;
+            /* Màu chữ khi hover */
+        }
+
+        .sidebar-item.active .sidebar-link {
+            background-color: #187644;
+            color: #ffffff;
+        }
+
+        .sidebar-items {
+            margin-bottom: 15px;
+            /* Khoảng cách giữa các mục */
+        }
+    </style>
+
+</head>
+
+<body>
+<div class="wrapper">
+
+
+
+        <!-- PHẦN CONTENT -->
+        <main class="content" layout:fragment="conten">
+
+            <!--Form nhập  -->
+            <div class="container mt-5">
+                <h1 class="h3 mb-4"><strong>Thêm/Cập Nhật Job Post</strong></h1>
+                <div class="card shadow">
+                    <div class="card-body">
+                        <form id="jobPostForm">
+                            <!-- Job Title -->
+                            <div class="mb-3">
+                                <label for="jobTitle" class="form-label">Job Title</label>
+                                <input type="text" class="form-control" id="jobTitle" placeholder="Nhập tên công việc" required>
+                            </div>
+
+                            <!-- Job Description -->
+                            <div class="mb-3">
+                                <label for="jobDescription" class="form-label">Job Description</label>
+                                <textarea class="form-control" id="jobDescription" rows="4" placeholder="Mô tả công việc" maxlength="2000" required></textarea>
+                            </div>
+
+                            <!-- Job Requirement -->
+                            <div class="mb-3">
+                                <label for="jobRequire" class="form-label">Job Requirement</label>
+                                <textarea class="form-control" id="jobRequire" rows="4" placeholder="Yêu cầu công việc" maxlength="2000" required></textarea>
+                            </div>
+
+                            <div class="row">
+                                <!-- Quantity -->
+                                <div class="col-md-6 mb-3">
+                                    <label for="quantity" class="form-label">Quantity</label>
+                                    <input type="number" class="form-control" id="quantity" placeholder="Số lượng tuyển" min="1" required>
+                                </div>
+
+                                <!-- Min Salary -->
+                                <div class="col-md-3 mb-3">
+                                    <label for="minSalary" class="form-label">Min Salary (VND)</label>
+                                    <input type="number" class="form-control" id="minSalary" placeholder="Lương tối thiểu" min="0" required>
+                                </div>
+
+                                <!-- Max Salary -->
+                                <div class="col-md-3 mb-3">
+                                    <label for="maxSalary" class="form-label">Max Salary (VND)</label>
+                                    <input type="number" class="form-control" id="maxSalary" placeholder="Lương tối đa" min="0" required>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <!-- Create Date -->
+                                <div class="col-md-6 mb-3">
+                                    <label for="createDate" class="form-label">Create Date</label>
+                                    <input type="date" class="form-control" id="createDate" required>
+                                </div>
+
+                                <!-- End Date -->
+                                <div class="col-md-6 mb-3">
+                                    <label for="endDate" class="form-label">End Date</label>
+                                    <input type="date" class="form-control" id="endDate" required>
+                                </div>
+                            </div>
+
+                            <!-- City -->
+                            <div class="mb-3">
+                                <label for="city" class="form-label">City</label>
+                                <input type="text" class="form-control" id="city" placeholder="Nhập thành phố" required>
+                            </div>
+
+                            <div class="row">
+                                <!-- Job Category -->
+                                <div class="col-md-6 mb-3">
+                                    <label for="jobCategory" class="form-label">Job Category</label>
+                                    <select class="form-select" id="jobCategory" required>
+                                        <option selected disabled>Chọn loại công việc</option>
+                                        <option value="1">IT</option>
+                                        <option value="2">Marketing</option>
+                                        <option value="3">Finance</option>
+                                    </select>
+                                </div>
+
+                                <!-- Company -->
+                                <div class="col-md-6 mb-3">
+                                    <label for="company" class="form-label">Company</label>
+                                    <select class="form-select" id="company" required>
+                                        <option selected disabled>Chọn công ty</option>
+                                        <option value="1">KMS Technology</option>
+                                        <option value="2">Paradox</option>
+                                        <option value="3">FPT IS</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Status -->
+                            <div class="mb-3">
+                                <label for="status" class="form-label">Status</label>
+                                <select class="form-select" id="status" required>
+                                    <option selected disabled>Chọn trạng thái</option>
+                                    <option value="ACTIVE">Active</option>
+                                    <option value="INACTIVE">Inactive</option>
+                                </select>
+                            </div>
+
+                            <!-- Buttons -->
+                            <div class="d-flex justify-content-end gap-2">
+                                <button type="reset" class="btn btn-secondary">Reset</button>
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Table Hiển Thị -->
+            <div class="row">
+                <h1 class="h3 mb-3"><strong>Job List</strong></h1>
+                <div class="d-flex">
+                    <div class="card flex-fill">
+                        <table class="table table-hover my-0" id="jobListTable">
+                            <thead>
+                            <tr>
+                                <th>Job Title</th>
+                                <th class="d-none d-xl-table-cell">Category</th>
+                                <th class="d-none d-xl-table-cell">Company</th>
+                                <th class="d-none d-xl-table-cell">City</th>
+                                <th class="d-none d-md-table-cell">Quantity</th>
+                                <th class="d-none d-md-table-cell">Salary Range</th>
+                                <th class="d-none d-md-table-cell">Status</th>
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <!-- Dữ liệu từ API sẽ được thêm vào đây -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+
+
+    </div>
+</div>
+
+<script src="/js/app.js"></script>
+<!-- <script src="/static/Admin/admin.js"></script> -->
+
+
+
+
+
+</body>
+
+</html>    
