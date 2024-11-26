@@ -7,28 +7,26 @@ import org.hibernate.Hibernate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+
 import org.springframework.stereotype.Service;
 import poly.com.Enum.StatusEnum;
 import poly.com.util.AuthenticationUtil;
 import poly.com.dto.request.JobPost.JobPostRequest;
 import poly.com.dto.request.JobPost.JobPostTitleResponse;
-import poly.com.dto.request.PageRequestDTO;
+
 import poly.com.dto.response.JobPost.JobListingResponse;
 import poly.com.dto.response.JobPost.JobPostResponse;
 import poly.com.dto.response.PageResponse;
 import poly.com.exception.JobPostException;
 import poly.com.model.*;
-import poly.com.repository.CompanyRepository;
+
 import poly.com.repository.JobCategoryRepository;
 import poly.com.repository.JobPostRepository;
 import poly.com.repository.SubCategoryRepository;
 
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
+
 
 @Service
 @RequiredArgsConstructor
@@ -87,6 +85,7 @@ public class JobPostService {
         var jobCategory = findJobCategory(request.getJobCategoryId());
         var subCategory = findSubCategory(request.getSubCategoryIds());
 
+        // Cập nhật các trường
         jobPost.setJobTitle(request.getJobTitle());
         jobPost.setJobDescription(request.getJobDescription());
         jobPost.setQuantity(request.getQuantity());
@@ -103,8 +102,6 @@ public class JobPostService {
         jobPost.setExp(request.getExp());
         jobPost.setJobCategory(jobCategory);
         jobPost.setSubCategory(subCategory);
-
-        // Không cần cập nhật company, jobCategory, subCategory nếu không thay đổi
 
         var savedJobPost = jobPostRepository.save(jobPost);
         return JobPostResponse.fromEntity(savedJobPost);
@@ -129,10 +126,32 @@ public class JobPostService {
                 .orElseThrow(() -> new EntityNotFoundException("Không tìm thấy chuyên ngành"));
     }
 
-    public JobPostResponse getJobPost (Long id) {
-        var jobPost = jobPostRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Không tìm thấy công việc"));
-        return JobPostResponse.fromEntity(jobPost);
+    public JobPostRequest getJobPost(Long id) {
+        JobPost jobPost = jobPostRepository.findById(id)
+                .orElseThrow(() -> new JobPostException("Không tìm thấy công việc"));
+        System.out.println("JobPostService.getJobPost:  " + jobPost.getId());
+
+        return JobPostRequest.builder()
+                .id(jobPost.getId()) // Thêm ID để phục vụ cho việc cập nhật
+                .jobTitle(jobPost.getJobTitle())
+                .jobDescription(jobPost.getJobDescription())
+                .quantity(jobPost.getQuantity())
+                .jobRequire(jobPost.getJobRequire())
+                .jobBenefit(jobPost.getJobBenefit())
+                .endDate(jobPost.getEndDate())
+                .minSalary(jobPost.getMinSalary())
+                .maxSalary(jobPost.getMaxSalary())
+                .city(jobPost.getCity())
+                .district(jobPost.getDistrict())
+                .address(jobPost.getAddress())
+                .workType(jobPost.getWorkType())
+                .exp(jobPost.getExp())
+                .jobLevel(jobPost.getJobLevel())
+                .jobCategoryId(jobPost.getJobCategory().getId())
+                .subCategoryIds(jobPost.getSubCategory().getId())
+                .build();
+
+
     }
 
 

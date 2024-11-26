@@ -26,5 +26,22 @@ document.getElementById("create-job-btn").addEventListener("click", function() {
     window.location.href = 'Taotintuyendung.html';
   });
 
+document.addEventListener("DOMContentLoaded", function () {
+    const currentPage = parseInt(document.querySelector(".pagination").dataset.currentPage, 10);
+    const totalPages = parseInt(document.querySelector(".pagination").dataset.totalPages, 10);
+
+    const prevItem = document.querySelector(".previous-item");
+    const nextItem = document.querySelector(".next-item");
+
+    if (currentPage === 1) {
+        prevItem.style.display = "none";
+    }
+
+    if (currentPage === totalPages) {
+        nextItem.style.display = "none";
+    }
+});
+
+
 
 

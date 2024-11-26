@@ -14,7 +14,6 @@
 <!--    <link th:href="@{../Company/css/danhsach.css}" rel="stylesheet"/>-->
 	<link rel="stylesheet" href="/Company/css/danhsach.css">
 	<link rel="canonical" href="https://demo-basic.adminkit.io/" />
-
 	<title>Quản lý tin đăng</title>
 
 <!--	<link th:href="@{../css/app.css}"  rel="stylesheet">-->
@@ -35,8 +34,71 @@
             max-width: 100%; /* Chiều rộng gần bằng 100% nhưng vẫn giữ viền */
             margin: 0 auto; /* Căn giữa */
 }
-    
-    </style>
+		/* Bố cục tổng thể */
+		.pagination-nav {
+			display: flex;
+			justify-content: flex-end; /* Căn về góc phải */
+			padding: 10px;
+			margin-top: 20px;
+		}
+
+		.pagination {
+			list-style: none;
+			display: flex;
+			gap: 5px;
+			padding: 0;
+			margin: 0;
+		}
+
+		/* Định dạng từng mục phân trang */
+		.page-item {
+			border: 1px solid #ddd;
+			border-radius: 5px;
+			padding: 5px 10px;
+			text-align: center;
+			font-size: 14px; /* Kích thước nhỏ hơn */
+			background-color: white;
+			color: gray;
+		}
+
+		.page-item a {
+			text-decoration: none;
+			color: inherit;
+			display: block;
+		}
+
+		/* Hover màu xám */
+		.page-item:hover {
+			background-color: #f0f0f0;
+			color: gray;
+			cursor: pointer;
+		}
+
+		/* Mục đang được chọn */
+		.page-item.active {
+			background-color: #ddd; /* Màu xám */
+			color: gray;
+			pointer-events: none;
+			font-weight: bold;
+		}
+
+		/* Mục bị vô hiệu hóa */
+		.page-item.disabled {
+			color: #ccc;
+			pointer-events: none;
+			border-color: #eee;
+		}
+
+		/* Ẩn đường viền khi hover trên mục bị vô hiệu hóa */
+		.page-item.disabled:hover {
+			background-color: white;
+			cursor: not-allowed;
+		}
+
+
+
+
+	</style>
 </head>
 
 <body>
@@ -48,7 +110,7 @@
 			  <a class="sidebar-brand" href="Taikhoannhatuyendung.html">
 				<span class="align-middle">Dream job</span>
 			  </a>
-		  
+
 			  <ul class="sidebar-nav">
 				<li class="sidebar-header">
 				  <div class="d-flex align-items-center">
@@ -69,7 +131,7 @@
 						  <span>Quản lý tin đăng</span>
 					  </a>
 				  </li>
-		  
+
 				<li class="sidebar-header">
 				  <div class="d-flex align-items-center">
 					<span>Quản lý ứng viên</span>
@@ -87,7 +149,7 @@
 					<span>Tìm ứng viên mới</span>
 				  </a>
 				</li>
-		  
+
 				<li class="sidebar-header">
 				  <div class="d-flex align-items-center">
 					<span>Quản lý dịch vụ</span>
@@ -111,7 +173,7 @@
 					<span>Thông tin thanh toán</span>
 				  </a>
 				</li>
-		  
+
 				<li class="sidebar-header">
 				  <div class="d-flex align-items-center">
 					<span>Tài khoản và thương hiệu</span>
@@ -129,7 +191,7 @@
 					<span>Quảng bá thương hiệu</span>
 				  </a>
 				</li>
-		  
+
 				<li class="sidebar-header">
 				  <div class="d-flex align-items-center">
 					<span>Hướng dẫn và thông báo</span>
@@ -153,7 +215,7 @@
 					<span>Hỗ trợ</span>
 				  </a>
 				</li>
-		  
+
 				<li class="sidebar-item mt-4">
 				  <a href="#" class="btn btn-primary w-100">
 					<span>Cổng người tìm việc</span>
@@ -390,10 +452,12 @@
     </span>
 								</td>
 								<td data-label="Hành động">
-									<button class="btn btn-sm btn-primary">
+									<a th:href="@{/job-posts/update/{id}(id=${job.id})}"
+									   class="btn btn-sm btn-primary edit-btn">
 										<i class="fas fa-edit"></i>
-									</button>
-									<button class="btn btn-sm btn-danger">
+									</a>
+									<button class="btn btn-sm btn-danger delete-btn"
+											th:data-id="${job.id}">
 										<i class="fas fa-trash"></i>
 									</button>
 								</td>
@@ -402,22 +466,25 @@
 						</table>
 
 						<!-- Pagination -->
-						<nav th:if="${totalPages > 1}">
-							<ul class="pagination justify-content-center">
-								<li class="page-item" th:classappend="${currentPage == 1 ? 'disabled' : ''}">
-									<a class="page-link" th:href="@{/job-posts(pageNo=${currentPage - 1}, jobTitle=${selectedJobTitle}, statusEnum=${selectedStatus})}">Previous</a>
+						<nav class="pagination-nav" th:if="${totalPages > 1}">
+							<ul class="pagination">
+								<li class="page-item previous-item" th:classappend="${currentPage == 1 ? 'disabled' : ''}">
+									<a class="page-link" th:href="@{/job-posts/Listing(pageNo=${currentPage - 1}, jobTitle=${selectedJobTitle}, statusEnum=${selectedStatus})}">Previous</a>
 								</li>
 								<li class="page-item" th:each="pageNumber : ${#numbers.sequence(1, totalPages)}"
 									th:classappend="${pageNumber == currentPage ? 'active' : ''}">
-									<a class="page-link" th:href="@{/job-posts(pageNo=${pageNumber}, jobTitle=${selectedJobTitle}, statusEnum=${selectedStatus})}"
+									<a class="page-link" th:href="@{/job-posts/Listing(pageNo=${pageNumber}, jobTitle=${selectedJobTitle}, statusEnum=${selectedStatus})}"
 									   th:text="${pageNumber}">
 									</a>
 								</li>
-								<li class="page-item" th:classappend="${currentPage == totalPages ? 'disabled' : ''}">
-									<a class="page-link" th:href="@{/job-posts(pageNo=${currentPage + 1}, jobTitle=${selectedJobTitle}, statusEnum=${selectedStatus})}">Next</a>
+								<li class="page-item next-item" th:classappend="${currentPage == totalPages ? 'disabled' : ''}">
+									<a class="page-link" th:href="@{/job-posts/Listing(pageNo=${currentPage + 1}, jobTitle=${selectedJobTitle}, statusEnum=${selectedStatus})}">Next</a>
 								</li>
 							</ul>
 						</nav>
+
+
+
 					</div>
 
 					<!-- Empty state -->
