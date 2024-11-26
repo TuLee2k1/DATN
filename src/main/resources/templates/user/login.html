@@ -139,17 +139,23 @@
             });
 
             if (response.ok) {
-                const data = await response.json(); // Nhận dữ liệu JSON từ server
+                const userInfo = await response.json(); // Nhận dữ liệu JSON từ server
+                const data = {
+                    userInfo,
+                    lastActive: Date.now()
+                }
                 console.log('User  Info:', data); // Ghi lại thông tin người dùng vào console
                 localStorage.setItem('userInfo', JSON.stringify(data));
 
                 // Chuyển hướng đến trang dựa trên vai trò
-                if (data.roles.includes("ROLE_ADMIN")) {
+                if (userInfo.roles.includes("ROLE_ADMIN")) {
                     window.location.href = "/auth/admin/dashboard";
+
                 } else if (data.roles.includes("ROLE_USER")) {
-                    window.location.href = "/auth/user/dashboard";
+                    window.location.href = "http://localhost:8080/";
                 } else if (data.roles.includes("ROLE_COMPANY")) {
                     window.location.href = "/job-posts/create";
+
                 } else {
                     window.location.href = "/auth/default/dashboard";
                 }

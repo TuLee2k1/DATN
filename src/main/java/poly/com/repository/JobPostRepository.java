@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import poly.com.Enum.StatusEnum;
 import poly.com.dto.request.JobPost.JobPostTitleResponse;
+import poly.com.dto.response.JobPost.JobListActiveResponse;
 import poly.com.dto.response.JobPost.JobListingResponse;
 import poly.com.model.Company;
 import poly.com.model.JobPost;
@@ -42,8 +43,21 @@ public interface JobPostRepository extends JpaRepository<JobPost, Long> {
   @Query("SELECT new poly.com.dto.request.JobPost.JobPostTitleResponse(c.id, c.jobTitle) FROM JobPost c WHERE c.company = :company")
   List<JobPostTitleResponse> getJobPostTitleByCompany(@Param("company") Company company);
 
+  @Query("SELECT COUNT(j) FROM JobPost j")
+  Long countAllJobPosts();
+  Page<JobPost> findAllByJobTitleContainingAndStatusEnum(String jobTitle, StatusEnum statusEnum, Pageable pageable);
+
+  @Query("SELECT new poly.com.dto.request.JobPost.JobPostTitleResponse(c.id, c.jobTitle) FROM JobPost c")
+  List<JobPostTitleResponse> getJobPostTitle();
+
+
   @Query("SELECT new poly.com.dto.response.JobPost.JobListingResponse(c.id,c.jobTitle,c.createDate,c.endDate,c" +
           ".appliedCount,c.status,c.statusEnum) " +
           "FROM JobPost c")
   List<JobListingResponse> getJobListings();
+
+
+
+  // Phương thức tìm kiếm theo trạng thái
+  Page<JobPost> findByStatusEnum(StatusEnum statusEnum, Pageable pageable);
 }

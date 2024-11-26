@@ -3,13 +3,15 @@ package poly.com.service;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.Hibernate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import org.springframework.stereotype.Service;
 import poly.com.Enum.StatusEnum;
+import poly.com.dto.response.JobPost.JobListActiveResponse;
+import poly.com.repository.CompanyRepository;
 import poly.com.util.AuthenticationUtil;
 import poly.com.dto.request.JobPost.JobPostRequest;
 import poly.com.dto.request.JobPost.JobPostTitleResponse;
@@ -27,7 +29,6 @@ import poly.com.repository.SubCategoryRepository;
 import java.util.Date;
 import java.util.List;
 
-
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -36,6 +37,9 @@ public class JobPostService {
     private final JobCategoryRepository jobCategoryRepository;
     private final SubCategoryRepository subCategoryRepository;
     private final AuthenticationUtil authenticationUtil;
+    @Autowired
+    private CompanyRepository companyRepository; // Repository để truy vấn thông tin công ty
+
 
     public JobPostResponse createJobPost(JobPostRequest request) {
         User authenticatedUser = authenticationUtil.getAuthenticatedUser();
@@ -126,6 +130,7 @@ public class JobPostService {
                 .orElseThrow(() -> new EntityNotFoundException("Không tìm thấy chuyên ngành"));
     }
 
+
     public JobPostRequest getJobPost(Long id) {
         JobPost jobPost = jobPostRepository.findById(id)
                 .orElseThrow(() -> new JobPostException("Không tìm thấy công việc"));
@@ -150,6 +155,7 @@ public class JobPostService {
                 .jobCategoryId(jobPost.getJobCategory().getId())
                 .subCategoryIds(jobPost.getSubCategory().getId())
                 .build();
+
 
 
     }
@@ -186,8 +192,8 @@ public class JobPostService {
         return jobListings.stream().map(this::convertToJobListingResponse).toList();
     }
 
-    public Page<JobListingResponse> getJobListings(Integer  pageNo) {
-        Pageable pageable = PageRequest.of(pageNo - 1, 10 );
+    public Page<JobListingResponse> getJobListings(Integer pageNo) {
+        Pageable pageable = PageRequest.of(pageNo - 1, 10);
         var jobListings = jobPostRepository.findAll(pageable);
         return jobListings.map(this::convertToJobListingResponse);
     }
@@ -229,7 +235,7 @@ public class JobPostService {
         return jobPostRepository.getJobPostTitleByCompany(authenticationUtil.getAuthenticatedUser().getCompany());
     }
 
-    private JobPostTitleResponse convertToJobPostTitleResponse (JobPost jobPost) {
+    private JobPostTitleResponse convertToJobPostTitleResponse(JobPost jobPost) {
         return JobPostTitleResponse.builder()
                 .id(jobPost.getId())
                 .jobTitle(jobPost.getJobTitle())
@@ -247,5 +253,73 @@ public class JobPostService {
                 .status(jobPost.getStatus() != null ? jobPost.getStatus() : null)
                 .statusEnum(jobPost.getStatusEnum() != null ? jobPost.getStatusEnum() : null)
                 .build();
+    }
+
+    public Page<JobListingResponse> getAllJobListings(Integer pageNo) {
+        Pageable pageable = PageRequest.of(pageNo - 1, 10);
+        var jobListings = jobPostRepository.findAll(pageable);
+        return jobListings.map(this::convertToJobListingResponse);
+    }
+
+
+    public Page<JobListActiveResponse> getJobListingsByStatus(String status, Integer pageNo, Integer pageSize) {
+        Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
+
+        // Chuyển đổi từ String sang StatusEnum
+        StatusEnum statusEnum;
+        try {
+            statusEnum = StatusEnum.fromString(status);
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Invalid status value: " + status);
+        }
+
+        // Gọi repository với StatusEnum
+        Page<JobPost> jobListings = jobPostRepository.findByStatusEnum(statusEnum, pageable);
+        System.out.println("Job" + jobListings.getTotalElements());
+
+        // Xử lý in ra thông tin
+        if (jobListings.hasContent()) {
+            jobListings.getContent().forEach(job -> {
+                System.out.println("Job Title: " + job.getJobTitle());
+                System.out.println("Company Name: " + (job.getCompany() != null ? job.getCompany().getName() : "N/A")); // Kiểm tra null
+                System.out.println("Status Enum: " + job.getStatusEnum());
+                System.out.println("Applied Count: " + job.getAppliedCount());
+                System.out.println("---------------------------------------------------");
+            });
+        } else {
+            System.out.println("No job posts found with the specified status.");
+        }
+
+        // Chuyển đổi và trả về
+        return convertToJobListActiveResponse(jobListings);
+    }
+
+    public Page<JobListActiveResponse> convertToJobListActiveResponse(Page<JobPost> jobListings) {
+        return jobListings.map(jobPost -> {
+            Company company = jobPost.getCompany();
+            Long companyId = (company != null) ? company.getId() : null;
+            String companyLogoUrl = (company != null) ? company.getLogo() : null;
+            String companyName = (company != null) ? company.getName() : null;
+
+            return new JobListActiveResponse(
+                    jobPost.getId(),
+                    jobPost.getJobTitle(),
+                    jobPost.getCreateDate(),
+                    jobPost.getEndDate(),
+                    jobPost.getAppliedCount(),
+                    jobPost.getStatusEnum(),
+                    companyId,
+                    companyLogoUrl,
+                    companyName,
+                    jobPost.getWorkType(),
+                    jobPost.getStatus(),
+                    jobPost.getCity()
+
+            );
+        });
+    }
+
+    public List<JobPost> findAll() {
+        return jobPostRepository.findAll();
     }
 }

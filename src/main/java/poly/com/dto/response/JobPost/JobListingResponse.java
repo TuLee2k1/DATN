@@ -17,4 +17,5 @@ public class  JobListingResponse { // những class đuôi response là đẩy d
     private Integer appliedCount;
     private JobPostStatus status; // Hhiển thị view lên
     private StatusEnum statusEnum; /// chờ ađ duyệt
+
 }

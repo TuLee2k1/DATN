@@ -6,5 +6,9 @@ public enum StatusEnum {
     PENDING,         // Hồ sơ đang chờ xác thực
     VERIFIED,        // Hồ sơ đã được xác thực
     REJECTED,        // Hồ sơ đã bị từ chối
-    DELETED          // Hồ sơ đã bị xóa
+    DELETED;          // Hồ sơ đã bị xóa
+
+    public static StatusEnum fromString(String status) {
+        return StatusEnum.valueOf(status.toUpperCase());
+    }
 }
