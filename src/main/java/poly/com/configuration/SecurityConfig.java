@@ -21,52 +21,73 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableWebSecurity
 @RequiredArgsConstructor
 @EnableMethodSecurity(securedEnabled = true)
-public class SecurityConfig  {
+public class SecurityConfig {
 
-    private final JwtFilter jwtAuthenticationFilter;
     private final AuthenticationProvider authenticationProvider;
-    private final LogoutHandler logoutHandler;
 
     @Bean
-
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-        .csrf(AbstractHttpConfigurer::disable)
+         .csrf(AbstractHttpConfigurer::disable)
          .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-        .authorizeHttpRequests(auth -> auth
-        .requestMatchers("/auth/**", "/login/**", "/logout","v3/**", "/swagger-ui/**" )
-        .permitAll()
-          .requestMatchers(("Company/**")).hasRole("COMPANY")
-        .anyRequest().authenticated()
-        )
-        .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-        .authenticationProvider(authenticationProvider)
-        .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+         .authorizeHttpRequests(auth -> auth
+          // Cho phép tài nguyên tĩnh
+          .requestMatchers(
+           "/static/**",
+           "/css/**",
+           "/js/**",
+           "/images/**",
+           "/assets/**",
+           "/webjars/**"
+          ).permitAll()
+
+          // Các URL public
+          .requestMatchers(
+           "/auth/**",
+           "/login/**",
+           "/logout",
+           "/v3/**",
+           "/swagger-ui/**",
+           "/JobPost/**"
+          ).permitAll()
+
+          // URL yêu cầu role cụ thể
+          .requestMatchers("/Company/**").hasRole("COMPANY")
+          .anyRequest().authenticated()
+         )
+         // Giữ nguyên các cấu hình khác...
+         .sessionManagement(session -> session
+          .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+          .maximumSessions(1)
+          .maxSessionsPreventsLogin(true)
+         )
          .formLogin(form -> form
           .loginProcessingUrl("/authenticate")
-            .permitAll()
+          .loginPage("/login")
+          .defaultSuccessUrl("/dashboard", true)
+          .failureUrl("/login?error=true")
+          .permitAll()
          )
          .oauth2Login(oauth2 -> oauth2
-        .defaultSuccessUrl("/loginSuccess", true)  // Redirect to homepage after successful login
-        .failureUrl("/loginFailure")  // Redirect to failure page if login fails
-        )
-        .logout(logout -> logout
-        .logoutUrl("/logout")
-        .logoutSuccessUrl("/login/local")
-        .clearAuthentication(true)
-        .invalidateHttpSession(true)
-        .clearAuthentication(true)
-        .deleteCookies("JSESSIONID")
-        .addLogoutHandler(logoutHandler)
-        .logoutSuccessHandler((request, response, authentication) -> {
-            SecurityContextHolder
-            .clearContext();
-        })
-        .permitAll());
+          .defaultSuccessUrl("/loginSuccess", true)
+          .failureUrl("/loginFailure")
+         )
+         .logout(logout -> logout
+          .logoutUrl("/logout")
+          .logoutSuccessUrl("/login")
+          .invalidateHttpSession(true)
+          .deleteCookies("JSESSIONID")
+          .clearAuthentication(true)
+          .addLogoutHandler((request, response, authentication) -> {
+              SecurityContextHolder.clearContext();
+          })
+         )
+         .authenticationProvider(authenticationProvider);
 
         return http.build();
     }
 
+    // CORS Configuration
     @Bean
     public UrlBasedCorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
@@ -80,5 +101,5 @@ public class SecurityConfig  {
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
-
 }
+

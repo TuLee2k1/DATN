@@ -15,9 +15,12 @@ import poly.com.dto.request.Auth.RegisterCompanyRequest;
 import poly.com.dto.request.Auth.UserChangepasswordDTO;
 import poly.com.dto.response.Auth.AuthenticationResponse;
 import poly.com.exception.ApiResponse;
+import poly.com.model.User;
 import poly.com.service.AuthenticationService;
+import poly.com.service.StaffService;
 
 import java.io.IOException;
+import java.util.List;
 
 import static org.springframework.http.ResponseEntity.status;
 
@@ -27,6 +30,7 @@ import static org.springframework.http.ResponseEntity.status;
 public class AuthenticationController {
 
     private final AuthenticationService authenticationService;
+    private final StaffService staffService;
 
     @PostMapping("/register/user")
     @ResponseStatus(HttpStatus.ACCEPTED)
@@ -105,5 +109,17 @@ public class AuthenticationController {
                 .status(HttpStatus.OK.value())
                 .message("Company")
                 .build();
+    }
+
+    @GetMapping("/user")
+    public ApiResponse<List<User>> user(){
+
+     List<User> users = staffService.getAll();
+
+     return ApiResponse.<List<User>>builder()
+            .status(HttpStatus.OK.value())
+            .message("User list retrieved successfully")
+            .Result(users)
+            .build();
     }
 }

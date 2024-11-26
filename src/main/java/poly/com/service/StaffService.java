@@ -8,7 +8,9 @@ import org.springframework.stereotype.Service;
 import poly.com.dto.StaffDto;
 import poly.com.dto.response.StaffResponse;
 import poly.com.model.Staff;
+import poly.com.model.User;
 import poly.com.repository.StaffRepository;
+import poly.com.repository.UserRepository;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,6 +20,7 @@ import java.util.stream.Collectors;
 public class StaffService {
 
     private final StaffRepository staffRepository;
+    private final UserRepository userRepository;
 
 
     public List<StaffResponse> getAllStaffs() {
@@ -90,4 +93,10 @@ public class StaffService {
         .user_id(staff.getUser() != null ? staff.getUser().getId() : null) // Xử lý khóa ngoại user
         .build();
     }
+
+
+    public List<User> getAll() {
+        return userRepository.findAll();
+    }
+
 }

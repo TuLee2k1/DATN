@@ -14,6 +14,7 @@ import lombok.Setter;
 @Getter
 @Entity
 public class SubCategory extends AbstractEntity{
+
     private String subCategoryName; // Tên danh mục con
     private String description; // Mô tả
     private Boolean status = true; // Trạng thái

@@ -3,30 +3,29 @@ package poly.com.service;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.Hibernate;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+
 import org.springframework.stereotype.Service;
 import poly.com.Enum.StatusEnum;
 import poly.com.Util.AuthenticationUtil;
 import poly.com.dto.request.JobPost.JobPostRequest;
 import poly.com.dto.request.JobPost.JobPostTitleResponse;
-import poly.com.dto.request.PageRequestDTO;
+
 import poly.com.dto.response.JobPost.JobListingResponse;
 import poly.com.dto.response.JobPost.JobPostResponse;
 import poly.com.dto.response.PageResponse;
 import poly.com.exception.JobPostException;
 import poly.com.model.*;
-import poly.com.repository.CompanyRepository;
+
 import poly.com.repository.JobCategoryRepository;
 import poly.com.repository.JobPostRepository;
 import poly.com.repository.SubCategoryRepository;
 
-import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
+
 
 @Service
 @RequiredArgsConstructor

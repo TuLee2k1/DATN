@@ -23,4 +23,5 @@ public class AuthenticationUtil {
         return userRepository.findByEmail(userEmail)
          .orElseThrow(() -> new UserNotFoundException("User not found"));
     }
+
 }
