@@ -269,4 +269,8 @@ public class JobPostService {
             );
         });
     }
+
+    public List<JobPost> findAll() {
+        return jobPostRepository.findAll();
+    }
 }

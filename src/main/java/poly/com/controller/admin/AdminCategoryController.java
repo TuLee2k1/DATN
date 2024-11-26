@@ -30,7 +30,7 @@ public class AdminCategoryController {
 
     @RequestMapping
     public String listAll(ModelMap model) {
-        List<JobCategory> list = jobCategoryService.findAll();
+        List<JobCategory> list = jobCategoryService.getAllJobCategories();
 
         model.addAttribute("categories", list);
 
