@@ -21,6 +21,7 @@ import java.util.Date;
 @RequiredArgsConstructor
 public class JobPostRequest {
 
+    private Long id;
     private Long userId;
     private String userEmail;
     @NotBlank(message = "Job title is required")

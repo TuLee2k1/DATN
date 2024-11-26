@@ -133,17 +133,17 @@ public class JobPostController {
         }
     }
 
-    @GetMapping("/getJobPost") // /Company/getJobPost?id=1
-    @PreAuthorize("hasRole('COMPANY')")
-    public ResponseEntity<?> getJobPost(@RequestParam Long id) {
-        try {
-            JobPostResponse response = jobPostService.getJobPost(id);
-            return ResponseEntity.ok(response);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest()
-                    .body(e.getMessage());
-        }
-    }
+//    @GetMapping("/getJobPost") // /Company/getJobPost?id=1
+//    @PreAuthorize("hasRole('COMPANY')")
+//    public ResponseEntity<?> getJobPost(@RequestParam Long id) {
+//        try {
+//            JobPostResponse response = jobPostService.getJobPost(id);
+//            return ResponseEntity.ok(response);
+//        } catch (Exception e) {
+//            return ResponseEntity.badRequest()
+//                    .body(e.getMessage());
+//        }
+//    }
 
     @PreAuthorize("hasRole('COMPANY')") // /Company/updateJobPost/1
     @PutMapping("/{id}")
@@ -205,11 +205,11 @@ public class JobPostController {
         return ResponseEntity.ok(responses);
     }
 
-    @GetMapping("/getJobPostTitle")
-    public ResponseEntity<List<JobPostTitleResponse>> getJobPostTitle() {
-        List<JobPostTitleResponse> responses = jobPostService.getJobPostTitle();
-        return ResponseEntity.ok(responses);
-    }
+//    @GetMapping("/getJobPostTitle")
+//    public ResponseEntity<List<JobPostTitleResponse>> getJobPostTitle() {
+//        List<JobPostTitleResponse> responses = jobPostService.getJobPostTitle();
+//        return ResponseEntity.ok(responses);
+//    }
 
 
 

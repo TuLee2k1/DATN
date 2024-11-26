@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+
 import org.springframework.stereotype.Service;
 import poly.com.Enum.StatusEnum;
 import poly.com.dto.response.JobPost.JobListActiveResponse;
@@ -14,11 +15,13 @@ import poly.com.repository.CompanyRepository;
 import poly.com.util.AuthenticationUtil;
 import poly.com.dto.request.JobPost.JobPostRequest;
 import poly.com.dto.request.JobPost.JobPostTitleResponse;
+
 import poly.com.dto.response.JobPost.JobListingResponse;
 import poly.com.dto.response.JobPost.JobPostResponse;
 import poly.com.dto.response.PageResponse;
 import poly.com.exception.JobPostException;
 import poly.com.model.*;
+
 import poly.com.repository.JobCategoryRepository;
 import poly.com.repository.JobPostRepository;
 import poly.com.repository.SubCategoryRepository;
@@ -86,6 +89,7 @@ public class JobPostService {
         var jobCategory = findJobCategory(request.getJobCategoryId());
         var subCategory = findSubCategory(request.getSubCategoryIds());
 
+        // Cập nhật các trường
         jobPost.setJobTitle(request.getJobTitle());
         jobPost.setJobDescription(request.getJobDescription());
         jobPost.setQuantity(request.getQuantity());
@@ -102,8 +106,6 @@ public class JobPostService {
         jobPost.setExp(request.getExp());
         jobPost.setJobCategory(jobCategory);
         jobPost.setSubCategory(subCategory);
-
-        // Không cần cập nhật company, jobCategory, subCategory nếu không thay đổi
 
         var savedJobPost = jobPostRepository.save(jobPost);
         return JobPostResponse.fromEntity(savedJobPost);
@@ -128,10 +130,34 @@ public class JobPostService {
                 .orElseThrow(() -> new EntityNotFoundException("Không tìm thấy chuyên ngành"));
     }
 
-    public JobPostResponse getJobPost(Long id) {
-        var jobPost = jobPostRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Không tìm thấy công việc"));
-        return JobPostResponse.fromEntity(jobPost);
+
+    public JobPostRequest getJobPost(Long id) {
+        JobPost jobPost = jobPostRepository.findById(id)
+                .orElseThrow(() -> new JobPostException("Không tìm thấy công việc"));
+        System.out.println("JobPostService.getJobPost:  " + jobPost.getId());
+
+        return JobPostRequest.builder()
+                .id(jobPost.getId()) // Thêm ID để phục vụ cho việc cập nhật
+                .jobTitle(jobPost.getJobTitle())
+                .jobDescription(jobPost.getJobDescription())
+                .quantity(jobPost.getQuantity())
+                .jobRequire(jobPost.getJobRequire())
+                .jobBenefit(jobPost.getJobBenefit())
+                .endDate(jobPost.getEndDate())
+                .minSalary(jobPost.getMinSalary())
+                .maxSalary(jobPost.getMaxSalary())
+                .city(jobPost.getCity())
+                .district(jobPost.getDistrict())
+                .address(jobPost.getAddress())
+                .workType(jobPost.getWorkType())
+                .exp(jobPost.getExp())
+                .jobLevel(jobPost.getJobLevel())
+                .jobCategoryId(jobPost.getJobCategory().getId())
+                .subCategoryIds(jobPost.getSubCategory().getId())
+                .build();
+
+
+
     }
 
 
@@ -175,15 +201,38 @@ public class JobPostService {
     public PageResponse<JobListingResponse> getJobListings(String jobTitle, StatusEnum statusEnum, Integer pageNo) {
         Pageable pageable = PageRequest.of(pageNo - 1, 10);
 
-        Page<JobPost> jobPosts = jobPostRepository.findAllByJobTitleContainingAndStatusEnum(jobTitle, statusEnum, pageable);
+        // Retrieve the authenticated user
+        User authenticatedUser = authenticationUtil.getAuthenticatedUser();
+        Company company = authenticatedUser.getCompany();
+        if (company == null) {
+            throw new EntityNotFoundException("Người dùng chưa có thông tin công ty");
+        }
 
-        Page<JobListingResponse> responsePage = jobPosts.map(this::convertToJobListingResponse);
+        // Filter job posts by company
+        Page<JobListingResponse> jobPosts = jobPostRepository.findAllByJobTitleContainingAndStatusEnum(jobTitle, statusEnum,
+                pageable, company);
 
-        return new PageResponse<>(responsePage);
+        return new PageResponse<>(jobPosts);
     }
 
+//    public PageResponse<JobListingResponse> getJobList( Integer pageNo) {
+//        Pageable pageable = PageRequest.of(pageNo - 1, 10);
+//
+//        // Retrieve the authenticated user
+//        User authenticatedUser = authenticationUtil.getAuthenticatedUser();
+//        Company company = authenticatedUser.getCompany();
+//        if (company == null) {
+//            throw new EntityNotFoundException("Người dùng chưa có thông tin công ty");
+//        }
+//
+//        // Filter job posts by company
+//        Page<JobListingResponse> jobPosts = jobPostRepository.findAll();
+//
+//        return new PageResponse<>(jobPosts);
+//    }
+
     public List<JobPostTitleResponse> getJobPostTitle() {
-        return jobPostRepository.getJobPostTitle();
+        return jobPostRepository.getJobPostTitleByCompany(authenticationUtil.getAuthenticatedUser().getCompany());
     }
 
     private JobPostTitleResponse convertToJobPostTitleResponse(JobPost jobPost) {

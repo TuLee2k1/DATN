@@ -150,10 +150,12 @@
                 // Chuyển hướng đến trang dựa trên vai trò
                 if (userInfo.roles.includes("ROLE_ADMIN")) {
                     window.location.href = "/auth/admin/dashboard";
-                } else if (userInfo.roles.includes("ROLE_USER")) {
-                    window.location.href = "http://localhost:8080";
-                } else if (userInfo.roles.includes("ROLE_COMPANY")) {
-                    window.location.href = "/job-posts";
+
+                } else if (data.roles.includes("ROLE_USER")) {
+                    window.location.href = "http://localhost:8080/";
+                } else if (data.roles.includes("ROLE_COMPANY")) {
+                    window.location.href = "/job-posts/create";
+
                 } else {
                     window.location.href = "/auth/default/dashboard";
                 }

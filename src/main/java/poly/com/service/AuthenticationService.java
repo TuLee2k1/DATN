@@ -242,7 +242,7 @@ public class AuthenticationService {
     // Phương thức hỗ trợ xác định URL chuyển hướng dựa trên role
     private String determineRedirectUrl(List<RoleType> roles) {
         if (roles.contains(RoleType.ROLE_COMPANY)) {
-            return "/JobPost";
+            return "/JobPost/create";
         } else if (roles.contains(RoleType.ROLE_ADMIN)) {
             return "/admin/dashboard";
         } else if (roles.contains(RoleType.ROLE_USER)) {
