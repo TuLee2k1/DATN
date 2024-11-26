@@ -11,4 +11,6 @@ import java.util.List;
 
 public interface JobProfileRepository extends JpaRepository<JobProfile, Long> {
 
+    @Query("SELECT COUNT(jp) FROM JobProfile jp")
+    Long countAllJobProfiles();
 }

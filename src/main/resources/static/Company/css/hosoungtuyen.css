@@ -1,0 +1,103 @@
+.header {
+    font-size: 20px;
+    font-weight: bold;
+    color: #4a3aff;
+    padding: 20px;
+}
+.filter-bar {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.filter-bar .btn {
+    background-color: #f3f0ff;
+    color: #6c757d;
+    border: none;
+    margin-right: 10px;
+}
+.filter-bar .btn:hover, .filter-bar .btn:focus {
+    background-color: #4a3aff;
+    color: #ffffff;
+}
+.filter-bar .btn.active {
+    background-color: #4a3aff;
+    color: #ffffff;
+}
+.table-container {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
+.empty-state {
+    text-align: center;
+    color: #6c757d;
+    margin-top: 50px;
+}
+.footer-note {
+    color: #ff6b6b;
+    font-size: 14px;
+    margin-top: 20px;
+    text-align: right;
+}
+.badge-status {
+    padding: 5px 10px;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 14px;
+}
+.status-pending {
+    background-color: #ffc107;
+}
+.status-matching {
+    background-color: #28a745;
+}
+.status-interviewing {
+    background-color: #17a2b8;
+}
+.status-hired {
+    background-color: #007bff;
+}
+.status-rejected {
+    background-color: #dc3545;
+}
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: #f8f9fa;
+}
+@media (max-width: 768px) {
+    .filter-bar .row {
+        flex-direction: column;
+    }
+    .filter-bar .col-md-6 {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    .filter-bar .text-end {
+        text-align: left !important;
+    }
+    .table-container {
+        padding: 10px;
+    }
+    .table thead {
+        display: none;
+    }
+    .table tbody tr {
+        display: block;
+        margin-bottom: 10px;
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        padding: 10px;
+    }
+    .table tbody tr td {
+        display: flex;
+        justify-content: space-between;
+        padding: 5px 0;
+    }
+    .table tbody tr td::before {
+        content: attr(data-label);
+        font-weight: bold;
+        color: #6c757d;
+    }
+}

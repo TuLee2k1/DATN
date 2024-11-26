@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="description" content="Responsive Admin &amp; Dashboard Template based on Bootstrap 5">
+	<meta name="author" content="AdminKit">
+	<meta name="keywords" content="adminkit, bootstrap, bootstrap 5, admin, dashboard, template, responsive, css, sass, html, theme, front-end, ui kit, web">
+	<link rel="preconnect" href="https://fonts.gstatic.com">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+	<link rel="shortcut icon" href="img/icons/icon-48x48.png" />
+<!--    <link th:href="@{../Company/css/danhsach.css}" rel="stylesheet"/>-->
+	<link rel="stylesheet" href="/Company/css/danhsach.css">
+	<link rel="canonical" href="https://demo-basic.adminkit.io/" />
+	<title>Quản lý tin đăng</title>
+
+<!--	<link th:href="@{../css/app.css}"  rel="stylesheet">-->
+	<link rel="stylesheet" href="/css/app.css">
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+	<style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+		.custom-container {
+            max-width: 100%; /* Chiều rộng gần bằng 100% nhưng vẫn giữ viền */
+            margin: 0 auto; /* Căn giữa */
+}
+		/* Bố cục tổng thể */
+		.pagination-nav {
+			display: flex;
+			justify-content: flex-end; /* Căn về góc phải */
+			padding: 10px;
+			margin-top: 20px;
+		}
+
+		.pagination {
+			list-style: none;
+			display: flex;
+			gap: 5px;
+			padding: 0;
+			margin: 0;
+		}
+
+		/* Định dạng từng mục phân trang */
+		.page-item {
+			border: 1px solid #ddd;
+			border-radius: 5px;
+			padding: 5px 10px;
+			text-align: center;
+			font-size: 14px; /* Kích thước nhỏ hơn */
+			background-color: white;
+			color: gray;
+		}
+
+		.page-item a {
+			text-decoration: none;
+			color: inherit;
+			display: block;
+		}
+
+		/* Hover màu xám */
+		.page-item:hover {
+			background-color: #f0f0f0;
+			color: gray;
+			cursor: pointer;
+		}
+
+		/* Mục đang được chọn */
+		.page-item.active {
+			background-color: #ddd; /* Màu xám */
+			color: gray;
+			pointer-events: none;
+			font-weight: bold;
+		}
+
+		/* Mục bị vô hiệu hóa */
+		.page-item.disabled {
+			color: #ccc;
+			pointer-events: none;
+			border-color: #eee;
+		}
+
+		/* Ẩn đường viền khi hover trên mục bị vô hiệu hóa */
+		.page-item.disabled:hover {
+			background-color: white;
+			cursor: not-allowed;
+		}
+
+
+
+
+	</style>
+</head>
+
+<body>
+	<div class="wrapper">
+
+		<!-- sidebar -->
+		<nav id="sidebar" class="sidebar js-sidebar">
+			<div class="sidebar-content js-simplebar">
+			  <a class="sidebar-brand" href="Taikhoannhatuyendung.html">
+				<span class="align-middle">Dream job</span>
+			  </a>
+
+			  <ul class="sidebar-nav">
+				<li class="sidebar-header">
+				  <div class="d-flex align-items-center">
+					<span>Quản lý đăng tuyển</span>
+				  </div>
+				</li>
+				<li class="sidebar-item">
+				  <a class="sidebar-link" href="Taotintuyendung.html">
+					<i class="align-middle" data-feather="plus-square"></i>
+					<span>Tạo tin tuyển dụng</span>
+				  </a>
+				</li>
+				  <li class="sidebar-item">
+					  <a class="sidebar-link" href="javascript:void(0)"
+						 th:onclick="'fetchArticles()'"
+						 th:href="@{/Danhsachtindang}">
+						  <i class="align-middle" data-feather="file-text"></i>
+						  <span>Quản lý tin đăng</span>
+					  </a>
+				  </li>
+
+				<li class="sidebar-header">
+				  <div class="d-flex align-items-center">
+					<span>Quản lý ứng viên</span>
+				  </div>
+				</li>
+				<li class="sidebar-item">
+				  <a class="sidebar-link" href="Hosoungtuyen.html">
+					<i class="align-middle" data-feather="file"></i>
+					<span>Hồ sơ ứng tuyển</span>
+				  </a>
+				</li>
+				<li class="sidebar-item">
+				  <a class="sidebar-link" href="Timungvienmoi.html">
+					<i class="align-middle" data-feather="search"></i>
+					<span>Tìm ứng viên mới</span>
+				  </a>
+				</li>
+
+				<li class="sidebar-header">
+				  <div class="d-flex align-items-center">
+					<span>Quản lý dịch vụ</span>
+				  </div>
+				</li>
+				<li class="sidebar-item">
+				  <a class="sidebar-link" href="danhsachdonhang.html">
+					<i class="align-middle" data-feather="shopping-bag"></i>
+					<span>Danh sách đơn hàng</span>
+				  </a>
+				</li>
+				<li class="sidebar-item">
+				  <a class="sidebar-link" href="lichsumuahang.html">
+					<i class="align-middle" data-feather="package"></i>
+					<span>Lịch sử đơn hàng</span>
+				  </a>
+				</li>
+				<li class="sidebar-item">
+				  <a class="sidebar-link" href="thongtinthanhtoan.html">
+					<i class="align-middle" data-feather="credit-card"></i>
+					<span>Thông tin thanh toán</span>
+				  </a>
+				</li>
+
+				<li class="sidebar-header">
+				  <div class="d-flex align-items-center">
+					<span>Tài khoản và thương hiệu</span>
+				  </div>
+				</li>
+				<li class="sidebar-item">
+				  <a class="sidebar-link" href="#">
+					<i class="align-middle" data-feather="user"></i>
+					<span>Tài khoản nhà tuyển dụng</span>
+				  </a>
+				</li>
+				<li class="sidebar-item">
+				  <a class="sidebar-link" href="#">
+					<i class="align-middle" data-feather="award"></i>
+					<span>Quảng bá thương hiệu</span>
+				  </a>
+				</li>
+
+				<li class="sidebar-header">
+				  <div class="d-flex align-items-center">
+					<span>Hướng dẫn và thông báo</span>
+				  </div>
+				</li>
+				<li class="sidebar-item">
+				  <a class="sidebar-link" href="#">
+					<i class="align-middle" data-feather="help-circle"></i>
+					<span>Hướng dẫn sử dụng</span>
+				  </a>
+				</li>
+				<li class="sidebar-item">
+				  <a class="sidebar-link" href="#">
+					<i class="align-middle" data-feather="bell"></i>
+					<span>Thông báo mới</span>
+				  </a>
+				</li>
+				<li class="sidebar-item">
+				  <a class="sidebar-link" href="#">
+					<i class="align-middle" data-feather="life-buoy"></i>
+					<span>Hỗ trợ</span>
+				  </a>
+				</li>
+
+				<li class="sidebar-item mt-4">
+				  <a href="#" class="btn btn-primary w-100">
+					<span>Cổng người tìm việc</span>
+					<span class="ms-2">Chuyển</span>
+				  </a>
+				</li>
+			  </ul>
+			</div>
+		  </nav>
+
+		<div class="main">
+			<!-- nav head -->
+			<nav class="navbar navbar-expand navbar-light navbar-bg">
+				<a class="sidebar-toggle js-sidebar-toggle">
+          <i class="hamburger align-self-center"></i>
+        </a>
+
+				<div class="navbar-collapse collapse">
+					<ul class="navbar-nav navbar-align">
+						<li class="nav-item dropdown">
+							<a class="nav-icon dropdown-toggle" href="#" id="alertsDropdown" data-bs-toggle="dropdown">
+								<div class="position-relative">
+									<i class="align-middle" data-feather="bell"></i>
+									<span class="indicator">4</span>
+								</div>
+							</a>
+							<div class="dropdown-menu dropdown-menu-lg dropdown-menu-end py-0" aria-labelledby="alertsDropdown">
+								<div class="dropdown-menu-header">
+									4 New Notifications
+								</div>
+								<div class="list-group">
+									<a href="#" class="list-group-item">
+										<div class="row g-0 align-items-center">
+											<div class="col-2">
+												<i class="text-danger" data-feather="alert-circle"></i>
+											</div>
+											<div class="col-10">
+												<div class="text-dark">Update completed</div>
+												<div class="text-muted small mt-1">Restart server 12 to complete the update.</div>
+												<div class="text-muted small mt-1">30m ago</div>
+											</div>
+										</div>
+									</a>
+									<a href="#" class="list-group-item">
+										<div class="row g-0 align-items-center">
+											<div class="col-2">
+												<i class="text-warning" data-feather="bell"></i>
+											</div>
+											<div class="col-10">
+												<div class="text-dark">Lorem ipsum</div>
+												<div class="text-muted small mt-1">Aliquam ex eros, imperdiet vulputate hendrerit et.</div>
+												<div class="text-muted small mt-1">2h ago</div>
+											</div>
+										</div>
+									</a>
+									<a href="#" class="list-group-item">
+										<div class="row g-0 align-items-center">
+											<div class="col-2">
+												<i class="text-primary" data-feather="home"></i>
+											</div>
+											<div class="col-10">
+												<div class="text-dark">Login from 192.186.1.8</div>
+												<div class="text-muted small mt-1">5h ago</div>
+											</div>
+										</div>
+									</a>
+									<a href="#" class="list-group-item">
+										<div class="row g-0 align-items-center">
+											<div class="col-2">
+												<i class="text-success" data-feather="user-plus"></i>
+											</div>
+											<div class="col-10">
+												<div class="text-dark">New connection</div>
+												<div class="text-muted small mt-1">Christina accepted your request.</div>
+												<div class="text-muted small mt-1">14h ago</div>
+											</div>
+										</div>
+									</a>
+								</div>
+								<div class="dropdown-menu-footer">
+									<a href="#" class="text-muted">Show all notifications</a>
+								</div>
+							</div>
+						</li>
+						<li class="nav-item dropdown">
+							<a class="nav-icon dropdown-toggle" href="#" id="messagesDropdown" data-bs-toggle="dropdown">
+								<div class="position-relative">
+									<i class="align-middle" data-feather="message-square"></i>
+								</div>
+							</a>
+							<div class="dropdown-menu dropdown-menu-lg dropdown-menu-end py-0" aria-labelledby="messagesDropdown">
+								<div class="dropdown-menu-header">
+									<div class="position-relative">
+										4 New Messages
+									</div>
+								</div>
+								<div class="list-group">
+									<a href="#" class="list-group-item">
+										<div class="row g-0 align-items-center">
+											<div class="col-2">
+												<img src="img/avatars/avatar-5.jpg" class="avatar img-fluid rounded-circle" alt="Vanessa Tucker">
+											</div>
+											<div class="col-10 ps-2">
+												<div class="text-dark">Vanessa Tucker</div>
+												<div class="text-muted small mt-1">Nam pretium turpis et arcu. Duis arcu tortor.</div>
+												<div class="text-muted small mt-1">15m ago</div>
+											</div>
+										</div>
+									</a>
+									<a href="#" class="list-group-item">
+										<div class="row g-0 align-items-center">
+											<div class="col-2">
+												<img src="img/avatars/avatar-2.jpg" class="avatar img-fluid rounded-circle" alt="William Harris">
+											</div>
+											<div class="col-10 ps-2">
+												<div class="text-dark">William Harris</div>
+												<div class="text-muted small mt-1">Curabitur ligula sapien euismod vitae.</div>
+												<div class="text-muted small mt-1">2h ago</div>
+											</div>
+										</div>
+									</a>
+									<a href="#" class="list-group-item">
+										<div class="row g-0 align-items-center">
+											<div class="col-2">
+												<img src="img/avatars/avatar-4.jpg" class="avatar img-fluid rounded-circle" alt="Christina Mason">
+											</div>
+											<div class="col-10 ps-2">
+												<div class="text-dark">Christina Mason</div>
+												<div class="text-muted small mt-1">Pellentesque auctor neque nec urna.</div>
+												<div class="text-muted small mt-1">4h ago</div>
+											</div>
+										</div>
+									</a>
+									<a href="#" class="list-group-item">
+										<div class="row g-0 align-items-center">
+											<div class="col-2">
+												<img src="img/avatars/avatar-3.jpg" class="avatar img-fluid rounded-circle" alt="Sharon Lessman">
+											</div>
+											<div class="col-10 ps-2">
+												<div class="text-dark">Sharon Lessman</div>
+												<div class="text-muted small mt-1">Aenean tellus metus, bibendum sed, posuere ac, mattis non.</div>
+												<div class="text-muted small mt-1">5h ago</div>
+											</div>
+										</div>
+									</a>
+								</div>
+								<div class="dropdown-menu-footer">
+									<a href="#" class="text-muted">Show all messages</a>
+								</div>
+							</div>
+						</li>
+						<li class="nav-item dropdown">
+							<a class="nav-icon dropdown-toggle d-inline-block d-sm-none" href="#" data-bs-toggle="dropdown">
+                <i class="align-middle" data-feather="settings"></i>
+              </a>
+
+							<a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#" data-bs-toggle="dropdown">
+                <img src="img/avatars/avatar.jpg" class="avatar img-fluid rounded me-1" alt="Charles Hall" /> <span class="text-dark">Charles Hall</span>
+              </a>
+							<div class="dropdown-menu dropdown-menu-end">
+								<a class="dropdown-item" href="Taikhoannhatuyendung.html"><i class="align-middle me-1" data-feather="user"></i> Profile</a>
+								<a class="dropdown-item" href="#"><i class="align-middle me-1" data-feather="pie-chart"></i> Analytics</a>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item" href="index.html"><i class="align-middle me-1" data-feather="settings"></i> Settings & Privacy</a>
+								<a class="dropdown-item" href="#"><i class="align-middle me-1" data-feather="help-circle"></i> Help Center</a>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item" href="#">Log out</a>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</nav>
+
+			<main class="content">
+				<div class="container custom-container mt-1">
+					<div class="filter-bar">
+						<label>Bộ lọc</label>
+						<form th:action="@{/job-posts/Listing}" method="get" class="d-flex gap-2">
+							<select class="form-select form-select-sm" name="jobTitle">
+								<option value="">Tất cả tin đăng</option>
+								<option th:each="title : ${jobTitles}"
+										th:value="${title.jobTitle}"
+										th:text="${title.jobTitle}"
+										th:selected="${title.jobTitle == selectedJobTitle}">
+								</option>
+							</select>
+							<select class="form-select form-select-sm" name="statusEnum">
+								<option value="">Tất cả trạng thái</option>
+								<option th:each="status : ${statusEnums}"
+										th:value="${status}"
+										th:text="${status.name()}"
+										th:selected="${status == selectedStatus}">
+								</option>
+							</select>
+							<button type="submit" class="btn btn-primary btn-sm">Lọc</button>
+						</form>
+<!--						<button class="btn btn-outline-secondary btn-sm ms-auto">-->
+<!--							<i class="fas fa-download"></i> Tải danh sách-->
+<!--						</button>-->
+					</div>
+
+					<div class="table-container" th:if="${not #lists.isEmpty(jobListings)}">
+						<table class="table table-bordered">
+							<thead>
+							<tr>
+								<th>Ẩn/Hiện</th>
+								<th>Tên tin đăng</th>
+								<th class="sortable">Ngày tạo</th>
+								<th class="sortable">Thời hạn</th>
+								<th>Trạng thái duyệt</th>
+								<th>Hành động</th>
+							</tr>
+							</thead>
+							<tbody>
+							<tr th:each="job : ${jobListings}">
+								<td data-label="Ẩn/Hiện">
+									<div class="form-check form-switch">
+										<input class="form-check-input toggle-view"
+											   type="checkbox"
+											   role="switch"
+											   th:checked="${job.status == T(poly.com.model.JobPostStatus).Open}"
+											   th:data-id="${job.id}">
+									</div>
+								</td>
+								<td data-label="Tên tin đăng" th:text="${job.jobTitle}"></td>
+								<td data-label="Ngày tạo" th:text="${#dates.format(job.createDate, 'dd/MM/yyyy')}"></td>
+								<td data-label="Thời hạn" th:text="${#dates.format(job.endDate, 'dd/MM/yyyy')}"></td>
+								<td data-label="Trạng thái duyệt">
+    <span th:with="status=${job.statusEnum.name()}"
+		  th:class="${'badge ' +
+                     (status == 'APPROVED' ? 'bg-success' :
+                      status == 'PENDING' ? 'bg-warning' : 'bg-danger')}"
+		  th:text="${status}">
+    </span>
+								</td>
+								<td data-label="Hành động">
+									<a th:href="@{/job-posts/update/{id}(id=${job.id})}"
+									   class="btn btn-sm btn-primary edit-btn">
+										<i class="fas fa-edit"></i>
+									</a>
+									<button class="btn btn-sm btn-danger delete-btn"
+											th:data-id="${job.id}">
+										<i class="fas fa-trash"></i>
+									</button>
+								</td>
+							</tr>
+							</tbody>
+						</table>
+
+						<!-- Pagination -->
+						<nav class="pagination-nav" th:if="${totalPages > 1}">
+							<ul class="pagination">
+								<li class="page-item previous-item" th:classappend="${currentPage == 1 ? 'disabled' : ''}">
+									<a class="page-link" th:href="@{/job-posts/Listing(pageNo=${currentPage - 1}, jobTitle=${selectedJobTitle}, statusEnum=${selectedStatus})}">Previous</a>
+								</li>
+								<li class="page-item" th:each="pageNumber : ${#numbers.sequence(1, totalPages)}"
+									th:classappend="${pageNumber == currentPage ? 'active' : ''}">
+									<a class="page-link" th:href="@{/job-posts/Listing(pageNo=${pageNumber}, jobTitle=${selectedJobTitle}, statusEnum=${selectedStatus})}"
+									   th:text="${pageNumber}">
+									</a>
+								</li>
+								<li class="page-item next-item" th:classappend="${currentPage == totalPages ? 'disabled' : ''}">
+									<a class="page-link" th:href="@{/job-posts/Listing(pageNo=${currentPage + 1}, jobTitle=${selectedJobTitle}, statusEnum=${selectedStatus})}">Next</a>
+								</li>
+							</ul>
+						</nav>
+
+
+
+					</div>
+
+					<!-- Empty state -->
+					<div class="content-section" th:if="${#lists.isEmpty(jobListings)}">
+						<p>Bạn chưa có tin tuyển dụng nào!</p>
+						<p>Tạo tin đăng tuyển để tìm kiếm nhân tài ngay!</p>
+						<button class="btn btn-primary" id="create-job-btn">Tạo tin ngay</button>
+						<div class="footer-note">
+							<i class="fas fa-info-circle"></i> Để đảm bảo tin đăng hợp lệ, tham khảo <a href="#">Quy định duyệt tin tuyển dụng</a> tại Việc Làm 24H
+						</div>
+					</div>
+				</div>
+			</main>
+
+			<!-- <footer class="footer">
+				<div class="container-fluid">
+					<div class="row text-muted">
+						<div class="col-6 text-start">
+							<p class="mb-0">
+								<a class="text-muted" href="https://adminkit.io/" target="_blank"><strong>AdminKit</strong></a> - <a class="text-muted" href="https://adminkit.io/" target="_blank"><strong>Bootstrap Admin Template</strong></a>								&copy;
+							</p>
+						</div>
+						<div class="col-6 text-end">
+							<ul class="list-inline">
+								<li class="list-inline-item">
+									<a class="text-muted" href="https://adminkit.io/" target="_blank">Support</a>
+								</li>
+								<li class="list-inline-item">
+									<a class="text-muted" href="https://adminkit.io/" target="_blank">Help Center</a>
+								</li>
+								<li class="list-inline-item">
+									<a class="text-muted" href="https://adminkit.io/" target="_blank">Privacy</a>
+								</li>
+								<li class="list-inline-item">
+									<a class="text-muted" href="https://adminkit.io/" target="_blank">Terms</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</footer> -->
+		</div>
+	</div>
+	<script th:inline="javascript">
+		document.addEventListener('DOMContentLoaded', function() {
+			const toggleButtons = document.querySelectorAll('.toggle-view');
+
+			toggleButtons.forEach(button => {
+				button.addEventListener('change', function() {
+					const jobId = this.getAttribute('data-id');
+					const enabled = this.checked;
+
+					fetch(`/job-posts/${jobId}/toggle-view?enable=${enabled}`, {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json',
+							// Add CSRF token if you're using Spring Security
+							// 'X-CSRF-TOKEN': document.querySelector('meta[name="_csrf"]').content
+						}
+					})
+							.then(response => {
+								if (!response.ok) {
+									throw new Error('Network response was not ok');
+								}
+								// Optionally refresh the page or update the UI
+								location.reload();
+							})
+							.catch(error => {
+								console.error('Error:', error);
+								// Revert the toggle if there was an error
+								this.checked = !enabled;
+								alert('Có lỗi xảy ra khi cập nhật trạng thái');
+							});
+				});
+			});
+		});
+
+	</script>
+	<script src="/js/app.js"></script>
+	<script src="/Company/js/danhsach.js"></script>
+
+
+</body>
+
+</html>
