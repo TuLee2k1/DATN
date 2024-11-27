@@ -8,8 +8,11 @@ import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 import poly.com.Enum.Exp;
 import poly.com.Enum.JobLevel;
+import poly.com.Enum.StatusEnum;
 import poly.com.Enum.WorkType;
+import poly.com.model.JobPostStatus;
 import poly.com.model.Company;
+
 
 import java.util.Date;
 
@@ -76,6 +79,7 @@ public class JobPostRequest {
     private Exp exp; // Kinh nghiệm
 
     private String companyName;
+
 
 
 }

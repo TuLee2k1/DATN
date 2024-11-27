@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Data;
 import poly.com.Enum.StatusEnum;
 import poly.com.model.Company;
+
 import poly.com.model.JobPost;
 import poly.com.model.JobPostStatus;
 
@@ -32,6 +33,7 @@ public class JobPostResponse {
     private JobPostStatus status;
     private StatusEnum statusEnum;
     private Company company;
+
 
     public static JobPostResponse fromEntity(JobPost jobPost) {
         return JobPostResponse.builder()
