@@ -6,6 +6,13 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
+<!--    &lt;!&ndash; Thêm CSS của Bootstrap &ndash;&gt;-->
+<!--    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">-->
+
+    <!-- Thêm JS của Bootstrap -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
     <link rel="stylesheet" href="/css/custom-bs.css">
     <link rel="stylesheet" href="/css/jquery.fancybox.min.css">
     <link rel="stylesheet" href="/css/bootstrap-select.min.css">
@@ -16,10 +23,49 @@
 
     <!-- MAIN CSS -->
     <link rel="stylesheet" href="/css/style.css">
+    <style>
+      .jobApplicationModal{
+        z-index: 1050; /* Đảm bảo modal có z-index cao hơn backdrop */
+      }
+
+      .modal-backdrop {
+        z-index: 1040; /* Đảm bảo backdrop có z-index thấp hơn modal */
+      }
+      .modal-backdrop {
+        display: none !important; /* Ẩn backdrop để kiểm tra */
+      }
+
+    </style>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // document.getElementById('userInfo').classList.add('d-none');
+        // Kiểm tra xem có thông tin người dùng trong localStorage không
+        const userInfo = localStorage.getItem('userInfo');
+        // const defaultAvatar = 'Admin/images/person_1';
+        if (userInfo) {
+          // Nếu có, chuyển đổi chuỗi JSON thành đối tượng
+          const user = JSON.parse(userInfo);
+
+          // Hiển thị thông tin người dùng
+          // Kiểm tra avatar và gán giá trị
+          // const avatarSrc = user.avatar ? user.avatar : defaultAvatar;
+          // document.getElementById('userAvatar').src = avatarSrc;
+          document.getElementById('username').textContent = user.userInfo.fullName; // Giả sử username là thuộc tính trong user
+          console.log(user.userInfo.fullName);
+          document.getElementById('authButtons').style.display = 'none';
+          document.getElementById('userInfo').style.display = 'flex'; // Hoặc 'block' tùy thuộc vào layout
+        } else {
+          // Nếu không có thông tin người dùng, đảm bảo rằng các nút vẫn hiển thị
+          document.getElementById('authButtons').style.display = 'flex';
+          document.getElementById('userInfo').style.display = 'none'; // Hoặc 'block' tùy thuộc vào layout
+        }
+      });
+      </script>
+
   </head>
   <body id="top">
 
-  
 
 <div class="site-wrap">
 
@@ -58,10 +104,51 @@
           </nav>
           
           <div class="right-cta-menu text-right d-flex aligin-items-center col-6">
-            <div class="ml-auto">
-              <a href="post-job.html" class="btn btn-outline-white border-width-2 d-none d-lg-inline-block"><span class="mr-2 icon-add"></span>Đăng kí</a>
-              <a href="login.html" class="btn btn-primary border-width-2 d-none d-lg-inline-block"><span class="mr-2 icon-lock_outline"></span>Đăng nhập</a>
+            <div id="authButtons" class="ml-auto">
+              <button id="signupBtn" class="btn btn-outline-white border-width-2 d-none d-lg-inline-block">
+                <span class="mr-2 icon-add"></span>Đăng Ký
+              </button>
+              <button id="loginBtn" class="btn btn-primary border-width-2 d-none d-lg-inline-block">
+                <span class="mr-2 icon-lock_outline"></span>Đăng Nhập
+              </button>
             </div>
+
+            <div id="userInfo" class="flex items-center p-4" style="display: flex; position: relative;">
+              <!-- Notification Bell -->
+              <!--                            <div class="relative">-->
+              <!--                                <i class="fas fa-bell text-white text-xl"></i>-->
+              <!--                                <button class="absolute top-0 right-0 bg-red-600 text-white text-xs rounded-full px-1">1</button>-->
+              <!--                            </div>-->
+              <!-- User Icon -->
+              <div class="ml-4">
+                <div class="w-8 h-8 bg-white rounded-full flex items-center justify-center">
+                  <i class="fas fa-user text-purple-800"></i>
+                </div>
+              </div>
+              <div class="ml-2 text-white flex items-center relative">
+                <span id="username" class="cursor-pointer truncate" style="max-width: 100px;">Lê</span>
+                <i class="fas fa-caret-down ml-1"></i>
+
+                <!-- Dropdown menu -->
+                <div id="dropdownMenu"
+                     class="absolute right-0 bg-white text-black shadow-lg mt-2 rounded hidden">
+                  <a href="#" class="block px-4 py-2 hover:bg-gray-200" id="dashboard">Tài khoản</a>
+                  <a href="#" class="block px-4 py-2 hover:bg-gray-200" id="logoutBtn">Đăng xuất</a>
+                </div>
+              </div>
+              <!-- Divider -->
+              <div class="ml-4 border-l border-white h-6"></div>
+              <!-- Employer Section -->
+              <div class="ml-4 text-white flex items-center">
+                <i class="fas fa-briefcase text-blue-400"></i>
+                <div id="tuyendung" class="ml-2">
+                  <div class="text-xs">DÀNH CHO</div>
+                  <div class="text-lg font-semibold">Nhà Tuyển Dụng</div>
+                  <div class="text-xs">Đăng tin miễn phí</div>
+                </div>
+              </div>
+            </div>
+
             <a href="#" class="site-menu-toggle js-menu-toggle d-inline-block d-xl-none mt-lg-2 ml-3"><span class="icon-menu h3 m-0 p-0 mt-2"></span></a>
           </div>
 
@@ -110,10 +197,111 @@
                 <a href="#" class="btn btn-block btn-light btn-md"><span class="icon-heart-o mr-2 text-danger"></span>Save Job</a>
               </div>
               <div class="col-6">
-                <a href="#" class="btn btn-block btn-primary btn-md">Apply Now</a>
+                <a th:href="@{/job-posts/detail/{id}(id=${jobPost.getId()})}" class="btn btn-block btn-primary btn-md" data-bs-toggle="modal" data-bs-target="#jobApplicationModal">Apply Now</a>
               </div>
             </div>
           </div>
+
+          <!-- Modal -->
+          <div class="modal fade" id="jobApplicationModal" tabindex="-1" aria-labelledby="jobApplicationModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <div class="header">
+                    <h1 th:text="${jobPost.getJobTitle()}"></h1>
+                    <p th:text="${jobPost.companyName}"></p>
+                  </div>
+                  <div class="image-container">
+                    <img alt="Illustration of a person with a folder and magnifying glass" height="100"
+                         src="https://storage.googleapis.com/a1aa/image/ZpnyPQLpEgZTItI5NI1aoNglV68UfhHkTrX6vE2nVRZ2Ge0TA.jpg" width="100"/>
+                    <p>Bạn chưa có hồ sơ nào</p>
+                  </div>
+                  <div class="btn-group">
+                    <button class="btn btn-outline-primary" onclick="document.getElementById('fileInput').click();">
+                      <i class="fas fa-upload"></i> Tải lên hồ sơ có sẵn
+                    </button>
+                  </div>
+                  <p class="text-center text-muted">File .doc, .docx, .pdf dung lượng &lt;= 5 MB</p>
+
+                  <form th:action="@{/job-application/{jobPostId}(jobPostId=${jobPost.id})}"
+                        method="post"
+                        enctype="multipart/form-data"
+                        th:object="${applicationForm}">
+
+                    <!-- Hiển thị lỗi chung -->
+                    <div th:if="${#fields.hasErrors('*')}" class="alert alert-danger">
+                      <ul>
+                        <li th:each="err : ${#fields.errors('*')}" th:text="${err}">Lỗi nhập liệu</li>
+                      </ul>
+                    </div>
+
+                    <!-- Trường Họ và Tên -->
+                    <div class="form-group">
+                      <label for="name">Họ và tên <span class="text-danger">*</span></label>
+                      <input type="text" class="form-control"
+                             id="name"
+                             th:field="*{name}"
+                             th:errorclass="is-invalid"/>
+                      <div class="invalid-feedback" th:if="${#fields.hasErrors('name')}">
+                        <span th:errors="*{name}">Lỗi họ tên</span>
+                      </div>
+                    </div>
+
+                    <!-- Trường Email -->
+                    <div class="form-group">
+                      <label for="email">Email <span class="text-danger">*</span></label>
+                      <input type="email" class="form-control"
+                             id="email"
+                             th:field="*{email}"
+                             th:errorclass="is-invalid"/>
+                      <div class="invalid-feedback"
+                           th:if="${#fields.hasErrors('email')}">
+                        <span th:errors="*{email}">Lỗi email</span>
+                      </div>
+                    </div>
+
+                    <!-- Trường Số Điện Thoại -->
+                    <div class="form-group">
+                      <label for="phone">Số điện thoại <span class="text-danger">*</span></label>
+                      <input type="text" class="form-control"
+                             id="phone"
+                             th:field="*{phone}"
+                             th:errorclass="is-invalid"/>
+                      <div class="invalid-feedback"
+                           th:if="${#fields.hasErrors('phone')}">
+                        <span th:errors="*{phone}">Lỗi số điện thoại</span>
+                      </div>
+                    </div>
+
+                    <!-- Trường Tải CV -->
+                    <div class="form-group">
+                      <label for="fileInput">Tải lên hồ sơ <span class="text-danger">*</span></label>
+                      <input type="file"
+                             class="form-control"
+                             id="fileInput"
+                             name="resume"
+                             accept=".doc,.docx,.pdf"
+                             style="display: none;"
+                             onchange="updateFileName()"
+                             th:errorclass="is-invalid"/>
+                      <div class="invalid-feedback"
+                           th:if="${#fields.hasErrors('resume')}">
+                        <span th:errors="*{resume}">Lỗi tệp CV</span>
+                      </div>
+                      <p class="file-name" id="fileName">Chưa có tệp nào được chọn</p>
+                    </div>
+
+                    <button type="submit" class="submit-btn">Nộp hồ sơ</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
         </div>
         <div class="row">
           <div class="col-lg-8">
@@ -162,7 +350,7 @@
                 <a href="#" class="btn btn-block btn-light btn-md"><span class="icon-heart-o mr-2 text-danger"></span>Save Job</a>
               </div>
               <div class="col-6">
-                <a href="#" class="btn btn-block btn-primary btn-md">Apply Now</a>
+                <a th:href="@{/job-posts/detail/{id}(id=${jobPost.getId()})}" class="btn btn-block btn-primary btn-md" data-bs-toggle="modal" data-bs-target="#jobApplicationModal" >Apply Now</a>
               </div>
             </div>
 
@@ -312,7 +500,7 @@
 
     </section>
 
-    <section class="pt-5 bg-image overlay-primary fixed overlay" style="background-image: url('images/hero_1.jpg');">
+    <section class="pt-5 bg-image overlay-primary fixed overlay" style="background-image: url('/Admin/images/hero_1.jpg');">
       <div class="container">
         <div class="row">
           <div class="col-md-6 align-self-center text-center text-md-left mb-5 mb-md-0">
@@ -406,6 +594,17 @@
     
     <script src="/js/custom.js"></script>
 
-     
+<script>
+  function updateFileName() {
+    const fileInput = document.getElementById('fileInput');
+    const fileName = document.getElementById('fileName');
+    if (fileInput.files.length > 0) {
+      fileName.textContent = fileInput.files[0].name;
+    } else {
+      fileName.textContent = 'Chưa có tệp nào được chọn';
+    }
+  }
+</script>
+
   </body>
 </html>

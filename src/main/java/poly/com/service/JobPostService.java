@@ -75,6 +75,7 @@ public class JobPostService {
                 .exp(request.getExp())
                 .status(JobPostStatus.Open)
                 .statusEnum(StatusEnum.PENDING)
+                .appliedCount(0)
                 .build();
 
         var savedJobPost = jobPostRepository.save(jobPost);
