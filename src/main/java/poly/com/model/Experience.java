@@ -18,16 +18,16 @@ public class Experience extends AbstractEntity{
     @Column(name = "jobTitle")
     private String jobTitle;
 
-    @Column(name = "jobDescription")
+    @Column(name = "jobDescription") // mô tả công việc
     private String jobDescription;
 
-    @Column(name = "companyName")
+    @Column(name = "companyName") // tên công ty
     private String companyName;
 
-    @Column(name = "startDate")
+    @Column(name = "startDate") // ngày bắt đầu làm việc
     private Date startDate;
 
-    @Column(name = "endDate")
+    @Column(name = "endDate") // ngày kết thúc làm việc
     private Date endDate;
 
     @ManyToOne
