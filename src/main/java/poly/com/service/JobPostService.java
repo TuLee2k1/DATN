@@ -41,6 +41,17 @@ public class JobPostService {
     private CompanyRepository companyRepository; // Repository để truy vấn thông tin công ty
 
 
+    public void approveJobPost(Long jobPostId) {
+        JobPost jobPost = jobPostRepository.findById(jobPostId)
+                .orElseThrow(() -> new RuntimeException("Job post not found"));
+        if (jobPost.getStatusEnum() == StatusEnum.PENDING) {
+            jobPost.setStatusEnum(StatusEnum.ACTIVE);
+            jobPostRepository.save(jobPost);
+        } else {
+            throw new RuntimeException("Job post is not in PENDING status");
+        }
+    }
+
     public JobPostResponse createJobPost(JobPostRequest request) {
         User authenticatedUser = authenticationUtil.getAuthenticatedUser();
         Company company = authenticatedUser.getCompany();
