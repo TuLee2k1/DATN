@@ -14,8 +14,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css">
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/css/bootstrap-select.min.css">
-    <link rel="stylesheet" href="fonts/icomoon/style.css">
-    <link rel="stylesheet" href="fonts/line-icons/style.css">
+
+    <link rel="stylesheet" href="/fonts/icomoon/style.css">
+    <link rel="stylesheet" href="/fonts/line-icons/style.css">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
 
@@ -287,7 +289,9 @@
     </section>
 
     <section class="py-5 bg-image overlay-primary fixed overlay" id="next"
-             style="background-image: url('images/hero_1.jpg');">
+
+             style="background-image: url('/Admin/images/hero_1.jpg');">
+
         <div class="container">
             <div class="row mb-5 justify-content-center">
                 <div class="col-md-7 text-center">
@@ -344,9 +348,12 @@
 
             <ul class="job-listings mb-5" th:each="job : ${jobListings}">
                 <li class="job-listing d-block d-sm-flex pb-3 pb-sm-0 align-items-center">
-                    <a th:href="@{/job-single/{id}(id=${job.id})}"></a>
+
+                    <a th:href="@{/job-posts/detail/{id}(id=${job.id})}" ></a>
                     <div class="job-listing-logo">
-                        <img th:src="@{${job.companyLogoUrl}}" alt="Logo của công ty"
+                        <img th:src="${job.companyLogoUrl != null ? job.companyLogoUrl : '/Admin/images/job_logo_5.jpg'}"
+                             alt="Logo của công ty"
+
                              class="img-fluid">
                     </div>
 
@@ -359,12 +366,12 @@
                             <span class="icon-room"></span> <span th:text="${job.getCity()}">Vị trí</span>
                         </div>
                         <div class="job-listing-meta">
-                                <span th:if="${job.workType == 'PART_TIME'}" class="badge badge-danger">
-                                    <span th:text="${job.workType}">Trạng thái</span>
-                                </span>
-                            <span th:if="${job.workType != 'PART_TIME'}" class="badge badge-success">
-                                <span th:text="${job.workType}">Trạng thái</span>
-                            </span>
+                          <span th:with="status=${job.workType}"
+                                th:class="${'badge ' +
+                     (status == 'PART_TIME' ? 'bg-success' :
+                      status == 'FUL_TIME' ? 'bg-warning' : 'bg-danger')}"
+                                th:text="${status}">
+    </span>
                         </div>
                     </div>
                 </li>
