@@ -469,6 +469,7 @@
 						<nav class="pagination-nav" th:if="${totalPages > 1}">
 							<ul class="pagination">
 
+
 								<li class="page-item previous-item" th:classappend="${currentPage == 1 ? 'disabled' : ''}">
 									<a class="page-link" th:href="@{/job-posts/Listing(pageNo=${currentPage - 1}, jobTitle=${selectedJobTitle}, statusEnum=${selectedStatus})}">
 										Previous
@@ -489,10 +490,12 @@
 								<li class="page-item" th:each="pageNumber : ${#numbers.sequence(currentPage - 1, currentPage + 1)}"
 									th:classappend="${pageNumber == currentPage ? 'active' : ''}"
 									th:if="${pageNumber > 0 && pageNumber <= totalPages}">
+
 									<a class="page-link" th:href="@{/job-posts/Listing(pageNo=${pageNumber}, jobTitle=${selectedJobTitle}, statusEnum=${selectedStatus})}"
 									   th:text="${pageNumber}">
 									</a>
 								</li>
+
 
 
 								<li class="page-item disabled" th:if="${currentPage < totalPages - 2}">
@@ -511,6 +514,7 @@
 									<a class="page-link" th:href="@{/job-posts/Listing(pageNo=${currentPage + 1}, jobTitle=${selectedJobTitle}, statusEnum=${selectedStatus})}">
 										Next
 									</a>
+
 								</li>
 							</ul>
 						</nav>

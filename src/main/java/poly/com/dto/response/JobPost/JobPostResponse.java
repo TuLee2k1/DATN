@@ -3,6 +3,8 @@ package poly.com.dto.response.JobPost;
 import lombok.Builder;
 import lombok.Data;
 import poly.com.Enum.StatusEnum;
+import poly.com.model.Company;
+
 import poly.com.model.JobPost;
 import poly.com.model.JobPostStatus;
 
@@ -30,6 +32,8 @@ public class JobPostResponse {
     private String subCategoryName;
     private JobPostStatus status;
     private StatusEnum statusEnum;
+    private Company company;
+
 
     public static JobPostResponse fromEntity(JobPost jobPost) {
         return JobPostResponse.builder()
@@ -51,6 +55,7 @@ public class JobPostResponse {
                 .subCategoryName(jobPost.getSubCategory() != null ? jobPost.getSubCategory().getSubCategoryName() : null)
                 .status(jobPost.getStatus())
                 .statusEnum(jobPost.getStatusEnum())
+                .companyName(jobPost.getCompany() != null ? jobPost.getCompany().getName() : null)
                 .build();
     }
 

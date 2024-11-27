@@ -13,6 +13,7 @@ import poly.com.Enum.StatusEnum;
 import poly.com.dto.response.JobPost.JobListActiveResponse;
 import poly.com.repository.CompanyRepository;
 import poly.com.Util.AuthenticationUtil;
+
 import poly.com.dto.request.JobPost.JobPostRequest;
 import poly.com.dto.request.JobPost.JobPostTitleResponse;
 
@@ -154,6 +155,7 @@ public class JobPostService {
                 .jobLevel(jobPost.getJobLevel())
                 .jobCategoryId(jobPost.getJobCategory().getId())
                 .subCategoryIds(jobPost.getSubCategory().getId())
+                .companyName(jobPost.getCompany().getName())
                 .build();
 
 
