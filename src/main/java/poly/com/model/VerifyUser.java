@@ -1,6 +1,5 @@
 package poly.com.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -25,9 +24,7 @@ public class VerifyUser extends AbstractEntity{
     private LocalDateTime expiredAt;
     private LocalDateTime validateAt;
 
-
-    @JsonBackReference
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 }

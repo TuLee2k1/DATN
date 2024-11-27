@@ -1,6 +1,5 @@
 package poly.com.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,9 +23,7 @@ public class Role extends AbstractEntity{
     @Enumerated(EnumType.STRING)
     private RoleType role;  // Kiểu vai trò
 
-
-    @JsonIgnore
-    @ManyToMany(mappedBy = "roles")
+    @ManyToMany(mappedBy = "roles", cascade = CascadeType.ALL)
     private List<User> users;
 
 

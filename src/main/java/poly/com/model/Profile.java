@@ -3,11 +3,9 @@ package poly.com.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
-import poly.com.Enum.WorkType;
 
 import java.time.LocalDate;
 import java.util.Date;
-import java.util.List;
 
 @Entity
 @Getter
@@ -17,43 +15,30 @@ import java.util.List;
 @Table(name = "profiles")
 
 public class Profile extends AbstractEntity{
-    @Column(name = "name") // tên
+    @Column(name = "name")
     private String name;
 
-    @Column(name = "email") // email trên hồ sơ
+    @Column(name = "email")
     private String email;
 
-    @Column(name = "phone") // số điện thoại
+    @Column(name = "phone")
     private String phone;
 
-    @Column(name = "address") // địa chỉ
+    @Column(name = "address")
     private String address;
 
-    @Column(name = "sex") // giới tính
+    @Column(name = "sex")
     private String sex;
 
-    @Column(name = "dateOfBirth") // ngày sinh
+    @Column(name = "dateOfBirth")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate dateOfBirth;
 
-    @Column(name = "logo", length = 100) // ảnh đại diện
+    @Column(name = "logo", length = 100)
     private String logo;
 
-    @Column(name = "careerGoals")
-    private String careerGoals; // mục tiêu nghề nghiệp
-
-    @Column(name = "desiredSalary")
-    private Float desiredSalary; // mức lương mong muốn
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "workType")
-    private WorkType workType; // loại công việc
-
     @ManyToOne
-    @JoinColumn(name = "user_id") // khóa ngoại liên kết đến User
+    @JoinColumn(name = "user_id")
     private User user_id;
-
-    @OneToMany(mappedBy = "profile", fetch = FetchType.LAZY)
-    private List<Experience> experiences; // danh sách kinh nghiệm làm việc
 
 }

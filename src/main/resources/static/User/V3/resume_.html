@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta
+      name="description"
+      content="Responsive Admin &amp; Dashboard Template based on Bootstrap 5"
+    />
+    <meta name="author" content="AdminKit" />
+    <meta
+      name="keywords"
+      content="adminkit, bootstrap, bootstrap 5, admin, dashboard, template, responsive, css, sass, html, theme, front-end, ui kit, web"
+    />
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link rel="shortcut icon" href="/img/icons/icon-48x48.png" />
+
+    <link rel="canonical" href="https://demo-basic.adminkit.io/" />
+
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+      rel="stylesheet"
+    />
+    <title>Resume</title>
+
+    <link href="/css/app.css" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/css/index.css" />
+  </head>
+
+  <body>
+    <div class="wrapper">
+      <!-- sidebar -->
+      <nav id="sidebar" class="sidebar js-sidebar">
+        <div class="sidebar-content js-simplebar">
+          <a class="sidebar-brand" href="index.html">
+            <img
+              alt="Logo"
+              class="rounded-circle me-3"
+              height="50"
+              id="logo"
+              src="/img/icons/logo2.jpg"
+              width="50"
+            />
+            <span class="align-middle">Dreamers</span>
+          </a>
+
+          <ul class="sidebar-nav">
+            <li class="sidebar-header">Pages</li>
+
+            <li class="sidebar-item active">
+              <a class="sidebar-link" href="/User/V3/dashboard.html">
+                <i class="align-middle" data-feather="sliders"></i>
+                <span class="align-middle">Dashboard</span>
+              </a>
+            </li>
+
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="/User/V3/profile.html">
+                <i class="align-middle" data-feather="user"></i>
+                <span class="align-middle">Profile</span>
+              </a>
+            </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="/User/V3/resume_.html">
+                <i class="align-middle" data-feather="clipboard"></i>
+                <span class="align-middle">Resume</span>
+              </a>
+            </li>
+
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="/User/V3/calender.html">
+                <i class="align-middle" data-feather="calendar"></i>
+                <span class="align-middle">Calender</span>
+              </a>
+            </li>
+
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="/User/V3/apply.html">
+                <i class="align-middle" data-feather="check-square"></i>
+                <span class="align-middle">Applied job</span>
+              </a>
+            </li>
+
+            <li class="sidebar-item">
+              <a
+                class="sidebar-link"
+                href="/User/V3/EmployersViewPage.html"
+              >
+                <i class="align-middle" data-feather="users"></i>
+                <span class="align-middle">Recruiter follow</span>
+              </a>
+            </li>
+
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="/User/V3/saved_jobs.html">
+                <i class="align-middle" data-feather="bookmark"></i>
+                <span class="align-middle">Bookmarks</span>
+              </a>
+            </li>
+
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="#">
+                <i class="align-middle" data-feather="message-square"></i>
+                <span class="align-middle">Messages</span>
+              </a>
+            </li>
+
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="/User/V3/Notification.html">
+                <i class="align-middle" data-feather="bell"></i>
+                <span class="align-middle">Notifications</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+
+      <div class="main">
+        <!-- nav head -->
+        <nav class="navbar navbar-expand navbar-light navbar-bg">
+          <a class="sidebar-toggle js-sidebar-toggle">
+            <i class="hamburger align-self-center"></i>
+          </a>
+
+          <div class="navbar-collapse collapse">
+            <ul class="navbar-nav navbar-align">
+              <li class="nav-item dropdown">
+                <a
+                  class="nav-icon dropdown-toggle"
+                  href="#"
+                  id="alertsDropdown"
+                  data-bs-toggle="dropdown"
+                >
+                  <div class="position-relative">
+                    <i class="align-middle" data-feather="bell"></i>
+                    <span class="indicator">4</span>
+                  </div>
+                </a>
+                <div
+                  class="dropdown-menu dropdown-menu-lg dropdown-menu-end py-0"
+                  aria-labelledby="alertsDropdown"
+                >
+                  <div class="dropdown-menu-header">4 New Notifications</div>
+                  <div class="list-group">
+                    <a href="#" class="list-group-item">
+                      <div class="row g-0 align-items-center">
+                        <div class="col-2">
+                          <i
+                            class="text-danger"
+                            data-feather="alert-circle"
+                          ></i>
+                        </div>
+                        <div class="col-10">
+                          <div class="text-dark">Update completed</div>
+                          <div class="text-muted small mt-1">
+                            Restart server 12 to complete the update.
+                          </div>
+                          <div class="text-muted small mt-1">30m ago</div>
+                        </div>
+                      </div>
+                    </a>
+                    <a href="#" class="list-group-item">
+                      <div class="row g-0 align-items-center">
+                        <div class="col-2">
+                          <i class="text-warning" data-feather="bell"></i>
+                        </div>
+                        <div class="col-10">
+                          <div class="text-dark">Lorem ipsum</div>
+                          <div class="text-muted small mt-1">
+                            Aliquam ex eros, imperdiet vulputate hendrerit et.
+                          </div>
+                          <div class="text-muted small mt-1">2h ago</div>
+                        </div>
+                      </div>
+                    </a>
+                    <a href="#" class="list-group-item">
+                      <div class="row g-0 align-items-center">
+                        <div class="col-2">
+                          <i class="text-primary" data-feather="home"></i>
+                        </div>
+                        <div class="col-10">
+                          <div class="text-dark">Login from 192.186.1.8</div>
+                          <div class="text-muted small mt-1">5h ago</div>
+                        </div>
+                      </div>
+                    </a>
+                    <a href="#" class="list-group-item">
+                      <div class="row g-0 align-items-center">
+                        <div class="col-2">
+                          <i class="text-success" data-feather="user-plus"></i>
+                        </div>
+                        <div class="col-10">
+                          <div class="text-dark">New connection</div>
+                          <div class="text-muted small mt-1">
+                            Christina accepted your request.
+                          </div>
+                          <div class="text-muted small mt-1">14h ago</div>
+                        </div>
+                      </div>
+                    </a>
+                  </div>
+                  <div class="dropdown-menu-footer">
+                    <a href="#" class="text-muted">Show all notifications</a>
+                  </div>
+                </div>
+              </li>
+              <li class="nav-item dropdown">
+                <a
+                  class="nav-icon dropdown-toggle"
+                  href="#"
+                  id="messagesDropdown"
+                  data-bs-toggle="dropdown"
+                >
+                  <div class="position-relative">
+                    <i class="align-middle" data-feather="message-square"></i>
+                  </div>
+                </a>
+                <div
+                  class="dropdown-menu dropdown-menu-lg dropdown-menu-end py-0"
+                  aria-labelledby="messagesDropdown"
+                >
+                  <div class="dropdown-menu-header">
+                    <div class="position-relative">4 New Messages</div>
+                  </div>
+
+                  <div class="list-group">
+                    <a href="#" class="list-group-item">
+                      <div class="row g-0 align-items-center">
+                        <div class="col-2">
+                          <img
+                            src="/img/avatars/avatar-5.jpg"
+                            class="avatar img-fluid rounded-circle"
+                            alt="Vanessa Tucker"
+                          />
+                        </div>
+                        <div class="col-10 ps-2">
+                          <div class="text-dark">Vanessa Tucker</div>
+                          <div class="text-muted small mt-1">
+                            Nam pretium turpis et arcu. Duis arcu tortor.
+                          </div>
+                          <div class="text-muted small mt-1">15m ago</div>
+                        </div>
+                      </div>
+                    </a>
+                    <a href="#" class="list-group-item">
+                      <div class="row g-0 align-items-center">
+                        <div class="col-2">
+                          <img
+                            src="/img/avatars/avatar-2.jpg"
+                            class="avatar img-fluid rounded-circle"
+                            alt="William Harris"
+                          />
+                        </div>
+                        <div class="col-10 ps-2">
+                          <div class="text-dark">William Harris</div>
+                          <div class="text-muted small mt-1">
+                            Curabitur ligula sapien euismod vitae.
+                          </div>
+                          <div class="text-muted small mt-1">2h ago</div>
+                        </div>
+                      </div>
+                    </a>
+                    <a href="#" class="list-group-item">
+                      <div class="row g-0 align-items-center">
+                        <div class="col-2">
+                          <img
+                            src="/img/avatars/avatar-4.jpg"
+                            class="avatar img-fluid rounded-circle"
+                            alt="Christina Mason"
+                          />
+                        </div>
+                        <div class="col-10 ps-2">
+                          <div class="text-dark">Christina Mason</div>
+                          <div class="text-muted small mt-1">
+                            Pellentesque auctor neque nec urna.
+                          </div>
+                          <div class="text-muted small mt-1">4h ago</div>
+                        </div>
+                      </div>
+                    </a>
+                    <a href="#" class="list-group-item">
+                      <div class="row g-0 align-items-center">
+                        <div class="col-2">
+                          <img
+                            src="/img/avatars/avatar-3.jpg"
+                            class="avatar img-fluid rounded-circle"
+                            alt="Sharon Lessman"
+                          />
+                        </div>
+                        <div class="col-10 ps-2">
+                          <div class="text-dark">Sharon Lessman</div>
+                          <div class="text-muted small mt-1">
+                            Aenean tellus metus, bibendum sed, posuere ac,
+                            mattis non.
+                          </div>
+                          <div class="text-muted small mt-1">5h ago</div>
+                        </div>
+                      </div>
+                    </a>
+                  </div>
+                  <div class="dropdown-menu-footer">
+                    <a href="#" class="text-muted">Show all messages</a>
+                  </div>
+                </div>
+              </li>
+              <li class="nav-item dropdown">
+                <a
+                  class="nav-icon dropdown-toggle d-inline-block d-sm-none"
+                  href="#"
+                  data-bs-toggle="dropdown"
+                >
+                  <i class="align-middle" data-feather="settings"></i>
+                </a>
+
+                <a
+                  class="nav-link dropdown-toggle d-none d-sm-inline-block"
+                  href="#"
+                  data-bs-toggle="dropdown"
+                >
+                  <img
+                    src="/img/avatars/avatar-5.jpg"
+                    class="avatar img-fluid rounded me-1"
+                    alt="Charles Hall"
+                  />
+                  <span class="text-dark">Charles Hall</span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-end">
+                  <a class="dropdown-item" href="/static/User/V3/profile.html"
+                    ><i class="align-middle me-1" data-feather="user"></i>
+                    Profile</a
+                  >
+
+                  <a class="dropdown-item" href="#"
+                    ><i class="align-middle me-1" data-feather="key"></i> Forgot
+                    password</a
+                  >
+                  <a class="dropdown-item" href="#"
+                    ><i
+                      class="align-middle me-1"
+                      data-feather="alert-octagon"
+                    ></i>
+                    Change password</a
+                  >
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" href="index.html"
+                    ><i class="align-middle me-1" data-feather="settings"></i>
+                    Settings & Privacy</a
+                  >
+                  <a
+                    class="dropdown-item"
+                    href="/User/V3/User_Manual.html"
+                    ><i
+                      class="align-middle me-1"
+                      data-feather="help-circle"
+                    ></i>
+                    Help Center</a
+                  >
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" href="/User/V3/login&register.html"
+                    ><i class="align-middle me-1" data-feather="log-out"></i>Log
+                    out</a
+                  >
+                </div>
+              </li>
+            </ul>
+          </div>
+        </nav>
+
+        <main class="content">
+          <div class="container mt-1">
+            <h4 class="mb-4">MY RESUME</h4>
+            <form>
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label for="contactName" class="form-label"
+                    >Họ và tên <i class="fa fa-question-circle"></i
+                  ></label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="contactName"
+                    placeholder="Nguyễn Văn A"
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="contactEmail" class="form-label"
+                    >Email cá nhân <i class="fa fa-question-circle"></i
+                  ></label>
+                  <input
+                    type="email"
+                    class="form-control"
+                    id="contactEmail"
+                    placeholder="nhuhoa02@gmail.com"
+                  />
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label for="contactPhone" class="form-label"
+                    >Điện thoại <i class="fa fa-question-circle"></i
+                  ></label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="contactPhone"
+                    placeholder="0905123456"
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="interviewAddress" class="form-label"
+                    >Địa chỉ phỏng vấn <i class="fa fa-question-circle"></i
+                  ></label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="interviewAddress"
+                  />
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label for="sex" class="form-label"
+                    >Giới tính <i class="fa fa-question-circle"></i
+                  ></label>
+                  <select class="form-select" id="sex">
+                    <option selected>Nam</option>
+                    <option selected>Nữ</option>
+                    <option selected>Khác</option>
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <label for="dateOfBirth" class="form-label"
+                    >Ngày sinh <i class="fa fa-question-circle"></i
+                  ></label>
+                  <input
+                    type="date"
+                    class="form-control"
+                    id="dateOfBirth"
+                    value="2004-07-11"
+                  />
+                </div>
+              </div>
+              <div class="bordered-box mb-3">
+                <h4>Trường học</h4>
+                <div class="row mb-3">
+                  <div class="col-md-6">
+                    <label for="schoolName" class="form-label"
+                      >Tên trường <i class="fa fa-question-circle"></i
+                    ></label>
+                    <input type="text" class="form-control" id="schoolName" />
+                  </div>
+                  <div class="col-md-6">
+                    <label for="degree" class="form-label">Bằng cấp</label>
+                      <i class="fa fa-question-circle"></i
+                    ></label>
+                    <input type="text" class="form-control" id="degree" />
+                  </div>
+                  
+                  <div class="col-md-6 mt-3">
+                    <label for="startDate" class="form-label"
+                      >Ngày bắt đầu <i class="fa fa-question-circle"></i
+                    ></label>
+                    <input
+                      type="date"
+                      class="form-control"
+                      id="startDate"
+                      value="2020-07-11"
+                    />
+                  </div>
+
+                  <div class="col-md-6 mt-3">
+                    <label for="endDate" class="form-label"
+                      >Ngày kết thúc <i class="fa fa-question-circle"></i
+                    ></label>
+                    <input
+                      type="date"
+                      class="form-control"
+                      id="endDate"
+                      value="2022-10-07"
+                    />
+                  </div>
+                  <div class="col-md-6 mt-3">
+                    <label for="degree" class="form-label">GPA</label>
+                      <i class="fa fa-question-circle"></i
+                    ></label>
+                    <input type="text" class="form-control" id="degree" />
+                  </div>
+                </div>
+              </div>
+              <div class="bordered-box mb-3">
+                <h4>Kinh nghiệm</h4>
+                <div class="row mb-3">
+                  <div class="col-md-6">
+                    <label for="jobTitle" class="form-label"
+                      >Tiêu đề <i class="fa fa-question-circle"></i
+                    ></label>
+                    <input type="text" class="form-control" id="jobTitle" />
+                  </div>
+                  <div class="col-md-6">
+                    <label for="companyName" class="form-label"
+                      >Công ty <i class="fa fa-question-circle"></i
+                    ></label>
+                    <input type="text" class="form-control" id="companyName" />
+                  </div>
+
+                  <div class="col-md-6 mt-3">
+                    <label for="startDate" class="form-label"
+                      >Ngày bắt đầu <i class="fa fa-question-circle"></i
+                    ></label>
+                    <input
+                      type="date"
+                      class="form-control"
+                      id="startDate"
+                      value="2020-07-11"
+                    />
+                  </div>
+
+                  <div class="col-md-6 mt-3">
+                    <label for="endDate" class="form-label"
+                      >Ngày kết thúc <i class="fa fa-question-circle"></i
+                    ></label>
+                    <input
+                      type="date"
+                      class="form-control"
+                      id="endDate"
+                      value="2022-10-07"
+                    />
+                  </div>
+
+                  <div class="mb-3 mt-3">
+                    <label for="jobDescription" class="form-label"
+                      >Mô tả công việc <i class="fa fa-question-circle"></i
+                    ></label>
+                    <div class="editor-toolbar">
+                      <button type="button"><i class="fa fa-bold"></i></button>
+                      <button type="button">
+                        <i class="fa fa-italic"></i>
+                      </button>
+                      <button type="button">
+                        <i class="fa fa-underline"></i>
+                      </button>
+                      <button type="button">
+                        <i class="fa fa-list-ul"></i>
+                      </button>
+                      <button type="button">
+                        <i class="fa fa-list-ol"></i>
+                      </button>
+                      <button type="button">
+                        <i class="fa fa-align-left"></i>
+                      </button>
+                      <button type="button">
+                        <i class="fa fa-align-center"></i>
+                      </button>
+                      <button type="button">
+                        <i class="fa fa-align-right"></i>
+                      </button>
+                      <button type="button"><i class="fa fa-undo"></i></button>
+                      <button type="button"><i class="fa fa-redo"></i></button>
+                    </div>
+                    <div class="editor-content" contenteditable="true"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label for="skills" class="form-label"
+                  >Kỹ năng <i class="fa fa-question-circle"></i
+                ></label>
+                <div class="editor-toolbar">
+                  <button type="button"><i class="fa fa-bold"></i></button>
+                  <button type="button"><i class="fa fa-italic"></i></button>
+                  <button type="button"><i class="fa fa-underline"></i></button>
+                  <button type="button"><i class="fa fa-list-ul"></i></button>
+                  <button type="button"><i class="fa fa-list-ol"></i></button>
+                  <button type="button">
+                    <i class="fa fa-align-left"></i>
+                  </button>
+                  <button type="button">
+                    <i class="fa fa-align-center"></i>
+                  </button>
+                  <button type="button">
+                    <i class="fa fa-align-right"></i>
+                  </button>
+                  <button type="button"><i class="fa fa-undo"></i></button>
+                  <button type="button"><i class="fa fa-redo"></i></button>
+                </div>
+                <div class="editor-content" contenteditable="true"></div>
+                <button type="button" class="btn btn-link">
+                  Xem gợi ý kỹ năng
+                </button>
+              </div>
+              <button type="button" class="btn btn-link">
+                + Kĩ năng cần thiết
+              </button>
+
+              <div class="d-flex justify-content-between">
+                <button type="button" class="btn btn-primary">
+                  Xem trước
+                </button>
+                <button type="submit" class="btn btn-primary">
+                  Lưu
+                </button>
+              </div>
+            </form>
+          </div>
+        </main>
+
+        <footer class="footer">
+          <div class="container-fluid">
+            <div class="row text-muted">
+              <div class="col-6 text-start">
+                <p class="mb-0">
+                  <a
+                    class="text-muted"
+                    href="https://adminkit.io/"
+                    target="_blank"
+                    ><strong>Dreamer Job</strong></a
+                  >
+                  -
+                  <a
+                    class="text-muted"
+                    href="https://adminkit.io/"
+                    target="_blank"
+                    ><strong>Home Page</strong></a
+                  >
+                  &copy;
+                </p>
+              </div>
+              <div class="col-6 text-end">
+                <ul class="list-inline">
+                  <li class="list-inline-item">
+                    <a
+                      class="text-muted"
+                      href="https://adminkit.io/"
+                      target="_blank"
+                      >Support</a
+                    >
+                  </li>
+                  <li class="list-inline-item">
+                    <a
+                      class="text-muted"
+                      href="https://adminkit.io/"
+                      target="_blank"
+                      >Help Center</a
+                    >
+                  </li>
+                  <li class="list-inline-item">
+                    <a
+                      class="text-muted"
+                      href="https://adminkit.io/"
+                      target="_blank"
+                      >Privacy</a
+                    >
+                  </li>
+                  <li class="list-inline-item">
+                    <a
+                      class="text-muted"
+                      href="https://adminkit.io/"
+                      target="_blank"
+                      >Terms</a
+                    >
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </footer>
+      </div>
+    </div>
+
+    <script src="/js/app.js"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+
+    <script>
+        feather.replace();
+    </script>
+  </body>
+</html>

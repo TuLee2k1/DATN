@@ -13,4 +13,5 @@ public class FileStorageProperties {
 
     private String uploadCompanyImageDir;
     private String uploadProfileImageDir;
+    private String UploadDir;
 }

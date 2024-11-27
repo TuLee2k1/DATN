@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verification Code Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        .error {
+            color: red;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Nhập Mã Xác Thực</h2>
+    <form id="verificationForm" method="post" action="/auth/activate-account">
+        <input type="text" id="verificationCode" name="token" maxlength="6" placeholder="Nhập mã 6 số" required>
+        <div id="error" class="error"></div>
+        <button type="submit">Xác Thực</button>
+    </form>
+</div>
+<script>
+    document.getElementById('verificationForm').addEventListener('submit', function(event) {
+        event.preventDefault(); // Ngăn chặn hành động mặc định của form
+
+        const code = document.getElementById('verificationCode').value;
+        const errorDiv = document.getElementById('error');
+
+        // Kiểm tra độ dài mã
+        if (code.length !== 6) {
+            errorDiv.textContent = 'Vui lòng nhập mã xác thực 6 số';
+        } else {
+            errorDiv.textContent = ''; // Xóa thông báo lỗi
+            console.log('Mã xác thực:', code);
+
+            // Gọi API để xác thực mã ở đây
+            fetch('/auth/activate-account', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams({
+                    'token': code
+                })
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.text().then(text => { throw new Error(text); });
+                    }
+                    return response.text();
+                })
+                .then(data => {
+                    alert('Mã xác thực đã được gửi: ' + code);
+                    window.location.href = '/auth/login'; // Chuyển hướng đến trang đăng nhập
+                })
+                .catch(error => {
+                    errorDiv.textContent = 'Có lỗi xảy ra: ' + error.message;
+                });
+        }
+    });
+</script>
+</body>
+</html>

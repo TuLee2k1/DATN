@@ -32,4 +32,7 @@ build/
 ### VS Code ###
 .vscode/
 
+### File-based project format ###
+src/main/resources/application.properties
+
 

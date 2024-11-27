@@ -1,0 +1,65 @@
+body {
+  background-color: #f8f9fa;
+}
+.container {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.form-label {
+  font-weight: bold;
+}
+.form-text {
+  color: #6c757d;
+}
+.btn-primary,
+.btn-secondary {
+  width: 100px;
+}
+.btn-primary {
+  background-color: #6c63ff;
+  border-color: #6c63ff;
+}
+.btn-secondary {
+  background-color: #f8f9fa;
+  border-color: #6c63ff;
+  color: #6c63ff;
+}
+.btn-secondary:hover {
+  background-color: #e2e6ea;
+}
+.btn-link {
+  color: #6c63ff;
+}
+.btn-link:hover {
+  color: #5a5a5a;
+}
+.bordered-box {
+  border: 1px solid #e2e6ea;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+.editor-toolbar {
+  border: 1px solid #e2e6ea;
+  border-radius: 4px;
+  padding: 5px;
+  margin-bottom: 10px;
+}
+.editor-toolbar button {
+  background: none;
+  border: none;
+  color: #6c63ff;
+  font-size: 16px;
+  margin-right: 5px;
+}
+.editor-toolbar button:hover {
+  color: #5a5a5a;
+}
+.editor-content {
+  border: 1px solid #e2e6ea;
+  border-radius: 4px;
+  padding: 10px;
+  min-height: 100px;
+}

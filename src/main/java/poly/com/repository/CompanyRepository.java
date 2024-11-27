@@ -11,6 +11,9 @@ import java.util.Optional;
 
 public interface CompanyRepository extends JpaRepository<Company, Long> {
 
+    @Query("SELECT COUNT(c) FROM Company c")
+    Long countAllCompanies();
+
     @Query("select c from Company c where c.name like concat(?1, '%')")
     List<Company> findByNameStartsWith(String name, Pageable pageable);
 
@@ -20,7 +23,5 @@ public interface CompanyRepository extends JpaRepository<Company, Long> {
     List<Company> findByNameContainsIgnoreCase(String name);
 
     List<Company> findByIdNotAndNameContainsIgnoreCase(Long id, String name);
-
-    Optional<Company> findByUserId(Long userId);
 
 }

@@ -2,22 +2,20 @@ package poly.com.dto.response.JobPost;
 
 import lombok.*;
 import poly.com.Enum.StatusEnum;
-import poly.com.model.JobPost;
 import poly.com.model.JobPostStatus;
 
 import java.util.Date;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Getter
 @Setter
 @Builder
-public class JobListingResponse {
+public class  JobListingResponse { // những class đuôi response là đẩy dữ liệu lên view
     private Long id;
     private String jobTitle;
     private Date createDate;
     private Date endDate;
     private Integer appliedCount;
-    private JobPostStatus status;
-    private StatusEnum statusEnum;
+    private JobPostStatus status; // Hhiển thị view lên
+    private StatusEnum statusEnum; /// chờ ađ duyệt
+
 }

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Header Example</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        #header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #7e57c2;
+            padding: 10px 20px;
+            color: white;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav ul li {
+            margin: 0 15px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .auth-area button {
+            margin-left: 10px;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .auth-area button:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+    </style>
+</head>
+<body>
+<header id="header">
+    <div class="logo">LOGO</div>
+    <nav>
+        <ul id="nav-links">
+            <li><a href="#jobs">Việc làm</a></li>
+            <li><a href="#companies">Công ty</a></li>
+            <li><a href="#about">Về chúng tôi</a></li>
+        </ul>
+    </nav>
+    <div class="auth-area">
+        <button id="loginBtn">Đăng nhập</button>
+        <button id="signupBtn">Đăng ký</button>
+        <button id="signupNtd">Dành cho nhà tuyển dụng</button>
+    </div>
+</header>
+<script>
+    document.getElementById('loginBtn').addEventListener('click', function() {
+        alert('Chuyển đến trang đăng nhập');
+        // Chuyển hướng đến trang đăng nhập
+        window.location.href = '/auth/login';
+    });
+
+    document.getElementById('signupBtn').addEventListener('click', function() {
+        alert('Chuyển đến trang đăng ký');
+        // Chuyển hướng đến trang đăng ký
+        window.location.href = '/auth/register/user';
+    });
+
+    document.getElementById('signupNtd').addEventListener('click', function() {
+        alert('Chuyển đến trang đăng nhập cho nhà tuyển dụng');
+        // Chuyển hướng đến trang đăng ký
+        window.location.href = '/auth/register/user';
+    });
+</script>
+</body>
+</html>

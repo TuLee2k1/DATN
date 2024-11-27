@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta
+          name="description"
+          content="Responsive Admin &amp; Dashboard Template based on Bootstrap 5" />
+  <meta name="author" content="AdminKit" />
+  <meta
+          name="keywords"
+          content="adminkit, bootstrap, bootstrap 5, admin, dashboard, template, responsive, css, sass, html, theme, front-end, ui kit, web" />
+
+  <link rel="preconnect" href="https://fonts.gstatic.com" />
+  <link rel="shortcut icon" href="img/icons/icon-48x48.png" />
+
+  <link rel="canonical" href="https://demo-basic.adminkit.io/" />
+
+  <title>Tạo tin tuyển dụng</title>
+
+  <!--  <link th:href="@{../css/app.css}"  rel="stylesheet">-->
+  <link rel="stylesheet" href="/css/app.css" />
+  <link
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap"
+          rel="stylesheet" />
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+    .container {
+      background-color: #ffffff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .custom-container {
+      max-width: 100%; /* Chiều rộng gần bằng 100% nhưng vẫn giữ viền */
+      margin: 0 auto; /* Căn giữa */
+    }
+    .form-label {
+      font-weight: bold;
+    }
+    .form-text {
+      color: #6c757d;
+    }
+    .btn-primary,
+    .btn-secondary {
+      width: 100px;
+    }
+    .btn-primary {
+      background-color: #6c63ff;
+      border-color: #6c63ff;
+    }
+    .btn-secondary {
+      background-color: #f8f9fa;
+      border-color: #6c63ff;
+      color: #6c63ff;
+    }
+    .btn-secondary:hover {
+      background-color: #e2e6ea;
+    }
+    .btn-link {
+      color: #6c63ff;
+    }
+    .btn-link:hover {
+      color: #5a5a5a;
+    }
+    .bordered-box {
+      border: 1px solid #e2e6ea;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+    .editor-toolbar {
+      border: 1px solid #e2e6ea;
+      border-radius: 4px;
+      padding: 5px;
+      margin-bottom: 10px;
+    }
+    .editor-toolbar button {
+      background: none;
+      border: none;
+      color: #6c63ff;
+      font-size: 16px;
+      margin-right: 5px;
+    }
+    .editor-toolbar button:hover {
+      color: #5a5a5a;
+    }
+    .editor-content {
+      border: 1px solid #e2e6ea;
+      border-radius: 4px;
+      padding: 10px;
+      min-height: 100px;
+    }
+  </style>
+</head>
+
+<body>
+<div class="wrapper">
+  <!-- sidebar -->
+  <nav id="sidebar" class="sidebar js-sidebar">
+    <div class="sidebar-content js-simplebar">
+      <a class="sidebar-brand" href="Taikhoannhatuyendung.html">
+        <span class="align-middle">Dream job</span>
+      </a>
+
+      <ul class="sidebar-nav">
+        <li class="sidebar-header">
+          <div class="d-flex align-items-center">
+            <span>Quản lý đăng tuyển</span>
+          </div>
+        </li>
+        <li class="sidebar-item">
+          <a class="sidebar-link" href="Taotintuyendung.html">
+            <i class="align-middle" data-feather="plus-square"></i>
+            <span>Tạo tin tuyển dụng</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a class="sidebar-link" id="danhsachtindang">
+            <i class="align-middle" data-feather="file-text"></i>
+            <span>Quản lý tin đăng</span>
+          </a>
+        </li>
+
+        <li class="sidebar-header">
+          <div class="d-flex align-items-center">
+            <span>Quản lý ứng viên</span>
+          </div>
+        </li>
+        <li class="sidebar-item">
+          <a class="sidebar-link" href="Hosoungtuyen.html">
+            <i class="align-middle" data-feather="file"></i>
+            <span>Hồ sơ ứng tuyển</span>
+          </a>
+        </li>
+
+        <li class="sidebar-item">
+          <a class="sidebar-link" href="Timungvienmoi.html">
+            <i class="align-middle" data-feather="search"></i>
+            <span>Tìm ứng viên mới</span>
+          </a>
+        </li>
+
+        <li class="sidebar-header">
+          <div class="d-flex align-items-center">
+            <span>Quản lý dịch vụ</span>
+          </div>
+        </li>
+        <li class="sidebar-item">
+          <a class="sidebar-link" href="danhsachdonhang.html">
+            <i class="align-middle" data-feather="shopping-bag"></i>
+            <span>Danh sách đơn hàng</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a class="sidebar-link" href="lichsumuahang.html">
+            <i class="align-middle" data-feather="package"></i>
+            <span>Lịch sử đơn hàng</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a class="sidebar-link" href="thongtinthanhtoan.html">
+            <i class="align-middle" data-feather="credit-card"></i>
+            <span>Thông tin thanh toán</span>
+          </a>
+        </li>
+
+        <li class="sidebar-header">
+          <div class="d-flex align-items-center">
+            <span>Tài khoản và thương hiệu</span>
+          </div>
+        </li>
+        <li class="sidebar-item">
+          <a class="sidebar-link" href="#">
+            <i class="align-middle" data-feather="user"></i>
+            <span>Tài khoản nhà tuyển dụng</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a class="sidebar-link" href="#">
+            <i class="align-middle" data-feather="award"></i>
+            <span>Quảng bá thương hiệu</span>
+          </a>
+        </li>
+
+        <li class="sidebar-header">
+          <div class="d-flex align-items-center">
+            <span>Hướng dẫn và thông báo</span>
+          </div>
+        </li>
+        <li class="sidebar-item">
+          <a class="sidebar-link" href="#">
+            <i class="align-middle" data-feather="help-circle"></i>
+            <span>Hướng dẫn sử dụng</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a class="sidebar-link" href="#">
+            <i class="align-middle" data-feather="bell"></i>
+            <span>Thông báo mới</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a class="sidebar-link" href="#">
+            <i class="align-middle" data-feather="life-buoy"></i>
+            <span>Hỗ trợ</span>
+          </a>
+        </li>
+
+        <li class="sidebar-item mt-4">
+          <a href="#" class="btn btn-primary w-100">
+            <span>Cổng người tìm việc</span>
+            <span class="ms-2">Chuyển</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="main">
+    <!-- nav head -->
+    <nav class="navbar navbar-expand navbar-light navbar-bg">
+      <a class="sidebar-toggle js-sidebar-toggle">
+        <i class="hamburger align-self-center"></i>
+      </a>
+
+      <div class="navbar-collapse collapse">
+        <ul class="navbar-nav navbar-align">
+          <li class="nav-item dropdown">
+            <a
+                    class="nav-icon dropdown-toggle"
+                    href="#"
+                    id="alertsDropdown"
+                    data-bs-toggle="dropdown">
+              <div class="position-relative">
+                <i class="align-middle" data-feather="bell"></i>
+                <span class="indicator">4</span>
+              </div>
+            </a>
+            <div
+                    class="dropdown-menu dropdown-menu-lg dropdown-menu-end py-0"
+                    aria-labelledby="alertsDropdown">
+              <div class="dropdown-menu-header">4 New Notifications</div>
+              <div class="list-group">
+                <a href="#" class="list-group-item">
+                  <div class="row g-0 align-items-center">
+                    <div class="col-2">
+                      <i
+                              class="text-danger"
+                              data-feather="alert-circle"></i>
+                    </div>
+                    <div class="col-10">
+                      <div class="text-dark">Update completed</div>
+                      <div class="text-muted small mt-1">
+                        Restart server 12 to complete the update.
+                      </div>
+                      <div class="text-muted small mt-1">30m ago</div>
+                    </div>
+                  </div>
+                </a>
+                <a href="#" class="list-group-item">
+                  <div class="row g-0 align-items-center">
+                    <div class="col-2">
+                      <i class="text-warning" data-feather="bell"></i>
+                    </div>
+                    <div class="col-10">
+                      <div class="text-dark">Lorem ipsum</div>
+                      <div class="text-muted small mt-1">
+                        Aliquam ex eros, imperdiet vulputate hendrerit et.
+                      </div>
+                      <div class="text-muted small mt-1">2h ago</div>
+                    </div>
+                  </div>
+                </a>
+                <a href="#" class="list-group-item">
+                  <div class="row g-0 align-items-center">
+                    <div class="col-2">
+                      <i class="text-primary" data-feather="home"></i>
+                    </div>
+                    <div class="col-10">
+                      <div class="text-dark">Login from 192.186.1.8</div>
+                      <div class="text-muted small mt-1">5h ago</div>
+                    </div>
+                  </div>
+                </a>
+                <a href="#" class="list-group-item">
+                  <div class="row g-0 align-items-center">
+                    <div class="col-2">
+                      <i class="text-success" data-feather="user-plus"></i>
+                    </div>
+                    <div class="col-10">
+                      <div class="text-dark">New connection</div>
+                      <div class="text-muted small mt-1">
+                        Christina accepted your request.
+                      </div>
+                      <div class="text-muted small mt-1">14h ago</div>
+                    </div>
+                  </div>
+                </a>
+              </div>
+              <div class="dropdown-menu-footer">
+                <a href="#" class="text-muted">Show all notifications</a>
+              </div>
+            </div>
+          </li>
+          <li class="nav-item dropdown">
+            <a
+                    class="nav-icon dropdown-toggle"
+                    href="#"
+                    id="messagesDropdown"
+                    data-bs-toggle="dropdown">
+              <div class="position-relative">
+                <i class="align-middle" data-feather="message-square"></i>
+              </div>
+            </a>
+            <div
+                    class="dropdown-menu dropdown-menu-lg dropdown-menu-end py-0"
+                    aria-labelledby="messagesDropdown">
+              <div class="dropdown-menu-header">
+                <div class="position-relative">4 New Messages</div>
+              </div>
+              <div class="list-group">
+                <a href="#" class="list-group-item">
+                  <div class="row g-0 align-items-center">
+                    <div class="col-2">
+                      <img
+                              src="img/avatars/avatar-5.jpg"
+                              class="avatar img-fluid rounded-circle"
+                              alt="Vanessa Tucker" />
+                    </div>
+                    <div class="col-10 ps-2">
+                      <div class="text-dark">Vanessa Tucker</div>
+                      <div class="text-muted small mt-1">
+                        Nam pretium turpis et arcu. Duis arcu tortor.
+                      </div>
+                      <div class="text-muted small mt-1">15m ago</div>
+                    </div>
+                  </div>
+                </a>
+                <a href="#" class="list-group-item">
+                  <div class="row g-0 align-items-center">
+                    <div class="col-2">
+                      <img
+                              src="img/avatars/avatar-2.jpg"
+                              class="avatar img-fluid rounded-circle"
+                              alt="William Harris" />
+                    </div>
+                    <div class="col-10 ps-2">
+                      <div class="text-dark">William Harris</div>
+                      <div class="text-muted small mt-1">
+                        Curabitur ligula sapien euismod vitae.
+                      </div>
+                      <div class="text-muted small mt-1">2h ago</div>
+                    </div>
+                  </div>
+                </a>
+                <a href="#" class="list-group-item">
+                  <div class="row g-0 align-items-center">
+                    <div class="col-2">
+                      <img
+                              src="img/avatars/avatar-4.jpg"
+                              class="avatar img-fluid rounded-circle"
+                              alt="Christina Mason" />
+                    </div>
+                    <div class="col-10 ps-2">
+                      <div class="text-dark">Christina Mason</div>
+                      <div class="text-muted small mt-1">
+                        Pellentesque auctor neque nec urna.
+                      </div>
+                      <div class="text-muted small mt-1">4h ago</div>
+                    </div>
+                  </div>
+                </a>
+                <a href="#" class="list-group-item">
+                  <div class="row g-0 align-items-center">
+                    <div class="col-2">
+                      <img
+                              src="img/avatars/avatar-3.jpg"
+                              class="avatar img-fluid rounded-circle"
+                              alt="Sharon Lessman" />
+                    </div>
+                    <div class="col-10 ps-2">
+                      <div class="text-dark">Sharon Lessman</div>
+                      <div class="text-muted small mt-1">
+                        Aenean tellus metus, bibendum sed, posuere ac,
+                        mattis non.
+                      </div>
+                      <div class="text-muted small mt-1">5h ago</div>
+                    </div>
+                  </div>
+                </a>
+              </div>
+              <div class="dropdown-menu-footer">
+                <a href="#" class="text-muted">Show all messages</a>
+              </div>
+            </div>
+          </li>
+          <li class="nav-item dropdown">
+            <a
+                    class="nav-icon dropdown-toggle d-inline-block d-sm-none"
+                    href="#"
+                    data-bs-toggle="dropdown">
+              <i class="align-middle" data-feather="settings"></i>
+            </a>
+
+            <a
+                    class="nav-link dropdown-toggle d-none d-sm-inline-block"
+                    href="#"
+                    data-bs-toggle="dropdown">
+              <img
+                      src="img/avatars/avatar.jpg"
+                      class="avatar img-fluid rounded me-1"
+                      alt="Charles Hall" />
+              <span class="text-dark">Charles Hall</span>
+            </a>
+            <div class="dropdown-menu dropdown-menu-end">
+              <a class="dropdown-item" href="Taikhoannhatuyendung.html"><i
+                      class="align-middle me-1" data-feather="user"></i>
+                Profile</a>
+              <a class="dropdown-item" href="#"><i class="align-middle me-1"
+                                                   data-feather="pie-chart"></i>
+                Analytics</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="index.html"><i
+                      class="align-middle me-1" data-feather="settings"></i>
+                Settings & Privacy</a>
+              <a class="dropdown-item" href="#"><i
+                      class="align-middle me-1"
+                      data-feather="help-circle"></i>
+                Help Center</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="#">Log out</a>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <form th:action="@{${jobPostRequest.id != null ?   '/job-posts/' + jobPostRequest.id + '/update' :   '/job-posts/create'}}"
+          method="post"
+          th:object="${jobPostRequest}">
+
+      <!-- Thêm hidden input để đảm bảo ID được truyền -->
+
+      <div class="container custom-container mt-1">
+
+        <h4 class="mb-4">Thông tin cơ bản</h4>
+
+        <input type="hidden" th:field="*{id}" />
+        <div class="mb-3">
+          <label for="jobTitle" class="form-label">Tiêu đề tin tuyển dụng <i class="fa fa-question-circle"></i></label>
+          <input type="text" class="form-control" id="jobTitle" th:field="*{jobTitle}" placeholder="Vị trí hiển thị đang tuyển" required>
+          <div class="invalid-feedback" th:if="${#fields.hasErrors('jobTitle')}" th:errors="*{jobTitle}">
+            Tiêu đề công việc không được để trống
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label for="jobCategoryId" class="form-label">Ngành nghề <i class="fa fa-question-circle"></i></label>
+            <select class="form-select" id="jobCategoryId" th:field="*{jobCategoryId}" required>
+              <option value="">Chọn ngành nghề</option>
+              <option th:each="category : ${jobCategories}"
+                      th:value="${category.id}"
+                      th:text="${category.categoryName}">
+              </option>
+            </select>
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('jobCategoryId')}" th:errors="*{jobCategoryId}">
+              Vui lòng chọn ngành nghề
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <label for="exp" class="form-label">Kinh nghiệm <i class="fa fa-question-circle"></i></label>
+            <select class="form-select" id="exp" th:field="*{exp}" required>
+              <option value="">Chọn kinh nghiệm</option>
+              <option th:each="experience : ${T(poly.com.Enum.Exp).values()}"
+                      th:value="${experience}"
+                      th:text="${experience.getName()}">
+              </option>
+            </select>
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('exp')}" th:errors="*{exp}">
+              Vui lòng chọn kinh nghiệm
+            </div>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label for="subCategoryIds" class="form-label">Chuyên ngành <i class="fa fa-question-circle"></i></label>
+            <select class="form-select" id="subCategoryIds" th:field="*{subCategoryIds}" required>
+              <option value="">Chọn chuyên ngành</option>
+              <option th:each="subCategory : ${subCategories}"
+                      th:value="${subCategory.id}"
+                      th:text="${subCategory.subCategoryName}">
+              </option>
+            </select>
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('subCategoryIds')}" th:errors="*{subCategoryIds}">
+              Vui lòng chọn chuyên ngành
+            </div>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label for="quantity" class="form-label">Số lượng tuyển <i class="fa fa-question-circle"></i></label>
+            <input type="number" class="form-control" id="quantity" th:field="*{quantity}" min="1" placeholder="Chỉ nhập số, VD: 10" required>
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}">
+              Số lượng phải lớn hơn 0
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <label for="endDate" class="form-label">Hạn nộp hồ sơ <i class="fa fa-question-circle"></i></label>
+            <input type="date" class="form-control" id="endDate" th:field="*{endDate}" required>
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('endDate')}" th:errors="*{endDate}">
+              Ngày kết thúc không được để trống
+            </div>
+          </div>
+        </div>
+
+        <div class="bordered-box mb-3">
+          <h5>Địa chỉ</h5>
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="city" class="form-label">Tỉnh / Thành phố <i class="fa fa-question-circle"></i></label>
+              <select class="form-select" id="city" th:field="*{city}" required>
+                <option value="">Chọn Tỉnh hoặc Thành phố</option>
+                <option value="Hà Nội">Hà Nội</option>
+                <option value="Hồ Chí Minh">Hồ Chí Minh</option>
+                <option value="Đà Nẵng">Đà Nẵng</option>
+                <option value="Hải Phòng">Hải Phòng</option>
+                <option value="Cần Thơ">Cần Thơ</option>
+              </select>
+              <div class="invalid-feedback" th:if="${#fields.hasErrors('city')}" th:errors="*{city}">
+                Vui lòng chọn thành phố
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <label for="district" class="form-label">Quận / Huyện <i class="fa fa-question-circle"></i></label>
+              <input type="text" class="form-control" id="district" th:field="*{district}" placeholder="VD: Quận 1" required>
+              <div class="invalid-feedback" th:if="${#fields.hasErrors('district')}" th:errors="*{district}">
+                Quận/Huyện không được để trống
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="address" class="form-label">Số nhà, tên đường <i class="fa fa-question-circle"></i></label>
+            <input type="text" class="form-control" id="address" th:field="*{address}" placeholder="VD: 23 Trần Cao Vân, phường Đa Kao" required>
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('address')}" th:errors="*{address}">
+              Địa chỉ chi tiết không được để trống
+            </div>
+          </div>
+        </div>
+
+        <h4 class="mb-4">Yêu cầu chung</h4>
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label for="workType" class="form-label">Hình thức làm việc <i class="fa fa-question-circle"></i></label>
+            <select class="form-select" id="workType" th:field="*{workType}" required>
+              <option value="">Chọn hình thức làm việc</option>
+              <option th:each="type : ${T(poly.com.Enum.WorkType).values()}"
+                      th:value="${type}"
+                      th:text="${type.getName()}">
+              </option>
+            </select>
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('workType')}" th:errors="*{workType}">
+              Vui lòng chọn hình thức làm việc
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <label for="jobLevel" class="form-label">Cấp bậc <i class="fa fa-question-circle"></i></label>
+            <select class="form-select" id="jobLevel" th:field="*{jobLevel}" required>
+              <option value="">Chọn cấp bậc</option>
+              <option th:each="level : ${T(poly.com.Enum.JobLevel).values()}"
+                      th:value="${level}"
+                      th:text="${level.getName()}">
+
+              </option>
+            </select>
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('jobLevel')}" th:errors="*{jobLevel}">
+              Vui lòng chọn cấp bậc công việc
+            </div>
+          </div>
+        </div>
+
+
+
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label for="minSalary" class="form-label">Lương tối thiểu <i class="fa fa-question-circle"></i></label>
+            <input type="number" class="form-control" id="minSalary" th:field="*{minSalary}" min="0" step="0.1" placeholder="0" required>
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('minSalary')}" th:errors="*{minSalary}">
+              Lương tối thiểu phải lớn hơn hoặc bằng 0
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <label for="maxSalary" class="form-label">Lương tối đa <i class="fa fa-question-circle"></i></label>
+            <input type="number" class="form-control" id="maxSalary" th:field="*{maxSalary}" min="0" step="0.1" placeholder="0" required>
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('maxSalary')}" th:errors="*{maxSalary}">
+              Lương tối đa phải lớn hơn hoặc bằng 0
+            </div>
+          </div>
+        </div>
+
+        <h4 class="mb-4">Công việc chi tiết</h4>
+        <div class="mb-3">
+          <label for="jobDescription" class="form-label">Mô tả công việc</label>
+          <textarea class="form-control" id="jobDescription" th:field="*{jobDescription}" rows="5" placeholder="Nhập mô tả công việc..." required></textarea>
+          <div class="invalid-feedback" th:if="${#fields.hasErrors('jobDescription')}" th:errors="*{jobDescription}">
+            Mô tả công việc không được để trống
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="jobRequire" class="form-label">Yêu cầu công việc</label>
+          <textarea class="form-control" id="jobRequire" th:field="*{jobRequire}" rows="5" placeholder="Nhập yêu cầu công việc..." required></textarea>
+          <div class="invalid-feedback" th:if="${#fields.hasErrors('jobRequire')}" th:errors="*{jobRequire}">
+            Yêu cầu công việc không được để trống
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="jobBenefit" class="form-label">Quyền lợi</label>
+          <textarea class="form-control" id="jobBenefit" th:field="*{jobBenefit}" rows="5" placeholder="Nhập quyền lợi công việc..." required></textarea>
+          <div class="invalid-feedback" th:if="${#fields.hasErrors('jobBenefit')}" th:errors="*{jobBenefit}">
+            Quyền lợi không được để trống
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-between">
+          <button type="button" class="btn btn-secondary">Xem trước</button>
+          <button type="submit"><span th:text="${jobPostRequest.id != null ? 'Cập Nhật' : 'Tạo Mới'}"></span></button> >
+        </div>
+      </div>
+    </form>
+
+
+
+
+  </div>
+</div>
+<script>
+  function fetchArticles() {
+    fetch('/job-posts/Listing', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+            .then(response => response.json())
+            .then(data => {
+              // Xử lý dữ liệu trả về từ API
+              console.log(data);
+            })
+            .catch(error => {
+              console.error('Error:', error);
+            });
+  }
+
+  document.getElementById("danhsachtindang").addEventListener("click", function() {
+    window.location.href = '/job-posts/Listing';
+  });
+</script>
+<!--<script th:src="@{../js/app.js}"></script>-->
+<script src="/js/app.js"></script>
+</body>
+</html>

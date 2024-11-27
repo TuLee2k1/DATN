@@ -5,7 +5,11 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
+import poly.com.Enum.Exp;
+import poly.com.Enum.JobLevel;
 import poly.com.Enum.StatusEnum;
+import poly.com.Enum.WorkType;
 import poly.com.model.JobPostStatus;
 
 import java.util.Date;
@@ -16,6 +20,10 @@ import java.util.Date;
 @AllArgsConstructor
 @RequiredArgsConstructor
 public class JobPostRequest {
+
+    private Long id;
+    private Long userId;
+    private String userEmail;
     @NotBlank(message = "Job title is required")
     private String jobTitle; // Tên công việc
 
@@ -35,10 +43,8 @@ public class JobPostRequest {
     @Size(max = 2000, message = "Job benefits should not exceed 2000 characters")
     private String jobBenefit; // Quyền lợi
 
-    @NotNull(message = "Create date is required")
-    private Date createDate; // Ngày tạo
 
-    @NotNull(message = "End date is required")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date endDate; // Ngày kết thúc
 
     @NotNull(message = "Min salary is required")
@@ -63,6 +69,12 @@ public class JobPostRequest {
 
     @NotNull(message = "SubCategory IDs are required")
     private Long subCategoryIds; // Danh sách ID của SubCategory
+
+    private WorkType workType; // Hình thức làm việc
+
+    private JobLevel jobLevel; // Cấp bậc công việc
+
+    private Exp exp; // Kinh nghiệm
 
 
 }

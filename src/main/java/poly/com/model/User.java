@@ -35,6 +35,7 @@ import java.util.stream.Collectors;
 @EntityListeners(AuditingEntityListener.class)
 public class User implements UserDetails, Principal {
 
+
     @Id
     @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
     private Long id;
@@ -60,9 +61,9 @@ public class User implements UserDetails, Principal {
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-    name = "user_roles",
-    joinColumns = @JoinColumn(name = "user_id"),
-    inverseJoinColumns = @JoinColumn(name = "role_id")
+            name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private List<Role> roles;
 
@@ -96,8 +97,8 @@ public class User implements UserDetails, Principal {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.roles.stream()
-        .map(role -> new SimpleGrantedAuthority(role.getRole().name()))
-        .collect(Collectors.toList());
+                .map(role -> new SimpleGrantedAuthority(role.getRole().name()))
+                .collect(Collectors.toList());
     }
 
     @Override

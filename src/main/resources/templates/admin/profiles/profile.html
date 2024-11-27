@@ -1,0 +1,140 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{admin/layout.html}">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Responsive Admin &amp; Dashboard Template based on Bootstrap 5">
+    <meta name="author" content="AdminKit">
+    <meta name="keywords"
+          content="admin, bootstrap, bootstrap 5, admin, dashboard, template, responsive, css, sass, html, theme, front-end, ui kit, web">
+
+    <link href="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="shortcut icon" href="/img/icons/icon-48x48.png" />
+    <link rel="canonical" href="https://demo-basic.adminkit.io/" />
+
+
+
+    <title>Admin </title>
+
+    <link href="/css/app.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        .sidebar-items:hover .sidebar-link {
+            background-color: #187644;
+            /* Màu nền khi hover */
+            color: #f1f3f6;
+            /* Màu chữ khi hover */
+        }
+
+        .sidebar-item.active .sidebar-link {
+            background-color: #187644;
+            color: #ffffff;
+        }
+
+        .sidebar-items {
+            margin-bottom: 15px;
+            /* Khoảng cách giữa các mục */
+        }
+    </style>
+
+</head>
+
+<body>
+<div class="wrapper">
+
+
+        <!-- PHẦN CONTENT -->
+        <main class="content" layout:fragment="content">
+            <div class="container-fluid p-0" >
+
+                <!-- Profile Body -->
+                <div class="row d-flex profile-body p-4 border rounded shadow-sm">
+                    <h1 class="h3 mb-3"><strong>Profile </strong></h1>
+
+                    <!-- Profile Information -->
+                    <div class="col-md-12">
+                        <!-- Name Fields -->
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="firstName" class="form-label">UserName</label>
+                                <input type="text" class="form-control" id="firstName" value="tienlake">
+                            </div>
+                            <div class="col-md-6">
+                                <label  class="form-label">Password</label>
+                                <input type="password" class="form-control" id="lastName" value="lake3">
+                            </div>
+                        </div>
+
+                        <!-- Email and Phone Fields -->
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" value="honhutuyen201092004@outlook.com">
+                            </div>
+                            <div class="col-md-6 ">
+                                <label for="role" class="form-label">Role</label>
+                                <input type="text" class="form-control" id="role" value="Admin" readonly>
+                            </div>
+                        </div>
+
+                        <!-- About Me Section -->
+                        <div class="mb-4">
+                            <label for="aboutMe" class="form-label">About Me</label>
+                            <textarea class="form-control" id="aboutMe" rows="4" placeholder="Type something..."></textarea>
+                        </div>
+
+                        <!-- Save Changes Button -->
+                        <div class="text-end">
+                            <button class="btn btn-success">Save Changes</button>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+                <div class="row d-flex mt-2 profile-body p-4 border rounded shadow-sm">
+                    <h1 class="h3 mb-3"><strong>Change Password </strong></h1>
+
+
+                    <div class="col-md-12">
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label  class="form-label">Current Password</label>
+                                <input type="password" class="form-control"  value="tienlake">
+                            </div>
+                            <div class="col-md-6 ">
+                                <label  class="form-label">New Password</label>
+                                <input type="password" class="form-control"  value="lake3">
+                            </div>
+                        </div>
+
+
+
+                        <!-- Save Changes Button -->
+                        <div class="text-end">
+                            <button class="btn btn-success">Save Changes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+
+</div>
+
+
+<script src="/js/app.js"></script>
+
+
+</body>
+
+</html>
