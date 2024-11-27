@@ -154,6 +154,7 @@ public class JobPostService {
                 .jobLevel(jobPost.getJobLevel())
                 .jobCategoryId(jobPost.getJobCategory().getId())
                 .subCategoryIds(jobPost.getSubCategory().getId())
+                .companyName(jobPost.getCompany().getName())
                 .build();
 
 

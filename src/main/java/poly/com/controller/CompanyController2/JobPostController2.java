@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -15,6 +16,7 @@ import poly.com.Enum.RoleType;
 import poly.com.Enum.StatusEnum;
 import poly.com.dto.request.JobPost.JobPostRequest;
 import poly.com.dto.response.Auth.AuthenticationResponse;
+import poly.com.dto.response.JobPost.JobListActiveResponse;
 import poly.com.dto.response.JobPost.JobListingResponse;
 import poly.com.dto.response.JobPost.JobPostResponse;
 import poly.com.dto.response.PageResponse;
@@ -132,7 +134,14 @@ public class JobPostController2 {
     public String showJobPostDetail(@PathVariable Long id, Model model) {
         JobPostRequest jobPost = jobPostService.getJobPost(id);
         model.addAttribute("jobPost", jobPost);
-        return "job-post/detail";
+
+        // Lấy danh sách công việc
+        Page<JobListActiveResponse> jobListings = jobPostService.getJobListingsByStatus("ACTIVE", 1, 10);
+        model.addAttribute("jobListings", jobListings);
+        model.addAttribute("currentPage", 1);
+        model.addAttribute("totalPages", jobListings.getTotalPages());
+
+        return "fragments/job-single";
     }
 
     // Danh sách bài đăng
@@ -193,4 +202,5 @@ public class JobPostController2 {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
 }
