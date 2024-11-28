@@ -8,7 +8,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
+import java.time.LocalDateTime;
 import java.util.Date;
+
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -42,4 +44,12 @@ public class JobProfile extends AbstractEntity {
     @JoinColumn(name = "profile_id")
     private Profile profile;
 
+    @ManyToOne()
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @PrePersist
+    public void prePersist() {
+        dateApply = new Date();
+    }
 }

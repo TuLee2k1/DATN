@@ -1,7 +1,5 @@
-
-
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{admin/layout.html}">
+<html charset="UTF-8" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{/admin/layout.html}">
 
 <head>
     <meta charset="utf-8">
@@ -9,209 +7,142 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="Responsive Admin &amp; Dashboard Template based on Bootstrap 5">
     <meta name="author" content="AdminKit">
-    <meta name="keywords"
-          content="admin, bootstrap, bootstrap 5, admin, dashboard, template, responsive, css, sass, html, theme, front-end, ui kit, web">
+    <meta name="keywords" content="admin, bootstrap, bootstrap 5, admin, dashboard, template, responsive, css, sass, html, theme, front-end, ui kit, web">
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amarante&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Sumana:wght@400;700&family=Yeseva+One&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link rel="shortcut icon" href="/img/icons/icon-48x48.png" />
     <link rel="canonical" href="https://demo-basic.adminkit.io/" />
 
-
-
-    <title>Admin </title>
+    <title>Admin</title>
 
     <link href="/css/app.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
     <style>
-        .sidebar-items:hover .sidebar-link {
-            background-color: #187644;
-            /* Màu nền khi hover */
-            color: #f1f3f6;
-            /* Màu chữ khi hover */
+
+        .content{
+            font-family: "Nunito", sans-serif;
+        }
+        .status-active {
+            background-color: #77ba86; /* Màu nền xanh nhạt */
+            color: #ffffff; /* Màu chữ xanh đậm */
+            padding: 5px;
+            border-radius: 5px;
+            font-family: "Nunito", sans-serif;
         }
 
-        .sidebar-item.active .sidebar-link {
-            background-color: #187644;
-            color: #ffffff;
+        .status-pending {
+            background-color: #f1e239; /* Màu nền vàng nhạt */
+            color: #fbfbfb; /* Màu chữ vàng đậm */
+            padding: 5px;
+            border-radius: 5px;
+            font-family: "Nunito", sans-serif;
         }
 
-        .sidebar-items {
-            margin-bottom: 15px;
-            /* Khoảng cách giữa các mục */
+        .status-deleted {
+            background-color: #ef3852; /* Màu nền đỏ nhạt */
+            color: #ffffff; /* Màu chữ đỏ đậm */
+            padding: 5px;
+            border-radius: 5px;
+            font-family: "Nunito", sans-serif;
+        }
+
+        .status-default {
+            background-color: #e2e3e5; /* Màu nền xám nhạt */
+            color: #6c757d; /* Màu chữ xám đậm */
+            padding: 5px;
+            border-radius: 5px;
+            font-family: "Nunito", sans-serif;
         }
     </style>
 
 </head>
 
 <body>
-<div class="wrapper">
 
+<!-- PHẦN CONTENT -->
+<main class="content" layout:fragment="content">
 
-
-        <!-- PHẦN CONTENT -->
-        <main class="content" layout:fragment="content">
-
-            <!--Form nhập  -->
-            <div class="container mt-5">
-                <h1 class="h3 mb-4"><strong>Thêm/Cập Nhật Job Post</strong></h1>
-                <div class="card shadow">
-                    <div class="card-body">
-                        <form id="jobPostForm">
-                            <!-- Job Title -->
-                            <div class="mb-3">
-                                <label for="jobTitle" class="form-label">Job Title</label>
-                                <input type="text" class="form-control" id="jobTitle" placeholder="Nhập tên công việc" required>
-                            </div>
-
-                            <!-- Job Description -->
-                            <div class="mb-3">
-                                <label for="jobDescription" class="form-label">Job Description</label>
-                                <textarea class="form-control" id="jobDescription" rows="4" placeholder="Mô tả công việc" maxlength="2000" required></textarea>
-                            </div>
-
-                            <!-- Job Requirement -->
-                            <div class="mb-3">
-                                <label for="jobRequire" class="form-label">Job Requirement</label>
-                                <textarea class="form-control" id="jobRequire" rows="4" placeholder="Yêu cầu công việc" maxlength="2000" required></textarea>
-                            </div>
-
-                            <div class="row">
-                                <!-- Quantity -->
-                                <div class="col-md-6 mb-3">
-                                    <label for="quantity" class="form-label">Quantity</label>
-                                    <input type="number" class="form-control" id="quantity" placeholder="Số lượng tuyển" min="1" required>
-                                </div>
-
-                                <!-- Min Salary -->
-                                <div class="col-md-3 mb-3">
-                                    <label for="minSalary" class="form-label">Min Salary (VND)</label>
-                                    <input type="number" class="form-control" id="minSalary" placeholder="Lương tối thiểu" min="0" required>
-                                </div>
-
-                                <!-- Max Salary -->
-                                <div class="col-md-3 mb-3">
-                                    <label for="maxSalary" class="form-label">Max Salary (VND)</label>
-                                    <input type="number" class="form-control" id="maxSalary" placeholder="Lương tối đa" min="0" required>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <!-- Create Date -->
-                                <div class="col-md-6 mb-3">
-                                    <label for="createDate" class="form-label">Create Date</label>
-                                    <input type="date" class="form-control" id="createDate" required>
-                                </div>
-
-                                <!-- End Date -->
-                                <div class="col-md-6 mb-3">
-                                    <label for="endDate" class="form-label">End Date</label>
-                                    <input type="date" class="form-control" id="endDate" required>
-                                </div>
-                            </div>
-
-                            <!-- City -->
-                            <div class="mb-3">
-                                <label for="city" class="form-label">City</label>
-                                <input type="text" class="form-control" id="city" placeholder="Nhập thành phố" required>
-                            </div>
-
-                            <div class="row">
-                                <!-- Job Category -->
-                                <div class="col-md-6 mb-3">
-                                    <label for="jobCategory" class="form-label">Job Category</label>
-                                    <select class="form-select" id="jobCategory" required>
-                                        <option selected disabled>Chọn loại công việc</option>
-                                        <option value="1">IT</option>
-                                        <option value="2">Marketing</option>
-                                        <option value="3">Finance</option>
-                                    </select>
-                                </div>
-
-                                <!-- Company -->
-                                <div class="col-md-6 mb-3">
-                                    <label for="company" class="form-label">Company</label>
-                                    <select class="form-select" id="company" required>
-                                        <option selected disabled>Chọn công ty</option>
-                                        <option value="1">KMS Technology</option>
-                                        <option value="2">Paradox</option>
-                                        <option value="3">FPT IS</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <!-- Status -->
-                            <div class="mb-3">
-                                <label for="status" class="form-label">Status</label>
-                                <select class="form-select" id="status" required>
-                                    <option selected disabled>Chọn trạng thái</option>
-                                    <option value="ACTIVE">Active</option>
-                                    <option value="INACTIVE">Inactive</option>
-                                </select>
-                            </div>
-
-                            <!-- Buttons -->
-                            <div class="d-flex justify-content-end gap-2">
-                                <button type="reset" class="btn btn-secondary">Reset</button>
-                                <button type="submit" class="btn btn-primary">Submit</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Table Hiển Thị -->
-            <div class="row">
-                <h1 class="h3 mb-3"><strong>Job List</strong></h1>
-                <div class="d-flex">
-                    <div class="card flex-fill">
-                        <table class="table table-hover my-0" id="jobListTable">
-                            <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Tiêu đề công việc</th>
-                                <th>Công ty</th>
-                                <th>Thành phố</th>
-                                <th>Ngày tạo</th>
-                                <th>Ngày kết thúc</th>
-                                <th>Lương</th>
-                                <th>Trạng thái</th>
-                                <th>Actions</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr th:each="jobPost : ${jobPosts}">
-                                <td th:text="${jobPost.id}"></td>
-                                <td th:text="${jobPost.jobTitle}"></td>
-                                <td th:text="${jobPost.company.name}"></td>
-                                <td th:text="${jobPost.city}"></td>
-                                <td th:text="${#dates.format(jobPost.createDate, 'yyyy-MM-dd')}"></td>
-                                <td th:text="${#dates.format(jobPost.endDate, 'yyyy-MM-dd')}"></td>
-                                <td th:text="${jobPost.minSalary} + ' - ' + ${jobPost.maxSalary}"></td>
-                                <td th:text="${jobPost.status}"></td>
-                                <td>
-                                    <a th:href="@{'/admin/jobposts/delete/' + ${jobPost.id}}"
-                                       class="btn btn-outline-danger btn-sm rounded-circle"
-                                       style="width: 40px; height: 40px;"
-                                       onclick="return confirm('Bạn có chắc chắn muốn xóa bài đăng này này?');">
-                                        <i class="align-middle" data-feather="trash-2"></i>
-                                    </a>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-        </main>
-
-
+    <!-- Hiển Thị Thông Báo -->
+    <div th:if="${message}" class="alert alert-success" role="alert">
+        <span th:text="${message}"></span>
     </div>
-</div>
+
+    <div class="row">
+        <h1 class="h3 mb-3"><strong>Job List</strong></h1>
+        <div class="d-flex">
+            <div class="card flex-fill">
+                <table class="table table-hover my-0" id="jobListTable">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Tiêu đề công việc</th>
+                        <th>Công ty</th>
+                        <th>Thành phố</th>
+                        <th>Ngày tạo</th>
+                        <th>Ngày kết thúc</th>
+                        <th>Lương</th>
+                        <th>Trạng thái</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="jobPost : ${jobPosts}">
+                        <td th:text="${jobPost.id}"></td>
+                        <td th:text="${jobPost.jobTitle}"></td>
+                        <td th:text="${jobPost.company.name}"></td>
+                        <td th:text="${jobPost.city}"></td>
+                        <td th:text="${#dates.format(jobPost.createDate, 'yyyy-MM-dd')}"></td>
+                        <td th:text="${#dates.format(jobPost.endDate, 'yyyy-MM-dd')}"></td>
+                        <td th:text="${jobPost.minSalary} + ' - ' + ${jobPost.maxSalary}"></td>
+                        <td>
+                            <span th:class="${jobPost.statusEnum.name == 'ACTIVE' ? 'status-active' :
+                                            (jobPost.statusEnum.name == 'PENDING' ? 'status-pending' :
+                                            (jobPost.statusEnum.name == 'DELETED' ? 'status-deleted' : 'status-default'))}"
+                                th:text="${jobPost.statusEnum.name}">
+                            </span>
+                        </td>
+                        <td>
+                            <a th:href="@{'/admin/jobposts/approve/' + ${jobPost.id}}"
+                               class="btn btn-outline-success btn-sm rounded-circle"
+                               style="width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center; font-size: 24px;"
+                               onclick="return confirm('Bạn có chắc chắn muốn phê duyệt bài đăng này?');">
+                                <i class="align-middle" data-feather="check-circle"></i>
+                            </a>
+
+                            <a th:href="@{'/admin/jobposts/delete/' + ${jobPost.id}}"
+                               class="btn btn-outline-danger btn-sm rounded-circle"
+                               style="width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center; font-size: 24px;"
+                               onclick="return confirm('Bạn có chắc chắn muốn xóa bài đăng này?');">
+                                <i class="align-middle" data-feather="trash-2"></i>
+                            </a>
+
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</main>
 
 <script src="/js/app.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+<!-- Hiển thị thông báo thành công -->
+<script>
+    let message = /*[[${message}]]*/'';
+    if (message) {
+        toastr.success(message);
+    }
+</script>
+
+
 
 </body>
 
-</html>    
+</html>

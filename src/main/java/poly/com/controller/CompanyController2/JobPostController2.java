@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import poly.com.Enum.RoleType;
 import poly.com.Enum.StatusEnum;
+import poly.com.dto.request.ApplyCVRequest;
 import poly.com.dto.request.JobPost.JobPostRequest;
 import poly.com.dto.response.Auth.AuthenticationResponse;
 import poly.com.dto.response.JobPost.JobListActiveResponse;
@@ -136,13 +137,18 @@ public class JobPostController2 {
     @GetMapping("/detail/{id}")
     public String showJobPostDetail(@PathVariable Long id, Model model) {
         JobPostRequest jobPost = jobPostService.getJobPost(id);
-        model.addAttribute("jobPost", jobPost);
+
 
         // Lấy danh sách công việc
         Page<JobListActiveResponse> jobListings = jobPostService.getJobListingsByStatus("ACTIVE", 1, 10);
         model.addAttribute("jobListings", jobListings);
         model.addAttribute("currentPage", 1);
         model.addAttribute("totalPages", jobListings.getTotalPages());
+
+        // Tạo DTO để bind dữ liệu
+        ApplyCVRequest applicationForm = new ApplyCVRequest();
+        model.addAttribute("applicationForm", applicationForm);
+        model.addAttribute("jobPost", jobPost);
 
         return "fragments/job-single";
     }

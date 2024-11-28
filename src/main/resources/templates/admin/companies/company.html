@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{admin/layout.html}">
+<html charset="UTF-8" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{/admin/layout.html}">
 
 <head>
     <meta charset="utf-8">
@@ -43,123 +43,73 @@
 </head>
 
 <body>
-<div class="wrapper">
 
 
 
-        <!-- PHẦN CONTENT -->
-        <main class="content" layout:fragment="content">
 
-            <h1 class="h3 mb-3"><strong>Company</strong></h1>
-            <!-- Form nhập thông tin công ty -->
-            <div class="card mb-5">
-                <div class="card-body">
-                    <form id="companyForm">
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label for="companyName" class="form-label">Company Name</label>
-                                <input type="text" class="form-control" id="companyName"
-                                       placeholder="Enter company name">
+<!-- PHẦN CONTENT -->
+<main class="content" layout:fragment="content">
+
+    <h1 class="h3 mb-3"><strong>Company</strong></h1>
+
+
+    <!-- Table hiển thị -->
+
+    <div class="row">
+
+        <div class="d-flex">
+            <div class="card flex-fill">
+
+
+
+                <table class="table table-hover my-0">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Tên Công Ty</th>
+                        <th>Logo</th>
+                        <th>Email</th>
+                        <th>Địa chỉ</th>
+                        <th>Loại hình</th>
+                        <th>Năm thành lập</th>
+                        <th>Trạng thái</th>
+
+                        <th>Actions</th> <!-- Thêm cột mới cho các nút -->
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr  th:each="company : ${companies}">
+                        <td th:text="${company.id}"></td>
+                        <td th:text="${company.name}"></td>
+                        <td>
+                            <img th:src="${company.logo}" alt="Logo" width="50" height="50">
+                        </td>
+                        <td th:text="${company.email}"></td>
+                        <td th:text="${company.addressAndDistrict()}"></td>
+                        <td th:text="${company.businessType}"></td>
+                        <td th:text="${company.yearEstablished}"></td>
+                        <td th:text="${company.status}"></td>
+                        <td>
+                            <div class="align-items-center gap-2">
+                                <!-- Nút xóa -->
+                                <a th:href="@{'/admin/companies/delete/' + ${company.id}}"
+                                   class="btn btn-outline-danger btn-sm rounded-circle"
+                                   style="width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center; font-size: 24px;"
+                                   onclick="return confirm('Bạn có chắc chắn muốn xóa công ty này?');">
+                                    <i class="align-middle" data-feather="trash-2"></i>
+                                </a>
                             </div>
-                            <div class="col-md-6">
-                                <label for="companyAddress" class="form-label">Address</label>
-                                <input type="text" class="form-control" id="companyAddress"
-                                       placeholder="Enter address">
-                            </div>
-                        </div>
-
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label for="companyPhone" class="form-label">Phone</label>
-                                <input type="text" class="form-control" id="companyPhone"
-                                       placeholder="Enter phone number">
-                            </div>
-                            <div class="col-md-6">
-                                <label for="companyEmail" class="form-label">Email</label>
-                                <input type="email" class="form-control" id="companyEmail"
-                                       placeholder="Enter email">
-                            </div>
-                        </div>
-
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label for="companyTaxCode" class="form-label">Tax Code</label>
-                                <input type="text" class="form-control" id="companyTaxCode"
-                                       placeholder="Enter tax code">
-                            </div>
-                            <div class="col-md-6">
-                                <label for="companyLogo" class="form-label">Logo</label>
-                                <input type="file" class="form-control" id="companyLogo">
-                            </div>
-                        </div>
-
-                        <div class="d-flex justify-content-end">
-                            <button type="reset" class="btn btn-secondary me-2">Clear</button>
-                            <button type="submit" class="btn btn-primary">Submit</button>
-                        </div>
-                    </form>
-                </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
+        </div>
+    </div>
 
-            <!-- Table hiển thị -->
+</main>
 
-            <div class="row">
-
-                <div class="d-flex">
-                    <div class="card flex-fill">
-
-
-
-                        <table class="table table-hover my-0">
-                            <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Tên Công Ty</th>
-                                <th>Logo</th>
-                                <th>Email</th>
-                                <th>Địa chỉ</th>
-                                <th>Loại hình</th>
-                                <th>Năm thành lập</th>
-                                <th>Trạng thái</th>
-
-                                <th>Actions</th> <!-- Thêm cột mới cho các nút -->
-
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr  th:each="company : ${companies}">
-                                <td th:text="${company.id}"></td>
-                                <td th:text="${company.name}"></td>
-                                <td>
-                                    <img th:src="${company.logo}" alt="Logo" width="50" height="50">
-                                </td>
-                                <td th:text="${company.email}"></td>
-                                <td th:text="${company.addressAndDistrict()}"></td>
-                                <td th:text="${company.businessType}"></td>
-                                <td th:text="${company.yearEstablished}"></td>
-                                <td th:text="${company.status}"></td>
-                                <td>
-                                    <div class="align-items-center gap-2">
-                                        <!-- Nút xóa -->
-                                        <a th:href="@{'/admin/companies/delete/' + ${company.id}}"
-                                           class="btn btn-outline-danger btn-sm rounded-circle"
-                                           style="width: 40px; height: 40px;"
-                                           onclick="return confirm('Bạn có chắc chắn muốn xóa công ty này?');">
-                                            <i class="align-middle" data-feather="trash-2"></i>
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-        </main>
-
-
-</div>
 
 
 <script src="/js/app.js"></script>
