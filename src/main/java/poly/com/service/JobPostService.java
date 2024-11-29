@@ -336,4 +336,10 @@ public class JobPostService {
     public List<JobPost> findAll() {
         return jobPostRepository.findAll();
     }
+
+
+    //để hiển thị trang chi tiết job post
+    public JobPost findById(Long id) {
+        return jobPostRepository.findById(id).orElse(null);
+    }
 }
