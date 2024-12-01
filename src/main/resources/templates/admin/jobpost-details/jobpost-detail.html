@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html charset="UTF-8" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{/admin/layout.html}">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Responsive Admin &amp; Dashboard Template based on Bootstrap 5">
+    <meta name="author" content="AdminKit">
+    <meta name="keywords" content="admin, bootstrap, bootstrap 5, admin, dashboard, template, responsive, css, sass, html, theme, front-end, ui kit, web">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amarante&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Sumana:wght@400;700&family=Yeseva+One&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.css" rel="stylesheet">
+    <link rel="shortcut icon" href="/img/icons/icon-48x48.png" />
+    <link href="/css/app.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+    <style>
+        .content {
+            font-family: "Nunito", sans-serif;
+        }
+
+        .status-active {
+            background-color: #77ba86; /* Màu nền xanh nhạt */
+            color: #ffffff;
+            padding: 5px;
+            border-radius: 5px;
+            font-family: "Nunito", sans-serif;
+        }
+
+        .status-pending {
+            background-color: #f1e239; /* Màu nền vàng nhạt */
+            color: #fbfbfb;
+            padding: 5px;
+            border-radius: 5px;
+            font-family: "Nunito", sans-serif;
+        }
+
+        .status-deleted {
+            background-color: #ef3852; /* Màu nền đỏ nhạt */
+            color: #ffffff;
+            padding: 5px;
+            border-radius: 5px;
+            font-family: "Nunito", sans-serif;
+        }
+
+        .status-default {
+            background-color: #e2e3e5; /* Màu nền xám nhạt */
+            color: #6c757d;
+            padding: 5px;
+            border-radius: 5px;
+            font-family: "Nunito", sans-serif;
+        }
+
+        .clickable-row {
+            cursor: pointer; /* Thêm con trỏ chuột khi di chuột vào dòng */
+        }
+        .button-container {
+            display: flex; /* Sử dụng flex để căn chỉnh các nút trên một hàng */
+            gap: 10px; /* Khoảng cách giữa các nút */
+            align-items: center; /* Căn chỉnh các nút theo chiều dọc */
+
+        }
+        .btn{
+            border-radius: 5px;
+        }
+    </style>
+</head>
+
+<body>
+
+<main class="content" layout:fragment="content">
+
+    <h1>Chi tiết bài đăng công việc</h1>
+
+    <table class="table table-bordered">
+        <tr>
+            <th>ID</th>
+            <td th:text="${jobPost.id}"></td>
+        </tr>
+        <tr>
+            <th>Tiêu đề công việc</th>
+            <td th:text="${jobPost.jobTitle}"></td>
+        </tr>
+        <tr>
+            <th>Mô tả công việc</th>
+            <td th:text="${jobPost.jobDescription}"></td>
+        </tr>
+        <tr>
+            <th>Số lượng tuyển</th>
+            <td th:text="${jobPost.quantity}"></td>
+        </tr>
+        <tr>
+            <th>Yêu cầu công việc</th>
+            <td th:text="${jobPost.jobRequire}"></td>
+        </tr>
+        <tr>
+            <th>Quyền lợi</th>
+            <td th:text="${jobPost.jobBenefit}"></td>
+        </tr>
+        <tr>
+            <th>Ngày tạo</th>
+            <td th:text="${#dates.format(jobPost.createDate, 'yyyy-MM-dd')}"></td>
+        </tr>
+        <tr>
+            <th>Ngày kết thúc</th>
+            <td th:text="${#dates.format(jobPost.endDate, 'yyyy-MM-dd')}"></td>
+        </tr>
+        <tr>
+            <th>Lương tối thiểu</th>
+            <td th:text="${jobPost.minSalary}"></td>
+        </tr>
+        <tr>
+            <th>Lương tối đa</th>
+            <td th:text="${jobPost.maxSalary}"></td>
+        </tr>
+        <tr>
+            <th>Thành phố</th>
+            <td th:text="${jobPost.city}"></td>
+        </tr>
+        <tr>
+            <th>Quận</th>
+            <td th:text="${jobPost.district}"></td>
+        </tr>
+        <tr>
+            <th>Địa chỉ</th>
+            <td th:text="${jobPost.address}"></td>
+        </tr>
+
+        <tr>
+            <th>Loại công việc</th>
+            <td th:text="${jobPost.workType}"></td>
+        </tr>
+        <tr>
+            <th>Kinh nghiệm</th>
+            <td th:text="${jobPost.exp}"></td>
+        </tr>
+        <tr>
+            <th>Cấp độ công việc</th>
+            <td th:text="${jobPost.jobLevel}"></td>
+        </tr>
+        <tr>
+            <th>Công ty</th>
+            <td th:text="${jobPost.company.name}"></td>
+        </tr>
+        <tr>
+            <th>Danh mục công việc</th>
+            <td th:text="${jobPost.jobCategory.categoryName}"></td>
+        </tr>
+        <tr>
+            <th>Trạng thái</th>
+            <td>
+                <span th:class="${jobPost.statusEnum.name == 'ACTIVE' ? 'status-active' :
+                                            (jobPost.statusEnum.name == 'PENDING' ? 'status-pending' :
+                                            (jobPost.statusEnum.name == 'DELETED' ? 'status-deleted' : 'status-default'))}"
+                      th:text="${jobPost.statusEnum.name}">
+                </span>
+            </td>
+        </tr>
+    </table>
+
+    <div class="button-container">
+        <!-- Hiển thị nút duyệt và xóa nếu trạng thái là PENDING -->
+        <div th:if="${jobPost.statusEnum.name == 'PENDING'}">
+            <!-- Nút Duyệt Ngay -->
+            <a th:href="@{'/admin/jobposts/approve/' + ${jobPost.id}}"
+               class="btn btn-outline-success btn-sm"
+               style="display: inline-flex; align-items: center; justify-content: center; font-size: 16px; padding: 10px 20px; margin-right: 10px;"
+               onclick="return confirm('Bạn có chắc chắn muốn phê duyệt bài đăng này?');">
+                Duyệt Ngay
+            </a>
+
+            <!-- Nút Xóa -->
+            <a th:href="@{'/admin/jobposts/delete/' + ${jobPost.id}}"
+               class="btn btn-outline-danger btn-sm"
+               style="display: inline-flex; align-items: center; justify-content: center; font-size: 16px; padding: 10px 20px; margin-right: 10px;"
+               onclick="return confirm('Bạn có chắc chắn muốn xóa bài đăng này?');">
+                Delete
+            </a>
+        </div>
+
+        <!-- Nút trở về danh sách bài đăng -->
+        <a th:href="@{'/admin/jobposts'}"
+           class="btn btn-outline-secondary btn-sm"
+           style="display: inline-flex; align-items: center; justify-content: center; font-size: 16px; padding: 10px 20px;">
+            Trở về danh sách bài đăng
+        </a>
+    </div>
+
+</main>
+
+<script src="/js/app.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+<script>
+    let message = /*[[${message}]]*/'';
+    if (message) {
+        toastr.success(message);
+    }
+</script>
+
+</body>
+</html>

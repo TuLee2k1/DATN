@@ -2,6 +2,7 @@ package poly.com.controller.admin;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -58,5 +59,16 @@ public class AdminJobPostController {
             redirectAttributes.addFlashAttribute("message", "Error: " + e.getMessage());
             return "redirect:/admin/jobposts"; // Quay lại danh sách JobPosts nếu có lỗi
         }
+    }
+
+    @GetMapping("details/{id}")
+    public String getJobPostDetails(@PathVariable("id") Long id, Model model) {
+        JobPost jobPost = jobPostService.findById(id); // Sử dụng query với JOIN FETCH
+        if (jobPost == null) {
+            model.addAttribute("error", "JobPost not found!");
+            return "error"; // Hoặc một trang báo lỗi phù hợp
+        }
+        model.addAttribute("jobPost", jobPost);
+        return "/admin/jobpost-details/jobpost-detail";
     }
 }
