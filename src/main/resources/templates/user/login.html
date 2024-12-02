@@ -147,11 +147,12 @@
                 console.log('User  Info:', data); // Ghi lại thông tin người dùng vào console
                 localStorage.setItem('userInfo', JSON.stringify(data));
 
-                if (userInfo.roles.indexOf("ROLE_ADMIN") !== -1) {
+                if (userInfo.roles.includes("ROLE_ADMIN")) {
                     window.location.href = "/auth/admin/dashboard";
-                } else if (userInfo.roles.indexOf("ROLE_USER") !== -1) {
+                } else if (userInfo.roles.includes("ROLE_USER")) {
                     window.location.href = "http://localhost:8080";
-                } else if (userInfo.roles.indexOf("ROLE_COMPANY") !== -1) {
+
+                } else if (userInfo.roles.includes("ROLE_COMPANY")) {
                     window.location.href = "/company-account";
                 } else {
                     window.location.href = "/auth/default/dashboard";

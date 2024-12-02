@@ -470,4 +470,9 @@ public class AuthenticationService {
             throw new RuntimeException("New password and confirm password do not match");
         }
     }
+
+    //để lấy hiển thị tất cả thông tin user
+    public List<User> findAllUsers() {
+        return userRepository.findAll();
+    }
 }

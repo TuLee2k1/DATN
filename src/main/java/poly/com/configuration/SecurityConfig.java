@@ -49,6 +49,8 @@ public class SecurityConfig {
           ).permitAll()
           .requestMatchers("/Company/**").hasRole("COMPANY")
           .anyRequest().authenticated()
+
+
          )
          // Cấu hình Session
          .sessionManagement(session -> session

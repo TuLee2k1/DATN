@@ -10,6 +10,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import poly.com.dto.ProfileDTO;
 import poly.com.exception.ProfileException;
+
+import poly.com.model.Company;
+import poly.com.model.JobProfile;
+
 import poly.com.model.Profile;
 import poly.com.model.User;
 import poly.com.repository.ProfileRepository;
@@ -105,6 +109,7 @@ public class ProfileService {
         profileRepository.delete(existed);
     }
 
+
     /**
      * Thay đổi mật khẩu người dùng
      */
@@ -121,4 +126,5 @@ public class ProfileService {
         user.setPassword(passwordEncoder.encode(newPassword));
         userRepository.save(user);
     }
+
 }
