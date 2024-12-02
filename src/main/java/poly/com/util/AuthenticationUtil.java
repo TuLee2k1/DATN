@@ -34,7 +34,8 @@ public class AuthenticationUtil {
     }
 
     public Authentication getAuthentication() {
-        return SecurityContextHolder.getContext().getAuthentication();
+        return SecurityContextHolder.getContext().getAuthentication(); // người dùng đnăg nhập sẽ lưu thông tin vào đây,
+        // Muốn lấy dữ liệu người dùng thì gọi thằng này ra
     }
 
     public User getCurrentUser() {
