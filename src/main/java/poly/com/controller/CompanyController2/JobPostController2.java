@@ -85,7 +85,6 @@ public class JobPostController2 {
     }
 
 
-
     @PreAuthorize("hasRole('ROLE_COMPANY')")
     @PostMapping({"/create", "/{id}/update"})
     public String saveJobPost(
@@ -210,6 +209,23 @@ public class JobPostController2 {
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
+    }
+
+    // Xóa bài đăng
+    @PreAuthorize("hasRole('ROLE_COMPANY')")
+    @PostMapping("/{id}/delete")
+    public String deleteJobPost(
+            @PathVariable Long id,
+            RedirectAttributes redirectAttributes
+    ) {
+        try {
+            jobPostService.deleteJobPostByStatusEnum(id);
+            redirectAttributes.addFlashAttribute("successMessage", "Xóa bài đăng thành công!");
+        } catch (Exception e) {
+            log.error("Lỗi khi xóa bài đăng: ", e);
+            redirectAttributes.addFlashAttribute("errorMessage", "Có lỗi xảy ra: " + e.getMessage());
+        }
+        return "redirect:/job-posts/Listing";
     }
 
 }
