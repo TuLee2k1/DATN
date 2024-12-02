@@ -57,9 +57,16 @@ public class Company extends AbstractEntity {
     @Column(name = "employee_count") // số lượng nhân viên
     private String employeeCount;
 
+    @Column(name = "business_license")
+    private String businessLicense;
 
     @Enumerated(EnumType.STRING) // trạng thái công ty
     private StatusEnum status;
+
+    @ManyToOne
+    @JoinColumn(name = "job_category_id")
+    private JobCategory jobCategory;
+
 
     @OneToOne
     @JoinColumn(name = "user_id")

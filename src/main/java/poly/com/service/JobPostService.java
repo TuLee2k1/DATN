@@ -384,7 +384,6 @@ public class JobPostService {
         return jobPostRepository.findAll();
     }
 
-
     /*
      * @author: VuDD
      * @since: 11/29/2024 2:30 PM
@@ -413,5 +412,9 @@ public class JobPostService {
     }
 
 
+    //để hiển thị trang chi tiết job post
+    public JobPost findById(Long id) {
+        return jobPostRepository.findById(id).orElse(null);
+    }
 
 }

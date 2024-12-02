@@ -33,6 +33,6 @@ build/
 .vscode/
 
 ### File-based project format ###
-src/main/resources/application.properties
+application.properties
 
 

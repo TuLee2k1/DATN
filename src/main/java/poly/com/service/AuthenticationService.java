@@ -48,6 +48,7 @@ public class AuthenticationService {
     private final JwtService jwtService;
     private final TokenRepository tokenRepository;
     private final CompanyRepository companyRepository;
+    private final ProfileRepository profileRepository;
 
     @Value("${spring.mailing.frontend.activation-url}")
     private String activationUrl;
@@ -78,12 +79,18 @@ public class AuthenticationService {
         User user = createUser(request.getFirstname(), request.getLastname(), request.getEmail(), request.getPassword(), RoleType.ROLE_COMPANY);
         User savedUser = userRepository.save(user);
 
+        Profile profile = Profile.builder()
+         .user_id(savedUser)
+         .build();
+        profileRepository.save(profile);
+
         Company company = Company.builder()
          .name(request.getCompanyName())
          .city(request.getCity())
          .district(request.getDistrict())
          .user(savedUser)
          .phone(request.getCompanyPhone())
+         .user(savedUser)
          .status(StatusEnum.PENDING)
          .build();
         companyRepository.save(company);
@@ -242,7 +249,8 @@ public class AuthenticationService {
     // Phương thức hỗ trợ xác định URL chuyển hướng dựa trên role
     private String determineRedirectUrl(List<RoleType> roles) {
         if (roles.contains(RoleType.ROLE_COMPANY)) {
-            return "/JobPost/create";
+//            return "/JobPost/create";
+            return "/company-account";
         } else if (roles.contains(RoleType.ROLE_ADMIN)) {
             return "/admin/dashboard";
         } else if (roles.contains(RoleType.ROLE_USER)) {
@@ -461,5 +469,10 @@ public class AuthenticationService {
         if (!newPassword.equals(confirmPassword)) {
             throw new RuntimeException("New password and confirm password do not match");
         }
+    }
+
+    //để lấy hiển thị tất cả thông tin user
+    public List<User> findAllUsers() {
+        return userRepository.findAll();
     }
 }

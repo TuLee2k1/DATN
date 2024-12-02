@@ -35,7 +35,6 @@ import java.util.stream.Collectors;
 @EntityListeners(AuditingEntityListener.class)
 public class User implements UserDetails, Principal {
 
-
     @Id
     @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
     private Long id;
@@ -79,6 +78,9 @@ public class User implements UserDetails, Principal {
     @OneToOne(mappedBy = "user", fetch = FetchType.EAGER)
     @JoinColumn(name = "company_id")
     private Company company;
+
+    @OneToMany(mappedBy = "user_id", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Profile> profiles;
 
     @PrePersist
     public void prePersist() {
