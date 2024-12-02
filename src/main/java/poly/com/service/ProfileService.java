@@ -12,6 +12,7 @@ import poly.com.dto.ProfileDTO;
 import poly.com.exception.CompanyException;
 import poly.com.exception.ProfileException;
 import poly.com.model.Company;
+import poly.com.model.JobProfile;
 import poly.com.model.Profile;
 import poly.com.repository.ProfileRepository;
 
@@ -93,4 +94,8 @@ public class ProfileService {
 
         profileRepository.delete(existed);
     }
+
+
+
+
 }
