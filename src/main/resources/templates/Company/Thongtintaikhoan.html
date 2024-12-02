@@ -1,9 +1,30 @@
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="utf-8"/>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>Tài khoản nhà tuyển dụng</title>
-    <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" rel="stylesheet"/>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description"
+          content="Responsive Admin &amp; Dashboard Template based on Bootstrap 5">
+    <meta name="author" content="AdminKit">
+    <meta name="keywords"
+          content="adminkit, bootstrap, bootstrap 5, admin, dashboard, template, responsive, css, sass, html, theme, front-end, ui kit, web">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="shortcut icon" href="img/icons/icon-48x48.png" />
+    <link rel="canonical" href="https://demo-basic.adminkit.io/" />
+
+    <title>Thông tin nhà tuyển dụng</title>
+
+    <link href="/css/app.css" rel="stylesheet">
+    <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap"
+            rel="stylesheet">
     <style>
         body {
             background-color: #f8f9fa;
@@ -13,121 +34,674 @@
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            margin-top: 20px;
         }
-        .nav-tabs .nav-link.active {
-            background-color: #ffffff;
-            border-color: #dee2e6 #dee2e6 #ffffff;
-            color: #6c63ff;
+
+        .custom-container {
+            max-width: 100%; /* Chiều rộng gần bằng 100% nhưng vẫn giữ viền */
+            margin: 0 auto; /* Căn giữa */
         }
-        .nav-tabs .nav-link {
-            color: #6c63ff;
+        .section-divider {
+            border: none;
+            border-top: 1px solid black;
+            margin: 20px 0;
         }
-        .form-label {
-            font-weight: bold;
-        }
-        .form-control:disabled, .form-control[readonly] {
-            background-color: #e9ecef;
-            opacity: 1;
-        }
-        .status {
-            background-color: #fff3cd;
-            border: 1px solid #ffeeba;
-            padding: 10px;
-            border-radius: 5px;
-            margin-bottom: 20px;
-        }
-        .status span {
-            color: #856404;
-        }
-        .status .badge {
-            background-color: #ffcc00;
-            color: #ffffff;
-        }
-        .profile-pic {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .profile-pic img {
+        .rounded-full {
             border-radius: 50%;
-            width: 100px;
-            height: 100px;
         }
-        .profile-pic button {
-            margin-top: 10px;
+        .btn-custom {
+            background-color: #007bff;
+            color: white;
         }
-        .btn-primary {
-            background-color: #6c63ff;
-            border-color: #6c63ff;
+        .btn-custom:hover {
+            background-color: #0056b3;
         }
-        @media (max-width: 768px) {
-            .profile-pic {
-                margin-top: 20px;
-            }
+        .bg-yellow-400 {
+            background-color: #ffc107;
         }
+
     </style>
 </head>
+
 <body>
-    <div class="container">
-        <h2 class="text-primary">Tài khoản nhà tuyển dụng</h2>
-        <ul class="nav nav-tabs" id="myTab" role="tablist">
-            <li class="nav-item" role="presentation">
-                <button aria-controls="account-info" aria-selected="true" class="nav-link active" data-bs-target="#account-info" data-bs-toggle="tab" id="account-info-tab" role="tab" type="button">Thông tin tài khoản</button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button aria-controls="company-info" aria-selected="false" class="nav-link" data-bs-target="#company-info" data-bs-toggle="tab" id="company-info-tab" role="tab" type="button">Thông tin công ty</button>
-            </li>
-        </ul>
-        <div class="tab-content" id="myTabContent">
-            <div aria-labelledby="account-info-tab" class="tab-pane fade show active" id="account-info" role="tabpanel">
-                <div class="status">
-                    <span>Xin vui lòng kiên nhẫn! Thông tin đăng ký công ty với nhà tuyển dụng đang trong quá trình chờ phê duyệt.</span>
-                    <span class="badge">Đang chờ duyệt</span>
-                </div>
-                <form id="accountForm">
-                    <div class="row mb-3">
-                        <div class="col-md-8">
-                            <div class="mb-3">
-                                <label class="form-label" for="email">Địa chỉ email <span class="text-danger">*</span></label>
-                                <input class="form-control" disabled="" id="email" type="email" value="meganblake2321@gmail.com"/>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label" for="password">Mật khẩu</label>
-                                <input class="form-control" disabled="" id="password" type="password" value="********"/>
-                                <a class="text-primary" href="#">Thay đổi mật khẩu</a>
-                            </div>
-                        </div>
-                        <div class="col-md-4 profile-pic">
-                            <img alt="Profile picture placeholder" id="profileImage" src="https://placehold.co/100x100" width="100" height="100"/>
-                            <input type="file" id="imageUpload" accept="image/*" style="display: none;" />
-                            <button class="btn btn-outline-primary" type="button" onclick="document.getElementById('imageUpload').click();">Thay đổi ảnh</button>
-                            <small class="text-muted">Kích cỡ ảnh khuyên dùng từ 1000x1000px trở lên</small>
-                        </div>
+<div class="wrapper">
+
+    <!-- sidebar -->
+    <nav id="sidebar" class="sidebar js-sidebar">
+        <div class="sidebar-content js-simplebar">
+            <a class="sidebar-brand" href="Taikhoannhatuyendung.html">
+                <span class="align-middle">Dream job</span>
+            </a>
+
+            <ul class="sidebar-nav">
+                <li class="sidebar-header">
+                    <div class="d-flex align-items-center">
+                        <span>Quản lý đăng tuyển</span>
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label" for="fullName">Họ và tên <span class="text-danger">*</span></label>
-                        <input class="form-control" id="fullName" type="text" value="Đỗ Đình Vũ"/>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="Taotintuyendung.html">
+                        <i class="align-middle" data-feather="plus-square"></i>
+                        <span>Tạo tin tuyển dụng</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="Danhsachtindang.html">
+                        <i class="align-middle" data-feather="file-text"></i>
+                        <span>Quản lý tin đăng</span>
+                    </a>
+                </li>
+
+                <li class="sidebar-header">
+                    <div class="d-flex align-items-center">
+                        <span>Quản lý ứng viên</span>
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label" for="phone">Số điện thoại <span class="text-danger">*</span></label>
-                        <input class="form-control" id="phone" type="text" value="0387892234"/>
-                        <a class="text-primary" href="#">Thêm số điện thoại</a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="Hosoungtuyen.html">
+                        <i class="align-middle" data-feather="file"></i>
+                        <span>Hồ sơ ứng tuyển</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="Timungvienmoi.html">
+                        <i class="align-middle" data-feather="search"></i>
+                        <span>Tìm ứng viên mới</span>
+                    </a>
+                </li>
+
+                <li class="sidebar-header">
+                    <div class="d-flex align-items-center">
+                        <span>Quản lý dịch vụ</span>
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label" for="contactEmail">Email liên hệ (Không bắt buộc)</label>
-                        <input class="form-control" id="contactEmail" type="email" value="meganblake2321@gmail.com"/>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="danhsachdonhang.html">
+                        <i class="align-middle" data-feather="shopping-bag"></i>
+                        <span>Danh sách đơn hàng</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="lichsumuahang.html">
+                        <i class="align-middle" data-feather="package"></i>
+                        <span>Lịch sử đơn hàng</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="thongtinthanhtoan.html">
+                        <i class="align-middle" data-feather="credit-card"></i>
+                        <span>Thông tin thanh toán</span>
+                    </a>
+                </li>
+
+                <li class="sidebar-header">
+                    <div class="d-flex align-items-center">
+                        <span>Tài khoản và thương hiệu</span>
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label" for="address">Địa chỉ liên hệ (Không bắt buộc)</label>
-                        <input class="form-control" id="address" type="text" value="125 láng hạ hà nội"/>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="#">
+                        <i class="align-middle" data-feather="user"></i>
+                        <span>Tài khoản nhà tuyển dụng</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="#">
+                        <i class="align-middle" data-feather="award"></i>
+                        <span>Quảng bá thương hiệu</span>
+                    </a>
+                </li>
+
+                <li class="sidebar-header">
+                    <div class="d-flex align-items-center">
+                        <span>Hướng dẫn và thông báo</span>
                     </div>
-                    <button class="btn btn-primary" type="submit">Cập nhật</button>
-                </form>
-            </div>
-            <div aria-labelledby="company-info-tab" class="tab-pane fade" id="company-info" role="tabpanel">
-                <!-- Company info content goes here -->
-            </div>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="#">
+                        <i class="align-middle" data-feather="help-circle"></i>
+                        <span>Hướng dẫn sử dụng</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="#">
+                        <i class="align-middle" data-feather="bell"></i>
+                        <span>Thông báo mới</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="#">
+                        <i class="align-middle" data-feather="life-buoy"></i>
+                        <span>Hỗ trợ</span>
+                    </a>
+                </li>
+
+                <li class="sidebar-item mt-4">
+                    <a href="#" class="btn btn-primary w-100">
+                        <span>Cổng người tìm việc</span>
+                        <span class="ms-2">Chuyển</span>
+                    </a>
+                </li>
+            </ul>
         </div>
+    </nav>
+
+    <div class="main">
+        <!-- nav head -->
+        <nav class="navbar navbar-expand navbar-light navbar-bg">
+            <a class="sidebar-toggle js-sidebar-toggle">
+                <i class="hamburger align-self-center"></i>
+            </a>
+
+            <div class="navbar-collapse collapse">
+                <ul class="navbar-nav navbar-align">
+                    <li class="nav-item dropdown">
+                        <a class="nav-icon dropdown-toggle" href="#" id="alertsDropdown"
+                           data-bs-toggle="dropdown">
+                            <div class="position-relative">
+                                <i class="align-middle" data-feather="bell"></i>
+                                <span class="indicator">4</span>
+                            </div>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end py-0"
+                             aria-labelledby="alertsDropdown">
+                            <div class="dropdown-menu-header">
+                                4 New Notifications
+                            </div>
+                            <div class="list-group">
+                                <a href="#" class="list-group-item">
+                                    <div class="row g-0 align-items-center">
+                                        <div class="col-2">
+                                            <i class="text-danger" data-feather="alert-circle"></i>
+                                        </div>
+                                        <div class="col-10">
+                                            <div class="text-dark">Update completed</div>
+                                            <div class="text-muted small mt-1">Restart server 12 to complete
+                                                the update.</div>
+                                            <div class="text-muted small mt-1">30m ago</div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a href="#" class="list-group-item">
+                                    <div class="row g-0 align-items-center">
+                                        <div class="col-2">
+                                            <i class="text-warning" data-feather="bell"></i>
+                                        </div>
+                                        <div class="col-10">
+                                            <div class="text-dark">Lorem ipsum</div>
+                                            <div class="text-muted small mt-1">Aliquam ex eros, imperdiet
+                                                vulputate hendrerit et.</div>
+                                            <div class="text-muted small mt-1">2h ago</div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a href="#" class="list-group-item">
+                                    <div class="row g-0 align-items-center">
+                                        <div class="col-2">
+                                            <i class="text-primary" data-feather="home"></i>
+                                        </div>
+                                        <div class="col-10">
+                                            <div class="text-dark">Login from 192.186.1.8</div>
+                                            <div class="text-muted small mt-1">5h ago</div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a href="#" class="list-group-item">
+                                    <div class="row g-0 align-items-center">
+                                        <div class="col-2">
+                                            <i class="text-success" data-feather="user-plus"></i>
+                                        </div>
+                                        <div class="col-10">
+                                            <div class="text-dark">New connection</div>
+                                            <div class="text-muted small mt-1">Christina accepted your
+                                                request.</div>
+                                            <div class="text-muted small mt-1">14h ago</div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="dropdown-menu-footer">
+                                <a href="#" class="text-muted">Show all notifications</a>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-icon dropdown-toggle" href="#" id="messagesDropdown"
+                           data-bs-toggle="dropdown">
+                            <div class="position-relative">
+                                <i class="align-middle" data-feather="message-square"></i>
+                            </div>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end py-0"
+                             aria-labelledby="messagesDropdown">
+                            <div class="dropdown-menu-header">
+                                <div class="position-relative">
+                                    4 New Messages
+                                </div>
+                            </div>
+                            <div class="list-group">
+                                <a href="#" class="list-group-item">
+                                    <div class="row g-0 align-items-center">
+                                        <div class="col-2">
+                                            <img src="img/avatars/avatar-5.jpg"
+                                                 class="avatar img-fluid rounded-circle" alt="Vanessa Tucker">
+                                        </div>
+                                        <div class="col-10 ps-2">
+                                            <div class="text-dark">Vanessa Tucker</div>
+                                            <div class="text-muted small mt-1">Nam pretium turpis et arcu. Duis
+                                                arcu tortor.</div>
+                                            <div class="text-muted small mt-1">15m ago</div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a href="#" class="list-group-item">
+                                    <div class="row g-0 align-items-center">
+                                        <div class="col-2">
+                                            <img src="img/avatars/avatar-2.jpg"
+                                                 class="avatar img-fluid rounded-circle" alt="William Harris">
+                                        </div>
+                                        <div class="col-10 ps-2">
+                                            <div class="text-dark">William Harris</div>
+                                            <div class="text-muted small mt-1">Curabitur ligula sapien euismod
+                                                vitae.</div>
+                                            <div class="text-muted small mt-1">2h ago</div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a href="#" class="list-group-item">
+                                    <div class="row g-0 align-items-center">
+                                        <div class="col-2">
+                                            <img src="img/avatars/avatar-4.jpg"
+                                                 class="avatar img-fluid rounded-circle" alt="Christina Mason">
+                                        </div>
+                                        <div class="col-10 ps-2">
+                                            <div class="text-dark">Christina Mason</div>
+                                            <div class="text-muted small mt-1">Pellentesque auctor neque nec
+                                                urna.</div>
+                                            <div class="text-muted small mt-1">4h ago</div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a href="#" class="list-group-item">
+                                    <div class="row g-0 align-items-center">
+                                        <div class="col-2">
+                                            <img src="img/avatars/avatar-3.jpg"
+                                                 class="avatar img-fluid rounded-circle" alt="Sharon Lessman">
+                                        </div>
+                                        <div class="col-10 ps-2">
+                                            <div class="text-dark">Sharon Lessman</div>
+                                            <div class="text-muted small mt-1">Aenean tellus metus, bibendum
+                                                sed, posuere ac, mattis non.</div>
+                                            <div class="text-muted small mt-1">5h ago</div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="dropdown-menu-footer">
+                                <a href="#" class="text-muted">Show all messages</a>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-icon dropdown-toggle d-inline-block d-sm-none" href="#"
+                           data-bs-toggle="dropdown">
+                            <i class="align-middle" data-feather="settings"></i>
+                        </a>
+
+                        <a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#"
+                           data-bs-toggle="dropdown">
+                            <img src="img/avatars/avatar.jpg" class="avatar img-fluid rounded me-1"
+                                 alt="Charles Hall" /> <span class="text-dark">Charles Hall</span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end">
+                            <a class="dropdown-item" href="Taikhoannhatuyendung.html"><i
+                                    class="align-middle me-1" data-feather="user"></i> Profile</a>
+                            <a class="dropdown-item" href="#"><i class="align-middle me-1"
+                                                                 data-feather="pie-chart"></i> Analytics</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="index.html"><i class="align-middle me-1"
+                                                                          data-feather="settings"></i> Settings & Privacy</a>
+                            <a class="dropdown-item" href="#"><i class="align-middle me-1"
+                                                                 data-feather="help-circle"></i> Help Center</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#">Log out</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <main class="content">
+            <div class="container custom-container mt-1">
+                <!-- Tabs navigation -->
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="account-tab" data-bs-toggle="tab"
+                                data-bs-target="#account" type="button" role="tab"
+                                aria-controls="account" aria-selected="true">Thông tin tài
+                            khoản</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="company-tab" data-bs-toggle="tab"
+                                data-bs-target="#company" type="button" role="tab"
+                                aria-controls="company" aria-selected="false">Thông tin công
+                            ty</button>
+                    </li>
+                </ul>
+
+                <div class="tab-content mt-4" id="myTabContent">
+                    <!-- Thông tin tài khoản -->
+                    <div class="tab-pane fade show active" id="account" role="tabpanel" aria-labelledby="account-tab">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5 class="h5 fw-bold">Thông tin tài khoản</h5>
+
+                        </div>
+                        <form th:action="@{/company-account/update-profile}" th:object="${profile}" method="post" enctype="multipart/form-data">
+<!--                            &lt;!&ndash; Ảnh đại diện &ndash;&gt;-->
+<!--                            <h5 class="h6 fw-bold mb-3">Ảnh đại diện</h5>-->
+<!--                            <div class="mb-3 text-center">-->
+<!--                                <div class="position-relative d-inline-block rounded-full border border-secondary" style="width: 8rem; height: 8rem; overflow: hidden;" onclick="document.getElementById('avatar').click()">-->
+<!--                                    <img th:src="${profile?.logo != null && !#strings.isEmpty(profile.logo)-->
+<!--? '/uploads/logoprofile/' + profile.logo-->
+<!--: '/Admin/images/person_3.jpg'}"-->
+<!--                                         alt="avatar"-->
+<!--                                         class="w-100 h-100 object-cover" id="avatarPreview">-->
+<!--                                </div>-->
+<!--                                <input type="file"-->
+<!--                                       name="fileLogo"-->
+<!--                                       id="avatar"-->
+<!--                                       accept="image/*"-->
+<!--                                       class="d-none"-->
+<!--                                       onchange="Avatar(event)">-->
+<!--                            </div>-->
+<!--                            <p class="text-center text-secondary small">Nhấn vào ảnh để thay đổi (Kích cỡ ảnh khuyến dùng từ 1000x1000px trở lên)</p>-->
+<!--                            <hr class="section-divider" />-->
+                            <!-- Thông tin đăng nhập -->
+                            <h5 class="h6 fw-bold mb-3">Thông tin đăng nhập</h5>
+                            <div class="mb-3">
+                                <label for="email" class="form-label text-secondary">Địa chỉ email</label>
+                                <input type="email" class="form-control" id="email" th:value="${userEmail}" placeholder="example@gmail.com" disabled>
+                            </div>
+                            <div class="mb-3">
+                                <label for="password" class="form-label text-secondary">Mật khẩu</label>
+                                <input type="password" class="form-control" id="password" value="••••••••" disabled>
+                                <button type="button" class="btn btn-link mt-2 p-0 text-primary" data-bs-toggle="modal" data-bs-target="#changePasswordModal">Thay đổi mật khẩu</button>
+                            </div>
+
+                            <hr class="section-divider" />
+                            <!-- Thông tin liên hệ -->
+                            <h5 class="h6 fw-bold mb-3">Thông tin liên hệ</h5>
+                            <div class="mb-3">
+                                <label for="fullName" class="form-label text-secondary">Họ và tên</label>
+                                <input type="text" class="form-control" id="fullName" th:field="*{name}"
+                                       placeholder="Nguyễn Văn A">
+                            </div>
+                            <div class="mb-3">
+                                <label for="phone" class="form-label text-secondary">Số điện thoại</label>
+                                <input type="text" class="form-control" id="phone" th:field="*{phone}" placeholder="0123456789">
+                            </div>
+                            <div class="mb-3">
+                                <label for="address" class="form-label text-secondary">Địa chỉ liên hệ</label>
+                                <input type="text" class="form-control" id="address" th:field="*{address}" placeholder="77 Nguyễn Minh Châu">
+                            </div>
+                            <button type="submit" class="btn btn-custom">Cập nhật</button>
+                        </form>
+                    </div>
+
+                    <!-- Thông tin công ty -->
+                    <div class="tab-pane fade" id="company" role="tabpanel" aria-labelledby="company-tab">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h5 class="h5">Thông tin công ty</h5>
+                            <span class="badge bg-yellow-400 text-dark py-2 px-3 rounded-pill"
+                                  th:text="${company.status ?: 'PENDING'}">PENDING</span>
+                        </div>
+
+                        <form th:action="@{/company-account/update-company}"
+                              th:object="${companyRequest}"
+                              method="post"
+                              enctype="multipart/form-data">
+
+                            <!-- Ảnh đại diện -->
+                            <h5 class="h6 fw-bold mb-3">Logo công ty</h5>
+                            <div class="mb-3 text-center">
+                                <div class="position-relative d-inline-block rounded-full border border-secondary"
+                                     style="width: 8rem; height: 8rem; overflow: hidden;"
+                                     onclick="document.getElementById('logo').click()">
+                                    <img th:src="${company?.logo != null && !#strings.isEmpty(company.logo)
+? '/uploads/logocompany/' + company.logo
+: '/Admin/images/person_3.jpg'}"
+                                         alt="Logo công ty"
+                                         class="w-100 h-100 object-cover" id="companyLogo">
+                                </div>
+                                <input type="file"
+                                       id="logo"
+                                       name="logoFile"
+                                       accept="image/*"
+                                       class="d-none"
+                                       onchange="previewAvatar(event)">
+                            </div>
+
+                            <p class="text-center text-secondary small">
+                                Nhấn vào ảnh để thay đổi (Kích cỡ ảnh khuyến dùng từ 1000x1000px trở lên)
+                            </p>
+
+                            <div class="mb-3">
+                                <label for="taxId" class="form-label">Mã số thuế</label>
+                                <input type="text"
+                                       class="form-control"
+                                       id="taxId"
+                                       name="tax_code"
+                                       th:value="${company.tax_code}"
+                                       placeholder="Nhập mã số thuế">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="companyName" class="form-label">Tên công ty</label>
+                                <input type="text"
+                                       class="form-control"
+                                       id="companyName"
+                                       name="name"
+                                       th:value="${company.name}"
+                                       placeholder="Tên công ty">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="companySize" class="form-label">Quy mô nhân sự</label>
+                                <select class="form-select"
+                                        id="companySize"
+                                        name="employeeCount">
+                                    <option th:selected="${company.employeeCount == null}">Chọn quy mô</option>
+                                    <option value="1-10"
+                                            th:selected="${company.employeeCount == '1-10'}">1 - 10 nhân viên</option>
+                                    <option value="11-50"
+                                            th:selected="${company.employeeCount == '11-50'}">11 - 50 nhân viên</option>
+                                    <option value="51-200"
+                                            th:selected="${company.employeeCount == '51-200'}">51 - 200 nhân viên</option>
+                                    <option value="200+"
+                                            th:selected="${company.employeeCount == '200+'}">Hơn 200 nhân viên</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="location" class="form-label">Địa điểm</label>
+                                <input type="text"
+                                       class="form-control"
+                                       id="location"
+                                       name="city"
+                                       th:value="${company.city}"
+                                       placeholder="Nhập địa điểm">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="address" class="form-label">Địa chỉ</label>
+                                <input type="text"
+                                       class="form-control"
+                                       id="CompanyAddress"
+                                       name="address"
+                                       th:value="${company.address}"
+                                       placeholder="Nhập địa chỉ">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="phone" class="form-label">Điện thoại cố định</label>
+                                <input type="text"
+                                       class="form-control"
+                                       id="CompanyPhone"
+                                       name="phone"
+                                       th:value="${company.phone}"
+                                       placeholder="Nhập số điện thoại">
+                            </div>
+                            <div class="mb-3">
+                                <label for="companyEmail" class="form-label">Email công ty</label>
+                                <input type="email"
+                                       class="form-control"
+                                       id="companyEmail"
+                                       name="companyEmail"
+                                       th:value="${company.email}"
+                                       placeholder="Nhập email công ty">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="companyWebsite" class="form-label">Đường dẫn web</label>
+                                <input type="url"
+                                       class="form-control"
+                                       id="companyWebsite"
+                                       name="website"
+                                       th:value="${company.website}"
+                                       placeholder="Nhập đường dẫn web của công ty">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="companyDescription" class="form-label">Mô tả công ty</label>
+                                <textarea class="form-control"
+                                          id="companyDescription"
+                                          name="description"
+                                          rows="5"
+                                          placeholder="Nhập mô tả công ty"
+                                          th:text="${company.description}"></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="jobCategory" class="form-label">Lĩnh vực</label>
+                                <select class="form-control" id="jobCategory" name="jobCategoryId">
+                                    <option value="">Chọn lĩnh vực</option>
+                                    <option th:each="category : ${jobCategories}"
+                                            th:value="${category.id}"
+                                            th:text="${category.categoryName}"
+                                            th:selected="${company?.jobCategory != null && company.jobCategory.id == category.id}">
+                                    </option>
+                                </select>
+                            </div>
+
+                            <hr class="my-4" />
+
+                            <div class="mt-4">
+                                <h5 class="h5 mb-3">Giấy phép kinh doanh</h5>
+                                <p class="text-muted mb-3">
+                                    Để chứng thực tài khoản Quý khách đang sử dụng trên Dream Job,
+                                    vui lòng đăng tải giấy phép đăng ký kinh doanh.
+                                </p>
+
+                                <div class="mb-3">
+                                    <label for="license" class="form-label">Tải file</label>
+                                    <div class="d-flex align-items-center">
+                                        <button type="button"
+                                                class="btn btn-primary me-2"
+                                                onclick="document.getElementById('license').click()">
+                                            Chọn tệp
+                                        </button>
+                                        <input type="file"
+                                               class="d-none"
+                                               id="license"
+                                               name="businessLicense"
+                                               accept=".doc, .docx, .pdf">
+                                        <span id="file-name" class="text-muted">
+                            Chưa chọn tệp
+                        </span>
+                                    </div>
+                                    <small class="text-muted">
+                                        (Dạng file .doc, .docx, .pdf, dung lượng <= 10 MB)
+                                    </small>
+                                </div>
+
+                                <div class="mt-3">
+                                    <h6 class="h6 mb-2">Giấy phép kinh doanh hợp lệ:</h6>
+                                    <ul class="list-unstyled">
+                                        <li>✅ Có dấu giáp lai của cơ quan có thẩm quyền.</li>
+                                        <li>✅ Trường hợp giấy phép kinh doanh là bản photo thì phải có dấu công chứng.</li>
+                                    </ul>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary mt-3">Cập nhật</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Modal đổi mật khẩu -->
+                <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="changePasswordModalLabel">Thay đổi mật khẩu</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form th:action="@{/company-account/change-password}" method="post">
+                                    <div class="mb-3">
+                                        <label for="currentPassword" class="form-label">Mật khẩu hiện tại</label>
+                                        <input type="password" class="form-control" id="currentPassword" name="currentPassword" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="newPassword" class="form-label">Mật khẩu mới</label>
+                                        <input type="password" class="form-control" id="newPassword" name="newPassword" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="confirmNewPassword" class="form-label">Nhập lại mật khẩu mới</label>
+                                        <input type="password" class="form-control" id="confirmNewPassword" name="confirmNewPassword" required>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Xác nhận</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+Y5q5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5i5Y5
+</div>
+<script>
+    function Avatar(event) {
+        var input = event.target;
+        var reader = new FileReader();
+        reader.onload = function(){
+            var dataURL = reader.result;
+            var avatarPreview = document.getElementById('avatarPreview');
+            avatarPreview.src = dataURL;
+        };
+        reader.readAsDataURL(input.files[0]);
+    }
+
+    function previewAvatar(event) {
+        var input = event.target;
+        var reader = new FileReader();
+        reader.onload = function(){
+            var dataURL = reader.result;
+            var companyLogo = document.getElementById('companyLogo');
+            companyLogo.src = dataURL;
+        };
+        reader.readAsDataURL(input.files[0]);
+    }
+
+    // Add file name display for business license upload
+    document.getElementById('license').addEventListener('change', function(e) {
+        var fileName = e.target.files[0] ? e.target.files[0].name : 'Chưa chọn tệp';
+        document.getElementById('file-name').textContent = fileName;
+    });
+</script>
+<script src="/js/app.js"></script>
+<script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>
