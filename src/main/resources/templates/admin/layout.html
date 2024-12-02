@@ -279,46 +279,46 @@
                 <li class="sidebar-items " >
                     <a class="sidebar-link" th:href="@{/admin/thongke}">
                         <i class="align-middle" data-feather="sliders"></i>
-                        <span class="align-middle">Dashboard</span>
+                        <span class="align-middle">Thống kê</span>
                     </a>
                 </li>
 
                 <li class="sidebar-items" data-page="profile">
                     <a class="sidebar-link" th:href="@{/admin/profiles}" >
                         <i class="align-middle" data-feather="user"></i>
-                        <span class="align-middle">Profile</span>
+                        <span class="align-middle">Hồ sơ</span>
                     </a>
                 </li>
 
                 <li class="sidebar-items" data-page="candidate">
                     <a class="sidebar-link" th:href="@{/admin/candidates}" >
-                        <i class="align-middle" data-feather="log-in"></i>
-                        <span class="align-middle">Candidate</span>
+                        <i class="align-middle" data-feather="user-check"></i>
+                        <span class="align-middle">Ứng viên</span>
                     </a>
                 </li>
 
                 <li class="sidebar-items" data-page="company">
                     <a class="sidebar-link" th:href="@{/admin/companies}" >
                         <i class="align-middle" data-feather="home"></i>
-                        <span class="align-middle">Company</span>
+                        <span class="align-middle">Công ty</span>
                     </a>
                 </li>
                 <li class="sidebar-items" data-page="user">
                     <a class="sidebar-link" th:href="@{/admin/users}" >
                         <i class="align-middle" data-feather="users"></i>
-                        <span class="align-middle">User</span>
+                        <span class="align-middle">Tài khoản</span>
                     </a>
                 </li>
                 <li class="sidebar-items" data-page="user">
                     <a class="sidebar-link" th:href="@{/admin/jobposts}" >
                         <i class="align-middle" data-feather="briefcase"></i>
-                        <span class="align-middle">Job Post</span>
+                        <span class="align-middle">Bài đăng</span>
                     </a>
                 </li>
                 <li class="sidebar-items" data-page="category_job">
                     <a class="sidebar-link" th:href="@{/admin/categories}" >
                         <i class="align-middle" data-feather="shopping-bag"></i>
-                        <span class="align-middle">Category Job</span>
+                        <span class="align-middle">Danh mục công vệc</span>
                     </a>
                 </li>
 
@@ -496,7 +496,7 @@
     const inputInitHeight = chatInput.scrollHeight;
 
     // API configuration
-    const API_KEY = "thay vào đây"; // Thay API Key vào đây
+    const API_KEY = "..."; // Thay API Key vào đây
     const API_URL = `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-pro:generateContent?key=${API_KEY}`;
 
     const createChatLi = (message, className) => {
