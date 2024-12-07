@@ -57,6 +57,16 @@
             border-radius: 5px;
             font-family: "Nunito", sans-serif;
         }
+        .filter-bar select {
+            width: 100%; /* Chiều rộng của select sẽ tự động chiếm hết không gian có sẵn */
+            max-width: 500px; /* Giới hạn chiều rộng của dropdown select (nếu cần) */
+        }
+        .filter-bar {
+            width: 100%; /* Đảm bảo bộ lọc chiếm hết chiều rộng của phần chứa */
+            max-width: 800px; /* Giới hạn chiều rộng tối đa (nếu cần) */
+            margin-bottom: 20px; /* Khoảng cách giữa bộ lọc và bảng */
+        }
+
     </style>
 
 </head>
@@ -75,6 +85,20 @@
         <h1 class="h3 mb-3"><strong>Job List</strong></h1>
         <div class="d-flex">
             <div class="card flex-fill">
+                <div class="filter-bar mb-3 gap-2">
+                    <label>Bộ lọc</label>
+                    <!-- Dropdown lọc trạng thái -->
+                    <form method="get" th:action="@{/admin/jobposts}" class="d-flex gap-2">
+                        <select name="statusEnum" onchange="this.form.submit()" class="form-select form-select-sm">
+                            <option value="">Tất cả trạng thái</option>
+                            <option th:each="status : ${T(poly.com.Enum.StatusEnum).values()}"
+                                    th:value="${status.name()}"
+                                    th:text="${status.name()}"
+                                    th:selected="${status.name() == statusEnum}">
+                            </option>
+                        </select>
+                    </form>
+                </div>
                 <table class="table table-hover my-0" id="jobListTable">
                     <thead>
                     <tr>
@@ -95,8 +119,8 @@
                         <td th:text="${jobPost.jobTitle}"></td>
                         <td th:text="${jobPost.company.name}"></td>
                         <td th:text="${jobPost.city}"></td>
-                        <td th:text="${#dates.format(jobPost.createDate, 'yyyy-MM-dd')}"></td>
-                        <td th:text="${#dates.format(jobPost.endDate, 'yyyy-MM-dd')}"></td>
+                        <td th:text="${#dates.format(jobPost.createDate, 'dd-MM-yyyy')}"></td>
+                        <td th:text="${#dates.format(jobPost.endDate, 'dd-MM-yyyy')}"></td>
                         <td th:text="${jobPost.minSalary} + ' - ' + ${jobPost.maxSalary}"></td>
                         <td>
                             <span th:class="${jobPost.statusEnum.name == 'ACTIVE' ? 'status-active' :
@@ -105,7 +129,7 @@
                                 th:text="${jobPost.statusEnum.name}">
                             </span>
                         </td>
-                        <td>
+                        <td style="display: flex; gap: 10px; justify-content: center;">
                             <a th:href="@{'/admin/jobposts/approve/' + ${jobPost.id}}"
                                class="btn btn-outline-success btn-sm rounded-circle"
                                style="width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center; font-size: 24px;"
@@ -125,12 +149,65 @@
                                style="width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center; font-size: 24px;">
                                 <i class="align-middle" data-feather="more-horizontal"></i>
                             </a>
-
                         </td>
                     </tr>
                     </tbody>
                 </table>
+
+                <nav class="pagination-nav" th:if="${totalPages > 1}">
+                    <ul class="pagination">
+
+
+                        <li class="page-item previous-item" th:classappend="${currentPage == 1 ? 'disabled' : ''}">
+                            <a class="page-link" th:href="@{/admin/jobposts(pageNo=${currentPage - 1}, jobTitle=${selectedJobTitle}, statusEnum=${selectedStatus})}">
+                                Previous
+                            </a>
+                        </li>
+
+
+                        <li class="page-item" th:if="${currentPage > 2}">
+                            <a class="page-link" th:href="@{/admin/jobposts(pageNo=${1}, jobTitle=${selectedJobTitle}, statusEnum=${selectedStatus})}">1</a>
+                        </li>
+
+
+                        <li class="page-item disabled" th:if="${currentPage > 3}">
+                            <span class="page-link">...</span>
+                        </li>
+
+
+                        <li class="page-item" th:each="pageNumber : ${#numbers.sequence(currentPage - 1, currentPage + 1)}"
+                            th:classappend="${pageNumber == currentPage ? 'active' : ''}"
+                            th:if="${pageNumber > 0 && pageNumber <= totalPages}">
+
+                            <a class="page-link" th:href="@{/admin/jobposts(pageNo=${pageNumber}, jobTitle=${selectedJobTitle}, statusEnum=${selectedStatus})}"
+                               th:text="${pageNumber}">
+                            </a>
+                        </li>
+
+
+
+                        <li class="page-item disabled" th:if="${currentPage < totalPages - 2}">
+                            <span class="page-link">...</span>
+                        </li>
+
+
+                        <li class="page-item" th:if="${currentPage < totalPages - 1}">
+                            <a class="page-link" th:href="@{/admin/jobposts(pageNo=${totalPages}, jobTitle=${selectedJobTitle}, statusEnum=${selectedStatus})}"
+                               th:text="${totalPages}">
+                            </a>
+                        </li>
+
+
+                        <li class="page-item next-item" th:classappend="${currentPage == totalPages ? 'disabled' : ''}">
+                            <a class="page-link" th:href="@{/admin/jobposts(pageNo=${currentPage + 1}, jobTitle=${selectedJobTitle}, statusEnum=${selectedStatus})}">
+                                Next
+                            </a>
+
+                        </li>
+                    </ul>
+                </nav>
             </div>
+
         </div>
     </div>
 

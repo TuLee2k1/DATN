@@ -4,12 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import poly.com.Enum.StatusEnum;
 import poly.com.dto.response.JobPost.JobPostResponse;
 import poly.com.model.JobCategory;
 import poly.com.model.JobPost;
@@ -70,5 +68,26 @@ public class AdminJobPostController {
         }
         model.addAttribute("jobPost", jobPost);
         return "/admin/jobpost-details/jobpost-detail";
+    }
+
+    @GetMapping
+    public String list(@RequestParam(value = "statusEnum", required = false) String statusEnum, ModelMap model) {
+        List<JobPost> jobPosts;
+
+        if (statusEnum != null && !statusEnum.isEmpty()) {
+            try {
+                StatusEnum status = StatusEnum.fromString(statusEnum); // Convert string to enum
+                jobPosts = jobPostService.findByStatusEnum(status);
+            } catch (IllegalArgumentException e) {
+                model.addAttribute("error", "Invalid status value!"); // Báo lỗi nếu trạng thái không hợp lệ
+                jobPosts = jobPostService.findAll(); // Lấy tất cả bài đăng nếu lỗi
+            }
+        } else {
+            jobPosts = jobPostService.findAll(); // Lấy tất cả bài đăng nếu không có trạng thái lọc
+        }
+
+        model.addAttribute("jobPosts", jobPosts);
+        model.addAttribute("statusEnum", statusEnum); // Lưu trạng thái hiện tại cho view
+        return "admin/jobposts/jobpost";
     }
 }
