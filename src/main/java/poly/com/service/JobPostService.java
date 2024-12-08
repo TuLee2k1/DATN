@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import poly.com.Enum.StatusEnum;
 import poly.com.dto.response.JobPost.JobListActiveResponse;
@@ -334,7 +335,7 @@ public class JobPostService {
     }
 
     public List<JobPost> findAll() {
-        return jobPostRepository.findAll();
+        return jobPostRepository.findAll(Sort.by(Sort.Direction.DESC, "createDate"));
     }
 
 
