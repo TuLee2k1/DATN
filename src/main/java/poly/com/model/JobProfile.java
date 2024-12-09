@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+import poly.com.Enum.StatusEnum;
 
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -36,7 +37,11 @@ public class JobProfile extends AbstractEntity {
     @Column(name = "dateApply")
     private Date dateApply;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
+    private StatusEnum status = StatusEnum.PENDING;
+
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "jobPost_id")
     private JobPost jobPost;
 

@@ -1,11 +1,12 @@
 package poly.com.repository;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import poly.com.model.JobCategory;
-import poly.com.model.JobProfile;
-import poly.com.model.Profile;
+import org.springframework.data.repository.query.Param;
+import poly.com.Enum.StatusEnum;
+import poly.com.model.*;
 
 import java.util.List;
 
@@ -13,4 +14,27 @@ public interface JobProfileRepository extends JpaRepository<JobProfile, Long> {
 
     @Query("SELECT COUNT(jp) FROM JobProfile jp")
     Long countAllJobProfiles();
+
+    @Query("SELECT COUNT(jp.status) FROM JobProfile jp WHERE jp.status = :status")
+    public Long countByStatus(StatusEnum status);
+
+    @Query("SELECT jp FROM JobProfile jp WHERE jp.jobPost.id = :jobPostId")
+    Page<JobProfile> findJobProfilesByJobPostId(@Param("jobPostId") Long jobPostId, Pageable pageable);
+
+    // Đếm số lượng ứng viên cho một bài đăng
+    @Query("SELECT COUNT(jp) FROM JobProfile jp WHERE jp.jobPost.id = :jobPostId")
+    Long countByJobPostId(@Param("jobPostId") Long jobPostId);
+
+    List<JobProfile> findByJobPost_IdAndJobPost_Company(Long jobPostId, Company company);
+
+    Page<JobProfile> findByJobPost_Company(Company company, Pageable pageable);
+
+    @Query("SELECT COUNT(jp.status) FROM JobProfile jp WHERE jp.jobPost.id = :jobPostId AND jp.status = :status")
+    Long countByJobPostIdAndStatus(
+     @Param("jobPostId") Long jobPostId,
+     @Param("status") StatusEnum status
+    );
+
+
+    Page<JobProfile> findByJobPostIdAndStatus(Long jobPostId, StatusEnum status, Pageable pageable);
 }

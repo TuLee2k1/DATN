@@ -1,8 +1,10 @@
 package poly.com.repository;
 
+import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import poly.com.Enum.StatusEnum;
@@ -64,5 +66,12 @@ public interface JobPostRepository extends JpaRepository<JobPost, Long> {
 
   // Phương thức tìm kiếm theo trạng thái
   Page<JobPost> findByStatusEnum(StatusEnum statusEnum, Pageable pageable);
+
+
+  @Modifying
+  @Transactional
+  @Query("DELETE FROM JobPost WHERE id = ?1 AND statusEnum IN (poly.com.Enum.StatusEnum.PENDING, poly.com.Enum.StatusEnum.REJECTED)")
+  void deleteJobPostByStatusEnum(Long id);
+
 
 }
