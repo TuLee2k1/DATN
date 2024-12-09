@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import poly.com.Enum.StatusEnum;
 import poly.com.dto.response.JobPost.JobListActiveResponse;
@@ -381,7 +382,7 @@ public class JobPostService {
     }
 
     public List<JobPost> findAll() {
-        return jobPostRepository.findAll();
+        return jobPostRepository.findAll(Sort.by(Sort.Direction.DESC, "createDate"));
     }
 
     /*
@@ -411,6 +412,20 @@ public class JobPostService {
         }
     }
 
+
+    public List<JobPost> findByStatusEnum(StatusEnum statusEnum) {
+        return jobPostRepository.findByStatusEnum(statusEnum); // Lấy bài đăng theo trạng thái
+    }
+
+    public Page<JobPost> getJobListingsAdmin(Integer pageNo) {
+        Pageable pageable = PageRequest.of(pageNo - 1, 10); // 10 là số lượng phần tử mỗi trang
+        return jobPostRepository.findAll(pageable); // Lấy tất cả JobPosts với phân trang
+    }
+
+    public Page<JobPost> getJobListings(StatusEnum statusEnum, Integer pageNo) {
+        Pageable pageable = PageRequest.of(pageNo - 1, 10);
+        return jobPostRepository.findByStatusEnum(statusEnum, pageable); // Lọc theo status và phân trang
+    }
 
     //để hiển thị trang chi tiết job post
     public JobPost findById(Long id) {

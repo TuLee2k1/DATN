@@ -81,6 +81,24 @@
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col mt-0">
+                                            <h5 class="card-title">All User</h5>
+                                        </div>
+
+                                        <div class="col-auto">
+                                            <div class="stat text-primary">
+                                                <i class="align-middle" data-feather="users"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <h1 class="mt-1 mb-3" th:text="${totalUser}">0</h1>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col mt-0">
                                             <h5 class="card-title">Candidate</h5>
                                         </div>
 
@@ -90,10 +108,11 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <h1 class="mt-1 mb-3" th:text="${candidateCount}">0</h1>
-
+                                    <h1 class="mt-1 mb-3" th:text="${totalJobProfiles}">0</h1>
                                 </div>
                             </div>
+                        </div>
+                        <div class="col-sm-6">
                             <div class="card">
                                 <div class="card-body">
                                     <div class="row">
@@ -107,8 +126,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <h1 class="mt-1 mb-3" th:text="${jobPostCount}">0</h1>
-
+                                    <h1 class="mt-1 mb-3" th:text="${totalJobPosts}">0</h1>
                                 </div>
                             </div>
                         </div>
@@ -126,7 +144,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <h1 class="mt-1 mb-3" th:text="${companyCount}">0</h1>
+                                    <h1 class="mt-1 mb-3" th:text="${totalCompanies}">0</h1>
 
                                 </div>
                             </div>
@@ -137,40 +155,6 @@
             </div>
         </div>
 
-
-
-        <div class="container-fluid p-0">
-            <div class="d-flex">
-                <div class="card flex-fill">
-                    <div class="card-header">
-
-                        <h5 class="card-title mb-0">Latest Projects</h5>
-                    </div>
-                    <table class="table table-hover my-0">
-                        <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th class="d-none d-xl-table-cell">Start Date</th>
-                            <th class="d-none d-xl-table-cell">End Date</th>
-                            <th>Status</th>
-                            <th class="d-none d-md-table-cell">Assignee</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>Project Apollo</td>
-                            <td class="d-none d-xl-table-cell">01/01/2023</td>
-                            <td class="d-none d-xl-table-cell">31/06/2023</td>
-                            <td><span class="badge bg-success">Done</span></td>
-                            <td class="d-none d-md-table-cell">Vanessa Tucker</td>
-                        </tr>
-
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-        </div>
     </div>
 </main>
 

@@ -19,6 +19,10 @@ import java.util.Optional;
 
 public interface JobPostRepository extends JpaRepository<JobPost, Long> {
 
+
+  List<JobPost> findByStatusEnum(StatusEnum statusEnum); // Lọc bài đăng theo trạng thái cho admin
+
+
   @Query("select c from JobPost c where c.jobTitle like concat(?1, '%')")
   List<JobPost> findByJobTitleStartsWith(String jobTitle, Pageable pageable);
 
