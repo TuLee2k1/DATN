@@ -89,12 +89,14 @@
                     <label>Bộ lọc</label>
                     <!-- Dropdown lọc trạng thái -->
                     <form method="get" th:action="@{/admin/jobposts}" class="d-flex gap-2">
+                        <!-- Dropdown chọn trạng thái -->
                         <select name="statusEnum" onchange="this.form.submit()" class="form-select form-select-sm">
                             <option value="">Tất cả trạng thái</option>
+                            <!-- Lặp qua các giá trị của StatusEnum -->
                             <option th:each="status : ${T(poly.com.Enum.StatusEnum).values()}"
                                     th:value="${status.name()}"
                                     th:text="${status.name()}"
-                                    th:selected="${status.name() == statusEnum}">
+                                    th:selected="${status.name().equalsIgnoreCase(statusEnum)}">
                             </option>
                         </select>
                     </form>
@@ -114,7 +116,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="jobPost : ${jobPosts}">
+                    <tr th:each="jobPost : ${jobPostsAd}">
                         <td th:text="${jobPost.id}"></td>
                         <td th:text="${jobPost.jobTitle}"></td>
                         <td th:text="${jobPost.company.name}"></td>

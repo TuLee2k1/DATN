@@ -1,3 +1,4 @@
+
 package poly.com.service;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -54,6 +55,13 @@ public class JobPostService {
         }
     }
 
+    /*
+     * @author: VuDD
+     * @since: 11/29/2024 2:33 PM
+     * @description:  Tao bài đăng việc làm
+     * @update:
+     *
+     * */
     public JobPostResponse createJobPost(JobPostRequest request) {
         User authenticatedUser = authenticationUtil.getAuthenticatedUser();
         Company company = authenticatedUser.getCompany();
@@ -94,6 +102,13 @@ public class JobPostService {
         return JobPostResponse.fromEntity(savedJobPost);
     }
 
+    /*
+     * @author: VuDD
+     * @since: 11/29/2024 2:33 PM
+     * @description:  Câp nhật thông tin bài đăng việc làm
+     * @update:
+     *
+     * */
     public JobPostResponse updateJobPost(Long id, JobPostRequest request) {
         var jobPost = jobPostRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Không tìm thấy công việc"));
@@ -145,6 +160,13 @@ public class JobPostService {
     }
 
 
+    /*
+     * @author: VuDD
+     * @since: 11/29/2024 2:33 PM
+     * @description:  Lấy thông tin chi tiết bài đăng việc làm
+     * @update:
+     *
+     * */
     public JobPostRequest getJobPost(Long id) {
         JobPost jobPost = jobPostRepository.findById(id)
                 .orElseThrow(() -> new JobPostException("Không tìm thấy công việc"));
@@ -171,11 +193,16 @@ public class JobPostService {
                 .companyName(jobPost.getCompany().getName())
                 .build();
 
-
-
     }
 
 
+    /*
+     * @author: VuDD
+     * @since: 11/29/2024 2:32 PM
+     * @description:  Xoá bài đăng việc làm set trạng thái DELETED
+     * @update:
+     *
+     * */
     public void deleteById(Long id) {
         JobPost jobPost = jobPostRepository.findById(id).orElseThrow(() -> new JobPostException("Không tìm thấy công " +
                 "việc"));
@@ -185,7 +212,13 @@ public class JobPostService {
 
     }
 
-
+    /*
+     * @author: VuDD
+     * @since: 11/29/2024 2:32 PM
+     * @description:  Ẩn bài đăng việc làm
+     * @update:
+     *
+     * */
     public void disableView(Long id) {
         JobPost jobPost = jobPostRepository.findById(id).orElseThrow(() -> new JobPostException("Không tìm thấy công " +
                 "việc"));
@@ -194,6 +227,13 @@ public class JobPostService {
         jobPostRepository.save(jobPost);
     }
 
+    /*
+     * @author: VuDD
+     * @since: 11/29/2024 2:32 PM
+     * @description:  Bật bài đăng việc làm
+     * @update:
+     *
+     * */
     public void enabledView(Long id) {
         JobPost jobPost = jobPostRepository.findById(id).orElseThrow(() -> new JobPostException("Không tìm thấy công " +
                 "việc"));
@@ -213,6 +253,13 @@ public class JobPostService {
         return jobListings.map(this::convertToJobListingResponse);
     }
 
+    /*
+     * @author: VuDD
+     * @since: 11/29/2024 2:31 PM
+     * @description:  Lấy danh sách bài đăng việc làm theo công ty
+     * @update:
+     *
+     * */
     public PageResponse<JobListingResponse> getJobListings(String jobTitle, StatusEnum statusEnum, Integer pageNo) {
         Pageable pageable = PageRequest.of(pageNo - 1, 10);
 
@@ -230,22 +277,14 @@ public class JobPostService {
         return new PageResponse<>(jobPosts);
     }
 
-//    public PageResponse<JobListingResponse> getJobList( Integer pageNo) {
-//        Pageable pageable = PageRequest.of(pageNo - 1, 10);
-//
-//        // Retrieve the authenticated user
-//        User authenticatedUser = authenticationUtil.getAuthenticatedUser();
-//        Company company = authenticatedUser.getCompany();
-//        if (company == null) {
-//            throw new EntityNotFoundException("Người dùng chưa có thông tin công ty");
-//        }
-//
-//        // Filter job posts by company
-//        Page<JobListingResponse> jobPosts = jobPostRepository.findAll();
-//
-//        return new PageResponse<>(jobPosts);
-//    }
 
+    /*
+     * @author: VuDD
+     * @since: 11/29/2024 2:31 PM
+     * @description:  lấy danh sách bài đăng việc làm theo công ty
+     * @update:
+     *
+     * */
     public List<JobPostTitleResponse> getJobPostTitle() {
         return jobPostRepository.getJobPostTitleByCompany(authenticationUtil.getAuthenticatedUser().getCompany());
     }
@@ -277,6 +316,13 @@ public class JobPostService {
     }
 
 
+    /*
+     * @author: VuDD
+     * @since: 11/29/2024 2:30 PM
+     * @description:  Lấy danh sách bài đăng việc làm theo trạng thái
+     * @update:
+     *
+     * */
     public Page<JobListActiveResponse> getJobListingsByStatus(String status, Integer pageNo, Integer pageSize) {
         Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
 
@@ -309,6 +355,8 @@ public class JobPostService {
         return convertToJobListActiveResponse(jobListings);
     }
 
+
+
     public Page<JobListActiveResponse> convertToJobListActiveResponse(Page<JobPost> jobListings) {
         return jobListings.map(jobPost -> {
             Company company = jobPost.getCompany();
@@ -338,6 +386,33 @@ public class JobPostService {
         return jobPostRepository.findAll(Sort.by(Sort.Direction.DESC, "createDate"));
     }
 
+    /*
+     * @author: VuDD
+     * @since: 11/29/2024 2:30 PM
+     * @description:  Xóa bài đăng việc làm theo ID và trạng thái khỏi DB
+     * @update:
+     *
+     * */
+    public void deleteJobPostByStatusEnum(Long id) {
+        try {
+            // Kiểm tra tồn tại và trạng thái trước khi xóa
+            JobPost jobPost = jobPostRepository.findById(id)
+                    .orElseThrow(() -> new EntityNotFoundException("Không tìm thấy bài đăng việc làm với ID: " + id));
+
+            // Kiểm tra điều kiện trạng thái
+            if (jobPost.getStatusEnum() == StatusEnum.PENDING ||
+                    jobPost.getStatusEnum() == StatusEnum.REJECTED) {
+                jobPostRepository.deleteJobPostByStatusEnum(id);
+            } else {
+                throw new IllegalStateException("Chỉ được xóa bài đăng ở trạng thái PENDING hoặc REJECTED");
+            }
+        } catch (Exception e) {
+            // Ghi log lỗi
+            System.out.println("Xóa bài đăng việc làm thất bại: " + e.getMessage());
+            throw e;
+        }
+    }
+
 
     public List<JobPost> findByStatusEnum(StatusEnum statusEnum) {
         return jobPostRepository.findByStatusEnum(statusEnum); // Lấy bài đăng theo trạng thái
@@ -353,8 +428,28 @@ public class JobPostService {
         return jobPostRepository.findByStatusEnum(statusEnum, pageable); // Lọc theo status và phân trang
     }
 
+    public Page<JobPost> getJobListingsAdmin(Integer pageNo, String statusEnum) {
+        Pageable pageable = PageRequest.of(pageNo - 1, 10, Sort.by(Sort.Direction.DESC, "createDate"));
+        StatusEnum status = null;
+
+        if (statusEnum != null && !statusEnum.isEmpty()) {
+            try {
+                status = StatusEnum.fromString(statusEnum); // Convert string to enum
+            } catch (IllegalArgumentException e) {
+                // Nếu trạng thái không hợp lệ, trả về tất cả job posts
+            }
+        }
+
+        return jobPostRepository.findByAdmin(pageable, status);
+    }
+
+
+
     //để hiển thị trang chi tiết job post
     public JobPost findById(Long id) {
         return jobPostRepository.findById(id).orElse(null);
     }
+
+
+
 }
