@@ -69,33 +69,41 @@ public class AdminJobPostController {
 
     @GetMapping
     public String list(
-            @RequestParam(value = "statusEnum", required = false) String statusEnum,
+            @RequestParam(defaultValue = "statusEnum", required = false) String statusEnum,
             @RequestParam(defaultValue = "1") Integer pageNo,
+            @RequestParam(required = false) String jobTitle,  // Thêm tham số jobTitle
             ModelMap model) {
 
         Page<JobPost> jobPosts;
 
-        if (statusEnum != null && !statusEnum.isEmpty()) {
-            try {
-                // Convert string to StatusEnum
-                StatusEnum status = StatusEnum.fromString(statusEnum);
-                // Gọi service để lấy danh sách theo trạng thái
-                jobPosts = jobPostService.getJobListingsAdmin(pageNo, statusEnum);
-            } catch (IllegalArgumentException e) {
-                // Báo lỗi nếu giá trị trạng thái không hợp lệ
-                model.addAttribute("error", "Invalid status value!");
-                // Lấy tất cả bài đăng không lọc
-                jobPosts = jobPostService.getJobListingsAdmin(pageNo, null);
-            }
+        if (jobTitle != null && !jobTitle.isEmpty()) {
+            // Nếu có tìm kiếm theo tiêu đề
+            jobPosts = jobPostService.getJobListingsAdmin(pageNo, statusEnum, jobTitle);
         } else {
-            // Lấy tất cả bài đăng không lọc
-            jobPosts = jobPostService.getJobListingsAdmin(pageNo, null);
+            if (statusEnum != null && !statusEnum.isEmpty()) {
+                try {
+                    jobPosts = jobPostService.getJobListingsAdmin(pageNo, statusEnum,jobTitle); // Lấy bài đăng theo trạng thái
+                } catch (IllegalArgumentException e) {
+                    model.addAttribute("error", "Invalid status value!");
+                    jobPosts = jobPostService.getJobListingsAdmin(pageNo); // Lấy tất cả nếu trạng thái không hợp lệ
+                }
+            } else {
+                jobPosts = jobPostService.getJobListingsAdmin(pageNo); // Lấy tất cả bài đăng nếu không có trạng thái
+            }
         }
 
         // Thêm dữ liệu vào ModelMap
         model.addAttribute("jobPostsAd", jobPosts);
-        model.addAttribute("statusEnum", statusEnum); // Lưu trạng thái hiện tại cho view
+        model.addAttribute("statusEnum", statusEnum);
+        model.addAttribute("jobListings", jobPosts.getContent());
+        model.addAttribute("currentPage", pageNo);
+        model.addAttribute("totalPages", jobPosts.getTotalPages());
+        model.addAttribute("selectedStatus", statusEnum);
+        model.addAttribute("searchKeyword", jobTitle);  // Thêm vào model để trả về form tìm kiếm
 
-        return "admin/jobposts/jobpost"; // Trả về tên template
+        return "admin/jobposts/jobpost"; // Trả về template
     }
+
+
+
 }

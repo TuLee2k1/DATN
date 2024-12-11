@@ -428,7 +428,7 @@ public class JobPostService {
         return jobPostRepository.findByStatusEnum(statusEnum, pageable); // Lọc theo status và phân trang
     }
 
-    public Page<JobPost> getJobListingsAdmin(Integer pageNo, String statusEnum) {
+    public Page<JobPost> getJobListingsAdmin(Integer pageNo, String statusEnum,String jobTitle) {
         Pageable pageable = PageRequest.of(pageNo - 1, 10, Sort.by(Sort.Direction.DESC, "createDate"));
         StatusEnum status = null;
 
@@ -440,7 +440,7 @@ public class JobPostService {
             }
         }
 
-        return jobPostRepository.findByAdmin(pageable, status);
+        return jobPostRepository.findByAdmin(pageable, status,jobTitle);
     }
 
 
@@ -449,7 +449,4 @@ public class JobPostService {
     public JobPost findById(Long id) {
         return jobPostRepository.findById(id).orElse(null);
     }
-
-
-
 }
