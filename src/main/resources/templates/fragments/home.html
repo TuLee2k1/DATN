@@ -2,13 +2,10 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <title>JobBoard &mdash; Website Template by Colorlib</title>
+    <title>DreamJob &mdash; Website Tuyển dụng</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content=""/>
-    <meta name="keywords" content=""/>
-    <meta name="author" content="Free-Template.co"/>
-    <link rel="shortcut icon" href="/Admin/images/ftco-32x32.png">
+    <link rel="shortcut icon" href="/Admin/images/logo-icon.png">
 
     <link rel="stylesheet" href="/css/custom-bs.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css">
@@ -23,6 +20,9 @@
 
     <script src="https://cdn.tailwindcss.com">
     </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
     <!-- MAIN CSS -->
     <link rel="stylesheet" href="/css/style.css">
@@ -64,6 +64,11 @@
 
         .hidden {
             display: none;
+        }
+
+        .disabled {
+            pointer-events: none; /* Ngăn không cho nhấn */
+            opacity: 0.5; /* Làm mờ nút */
         }
 
     </style>
@@ -148,11 +153,11 @@
     <header class="site-navbar mt-3">
         <div class="container-fluid">
             <div class="row align-items-center">
-                <div class="site-logo col-6"><a href="index.html">Dreams Jobs</a></div>
+                <div class="site-logo col-6"><a href="http://localhost:8080">Dream Job</a></div>
 
                 <nav class="mx-auto site-navigation">
                     <ul class="site-menu js-clone-nav d-none d-xl-block ml-0 pl-0">
-                        <li><a href="index.html" class="nav-link active">Trang Chủ</a></li>
+                        <li><a href="http://localhost:8080" class="nav-link active">Trang Chủ</a></li>
                         <li><a href="about.html">Về Chúng Tôi</a></li>
                         <li class="has-children">
                             <a href="job-listings.html">Công Việc</a>
@@ -228,53 +233,29 @@
             <div class="row align-items-center justify-content-center">
                 <div class="col-md-12">
                     <div class="mb-5 text-center">
-                        <h1 class="text-white font-weight-bold">The Easiest Way To Get Your Dream Job</h1>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate est, consequuntur
-                            perferendis.</p>
+                        <h1 class="text-white font-weight-bold">Cách Dễ Nhất Để Có Được Công Việc Mơ Uớc Của Bạn</h1>
                     </div>
-                    <form method="post" class="search-jobs-form">
+                    <form method="post" class="search-jobs-form" th:action="@{/Tim-kiem}" >
                         <div class="row mb-5">
                             <div class="col-12 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
-                                <input type="text" class="form-control form-control-lg"
+                                <input type="text" name="searchTerm" class="form-control form-control-lg"
                                        placeholder="Job title, Company...">
                             </div>
                             <div class="col-12 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
-                                <select class="selectpicker" data-style="btn-white btn-lg" data-width="100%"
-                                        data-live-search="true" title="Select Region">
-                                    <option>Anywhere</option>
-                                    <option>San Francisco</option>
-                                    <option>Palo Alto</option>
-                                    <option>New York</option>
-                                    <option>Manhattan</option>
-                                    x
-                                    <option>Ontario</option>
-                                    <option>Toronto</option>
-                                    <option>Kansas</option>
-                                    <option>Mountain View</option>
+                                <input type="text" name="location"  class="form-control form-control-lg"
+                                       placeholder=" Tất cả Tỉnh/Thành Phố" id="city">
+                            </div>
+                            <div class="col-12 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
+                                <select name="jobType" class="selectpicker" data-style="btn-white btn-lg" data-width="100%"
+                                        data-live-search="true" title="Select Work Type">
+                                    <option value="">Tất cả hình thức</option>
+
                                 </select>
                             </div>
                             <div class="col-12 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
-                                <select class="selectpicker" data-style="btn-white btn-lg" data-width="100%"
-                                        data-live-search="true" title="Select Job Type">
-                                    <option>Part Time</option>
-                                    <option>Full Time</option>
-                                </select>
-                            </div>
-                            <div class="col-12 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
-                                <button type="submit"
-                                        class="btn btn-primary btn-lg btn-block text-white btn-search"><span
-                                        class="icon-search icon mr-2"></span>Search Job
+                                <button type="submit" class="btn btn-primary btn-lg btn-block text-white btn-search">
+                                    <span class="icon-search icon mr-2"></span>Search Job
                                 </button>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12 popular-keywords">
-                                <h3>Trending Keywords:</h3>
-                                <ul class="keywords list-unstyled m-0 p-0">
-                                    <li><a href="#" class="">UI Designer</a></li>
-                                    <li><a href="#" class="">Python</a></li>
-                                    <li><a href="#" class="">Developer</a></li>
-                                </ul>
                             </div>
                         </div>
                     </form>
@@ -295,10 +276,7 @@
         <div class="container">
             <div class="row mb-5 justify-content-center">
                 <div class="col-md-7 text-center">
-                    <h2 class="section-title mb-2 text-white">JobBoard Site Stats</h2>
-                    <p class="lead text-white">Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita
-                        unde officiis
-                        recusandae sequi excepturi corrupti.</p>
+                    <h2 class="section-title mb-2 text-white">Thống Kê Trang Web DreamJob</h2>
                 </div>
             </div>
             <div class="row pb-0 block__19738 section-counter">
@@ -307,28 +285,28 @@
                     <div class="d-flex align-items-center justify-content-center mb-2">
                         <strong class="number" data-number="1930">0</strong>
                     </div>
-                    <span class="caption">Candidates</span>
+                    <span class="caption">Ứng Viên</span>
                 </div>
 
                 <div class="col-6 col-md-6 col-lg-3 mb-5 mb-lg-0">
                     <div class="d-flex align-items-center justify-content-center mb-2">
                         <strong class="number" data-number="54">0</strong>
                     </div>
-                    <span class="caption">Jobs Posted</span>
+                    <span class="caption">Bài Đăng</span>
                 </div>
 
                 <div class="col-6 col-md-6 col-lg-3 mb-5 mb-lg-0">
                     <div class="d-flex align-items-center justify-content-center mb-2">
                         <strong class="number" data-number="120">0</strong>
                     </div>
-                    <span class="caption">Jobs Filled</span>
+                    <span class="caption">Việc Đã Tuyển</span>
                 </div>
 
                 <div class="col-6 col-md-6 col-lg-3 mb-5 mb-lg-0">
                     <div class="d-flex align-items-center justify-content-center mb-2">
                         <strong class="number" data-number="550">0</strong>
                     </div>
-                    <span class="caption">Companies</span>
+                    <span class="caption">Công ty</span>
                 </div>
 
 
@@ -342,18 +320,16 @@
 
             <div class="row mb-5 justify-content-center">
                 <div class="col-md-7 text-center">
-                    <h2 class="section-title mb-2">43,167 Job Listed</h2>
+                    <h2 class="section-title mb-2">43,167 Danh Sách Công Việc</h2>
                 </div>
             </div>
 
             <ul class="job-listings mb-5" th:each="job : ${jobListings}">
                 <li class="job-listing d-block d-sm-flex pb-3 pb-sm-0 align-items-center">
-
-                    <a th:href="@{/job-posts/detail/{id}(id=${job.id})}" ></a>
+                    <a th:href="@{/job-posts/detail/{id}(id=${job.id})}" class="w-100"></a>
                     <div class="job-listing-logo">
                         <img th:src="${job.companyLogoUrl != null ? job.companyLogoUrl : '/Admin/images/job_logo_5.jpg'}"
                              alt="Logo của công ty"
-
                              class="img-fluid">
                     </div>
 
@@ -366,12 +342,11 @@
                             <span class="icon-room"></span> <span th:text="${job.getCity()}">Vị trí</span>
                         </div>
                         <div class="job-listing-meta">
-                          <span th:with="status=${job.workType}"
-                                th:class="${'badge ' +
-                     (status == 'PART_TIME' ? 'bg-success' :
-                      status == 'FUL_TIME' ? 'bg-warning' : 'bg-danger')}"
-                                th:text="${status}">
-    </span>
+                <span th:with="status=${job.workType.name()}"
+                      th:class="${'badge ' +
+                      (status == 'PART_TIME' ? 'bg-success' :
+                       status == 'FULL_TIME' ? 'bg-info' : 'bg-danger')}"
+                      th:text="${status}"></span>
                         </div>
                     </div>
                 </li>
@@ -383,14 +358,20 @@
                 </div>
                 <div class="col-md-6 text-center text-md-right">
                     <div class="custom-pagination ml-auto">
-                        <a href="#" class="prev">Prev</a>
+                        <a th:href="${currentPage == 1} ? '#' : @{/(status='ACTIVE', pageNo=${currentPage - 1}, pageSize=5)}"
+                           class="prev"
+                           th:classappend="${currentPage == 1} ? 'disabled'">Prev</a>
                         <div class="d-inline-block">
-                            <a href="#" class="active">1</a>
-                            <a href="#">2</a>
-                            <a href="#">3</a>
-                            <a href="#">4</a>
+                <span th:each="i : ${#numbers.sequence(1, totalPages)}">
+                    <a th:href="@{/(status='ACTIVE', pageNo=${i}, pageSize=5)}"
+                       th:classappend="${i == currentPage} ? 'active'">
+                        <span th:text="${i}"></span>
+                    </a>
+                </span>
                         </div>
-                        <a href="#" class="next">Next</a>
+                        <a th:href="${currentPage == totalPages} ? '#' : @{/(status='ACTIVE', pageNo=${currentPage + 1}, pageSize=5)}"
+                           class="next"
+                           th:classappend="${currentPage == totalPages} ? 'disabled'">Next</a>
                     </div>
                 </div>
             </div>
@@ -403,13 +384,10 @@
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-md-8">
-                    <h2 class="text-white">Looking For A Job?</h2>
-                    <p class="mb-0 text-white lead">Lorem ipsum dolor sit amet consectetur adipisicing elit tempora
-                        adipisci
-                        impedit.</p>
+                    <h2 class="text-white">Bạn Đang Tìm Việc Làm</h2>
                 </div>
                 <div class="col-md-3 ml-auto">
-                    <a href="#" class="btn btn-warning btn-block btn-lg">Sign Up</a>
+                    <a href="#" class="btn btn-warning btn-block btn-lg">Đăng Kí Ngay</a>
                 </div>
             </div>
         </div>
@@ -423,25 +401,22 @@
                 <div class="col-12 text-center mt-4 mb-5">
                     <div class="row justify-content-center">
                         <div class="col-md-7">
-                            <h2 class="section-title mb-2">Company We've Helped</h2>
-                            <p class="lead">Porro error reiciendis commodi beatae omnis similique voluptate rerum
-                                ipsam fugit
-                                mollitia ipsum facilis expedita tempora suscipit iste</p>
+                            <h2 class="section-title mb-2">Các Công Ty Nổi Bật</h2>
                         </div>
                     </div>
 
                 </div>
                 <div class="col-6 col-lg-3 col-md-6 text-center">
-                    <img src="/Admin/images/logo_mailchimp.svg" alt="Image" class="img-fluid logo-1">
+                    <img src="/Admin/images/job_logo_4.jpg" alt="Image" class="img-fluid logo-1">
                 </div>
                 <div class="col-6 col-lg-3 col-md-6 text-center">
-                    <img src="/Admin/images/logo_paypal.svg" alt="Image" class="img-fluid logo-2">
+                    <img src="/Admin/images/job_logo_3.jpg" alt="Image" class="img-fluid logo-2">
                 </div>
                 <div class="col-6 col-lg-3 col-md-6 text-center">
-                    <img src="/Admin/images/logo_stripe.svg" alt="Image" class="img-fluid logo-3">
+                    <img src="/Admin/images/job_logo_1.jpg" alt="Image" class="img-fluid logo-3">
                 </div>
                 <div class="col-6 col-lg-3 col-md-6 text-center">
-                    <img src="/Admin/images/logo_visa.svg" alt="Image" class="img-fluid logo-4">
+                    <img src="/Admin/images/job_logo_2.jpg" alt="Image" class="img-fluid logo-4">
                 </div>
             </div>
         </div>
@@ -458,10 +433,7 @@
             <div class="row">
                 <div class="col-lg-6 align-self-center text-center text-lg-left">
                     <blockquote>
-                        <p>&ldquo;Soluta quasi cum delectus eum facilis recusandae nesciunt molestias accusantium
-                            libero dolores
-                            repellat id in dolorem laborum ad modi qui at quas dolorum voluptatem voluptatum
-                            repudiandae.&rdquo;</p>
+                        <p>&ldquo;Chúng tôi cung cấp một môi trường làm việc thân thiện, năng động và đầy thử thách, nơi bạn có thể học hỏi, chia sẻ ý tưởng và phát triển sự nghiệp. Hãy tham gia cùng chúng tôi để trở thành một phần của đội ngũ sáng tạo, nơi mà những ý tưởng mới được trân trọng và khuyến khích..&rdquo;</p>
                         <p><cite> &mdash; Corey Woods, @Dribbble</cite></p>
                     </blockquote>
                 </div>
@@ -475,10 +447,7 @@
             <div class="row">
                 <div class="col-lg-6 align-self-center text-center text-lg-left">
                     <blockquote>
-                        <p>&ldquo;Soluta quasi cum delectus eum facilis recusandae nesciunt molestias accusantium
-                            libero dolores
-                            repellat id in dolorem laborum ad modi qui at quas dolorum voluptatem voluptatum
-                            repudiandae.&rdquo;</p>
+                        <p>&ldquo;Chúng tôi cung cấp một môi trường làm việc thân thiện, năng động và đầy thử thách, nơi bạn có thể học hỏi, chia sẻ ý tưởng và phát triển sự nghiệp. Hãy tham gia cùng chúng tôi để trở thành một phần của đội ngũ sáng tạo, nơi mà những ý tưởng mới được trân trọng và khuyến khích.&rdquo;</p>
                         <p><cite> &mdash; Chris Peters, @Google</cite></p>
                     </blockquote>
                 </div>
@@ -497,9 +466,6 @@
         <div class="row">
             <div class="col-md-6 align-self-center text-center text-md-left mb-5 mb-md-0">
                 <h2 class="text-white">Get The Mobile Apps</h2>
-                <p class="mb-5 lead text-white">Lorem ipsum dolor sit amet consectetur adipisicing elit tempora
-                    adipisci
-                    impedit.</p>
                 <p class="mb-0">
                     <a href="#" class="btn btn-dark btn-md px-4 border-width-2"><span
                             class="icon-apple mr-3"></span>App
@@ -662,8 +628,9 @@
         // Chuyển hướng đến trang đăng ký
         window.location.href = '/auth/register/user';
     });
-</script>
 
+
+</script>
 </body>
 
 </html>

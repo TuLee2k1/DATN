@@ -38,6 +38,10 @@ public class JobListActiveResponse {
         City = city;
     }
 
+    public JobListActiveResponse() {
+
+    }
+
 
 // Getters and Setters
 }

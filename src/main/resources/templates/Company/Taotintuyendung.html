@@ -683,19 +683,19 @@
             .then(data => {
               // Thêm tỉnh vào dropdown
               data.forEach(province => {
-                const option = new Option(province.name, province.code);
+                const option = new Option(province.name, province.name);
                 $('#city').append(option);
               });
 
               // Lắng nghe sự kiện thay đổi của dropdown tỉnh
               $('#city').on('change', function() {
-                const selectedCityCode = $(this).val();
+                const selectedCityName = $(this).val();
                 $('#district').empty().append(new Option("Chọn Quận hoặc Huyện", ""));
 
-                const selectedProvince = data.find(p => p.code == selectedCityCode);
+                const selectedProvince = data.find(p => p.name == selectedCityName);
                 if (selectedProvince) {
                   selectedProvince.districts.forEach(district => {
-                    const option = new Option(district.name, district.code);
+                    const option = new Option(district.name, district.name);
                     $('#district').append(option);
                   });
                 }
@@ -708,6 +708,41 @@
   document.getElementById("danhsachtindang").addEventListener("click", function() {
     window.location.href = '/job-posts/Listing';
   });
+
+  // function formatText(text) {
+  //   // Thay thế các ký tự xuống dòng bằng <br>
+  //   text = text.replace(/\n/g, '<br/>');
+  //
+  //   // Thay thế gạch đầu dòng
+  //   text = text.replace(/^\s*[-*]\s+/gm, '<li>') + '</li>'; // Chuyển đổi gạch đầu dòng thành <li>
+  //
+  //   return text;
+  // }
+  //
+  // function submitForm() {
+  //   const jobPostRequest = {
+  //     jobDescription: formatText(document.getElementById('jobDescription').value),
+  //     jobRequire: formatText(document.getElementById('jobRequire').value),
+  //     jobBenefit: formatText(document.getElementById('jobBenefit').value),
+  //     // Thêm các trường khác tương tự
+  //   };
+  //
+  //   // Gửi dữ liệu đến server
+  //   fetch('/job-posts/create', {
+  //     method: 'POST',
+  //     headers: {
+  //       'Content-Type': 'application/json'
+  //     },
+  //     body: JSON.stringify(jobPostRequest)
+  //   })
+  //           .then(response => response.json())
+  //           .then(data => {
+  //             console.log('Success:', data);
+  //           })
+  //           .catch((error) => {
+  //             console.error('Error:', error);
+  //           });
+  // }
 </script>
 <!--<script th:src="@{../js/app.js}"></script>-->
 <script src="/js/app.js"></script>

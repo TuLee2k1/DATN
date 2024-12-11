@@ -99,7 +99,7 @@
   left: 0;
   width: 50%;
   z-index: 2;
-  margin-top: -150px;
+  margin-top: -100px;
 }
 .container.active .sign-in {
   transform: translateX(100%);
@@ -109,7 +109,7 @@
   width: 50%;
   opacity: 0;
   z-index: 1;
-  margin-top: -150px;
+  margin-top: -100px;
 }
 .agree {
   color: #333;

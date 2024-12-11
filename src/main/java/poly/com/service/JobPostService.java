@@ -4,9 +4,7 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
 
 import org.springframework.stereotype.Service;
 import poly.com.Enum.StatusEnum;
@@ -29,6 +27,7 @@ import poly.com.repository.SubCategoryRepository;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -41,6 +40,9 @@ public class JobPostService {
     @Autowired
     private CompanyRepository companyRepository; // Repository để truy vấn thông tin công ty
 
+    public List<JobPost> getJobPostsByStatus(StatusEnum statusEnum) {
+        return jobPostRepository.findByStatusEnum(statusEnum);
+    }
 
     public void approveJobPost(Long jobPostId) {
         JobPost jobPost = jobPostRepository.findById(jobPostId)
@@ -189,6 +191,7 @@ public class JobPostService {
                 .jobCategoryId(jobPost.getJobCategory().getId())
                 .subCategoryIds(jobPost.getSubCategory().getId())
                 .companyName(jobPost.getCompany().getName())
+                .createDate(jobPost.getCreateDate())
                 .build();
 
     }
@@ -322,7 +325,7 @@ public class JobPostService {
      *
      * */
     public Page<JobListActiveResponse> getJobListingsByStatus(String status, Integer pageNo, Integer pageSize) {
-        Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
+        Pageable pageable = PageRequest.of(pageNo - 1, pageSize, Sort.by(Sort.Direction.DESC, "createDate"));
 
         // Chuyển đổi từ String sang StatusEnum
         StatusEnum statusEnum;
@@ -352,6 +355,7 @@ public class JobPostService {
         // Chuyển đổi và trả về
         return convertToJobListActiveResponse(jobListings);
     }
+
 
 
 
@@ -417,4 +421,69 @@ public class JobPostService {
         return jobPostRepository.findById(id).orElse(null);
     }
 
+    public List<JobListActiveResponse> filterBySearchTerm(List<JobListActiveResponse> jobListings, String searchTerm) {
+        return jobListings.stream()
+                .filter(job -> job.getJobTitle().toLowerCase().contains(searchTerm.toLowerCase()))
+                .collect(Collectors.toList());
+    }
+
+    public List<JobListActiveResponse> filterByJobType(List<JobListActiveResponse> jobListings, String jobType) {
+        return jobListings.stream()
+                .filter(job -> job.getWorkType().equals(jobType))
+                .collect(Collectors.toList());
+    }
+
+    public List<JobListActiveResponse> filterByLocation(List<JobListActiveResponse> jobListings, String location) {
+        System.out.println("Filtering by location: " + location);
+        return jobListings.stream()
+                .filter(job -> {
+                    String city = job.getCity();
+                    System.out.println("Job City: " + city); // In ra tên thành phố
+                    return city != null && city.toLowerCase().contains(location.toLowerCase());
+                })
+                .collect(Collectors.toList());
+    }
+
+
+//    public Page<JobListActiveResponse> getSearchJobListingsByStatus(String status, String searchTerm, String jobType, String location, Integer pageNo, Integer pageSize) {
+//        Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
+//
+//        // Chuyển đổi từ String sang StatusEnum
+//        StatusEnum statusEnum;
+//        try {
+//            statusEnum = StatusEnum.fromString(status);
+//        } catch (IllegalArgumentException e) {
+//            throw new IllegalArgumentException("Invalid status value: " + status);
+//        }
+//
+//        // Gọi repository với StatusEnum
+//        Page<JobPost> jobListings = jobPostRepository.findByStatusEnum(statusEnum, pageable);
+//        System.out.println("Job" + jobListings.getTotalElements());
+//
+//        // Chuyển đổi danh sách JobPost thành danh sách JobListActiveResponse
+//        List<JobListActiveResponse> jobListActiveResponses = (List<JobListActiveResponse>) convertToJobListActiveResponse((Page<JobPost>) jobListings.getContent());
+//
+//        // Lọc theo searchTerm, jobType và location
+//        if (searchTerm != null && !searchTerm.isEmpty()) {
+//            jobListActiveResponses = filterBySearchTerm(jobListActiveResponses, searchTerm);
+//        }
+//        if (jobType != null && !jobType.isEmpty()) {
+//            jobListActiveResponses = filterByJobType(jobListActiveResponses, jobType);
+//        }
+//        if (location != null && !location.isEmpty()) {
+//            jobListActiveResponses = filterByLocation(jobListActiveResponses, location);
+//        }
+//
+//        // Tạo một Page mới từ danh sách đã lọc
+//        return createPageFromList(jobListActiveResponses, pageable);
+//    }
+//
+//    private Page<JobListActiveResponse> createPageFromList(List<JobListActiveResponse> list, Pageable pageable) {
+//        int totalElements = list.size();
+//        int start = Math.toIntExact(pageable.getOffset());
+//        int end = Math.min((start + pageable.getPageSize()), totalElements);
+//        List<JobListActiveResponse> pagedList = list.subList(start, end);
+//
+//        return new PageImpl<>(pagedList, pageable, totalElements);
+//    }
 }
