@@ -52,16 +52,22 @@
 
 <!-- PHẦN CONTENT -->
 <main class="content" layout:fragment="content">
-    <h1 class="h3 mb-3"><strong>Candidate</strong></h1>
+    <h1 class="h3 mb-3"><strong>Quản lý tài khoản</strong></h1>
 
-    <!-- Table -->
+    <!-- Thông báo -->
+    <div th:if="${message}" class="alert alert-success" role="alert">
+        <span th:text="${message}"></span>
+    </div>
+    <div th:if="${error}" class="alert alert-danger" role="alert">
+        <span th:text="${error}"></span>
+    </div>
+
+    <!-- Bảng quản lý tài khoản -->
     <div class="row">
-
         <div class="col-12 col-lg-12 col-xxl-12 ">
             <div class="card flex-fill">
                 <div class="card-header">
-
-                    <h5 class="card-title mb-0">Candidate</h5>
+                    <h5 class="card-title mb-0">Danh sách tài khoản</h5>
                 </div>
                 <table class="table table-hover my-0">
                     <thead>
@@ -72,9 +78,9 @@
                         <th>Email</th>
                         <th>Ngày tạo</th>
                         <th>Trạng thái</th>
+                        <th>Hoạt động</th>
                         <th>Vai trò</th>
-                        <th>Actions</th> <!-- Thêm cột mới cho các nút -->
-
+                        <th>Actions</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -84,34 +90,40 @@
                         <td th:text="${user.lastname}"></td>
                         <td th:text="${user.email}"></td>
                         <td th:text="${user.createdDate}"></td>
-
                         <td>
                             <span th:if="${user.enabled}" class="text-success">Kích hoạt</span>
                             <span th:if="${!user.enabled}" class="text-danger">Vô hiệu</span>
                         </td>
                         <td>
+                            <!-- Trạng thái tài khoản -->
+                            <span th:if="${user.accountLocked}" class="text-danger">Đã khóa</span>
+                            <span th:if="${!user.accountLocked}" class="text-success">Đang hoạt động</span>
+                        </td>
+                        <td>
+                            <!-- Danh sách vai trò -->
                             <ul>
                                 <li th:each="role : ${user.roles}" th:text="${role.role}"></li>
                             </ul>
                         </td>
                         <td>
-                            <a
-                               class="btn btn-outline-danger btn-sm rounded-circle"
-                               style="width: 40px; height: 40px;"
-                               onclick="return confirm('Bạn có chắc chắn muốn xóa công ty này?');">
-                                <i class="align-middle" data-feather="lock"></i>
-                            </a>
+                            <!-- Nút khóa tài khoản -->
+                            <form th:action="@{/admin/users/{id}/lock(id=${user.id})}" method="post" style="display: inline;">
+                                <button type="submit"
+                                        class="btn btn-outline-danger btn-sm rounded-circle"
+                                        style="width: 40px; height: 40px;"
+                                        th:disabled="${user.accountLocked}"
+                                        onclick="return confirm('Bạn có chắc chắn muốn khóa tài khoản này?');">
+                                    <i class="align-middle" data-feather="lock"></i>
+                                </button>
+                            </form>
                         </td>
-
                     </tr>
-
-
                     </tbody>
                 </table>
             </div>
-
         </div>
     </div>
+
 </main>
 
 

@@ -2,16 +2,15 @@ package poly.com.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import poly.com.repository.CompanyRepository;
-import poly.com.repository.JobPostRepository;
-import poly.com.repository.JobProfileRepository;
-import poly.com.repository.ProfileRepository;
+import poly.com.repository.*;
 
 import java.util.HashMap;
 import java.util.Map;
 
 @Service
 public class ThongkeService {
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private CompanyRepository companyRepository;
@@ -29,7 +28,7 @@ public class ThongkeService {
         stats.put("totalCompanies", companyRepository.count());
         stats.put("totalJobPosts", jobPostRepository.count());
         stats.put("totalJobProfiles", profileRepository.count());
-
+        stats.put("totalUser", userRepository.count());
         return stats;
     }
 

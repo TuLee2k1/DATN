@@ -24,6 +24,7 @@ public class AdminThongkeController {
         Map<String, Long> stats = thongkeService.getStatistics();
 
         // Truyền các số liệu thống kê vào model
+        model.addAttribute("totalUser", stats.get("totalUser"));
         model.addAttribute("totalCompanies", stats.get("totalCompanies"));
         model.addAttribute("totalJobPosts", stats.get("totalJobPosts"));
         model.addAttribute("totalJobProfiles", stats.get("totalJobProfiles"));

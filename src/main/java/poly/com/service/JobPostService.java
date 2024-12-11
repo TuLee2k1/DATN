@@ -1,3 +1,4 @@
+
 package poly.com.service;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -6,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import poly.com.Enum.StatusEnum;
 import poly.com.dto.response.JobPost.JobListActiveResponse;
@@ -385,7 +387,7 @@ public class JobPostService {
     }
 
     public List<JobPost> findAll() {
-        return jobPostRepository.findAll();
+        return jobPostRepository.findAll(Sort.by(Sort.Direction.DESC, "createDate"));
     }
 
     /*
@@ -399,6 +401,7 @@ public class JobPostService {
         try {
             // Kiểm tra tồn tại và trạng thái trước khi xóa
             JobPost jobPost = jobPostRepository.findById(id)
+
              .orElseThrow(() -> new EntityNotFoundException("Không tìm thấy bài đăng việc làm với ID: " + id));
 
             // Kiểm tra điều kiện trạng thái
@@ -416,10 +419,42 @@ public class JobPostService {
     }
 
 
+    public List<JobPost> findByStatusEnum(StatusEnum statusEnum) {
+        return jobPostRepository.findByStatusEnum(statusEnum); // Lấy bài đăng theo trạng thái
+    }
+
+    public Page<JobPost> getJobListingsAdmin(Integer pageNo) {
+        Pageable pageable = PageRequest.of(pageNo - 1, 10); // 10 là số lượng phần tử mỗi trang
+        return jobPostRepository.findAll(pageable); // Lấy tất cả JobPosts với phân trang
+    }
+
+    public Page<JobPost> getJobListings(StatusEnum statusEnum, Integer pageNo) {
+        Pageable pageable = PageRequest.of(pageNo - 1, 10);
+        return jobPostRepository.findByStatusEnum(statusEnum, pageable); // Lọc theo status và phân trang
+    }
+
+    public Page<JobPost> getJobListingsAdmin(Integer pageNo, String statusEnum,String jobTitle) {
+        Pageable pageable = PageRequest.of(pageNo - 1, 10, Sort.by(Sort.Direction.DESC, "createDate"));
+        StatusEnum status = null;
+
+        if (statusEnum != null && !statusEnum.isEmpty()) {
+            try {
+                status = StatusEnum.fromString(statusEnum); // Convert string to enum
+            } catch (IllegalArgumentException e) {
+                // Nếu trạng thái không hợp lệ, trả về tất cả job posts
+            }
+        }
+
+        return jobPostRepository.findByAdmin(pageable, status,jobTitle);
+    }
+
+
+
     //để hiển thị trang chi tiết job post
     public JobPost findById(Long id) {
         return jobPostRepository.findById(id).orElse(null);
     }
+
 
     public List<JobListActiveResponse> filterBySearchTerm(List<JobListActiveResponse> jobListings, String searchTerm) {
         return jobListings.stream()
@@ -487,3 +522,4 @@ public class JobPostService {
 //        return new PageImpl<>(pagedList, pageable, totalElements);
 //    }
 }
+
