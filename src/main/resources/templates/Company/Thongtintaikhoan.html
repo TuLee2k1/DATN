@@ -396,25 +396,25 @@
 
                         </div>
                         <form th:action="@{/company-account/update-profile}" th:object="${profile}" method="post" enctype="multipart/form-data">
-<!--                            &lt;!&ndash; Ảnh đại diện &ndash;&gt;-->
-<!--                            <h5 class="h6 fw-bold mb-3">Ảnh đại diện</h5>-->
-<!--                            <div class="mb-3 text-center">-->
-<!--                                <div class="position-relative d-inline-block rounded-full border border-secondary" style="width: 8rem; height: 8rem; overflow: hidden;" onclick="document.getElementById('avatar').click()">-->
-<!--                                    <img th:src="${profile?.logo != null && !#strings.isEmpty(profile.logo)-->
-<!--? '/uploads/logoprofile/' + profile.logo-->
-<!--: '/Admin/images/person_3.jpg'}"-->
-<!--                                         alt="avatar"-->
-<!--                                         class="w-100 h-100 object-cover" id="avatarPreview">-->
-<!--                                </div>-->
-<!--                                <input type="file"-->
-<!--                                       name="fileLogo"-->
-<!--                                       id="avatar"-->
-<!--                                       accept="image/*"-->
-<!--                                       class="d-none"-->
-<!--                                       onchange="Avatar(event)">-->
-<!--                            </div>-->
-<!--                            <p class="text-center text-secondary small">Nhấn vào ảnh để thay đổi (Kích cỡ ảnh khuyến dùng từ 1000x1000px trở lên)</p>-->
-<!--                            <hr class="section-divider" />-->
+                            <!--                            &lt;!&ndash; Ảnh đại diện &ndash;&gt;-->
+                            <!--                            <h5 class="h6 fw-bold mb-3">Ảnh đại diện</h5>-->
+                            <!--                            <div class="mb-3 text-center">-->
+                            <!--                                <div class="position-relative d-inline-block rounded-full border border-secondary" style="width: 8rem; height: 8rem; overflow: hidden;" onclick="document.getElementById('avatar').click()">-->
+                            <!--                                    <img th:src="${profile?.logo != null && !#strings.isEmpty(profile.logo)-->
+                            <!--? '/uploads/logoprofile/' + profile.logo-->
+                            <!--: '/Admin/images/person_3.jpg'}"-->
+                            <!--                                         alt="avatar"-->
+                            <!--                                         class="w-100 h-100 object-cover" id="avatarPreview">-->
+                            <!--                                </div>-->
+                            <!--                                <input type="file"-->
+                            <!--                                       name="fileLogo"-->
+                            <!--                                       id="avatar"-->
+                            <!--                                       accept="image/*"-->
+                            <!--                                       class="d-none"-->
+                            <!--                                       onchange="Avatar(event)">-->
+                            <!--                            </div>-->
+                            <!--                            <p class="text-center text-secondary small">Nhấn vào ảnh để thay đổi (Kích cỡ ảnh khuyến dùng từ 1000x1000px trở lên)</p>-->
+                            <!--                            <hr class="section-divider" />-->
                             <!-- Thông tin đăng nhập -->
                             <h5 class="h6 fw-bold mb-3">Thông tin đăng nhập</h5>
                             <div class="mb-3">

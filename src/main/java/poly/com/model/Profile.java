@@ -4,7 +4,10 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import poly.com.Enum.Exp;
+import poly.com.Enum.WorkType;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Date;
 
@@ -23,6 +26,12 @@ public class Profile extends AbstractEntity{
     @Column(name = "email")
     private String email;
 
+    @Column(name = "desiredLocation")
+    private String desiredLocation;
+
+    @Column(name = "desired_salary")
+    private BigDecimal desired_salary;
+
     @Column(name = "phone")
     private String phone;
 
@@ -38,6 +47,14 @@ public class Profile extends AbstractEntity{
 
     @Column(name = "logo", length = 100)
     private String logo;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "workType")
+    private WorkType workType;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "exp")
+    private Exp exp;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

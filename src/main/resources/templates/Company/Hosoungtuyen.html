@@ -473,39 +473,39 @@
 
 					<div class="filter-bar mb-4 p-3 border rounded bg-light">
 						<div class="row">
+							<form th:action="@{/Company/ApplicationProfile}" method="get" class="w-100">
 							<div class="col-md-6 d-flex align-items-center">
-								<span class="me-2">Lọc tin đăng:</span>
-								<form th:action="@{/Company/ApplicationProfile}" method="get" class="w-100">
-									<select class="form-select" name="jobPostId" onchange="this.form.submit()">
-										<option value="" th:selected="${selectedJobPostId == null}">
-											<i class="fas fa-list"></i> Tất cả tin đăng
-										</option>
-										<option
-												th:each="jobPost : ${jobPostsTitle}"
-												th:value="${jobPost.id}"
-												th:text="${jobPost.jobTitle}"
-												th:selected="${jobPost.id == selectedJobPostId}">
-										</option>
-									</select>
-								</form>
+
+									<span class="me-2">Lọc tin đăng:</span>
+
+								<select class="form-select" name="jobPostId" onchange="this.form.submit()">
+									<option value="" th:selected="${selectedJobPostId == null}">
+										<i class="fas fa-list"></i> Tất cả tin đăng
+									</option>
+									<option
+											th:each="jobPost : ${jobPostsTitle}"
+											th:value="${jobPost.id}"
+											th:text="${jobPost.jobTitle}"
+											th:selected="${jobPost.id == selectedJobPostId}"
+									>
+									</option>
+								</select>
+
 							</div>
-							<div class="col-md-6 text-end">
-								<button class="btn btn-outline-secondary">
-									<i class="fas fa-filter"></i> Lọc nâng cao
-								</button>
-								<button class="btn btn-outline-secondary">
-									<i class="fas fa-tags"></i> Lọc thẻ
-								</button>
-								<button class="btn btn-outline-secondary">
-									<i class="fas fa-download"></i> Tải danh sách
-								</button>
-							</div>
-							<div class="row mt-3">
+								<div class="col-md-6 text-end">
+									<!-- Thêm nút xuất Excel với các tham số hiện tại -->
+									<a th:href="@{/Company/ApplicationProfile/export(
+															jobPostId=${selectedJobPostId},
+															status=${selectedStatus}
+														)}" class="btn btn-outline-secondary">
+										<i class="fas fa-download"></i> Tải danh sách
+									</a>
+								</div>
+								<div class="row mt-3">
 								<div class="col-md-12">
-									<form action="/Company/ApplicationProfile" method="get">
 										<input type="hidden" name="jobPostId" th:value="${selectedJobPostId}" />
 
-										<button type="submit" name="status" value="ALL" class="btn">
+										<button type="submit" name="status" value="" class="btn">
 											<i class="fas fa-list"></i> Tất cả
 											<span class="badge bg-light text-dark" th:text="${totalProfiles}">10</span>
 										</button>
@@ -539,7 +539,7 @@
 											<i class="fas fa-trash"></i> Đã xóa
 											<span class="badge bg-light text-dark" th:text="${deletedProfiles}">0</span>
 										</button>
-									</form>
+									</from>
 								</div>
 							</div>
 						<form method="get" th:action="@{/Company/ApplicationProfile}" th:object="${jobProfiles}">
@@ -645,58 +645,80 @@
 						</div>
 
 					</form>
-						<nav class="pagination-nav" th:if="${totalPages > 1}">
-							<ul class="pagination justify-content-center">
-								<!-- Nút Trước -->
-								<li class="page-item previous-item" th:classappend="${currentPage == 1 ? 'disabled' : ''}">
-									<a class="page-link" th:href="@{/Company/ApplicationProfile(pageNo=${currentPage - 1}, jobPostId=${selectedJobPostId})}">
-										<i class="fas fa-chevron-left me-2"></i>Trước
-									</a>
-								</li>
+								<nav class="pagination-nav" th:if="${totalPages > 1}">
+									<ul class="pagination justify-content-center">
+										<!-- Nút Trước -->
+										<li class="page-item previous-item" th:classappend="${currentPage == 1 ? 'disabled' : ''}">
+											<a class="page-link"
+											   th:href="@{/Company/ApplicationProfile(
+                   pageNo=${currentPage - 1},
+                   jobPostId=${selectedJobPostId},
+                   status=${selectedStatus ?: ''}
+               )}">
+												<i class="fas fa-chevron-left me-2"></i>Trước
+											</a>
+										</li>
 
-								<!-- Trang đầu tiên -->
-								<li class="page-item" th:if="${currentPage > 2}">
-									<a class="page-link"
-									   th:href="@{/Company/ApplicationProfile(pageNo=0, jobPostId=${selectedJobPostId})}">1</a>
-								</li>
+										<!-- Trang đầu tiên -->
+										<li class="page-item" th:if="${currentPage > 2}">
+											<a class="page-link"
+											   th:href="@{/Company/ApplicationProfile(
+                   pageNo=1,
+                   jobPostId=${selectedJobPostId},
+                   status=${selectedStatus ?: ''}
+               )}">1</a>
+										</li>
 
-								<!-- Dấu ... nếu cách trang đầu tiên quá xa -->
-								<li class="page-item disabled" th:if="${currentPage > 3}">
-									<span class="page-link">...</span>
-								</li>
+										<!-- Dấu ... nếu cách trang đầu tiên quá xa -->
+										<li class="page-item disabled" th:if="${currentPage > 3}">
+											<span class="page-link">...</span>
+										</li>
 
-								<!-- Các trang lân cận -->
-								<li class="page-item"
-									th:each="pageNumber : ${#numbers.sequence(currentPage - 1 , currentPage + 1)}"
-									th:classappend="${pageNumber == currentPage ? 'active' : ''}"
-									th:if="${pageNumber >= 0 && pageNumber < totalPages}">
-									<a class="page-link"
-									   th:href="@{/Company/ApplicationProfile(pageNo=${pageNumber}, jobPostId=${selectedJobPostId})}"
-									   th:text="${pageNumber }">
-									</a>
-								</li>
+										<!-- Các trang lân cận -->
+										<li class="page-item"
+											th:each="pageNumber : ${#numbers.sequence(currentPage - 1 , currentPage + 1)}"
+											th:classappend="${pageNumber == currentPage ? 'active' : ''}"
+											th:if="${pageNumber > 0 && pageNumber <= totalPages}">
+											<a class="page-link"
+											   th:href="@{/Company/ApplicationProfile(
+                   pageNo=${pageNumber},
+                   jobPostId=${selectedJobPostId},
+                   status=${selectedStatus ?: ''}
+               )}"
+											   th:text="${pageNumber}">
+											</a>
+										</li>
 
-								<!-- Dấu ... nếu còn trang chưa hiển thị -->
-								<li class="page-item disabled" th:if="${currentPage < totalPages - 2}">
-									<span class="page-link">...</span>
-								</li>
+										<!-- Dấu ... nếu còn trang chưa hiển thị -->
+										<li class="page-item disabled" th:if="${currentPage < totalPages - 2}">
+											<span class="page-link">...</span>
+										</li>
 
-								<!-- Trang cuối cùng -->
-								<li class="page-item" th:if="${currentPage < totalPages - 2}">
-									<a class="page-link"
-									   th:href="@{/Company/ApplicationProfile(pageNo=${totalPages}, jobPostId=${selectedJobPostId})}"
-									   th:text="${totalPages}">
-									</a>
-								</li>
+										<!-- Trang cuối cùng -->
+										<li class="page-item" th:if="${currentPage < totalPages - 2}">
+											<a class="page-link"
+											   th:href="@{/Company/ApplicationProfile(
+                   pageNo=${totalPages},
+                   jobPostId=${selectedJobPostId},
+                   status=${selectedStatus ?: ''}
+               )}"
+											   th:text="${totalPages}">
+											</a>
+										</li>
 
-								<!-- Nút Tiếp -->
-								<li class="page-item next-item" th:classappend="${currentPage == totalPages ? 'disabled' : ''}">
-									<a class="page-link" th:href="@{/Company/ApplicationProfile(pageNo=${currentPage + 1}, jobPostId=${selectedJobPostId})}">
-										Tiếp<i class="fas fa-chevron-right ms-2"></i>
-									</a>
-								</li>
-							</ul>
-						</nav>
+										<!-- Nút Tiếp -->
+										<li class="page-item next-item" th:classappend="${currentPage == totalPages ? 'disabled' : ''}">
+											<a class="page-link"
+											   th:href="@{/Company/ApplicationProfile(
+                   pageNo=${currentPage + 1},
+                   jobPostId=${selectedJobPostId},
+                   status=${selectedStatus ?: ''}
+               )}">
+												Tiếp<i class="fas fa-chevron-right ms-2"></i>
+											</a>
+										</li>
+									</ul>
+								</nav>
 						</div>
 					</div>
 				</main>

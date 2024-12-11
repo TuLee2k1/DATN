@@ -78,11 +78,11 @@ public class accountCompanyController {
     @PreAuthorize("hasRole('ROLE_COMPANY')")
     @PostMapping("/change-password")
     public String changePassword(
-            @RequestParam String currentPassword,
-            @RequestParam String newPassword,
-            @RequestParam String confirmNewPassword,
-            HttpSession session,
-            RedirectAttributes redirectAttributes) {
+     @RequestParam String currentPassword,
+     @RequestParam String newPassword,
+     @RequestParam String confirmNewPassword,
+     HttpSession session,
+     RedirectAttributes redirectAttributes) {
         try {
             AuthenticationResponse user = (AuthenticationResponse) session.getAttribute("user");
 
@@ -110,12 +110,12 @@ public class accountCompanyController {
     @PreAuthorize("hasRole('ROLE_COMPANY')")
     @PostMapping("/update-profile")
     public String updateProfile(
-            @Valid @ModelAttribute("profile") accountRequest profileDto,
-            BindingResult bindingResult,
-            @RequestParam(value = "fileLogo", required = false) MultipartFile fileLogo,
-            Model model,
-            HttpSession session,
-            RedirectAttributes redirectAttributes) {
+     @Valid @ModelAttribute("profile") accountRequest profileDto,
+     BindingResult bindingResult,
+     @RequestParam(value = "fileLogo", required = false) MultipartFile fileLogo,
+     Model model,
+     HttpSession session,
+     RedirectAttributes redirectAttributes) {
 
         AuthenticationResponse user = (AuthenticationResponse) session.getAttribute("user");
 
@@ -151,10 +151,10 @@ public class accountCompanyController {
     @PreAuthorize("hasRole('ROLE_COMPANY')")
     @PostMapping("/update-company")
     public String updateCompany(
-            @Valid @ModelAttribute CompanyRequest companyRequest,
-            BindingResult bindingResult,
-            HttpSession session,
-            RedirectAttributes redirectAttributes) {
+     @Valid @ModelAttribute CompanyRequest companyRequest,
+     BindingResult bindingResult,
+     HttpSession session,
+     RedirectAttributes redirectAttributes) {
         // Lấy user hiện tại từ session
         AuthenticationResponse user = (AuthenticationResponse) session.getAttribute("user");
 
@@ -195,11 +195,11 @@ public class accountCompanyController {
         try {
             // Lấy user hiện tại từ authentication
             AuthenticationResponse user =
-                    (AuthenticationResponse) session.getAttribute("user");
+             (AuthenticationResponse) session.getAttribute("user");
 
             if (user == null) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                        .body("Người dùng chưa được xác thực");
+                 .body("Người dùng chưa được xác thực");
             }
 
             // Tìm và trả về thông tin công ty
@@ -209,80 +209,80 @@ public class accountCompanyController {
         } catch (Exception e) {
             log.error("Lỗi khi lấy thông tin công ty: ", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Có lỗi xảy ra khi lấy thông tin: " + e.getMessage());
+             .body("Có lỗi xảy ra khi lấy thông tin: " + e.getMessage());
         }
     }
 
 
 
     //    @PreAuthorize("hasRole('ROLE_COMPANY')")
-//    @GetMapping
-//    public String showAccountPage(HttpSession session, Model model, RedirectAttributes redirectAttributes) {
-//        AuthenticationResponse user = (AuthenticationResponse) session.getAttribute("user");
-//        System.out.println("==========================================user qua ben company-account : " + user);
-//
-//        if (!checkCompanyAccess(user, redirectAttributes)) {
-//            return "redirect:/auth/login";
-//        }
-//
-//        var currentUser = authenticationUtil.getCurrentUser();
-//        model.addAttribute("user", currentUser);
-//        System.out.println("==========================================currentUser : " + currentUser);
-//        model.addAttribute("profile", currentUser.getProfiles());
-//        System.out.println("==========================================currentUser.getProfiles() : " + currentUser.getProfiles());
-//        model.addAttribute("company", currentUser.getCompany());
-//        System.out.println("==========================================currentUser.getCompany() : " + currentUser.getCompany());
-//
-//        return "Company/thongtinthanhtoan";
-//    }
+    //    @GetMapping
+    //    public String showAccountPage(HttpSession session, Model model, RedirectAttributes redirectAttributes) {
+    //        AuthenticationResponse user = (AuthenticationResponse) session.getAttribute("user");
+    //        System.out.println("==========================================user qua ben company-account : " + user);
+    //
+    //        if (!checkCompanyAccess(user, redirectAttributes)) {
+    //            return "redirect:/auth/login";
+    //        }
+    //
+    //        var currentUser = authenticationUtil.getCurrentUser();
+    //        model.addAttribute("user", currentUser);
+    //        System.out.println("==========================================currentUser : " + currentUser);
+    //        model.addAttribute("profile", currentUser.getProfiles());
+    //        System.out.println("==========================================currentUser.getProfiles() : " + currentUser.getProfiles());
+    //        model.addAttribute("company", currentUser.getCompany());
+    //        System.out.println("==========================================currentUser.getCompany() : " + currentUser.getCompany());
+    //
+    //        return "Company/thongtinthanhtoan";
+    //    }
 
-//    @PreAuthorize("hasRole('ROLE_COMPANY')")
-//    @PostMapping("/update-profile")
-//    public String updateProfile(
-//     @ModelAttribute accountRequest request,
-//     @RequestParam(value = "fileLogo", required = false) MultipartFile fileLogo,
-//     HttpSession session,
-//     RedirectAttributes redirectAttributes) {
-//        AuthenticationResponse user = (AuthenticationResponse) session.getAttribute("user");
-//
-//        if (!checkCompanyAccess(user, redirectAttributes)) {
-//            return "redirect:/auth/login";
-//        }
-//
-//        try {
-//            request.setFileLogo(fileLogo);
-//            Profile updatedProfile = companyService.save(request);
-//            redirectAttributes.addFlashAttribute("successMessage", "Cập nhật thông tin tài khoản thành công!");
-//            return "redirect:/company-account";
-//        } catch (Exception e) {
-//            log.error("Lỗi cập nhật profile: ", e);
-//            redirectAttributes.addFlashAttribute("errorMessage", "Cập nhật thông tin thất bại: " + e.getMessage());
-//            return "redirect:/company-account";
-//        }
-//    }
-//
-//    @PreAuthorize("hasRole('ROLE_COMPANY')")
-//    @PostMapping("/update-company")
-//    public String updateCompany(
-//     @ModelAttribute CompanyRequest request,
-//     @RequestParam(value = "logoFile", required = false) MultipartFile logoFile,
-//     HttpSession session,
-//     RedirectAttributes redirectAttributes) {
-//        AuthenticationResponse user = (AuthenticationResponse) session.getAttribute("user");
-//
-//        if (!checkCompanyAccess(user, redirectAttributes)) {
-//            return "redirect:/auth/login";
-//        }
-//
-//        try {
-//            request.setLogoFile(logoFile);
-//            Company updatedCompany = companyService.save(request);
-//            redirectAttributes.addFlashAttribute("successMessage", "Cập nhật thông tin công ty thành công!");
-//            return "redirect:/company-account";
-//        } catch (Exception e) {
-//            log.error("Lỗi cập nhật thông tin công ty: ", e);
-//            redirectAttributes.addFlashAttribute("errorMessage", "Cập nhật thông tin thất bại: " + e.getMessage());
-//            return "redirect:/company-account";
-//        }
-//    }
+    //    @PreAuthorize("hasRole('ROLE_COMPANY')")
+    //    @PostMapping("/update-profile")
+    //    public String updateProfile(
+    //     @ModelAttribute accountRequest request,
+    //     @RequestParam(value = "fileLogo", required = false) MultipartFile fileLogo,
+    //     HttpSession session,
+    //     RedirectAttributes redirectAttributes) {
+    //        AuthenticationResponse user = (AuthenticationResponse) session.getAttribute("user");
+    //
+    //        if (!checkCompanyAccess(user, redirectAttributes)) {
+    //            return "redirect:/auth/login";
+    //        }
+    //
+    //        try {
+    //            request.setFileLogo(fileLogo);
+    //            Profile updatedProfile = companyService.save(request);
+    //            redirectAttributes.addFlashAttribute("successMessage", "Cập nhật thông tin tài khoản thành công!");
+    //            return "redirect:/company-account";
+    //        } catch (Exception e) {
+    //            log.error("Lỗi cập nhật profile: ", e);
+    //            redirectAttributes.addFlashAttribute("errorMessage", "Cập nhật thông tin thất bại: " + e.getMessage());
+    //            return "redirect:/company-account";
+    //        }
+    //    }
+    //
+    //    @PreAuthorize("hasRole('ROLE_COMPANY')")
+    //    @PostMapping("/update-company")
+    //    public String updateCompany(
+    //     @ModelAttribute CompanyRequest request,
+    //     @RequestParam(value = "logoFile", required = false) MultipartFile logoFile,
+    //     HttpSession session,
+    //     RedirectAttributes redirectAttributes) {
+    //        AuthenticationResponse user = (AuthenticationResponse) session.getAttribute("user");
+    //
+    //        if (!checkCompanyAccess(user, redirectAttributes)) {
+    //            return "redirect:/auth/login";
+    //        }
+    //
+    //        try {
+    //            request.setLogoFile(logoFile);
+    //            Company updatedCompany = companyService.save(request);
+    //            redirectAttributes.addFlashAttribute("successMessage", "Cập nhật thông tin công ty thành công!");
+    //            return "redirect:/company-account";
+    //        } catch (Exception e) {
+    //            log.error("Lỗi cập nhật thông tin công ty: ", e);
+    //            redirectAttributes.addFlashAttribute("errorMessage", "Cập nhật thông tin thất bại: " + e.getMessage());
+    //            return "redirect:/company-account";
+    //        }
+    //    }
 }

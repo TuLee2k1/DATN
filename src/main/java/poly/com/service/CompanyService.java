@@ -156,7 +156,7 @@ public class CompanyService {
 
         // Tìm company hiện tại hoặc tạo mới
         Company company = companyRepository.findById(currentUser.getCompany().getId())
-                .orElse(new Company());
+         .orElse(new Company());
 
         // Xử lý upload logo nếu có
         if (request.getLogoFile() != null && !request.getLogoFile().isEmpty()) {
@@ -182,7 +182,7 @@ public class CompanyService {
         }
 
         // Cập nhật thông tin công ty
-        company.setName(request.getName());
+        company.setName(request.getCompanyName());
         company.setPhone(request.getPhone());
         company.setEmail(request.getCompanyEmail());
         company.setTax_code(request.getTax_code());
@@ -196,7 +196,7 @@ public class CompanyService {
         // Cập nhật lĩnh vực nếu có
         if (request.getJobCategoryId() != null) {
             JobCategory jobCategory = jobCategoryRepository.findById(request.getJobCategoryId())
-                    .orElseThrow(() -> new EntityNotFoundException("Không tìm thấy lĩnh vực"));
+             .orElseThrow(() -> new EntityNotFoundException("Không tìm thấy lĩnh vực"));
             company.setJobCategory(jobCategory);
         }
 

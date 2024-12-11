@@ -21,6 +21,7 @@
   <!-- Thêm CSS của Select2 -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css">
 
   <title>Tạo tin tuyển dụng</title>
 
@@ -466,7 +467,10 @@
 
           <div class="row mb-3">
             <div class="col-md-6">
-              <label for="jobCategoryId" class="form-label">Ngành nghề <i class="fa fa-question-circle"></i></label>
+              <label for="jobCategoryId" class="form-label">
+                Ngành nghề
+                <i class="fa fa-question-circle" data-bs-toggle="tooltip" title="Chọn ngành nghề phù hợp với bạn"></i>
+              </label>
               <select class="form-select form-select-lg" id="jobCategoryId" th:field="*{jobCategoryId}" required>
                 <option value="">Chọn ngành nghề</option>
                 <option th:each="category : ${jobCategories}"
@@ -532,10 +536,12 @@
             <h5>Địa chỉ</h5>
             <div class="row mb-3">
               <div class="col-md-6">
-                <label for="city" class="form-label">Tỉnh / Thành phố <i class="fa fa-question-circle"></i></label>
+                <label for="city" class="form-label">
+                  Tỉnh / Thành phố
+                  <i class="fa fa-question-circle" data-bs-toggle="tooltip" title="Chọn tỉnh/thành phố"></i>
+                </label>
                 <select class="form-select form-select-lg" id="city" th:field="*{city}" required>
                   <option value="">Chọn Tỉnh hoặc Thành phố</option>
-                  <!-- Các tỉnh sẽ được thêm vào đây -->
                 </select>
                 <div class="invalid-feedback" th:if="${#fields.hasErrors('city')}" th:errors="*{city}">
                   Vui lòng chọn thành phố
@@ -543,10 +549,12 @@
               </div>
 
               <div class="col-md-6">
-                <label for="district" class="form-label">Quận / Huyện <i class="fa fa-question-circle"></i></label>
+                <label for="district" class="form-label">
+                  Quận / Huyện
+                  <i class="fa fa-question-circle" data-bs-toggle="tooltip" title="Chọn quận/huyện"></i>
+                </label>
                 <select class="form-select form-select-lg" id="district" th:field="*{district}" required>
                   <option value="">Chọn Quận hoặc Huyện</option>
-                  <!-- Các quận sẽ được thêm vào đây -->
                 </select>
                 <div class="invalid-feedback" th:if="${#fields.hasErrors('district')}" th:errors="*{district}">
                   Quận/Huyện không được để trống
@@ -646,10 +654,6 @@
         </form>
       </div>
     </div>
-
-
-
-  </div>
   </div>
 </div>
 <script>
@@ -670,82 +674,92 @@
             });
   }
 
+  document.addEventListener('DOMContentLoaded', function() {
+    var jobCategorySelect = document.getElementById('jobCategoryId');
 
+    // Kiểm tra xem Choices có tồn tại không
+    if (window.Choices) {
+      var choicesInstance = new Choices(jobCategorySelect, {
+        searchEnabled: true,
+        searchPlaceholderValue: 'Tìm kiếm ngành nghề',
+        noResultsText: 'Không tìm thấy ngành nghề',
+        itemSelectText: 'Nhấn để chọn',
+        searchFields: ['label'],
+        shouldSort: true,
+        placeholder: true,
+        placeholderValue: 'Chọn ngành nghề'
+      });
+    }
+  });
 
-  // Tải dữ liệu từ data.json
-  $(document).ready(function() {
-    $('#city').select2();
-    $('#district').select2();
+    document.getElementById("danhsachtindang").addEventListener("click", function() {
+    window.location.href = '/job-posts/Listing';
+  });
+  document.addEventListener('DOMContentLoaded', function() {
+    const citySelect = document.getElementById('city');
+    const districtSelect = document.getElementById('district');
+    let locationData = [];
 
-    // Tải dữ liệu từ data.json
+    // Fetch dữ liệu địa chỉ
     fetch('/dataApi.json')
             .then(response => response.json())
             .then(data => {
-              // Thêm tỉnh vào dropdown
-              data.forEach(province => {
-                const option = new Option(province.name, province.name);
-                $('#city').append(option);
+
+              locationData = data;
+
+              // Điền dữ liệu tỉnh/thành phố
+              const provinceChoices = new Choices(citySelect, {
+                searchEnabled: true,
+                searchPlaceholderValue: 'Tìm tỉnh/thành phố',
+                noResultsText: 'Không tìm thấy',
+                itemSelectText: 'Chọn',
+                choices: data.map(province => ({
+                  value: province.name,
+                  label: province.name
+                }))
               });
 
-              // Lắng nghe sự kiện thay đổi của dropdown tỉnh
-              $('#city').on('change', function() {
-                const selectedCityName = $(this).val();
-                $('#district').empty().append(new Option("Chọn Quận hoặc Huyện", ""));
+              // Khởi tạo Choices cho quận/huyện
+              const districtChoices = new Choices(districtSelect, {
+                searchEnabled: true,
+                searchPlaceholderValue: 'Tìm quận/huyện',
+                noResultsText: 'Không tìm thấy',
+                itemSelectText: 'Chọn'
+              });
 
-                const selectedProvince = data.find(p => p.name == selectedCityName);
-                if (selectedProvince) {
-                  selectedProvince.districts.forEach(district => {
-                    const option = new Option(district.name, district.name);
-                    $('#district').append(option);
-                  });
+              // Sự kiện thay đổi tỉnh
+              citySelect.addEventListener('change', function() {
+                // Xóa các quận cũ
+                districtChoices.clearChoices();
+
+                // Tìm tỉnh được chọn
+                const selectedProvince = locationData.find(p => p.name === this.value);
+
+                if (selectedProvince && selectedProvince.districts) {
+                  // Thêm quận của tỉnh đó
+                  districtChoices.setChoices(
+                          selectedProvince.districts.map(district => ({
+                            value: district.name,
+                            label: district.name
+                          })),
+                          'value',
+                          'label',
+                          true
+                  );
+
+             
                 }
-                $('#district').trigger('change'); // Cập nhật Select2
               });
             })
-            .catch(error => console.error('Error fetching the JSON:', error));
-  });
 
-  document.getElementById("danhsachtindang").addEventListener("click", function() {
-    window.location.href = '/job-posts/Listing';
-  });
+            .catch(error => {
+              console.error('Lỗi tải dữ liệu:', error);
+              alert('Không thể tải danh sách địa chỉ');
+            }); });
 
-  // function formatText(text) {
-  //   // Thay thế các ký tự xuống dòng bằng <br>
-  //   text = text.replace(/\n/g, '<br/>');
-  //
-  //   // Thay thế gạch đầu dòng
-  //   text = text.replace(/^\s*[-*]\s+/gm, '<li>') + '</li>'; // Chuyển đổi gạch đầu dòng thành <li>
-  //
-  //   return text;
-  // }
-  //
-  // function submitForm() {
-  //   const jobPostRequest = {
-  //     jobDescription: formatText(document.getElementById('jobDescription').value),
-  //     jobRequire: formatText(document.getElementById('jobRequire').value),
-  //     jobBenefit: formatText(document.getElementById('jobBenefit').value),
-  //     // Thêm các trường khác tương tự
-  //   };
-  //
-  //   // Gửi dữ liệu đến server
-  //   fetch('/job-posts/create', {
-  //     method: 'POST',
-  //     headers: {
-  //       'Content-Type': 'application/json'
-  //     },
-  //     body: JSON.stringify(jobPostRequest)
-  //   })
-  //           .then(response => response.json())
-  //           .then(data => {
-  //             console.log('Success:', data);
-  //           })
-  //           .catch((error) => {
-  //             console.error('Error:', error);
-  //           });
-  // }
 </script>
 <!--<script th:src="@{../js/app.js}"></script>-->
 <script src="/js/app.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
 </body>
 </html>
