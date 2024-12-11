@@ -9,9 +9,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import poly.com.Enum.StatusEnum;
+import poly.com.Util.AuthenticationUtil;
 import poly.com.dto.response.PageResponse;
 import poly.com.model.Company;
 import poly.com.model.JobProfile;
+import poly.com.model.User;
 import poly.com.repository.JobProfileRepository;
 
 import java.util.List;
@@ -22,6 +24,7 @@ import java.util.Optional;
 @Slf4j
 public class JobProfileService {
     private final JobProfileRepository jobProfileRepository;
+    private final AuthenticationUtil authenticationUtil;
 
 
     public Page<JobProfile> getAllJobProfiles(Pageable pageable) {
@@ -48,6 +51,12 @@ public class JobProfileService {
        Pageable pageable = PageRequest.of(pageNo - 1, 10);
          Page<JobProfile> jobProfiles = jobProfileRepository.findJobProfilesByJobPostId(jobPostId, pageable);
             return new PageResponse<>(jobProfiles);
+    }
+
+    public PageResponse<JobProfile> excelProfileByJobPostid(Long jobPostId){
+        Pageable pageable = PageRequest.of( 0, 10);
+        Page<JobProfile> jobProfiles = jobProfileRepository.findJobProfilesByJobPostId(jobPostId, pageable);
+        return new PageResponse<>(jobProfiles);
     }
 
     public PageResponse<JobProfile> getAllProfilesByCompany(Company company, Integer pageNo) {
@@ -111,5 +120,31 @@ public class JobProfileService {
         return new PageResponse<>(jobProfiles);
     }
 
+    public PageResponse<JobProfile> getJobPliesByStatus(StatusEnum status, Integer pageNo) {
+        Pageable pageable = PageRequest.of(pageNo - 1, 10);
+        Page<JobProfile> jobProfiles = jobProfileRepository.findByStatus(status, pageable);
+        return new PageResponse<>(jobProfiles);
+    }
+
+    public List<JobProfile> getProfilesByJobPostAndStatus(Long jobPostId, StatusEnum status) {
+        return jobProfileRepository.findByJobPost_IdAndStatus(jobPostId, status);
+    }
+
+    public List<JobProfile> getProfilesByJobPost(Long jobPostId) {
+        return jobProfileRepository.findByJobPost_Id(jobPostId);
+    }
+
+    public List<JobProfile> getProfilesByStatus(StatusEnum status) {
+        return jobProfileRepository.findByStatus(status);
+    }
+
+    public List<JobProfile> getProfilesByCompany(Company company) {
+        return jobProfileRepository.findByJobPost_Company(company);
+    }
+
+
 }
+
+
+
 

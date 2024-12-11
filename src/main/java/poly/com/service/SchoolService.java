@@ -53,7 +53,7 @@ public class SchoolService {
         try {
             School school = new School();
             school.setSchoolName(schoolDto.getSchoolName());
-            school.setDegree(schoolDto.getDegree());
+//            school.setDegree(schoolDto.getDegree());
             school.setGPA(schoolDto.getGPA());
             school.setStartDate(schoolDto.getStartDate());
             school.setEndDate(schoolDto.getEndDate());
@@ -78,7 +78,7 @@ public class SchoolService {
         }
         try {
             school.setSchoolName(schoolDto.getSchoolName());
-            school.setDegree(schoolDto.getDegree());
+//            school.setDegree(schoolDto.getDegree());
             school.setGPA(schoolDto.getGPA());
             school.setStartDate(schoolDto.getStartDate());
             school.setEndDate(schoolDto.getEndDate());
@@ -109,7 +109,7 @@ public class SchoolService {
         return SchoolResponse.builder()
                 .id(school.getId())
                 .schoolName(school.getSchoolName())
-                .degree(school.getDegree())
+//                .degree(school.getDegree())
                 .startDate(school.getStartDate())
                 .endDate(school.getEndDate())
                 .GPA(school.getGPA())
