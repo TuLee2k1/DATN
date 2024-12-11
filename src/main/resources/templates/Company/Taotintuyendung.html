@@ -704,6 +704,7 @@
     fetch('/dataApi.json')
             .then(response => response.json())
             .then(data => {
+
               locationData = data;
 
               // Điền dữ liệu tỉnh/thành phố
@@ -745,13 +746,17 @@
                           'label',
                           true
                   );
+
+             
                 }
               });
             })
+
             .catch(error => {
               console.error('Lỗi tải dữ liệu:', error);
               alert('Không thể tải danh sách địa chỉ');
             }); });
+
 </script>
 <!--<script th:src="@{../js/app.js}"></script>-->
 <script src="/js/app.js"></script>
