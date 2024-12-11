@@ -2,33 +2,24 @@ package poly.com.controller.CompanyController2;
 
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import poly.com.Enum.StatusEnum;
-import poly.com.Util.AuthenticationUtil;
-import poly.com.Util.ExcelUtils;
+import poly.com.util.AuthenticationUtil;
+import poly.com.util.ExcelUtils;
 import poly.com.dto.request.JobPost.JobPostTitleResponse;
-import poly.com.dto.response.Auth.AuthenticationResponse;
 import poly.com.dto.response.PageResponse;
-import poly.com.model.JobPost;
 import poly.com.model.JobProfile;
 import poly.com.model.User;
 import poly.com.service.JobPostService;
 import poly.com.service.JobProfileService;
 
 import java.io.IOException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.function.Function;
 

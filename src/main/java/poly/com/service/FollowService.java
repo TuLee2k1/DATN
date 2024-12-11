@@ -5,7 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import poly.com.Util.AuthenticationUtil;
+import poly.com.util.AuthenticationUtil;
 import poly.com.dto.response.Follow.CompanyFollowResponse;
 import poly.com.dto.response.Follow.JobPostFollowResponse;
 import poly.com.model.Follow;

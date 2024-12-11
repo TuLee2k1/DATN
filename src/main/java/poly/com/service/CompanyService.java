@@ -20,7 +20,7 @@ import poly.com.model.Profile;
 import poly.com.repository.CompanyRepository;
 import poly.com.repository.JobCategoryRepository;
 import poly.com.repository.ProfileRepository;
-import poly.com.Util.AuthenticationUtil;
+import poly.com.util.AuthenticationUtil;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
@@ -115,15 +115,13 @@ public class CompanyService {
     }
 
 
-
-
-    public Profile saveProfile(@Valid accountRequest request, Long id) throws IllegalAccessException {
+    public Company saveProfile(@Valid accountRequest request, Long id) throws IllegalAccessException {
         // Lấy user hiện tại từ authentication
         var currentUser = authenticationUtil.getCurrentUser();
 
         // Tìm profile hiện tại hoặc tạo mới
-        Profile profile = profileRepository.findById(currentUser.getId())
-                .orElse(new Profile());
+        Company profile = companyRepository.findById(currentUser.getId())
+                .orElse(new Company());
 
         // Xử lý upload logo nếu có
         if (request.getFileLogo() != null && !request.getFileLogo().isEmpty()) {
@@ -143,10 +141,9 @@ public class CompanyService {
         profile.setName(request.getName());
         profile.setPhone(request.getPhone());
         profile.setAddress(request.getAddress());
-        profile.setUser_id(currentUser);
 
         // Lưu và trả về profile
-        return profileRepository.save(profile);
+        return companyRepository.save(profile);
     }
 
 
