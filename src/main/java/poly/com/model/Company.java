@@ -52,7 +52,7 @@ public class Company extends AbstractEntity {
     private String inducstry;
 
     @Column(name = "year_established") // năm thành lập
-    private int yearEstablished;
+    private Integer yearEstablished;
 
     @Column(name = "employee_count") // số lượng nhân viên
     private String employeeCount;

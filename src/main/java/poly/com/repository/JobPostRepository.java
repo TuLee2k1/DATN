@@ -64,6 +64,7 @@ public interface JobPostRepository extends JpaRepository<JobPost, Long> {
 
 
 
+
   @Query("SELECT jp FROM JobPost jp WHERE (:statusEnum IS NULL OR jp.statusEnum = :statusEnum) " +
           "AND (:jobTitle IS NULL OR jp.jobTitle LIKE %:jobTitle%)")
   Page<JobPost> findByAdmin(Pageable pageable, @Param("statusEnum") StatusEnum statusEnum, @Param("jobTitle") String jobTitle);
@@ -72,6 +73,10 @@ public interface JobPostRepository extends JpaRepository<JobPost, Long> {
 
   // Phương thức tìm kiếm theo trạng thái
   Page<JobPost> findByStatusEnum(StatusEnum statusEnum, Pageable pageable);
+
+  List<JobPost> findByStatusEnum(StatusEnum statusEnum);
+
+
 
 
   @Modifying

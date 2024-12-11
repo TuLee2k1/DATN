@@ -45,7 +45,8 @@ public class SecurityConfig {
            "/logout",
            "/v3/**",
            "**",
-           "/swagger-ui/**"
+           "/swagger-ui/**",
+                  "/Tim-kiem"
           ).permitAll()
           .requestMatchers("/Company/**").hasRole("COMPANY")
           .anyRequest().authenticated()
@@ -73,7 +74,7 @@ public class SecurityConfig {
          )
          // OAuth2 Login
          .oauth2Login(oauth2 -> oauth2
-          .defaultSuccessUrl("/loginSuccess", true)
+          .defaultSuccessUrl("/", true)
           .failureUrl("/loginFailure")
          )
          // Cấu hình Logout

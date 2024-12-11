@@ -28,7 +28,7 @@ import poly.com.repository.JobCategoryRepository;
 import poly.com.service.CompanyService;
 import poly.com.service.JobCategoryService;
 import poly.com.service.ProfileService;
-import poly.com.util.AuthenticationUtil;
+import poly.com.Util.AuthenticationUtil;
 
 import java.util.HashMap;
 import java.util.List;

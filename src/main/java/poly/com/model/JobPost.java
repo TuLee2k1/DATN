@@ -9,8 +9,11 @@ import poly.com.Enum.JobLevel;
 import poly.com.Enum.StatusEnum;
 import poly.com.Enum.WorkType;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Entity
 @AllArgsConstructor
@@ -100,6 +103,11 @@ public class JobPost extends AbstractEntity{
     @PreUpdate
     public void preUpdate() {
         createDate = new Date();
+    }
+
+    public Optional<LocalDate> getEndDateAsLocalDate() {
+        return Optional.ofNullable(endDate)
+                .map(date -> date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
     }
 
 }

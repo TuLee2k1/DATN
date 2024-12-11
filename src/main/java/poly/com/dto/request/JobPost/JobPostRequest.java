@@ -49,6 +49,9 @@ public class JobPostRequest {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date endDate; // Ngày kết thúc
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date createDate; // Ngày kết thúc
+
     @NotNull(message = "Min salary is required")
     @Min(value = 0, message = "Min salary must be greater than or equal to 0")
     private float minSalary; // Lương tối thiểu

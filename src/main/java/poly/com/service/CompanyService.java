@@ -20,7 +20,7 @@ import poly.com.model.Profile;
 import poly.com.repository.CompanyRepository;
 import poly.com.repository.JobCategoryRepository;
 import poly.com.repository.ProfileRepository;
-import poly.com.util.AuthenticationUtil;
+import poly.com.Util.AuthenticationUtil;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
