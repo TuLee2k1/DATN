@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import poly.com.Enum.StatusEnum;
 import poly.com.dto.response.JobPost.JobListActiveResponse;
 import poly.com.repository.CompanyRepository;
-import poly.com.Util.AuthenticationUtil;
+import poly.com.util.AuthenticationUtil;
 
 import poly.com.dto.request.JobPost.JobPostRequest;
 import poly.com.dto.request.JobPost.JobPostTitleResponse;

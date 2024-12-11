@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import poly.com.dto.ProfileDTO;
 import poly.com.exception.ProfileException;
 
@@ -47,6 +48,33 @@ public class ProfileService {
         }
 
         return profileRepository.save(entity);
+    }
+
+    public Profile updateProfile(Long userId, ProfileDTO dto) {
+        Optional<Profile> existedOptional = profileRepository.findById(userId);
+
+        if (existedOptional.isEmpty()) {
+            throw new ProfileException("Profile không tồn tại.");
+        }
+
+        Profile existedProfile = existedOptional.get();
+
+        // Cập nhật thông tin từ DTO
+        existedProfile.setName(dto.getName());
+        existedProfile.setEmail(dto.getEmail());
+        existedProfile.setPhone(dto.getPhone());
+        existedProfile.setAddress(dto.getAddress());
+        existedProfile.setSex(dto.getSex());
+        existedProfile.setDateOfBirth(dto.getDateOfBirth());
+
+        // Xử lý upload ảnh logo nếu có
+        MultipartFile logoFile = dto.getLogoFile();
+        if (logoFile != null && !logoFile.isEmpty()) {
+            String fileName = fileStorageService.storeImageProfileFile(logoFile);
+            existedProfile.setLogo(fileName);
+        }
+
+        return profileRepository.save(existedProfile);
     }
 
     /**
