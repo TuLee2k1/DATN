@@ -2,58 +2,65 @@ package poly.com.service;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import poly.com.dto.CompanyDto;
+import org.springframework.transaction.annotation.Transactional;
 import poly.com.dto.ProfileDTO;
-import poly.com.exception.CompanyException;
 import poly.com.exception.ProfileException;
+
 import poly.com.model.Company;
+import poly.com.model.JobProfile;
+
 import poly.com.model.Profile;
+import poly.com.model.User;
 import poly.com.repository.ProfileRepository;
+import poly.com.repository.UserRepository;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
+@Transactional
 public class ProfileService {
-    @Autowired
-    private ProfileRepository profileRepository;
 
-    @Autowired
-    private FileStorageService fileStorageService;
+    private final ProfileRepository profileRepository;
+    private final UserRepository userRepository;
+    private final FileStorageService fileStorageService;
+    private final PasswordEncoder passwordEncoder;
 
-    public  Profile  save(@Valid ProfileDTO dto) {
-
-//        List<?> foudedList = profileRepository.findByNameContainsIgnoreCase(dto.getName());
-//
-//        if (foudedList.size()>0) {
-//            throw new CompanyException("Company name already exist");
-//        }
-
+    /**
+     * Tạo mới hoặc lưu thông tin profile
+     */
+    public Profile save(@Valid ProfileDTO dto) {
         Profile entity = new Profile();
-
         BeanUtils.copyProperties(dto, entity);
 
-        if (dto.getLogoFile() != null){
+        // Xử lý upload ảnh logo nếu có
+        if (dto.getLogoFile() != null) {
             String fileName = fileStorageService.storeImageProfileFile(dto.getLogoFile());
             entity.setLogo(fileName);
             dto.setLogo(null);
         }
+
         return profileRepository.save(entity);
     }
 
-    public  Profile  update(Long id, Profile entity) {
+    /**
+     * Cập nhật thông tin profile theo ID
+     */
+    public Profile update(Long id, Profile entity) {
         Optional<Profile> existed = profileRepository.findById(id);
 
         if (existed.isEmpty()) {
-            throw new ProfileException("Profile "  +  id  + " not found");
+            throw new ProfileException("Profile " + id + " không tồn tại.");
         }
+
         try {
-            Profile  existedProfile = existed.get();
+            Profile existedProfile = existed.get();
             existedProfile.setName(entity.getName());
             existedProfile.setAddress(entity.getAddress());
             existedProfile.setPhone(entity.getPhone());
@@ -62,35 +69,62 @@ public class ProfileService {
             existedProfile.setDateOfBirth(entity.getDateOfBirth());
             existedProfile.setLogo(entity.getLogo());
 
-
             return profileRepository.save(existedProfile);
-
-        }catch (Exception ex){
-
-            throw new CompanyException("Profile is update fail");
+        } catch (Exception ex) {
+            throw new ProfileException("Cập nhật profile thất bại.");
         }
     }
 
+    /**
+     * Lấy danh sách tất cả các profile
+     */
     public List<Profile> findAll() {
         return profileRepository.findAll();
     }
 
-    public Page<Profile> findAll(Pageable pageable) {
+    /**
+     * Lấy danh sách profile phân trang
+     */
+    public Page<Profile> findAll(org.springframework.data.domain.Pageable pageable) {
         return profileRepository.findAll(pageable);
     }
 
+    /**
+     * Tìm profile theo ID
+     */
     public Profile findById(Long id) {
         Optional<Profile> found = profileRepository.findById(id);
 
         if (found.isEmpty()) {
-            throw new EntityNotFoundException("Profile id " + id + " not found");
+            throw new EntityNotFoundException("Profile ID " + id + " không tồn tại.");
         }
         return found.get();
     }
 
+    /**
+     * Xóa profile theo ID
+     */
     public void deleteById(Long id) {
-        Profile existed =findById(id);
-
+        Profile existed = findById(id);
         profileRepository.delete(existed);
     }
+
+
+    /**
+     * Thay đổi mật khẩu người dùng
+     */
+    public void changePassword(Long userId, String currentPassword, String newPassword) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("Không tìm thấy người dùng."));
+
+        // Kiểm tra mật khẩu hiện tại
+        if (!passwordEncoder.matches(currentPassword, user.getPassword())) {
+            throw new IllegalArgumentException("Mật khẩu hiện tại không đúng.");
+        }
+
+        // Cập nhật mật khẩu mới
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
+    }
+
 }

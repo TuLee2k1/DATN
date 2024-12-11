@@ -3,8 +3,10 @@ package poly.com.repository;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import poly.com.model.Company;
 import poly.com.model.JobCategory;
+import poly.com.model.JobProfile;
 import poly.com.model.Profile;
 
 import java.util.List;
@@ -20,4 +22,6 @@ public interface ProfileRepository extends JpaRepository<Profile, Long> {
     List<Profile> findByNameContainsIgnoreCase(String name);
 
     List<Profile> findByIdNotAndNameContainsIgnoreCase(Long id, String name);
+
+
 }

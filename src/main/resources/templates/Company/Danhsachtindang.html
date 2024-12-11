@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
 	<meta charset="utf-8">
@@ -94,6 +94,7 @@
 			background-color: white;
 			cursor: not-allowed;
 		}
+
 
 
 
@@ -391,145 +392,169 @@
 
 			<main class="content">
 				<div class="container custom-container mt-1">
-					<div class="filter-bar">
-						<label>Bộ lọc</label>
-						<form th:action="@{/job-posts/Listing}" method="get" class="d-flex gap-2">
-							<select class="form-select form-select-sm" name="jobTitle">
-								<option value="">Tất cả tin đăng</option>
-								<option th:each="title : ${jobTitles}"
-										th:value="${title.jobTitle}"
-										th:text="${title.jobTitle}"
-										th:selected="${title.jobTitle == selectedJobTitle}">
-								</option>
-							</select>
-							<select class="form-select form-select-sm" name="statusEnum">
-								<option value="">Tất cả trạng thái</option>
-								<option th:each="status : ${statusEnums}"
-										th:value="${status}"
-										th:text="${status.name()}"
-										th:selected="${status == selectedStatus}">
-								</option>
-							</select>
-							<button type="submit" class="btn btn-primary btn-sm">Lọc</button>
-						</form>
-<!--						<button class="btn btn-outline-secondary btn-sm ms-auto">-->
-<!--							<i class="fas fa-download"></i> Tải danh sách-->
-<!--						</button>-->
+					<div class="filter-bar container-fluid mb-3 p-3 bg-light rounded border">
+						<div class="container-fluid mb-3">
+							<div class="d-flex justify-content-between align-items-center mb-3">
+								<h6 class="text-muted mb-0 d-flex align-items-center">
+									<i class="fas fa-filter me-2"></i>Bộ lọc
+								</h6>
+<!--								<button class="btn btn-outline-secondary btn-sm">-->
+<!--									<i class="fas fa-download me-1"></i>Tải danh sách-->
+<!--								</button>-->
+							</div>
+							<form th:action="@{/job-posts/Listing}" method="get" class="d-flex gap-2">
+								<select class="form-select form-select-lg" name="jobTitle">
+									<option value="">Tất cả tin đăng</option>
+									<option th:each="title : ${jobTitles}"
+											th:value="${title.jobTitle}"
+											th:text="${title.jobTitle}"
+											th:selected="${title.jobTitle == selectedJobTitle}">
+									</option>
+								</select>
+								<select class="form-select form-select-lg" name="statusEnum">
+									<option value="">Tất cả trạng thái</option>
+									<option th:each="status : ${statusEnums}"
+											th:value="${status}"
+											th:text="${status.name()}"
+											th:selected="${status == selectedStatus}">
+									</option>
+								</select>
+								<button type="submit" class="btn btn-primary btn-lg">
+									<i class="fas fa-search me-1"></i>Lọc
+								</button>
+							</form>
+						</div>
 					</div>
 
-					<div class="table-container" th:if="${not #lists.isEmpty(jobListings)}">
-						<table class="table table-bordered">
-							<thead>
-							<tr>
-								<th>Ẩn/Hiện</th>
-								<th>Tên tin đăng</th>
-								<th class="sortable">Ngày tạo</th>
-								<th class="sortable">Thời hạn</th>
-								<th>Trạng thái duyệt</th>
-								<th>Hành động</th>
-							</tr>
-							</thead>
-							<tbody>
-							<tr th:each="job : ${jobListings}">
-								<td data-label="Ẩn/Hiện">
-									<div class="form-check form-switch">
-										<input class="form-check-input toggle-view"
-											   type="checkbox"
-											   role="switch"
-											   th:checked="${job.status == T(poly.com.model.JobPostStatus).Open}"
-											   th:data-id="${job.id}">
-									</div>
-								</td>
-								<td data-label="Tên tin đăng" th:text="${job.jobTitle}"></td>
-								<td data-label="Ngày tạo" th:text="${#dates.format(job.createDate, 'dd/MM/yyyy')}"></td>
-								<td data-label="Thời hạn" th:text="${#dates.format(job.endDate, 'dd/MM/yyyy')}"></td>
-								<td data-label="Trạng thái duyệt">
-    <span th:with="status=${job.statusEnum.name()}"
-		  th:class="${'badge ' +
-                     (status == 'APPROVED' ? 'bg-success' :
-                      status == 'PENDING' ? 'bg-warning' : 'bg-danger')}"
-		  th:text="${status}">
-    </span>
-								</td>
-								<td data-label="Hành động">
-									<a th:href="@{/job-posts/update/{id}(id=${job.id})}"
-									   class="btn btn-sm btn-primary edit-btn">
-										<i class="fas fa-edit"></i>
-									</a>
-									<button class="btn btn-sm btn-danger delete-btn"
-											th:data-id="${job.id}">
-										<i class="fas fa-trash"></i>
-									</button>
-								</td>
-							</tr>
-							</tbody>
-						</table>
+					<div class="container-fluid px-1">
+						<div class="table-responsive" th:if="${not #lists.isEmpty(jobListings)}">
+							<table class="table table-hover table-striped table-bordered align-middle">
+								<thead class="table-light">
+								<tr class="text-center">
+									<th class="align-middle">
+										<i class="fas fa-eye-slash"></i> Ẩn/Hiện
+									</th>
+									<th class="align-middle">
+										<i class="fas fa-briefcase"></i> Tên tin đăng
+									</th>
+									<th class="align-middle sortable">
+										<i class="fas fa-calendar-plus"></i> Ngày tạo
+									</th>
+									<th class="align-middle sortable">
+										<i class="fas fa-calendar-times"></i> Thời hạn
+									</th>
+									<th class="align-middle">
+										<i class="fas fa-check-circle"></i> Trạng thái duyệt
+									</th>
+									<th class="align-middle">
+										<i class="fas fa-cogs"></i> Hành động
+									</th>
+								</tr>
+								</thead>
+								<tbody>
+								<tr th:each="job : ${jobListings}" class="text-center">
+									<td data-label="Ẩn/Hiện" class="text-center">
+										<div class="form-check form-switch d-flex justify-content-center">
+											<input class="form-check-input toggle-view"
+												   type="checkbox"
+												   role="switch"
+												   th:checked="${job.status == T(poly.com.model.JobPostStatus).Open}"
+												   th:data-id="${job.id}">
+										</div>
+									</td>
+									<td data-label="Tên tin đăng" class="fw-bold" th:text="${job.jobTitle}"></td>
+									<td data-label="Ngày tạo" th:text="${#dates.format(job.createDate, 'dd/MM/yyyy')}"></td>
+									<td data-label="Thời hạn" th:text="${#dates.format(job.endDate, 'dd/MM/yyyy')}"></td>
+									<td data-label="Trạng thái duyệt">
+                        <span th:with="status=${job.statusEnum.name()}"
+							  class="badge rounded-pill text-uppercase"
+							  th:classappend="${
+                                  status == 'ACTIVE' ? 'bg-success' :
+                                  (status == 'PENDING' ? 'bg-warning text-dark' : 'bg-danger')
+                              }"
+							  th:text="${
+                                  status == 'ACTIVE' ? 'Đã xác thực' :
+                                  (status == 'PENDING' ? 'Chờ xác thực' : 'Bị từ chối')
+                              }">
+                        </span>
+									</td>
+									<td data-label="Hành động">
+										<div class="btn-group btn-group-sm" role="group">
+											<a th:href="@{/job-posts/update/{id}(id=${job.id})}"
+											   class="btn btn-primary edit-btn">
+												<i class="fas fa-edit"></i>
+											</a>
+											<!-- Chỉ hiển thị nút xóa khi statusEnum là PENDING hoặc REJECTED -->
+											<form th:if="${job.statusEnum == T(poly.com.Enum.StatusEnum).PENDING
+                                        || job.statusEnum == T(poly.com.Enum.StatusEnum).REJECTED}"
+												  th:action="@{/job-posts/{id}/delete(id=${job.id})}"
+												  method="post"
+												  class="d-inline">
+												<button type="submit"
+														class="btn btn-danger delete-btn"
+														onclick="return confirm('Bạn có chắc chắn muốn xóa bài đăng này?')">
+													<i class="fas fa-trash"></i>
+												</button>
+											</form>
+										</div>
+									</td>
+								</tr>
+								</tbody>
+							</table>
 
-						<!-- Pagination -->
-						<nav class="pagination-nav" th:if="${totalPages > 1}">
-							<ul class="pagination">
+							<!-- Pagination -->
+							<nav class="pagination-nav" th:if="${totalPages > 1}">
+								<ul class="pagination justify-content-center">
+									<li class="page-item previous-item" th:classappend="${currentPage == 1 ? 'disabled' : ''}">
+										<a class="page-link"
+										   th:href="@{/job-posts/Listing(pageNo=${currentPage - 1}, jobTitle=${selectedJobTitle}, statusEnum=${selectedStatus})}">
+											<i class="fas fa-chevron-left me-2"></i>Trước
+										</a>
+									</li>
 
+									<li class="page-item" th:if="${currentPage > 2}">
+										<a class="page-link"
+										   th:href="@{/job-posts/Listing(pageNo=${1}, jobTitle=${selectedJobTitle}, statusEnum=${selectedStatus})}">1</a>
+									</li>
 
-								<li class="page-item previous-item" th:classappend="${currentPage == 1 ? 'disabled' : ''}">
-									<a class="page-link" th:href="@{/job-posts/Listing(pageNo=${currentPage - 1}, jobTitle=${selectedJobTitle}, statusEnum=${selectedStatus})}">
-										Previous
-									</a>
-								</li>
+									<li class="page-item disabled" th:if="${currentPage > 3}">
+										<span class="page-link">...</span>
+									</li>
 
+									<li class="page-item"
+										th:each="pageNumber : ${#numbers.sequence(currentPage - 1, currentPage + 1)}"
+										th:classappend="${pageNumber == currentPage ? 'active' : ''}"
+										th:if="${pageNumber > 0 && pageNumber <= totalPages}">
+										<a class="page-link"
+										   th:href="@{/job-posts/Listing(pageNo=${pageNumber}, jobTitle=${selectedJobTitle}, statusEnum=${selectedStatus})}"
+										   th:text="${pageNumber}">
+										</a>
+									</li>
 
-								<li class="page-item" th:if="${currentPage > 2}">
-									<a class="page-link" th:href="@{/job-posts/Listing(pageNo=${1}, jobTitle=${selectedJobTitle}, statusEnum=${selectedStatus})}">1</a>
-								</li>
+									<li class="page-item disabled" th:if="${currentPage < totalPages - 2}">
+										<span class="page-link">...</span>
+									</li>
 
+									<li class="page-item" th:if="${currentPage < totalPages - 1}">
+										<a class="page-link"
+										   th:href="@{/job-posts/Listing(pageNo=${totalPages}, jobTitle=${selectedJobTitle}, statusEnum=${selectedStatus})}"
+										   th:text="${totalPages}">
+										</a>
+									</li>
 
-								<li class="page-item disabled" th:if="${currentPage > 3}">
-									<span class="page-link">...</span>
-								</li>
+									<li class="page-item next-item" th:classappend="${currentPage == totalPages ? 'disabled' : ''}">
+										<a class="page-link"
+										   th:href="@{/job-posts/Listing(pageNo=${currentPage + 1}, jobTitle=${selectedJobTitle}, statusEnum=${selectedStatus})}">
+											Tiếp<i class="fas fa-chevron-right ms-2"></i>
+										</a>
+									</li>
+								</ul>
+							</nav>
+						</div>
 
-
-								<li class="page-item" th:each="pageNumber : ${#numbers.sequence(currentPage - 1, currentPage + 1)}"
-									th:classappend="${pageNumber == currentPage ? 'active' : ''}"
-									th:if="${pageNumber > 0 && pageNumber <= totalPages}">
-
-									<a class="page-link" th:href="@{/job-posts/Listing(pageNo=${pageNumber}, jobTitle=${selectedJobTitle}, statusEnum=${selectedStatus})}"
-									   th:text="${pageNumber}">
-									</a>
-								</li>
-
-
-
-								<li class="page-item disabled" th:if="${currentPage < totalPages - 2}">
-									<span class="page-link">...</span>
-								</li>
-
-
-								<li class="page-item" th:if="${currentPage < totalPages - 1}">
-									<a class="page-link" th:href="@{/job-posts/Listing(pageNo=${totalPages}, jobTitle=${selectedJobTitle}, statusEnum=${selectedStatus})}"
-									   th:text="${totalPages}">
-									</a>
-								</li>
-
-
-								<li class="page-item next-item" th:classappend="${currentPage == totalPages ? 'disabled' : ''}">
-									<a class="page-link" th:href="@{/job-posts/Listing(pageNo=${currentPage + 1}, jobTitle=${selectedJobTitle}, statusEnum=${selectedStatus})}">
-										Next
-									</a>
-
-								</li>
-							</ul>
-						</nav>
-
-
-
-					</div>
-
-					<!-- Empty state -->
-					<div class="content-section" th:if="${#lists.isEmpty(jobListings)}">
-						<p>Bạn chưa có tin tuyển dụng nào!</p>
-						<p>Tạo tin đăng tuyển để tìm kiếm nhân tài ngay!</p>
-						<button class="btn btn-primary" id="create-job-btn">Tạo tin ngay</button>
-						<div class="footer-note">
-							<i class="fas fa-info-circle"></i> Để đảm bảo tin đăng hợp lệ, tham khảo <a href="#">Quy định duyệt tin tuyển dụng</a> tại Việc Làm 24H
+						<!-- Thêm thông báo khi không có dữ liệu -->
+						<div th:if="${#lists.isEmpty(jobListings)}" class="alert alert-info text-center" role="alert">
+							<i class="fas fa-info-circle me-2"></i>Không có tin đăng nào được tìm thấy
 						</div>
 					</div>
 				</div>

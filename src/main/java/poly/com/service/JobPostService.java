@@ -397,11 +397,12 @@ public class JobPostService {
         try {
             // Kiểm tra tồn tại và trạng thái trước khi xóa
             JobPost jobPost = jobPostRepository.findById(id)
-                    .orElseThrow(() -> new EntityNotFoundException("Không tìm thấy bài đăng việc làm với ID: " + id));
+
+             .orElseThrow(() -> new EntityNotFoundException("Không tìm thấy bài đăng việc làm với ID: " + id));
 
             // Kiểm tra điều kiện trạng thái
             if (jobPost.getStatusEnum() == StatusEnum.PENDING ||
-                    jobPost.getStatusEnum() == StatusEnum.REJECTED) {
+             jobPost.getStatusEnum() == StatusEnum.REJECTED) {
                 jobPostRepository.deleteJobPostByStatusEnum(id);
             } else {
                 throw new IllegalStateException("Chỉ được xóa bài đăng ở trạng thái PENDING hoặc REJECTED");
@@ -449,4 +450,6 @@ public class JobPostService {
     public JobPost findById(Long id) {
         return jobPostRepository.findById(id).orElse(null);
     }
+
 }
+
