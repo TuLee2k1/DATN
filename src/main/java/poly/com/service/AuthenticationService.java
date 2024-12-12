@@ -471,7 +471,7 @@ public class AuthenticationService {
         }
     }
 
-    //để lấy hiển thị tất cả thông tin user
+    //để lấy hiển thị tất cả thông tin user dùng cho admin
     public List<User> findAllUsers() {
         return userRepository.findAll();
     }
