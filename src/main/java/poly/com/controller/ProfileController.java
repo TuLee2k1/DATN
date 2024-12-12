@@ -34,6 +34,7 @@ public class ProfileController {
 
         try {
             Profile profile = profileService.findById(user.getId());
+            System.out.println(user.getId());
             model.addAttribute("profile", profile);
             return "User/V3/profile"; // Tên view mới
         } catch (Exception e) {
