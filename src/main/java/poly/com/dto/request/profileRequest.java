@@ -1,17 +1,22 @@
-package poly.com.dto;
-
+package poly.com.dto.request;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.NotEmpty;
-import lombok.Data;
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Date;
 
-@Data
-public class ProfileDTO implements Serializable {
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+
+public class profileRequest {
     private Long id;
 
     @NotEmpty(message = "name is require!")
