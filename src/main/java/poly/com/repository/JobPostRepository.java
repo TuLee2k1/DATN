@@ -76,8 +76,6 @@ public interface JobPostRepository extends JpaRepository<JobPost, Long> {
 
 
 
-
-
   @Modifying
   @Transactional
   @Query("DELETE FROM JobPost WHERE id = ?1 AND statusEnum IN (poly.com.Enum.StatusEnum.PENDING, poly.com.Enum.StatusEnum.REJECTED)")

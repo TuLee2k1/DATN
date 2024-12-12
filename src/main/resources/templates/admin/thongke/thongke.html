@@ -63,6 +63,19 @@
             background-color: #dc3545;
             /* Màu đỏ cho lỗi */
         }
+        /* Đảm bảo thẻ <a> chiếm toàn bộ không gian của card */
+        .card-link {
+            display: block;
+            text-decoration: none; /* Xóa underline mặc định của thẻ <a> */
+        }
+
+        /* Hiệu ứng hover cho card */
+        .card-link:hover .card {
+            transform: scale(1.05); /* Phóng to card một chút */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Thêm bóng đổ cho hiệu ứng hover */
+            transition: transform 0.3s ease, box-shadow 0.3s ease; /* Hiệu ứng mượt mà */
+        }
+
     </style>
 
 </head>
@@ -77,6 +90,7 @@
                 <div class="w-100">
                     <div class="row">
                         <div class="col-sm-6">
+                            <a th:href="@{/admin/users}" class="card-link">
                             <div class="card">
                                 <div class="card-body">
                                     <div class="row">
@@ -93,13 +107,15 @@
                                     <h1 class="mt-1 mb-3" th:text="${totalUser}">0</h1>
                                 </div>
                             </div>
+                            </a>
                         </div>
-                        <div class="col-sm-6">
+                        <div class="col-sm-6" >
+                            <a th:href="@{/admin/candidates}" class="card-link">
                             <div class="card">
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col mt-0">
-                                            <h5 class="card-title">Candidate</h5>
+                                            <h5  class="card-title">Candidate</h5>
                                         </div>
 
                                         <div class="col-auto">
@@ -111,8 +127,10 @@
                                     <h1 class="mt-1 mb-3" th:text="${totalJobProfiles}">0</h1>
                                 </div>
                             </div>
+                            </a>
                         </div>
                         <div class="col-sm-6">
+                            <a th:href="@{/admin/jobposts}" class="card-link">
                             <div class="card">
                                 <div class="card-body">
                                     <div class="row">
@@ -129,8 +147,10 @@
                                     <h1 class="mt-1 mb-3" th:text="${totalJobPosts}">0</h1>
                                 </div>
                             </div>
+                            </a>
                         </div>
                         <div class="col-sm-6">
+                            <a th:href="@{/admin/companies}" class="card-link">
                             <div class="card">
                                 <div class="card-body">
                                     <div class="row">
@@ -148,7 +168,7 @@
 
                                 </div>
                             </div>
-
+                            </a>
                         </div>
                     </div>
                 </div>
