@@ -61,6 +61,11 @@ public class AuthenticationService {
 
         User user = createUser(request.getFirstname(), request.getLastname(), request.getEmail(), request.getPassword(), RoleType.ROLE_USER);
         userRepository.save(user);
+        var profile = Profile.builder()
+                .user_id(user)
+                .build();
+        userRepository.save(user);
+        profileRepository.save(profile);
         sendValidationEmail(user);
 
         String jwtToken = jwtService.generateToken(user);
@@ -79,10 +84,6 @@ public class AuthenticationService {
         User user = createUser(request.getFirstname(), request.getLastname(), request.getEmail(), request.getPassword(), RoleType.ROLE_COMPANY);
         User savedUser = userRepository.save(user);
 
-        Profile profile = Profile.builder()
-         .user_id(savedUser)
-         .build();
-        profileRepository.save(profile);
 
         Company company = Company.builder()
          .name(request.getCompanyName())

@@ -35,6 +35,21 @@ public interface JobProfileRepository extends JpaRepository<JobProfile, Long> {
      @Param("status") StatusEnum status
     );
 
+    @Query("SELECT jp FROM JobProfile jp WHERE jp.status = :status")
+    Page<JobProfile> findByStatus(@Param("status") StatusEnum status, Pageable pageable
+    );
 
     Page<JobProfile> findByJobPostIdAndStatus(Long jobPostId, StatusEnum status, Pageable pageable);
+
+    // Lọc theo jobPostId và status
+    List<JobProfile> findByJobPost_IdAndStatus(Long jobPostId, StatusEnum status);
+
+    // Lọc theo jobPostId
+    List<JobProfile> findByJobPost_Id(Long jobPostId);
+
+    // Lọc theo status
+    List<JobProfile> findByStatus(StatusEnum status);
+
+    // Lọc theo công ty
+    List<JobProfile> findByJobPost_Company(Company company);
 }

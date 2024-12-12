@@ -5,18 +5,20 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor
 public class CompanyRequest {
 
     private Long id; // ID của công ty
 
     @NotEmpty(message = "Tên công ty không được để trống")
-    private String name; // Tên công ty
+    private String companyName; // Tên công ty
 
     @NotEmpty(message = "Số điện thoại không được để trống")
     private String phone; // Số điện thoại
