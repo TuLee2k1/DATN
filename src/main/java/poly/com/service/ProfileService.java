@@ -5,10 +5,17 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+import poly.com.Enum.EducationLevel;
+import poly.com.Enum.WorkType;
 import poly.com.dto.ProfileDTO;
+import poly.com.dto.response.PageResponse;
+import poly.com.dto.response.ProfileSearchResult;
 import poly.com.exception.ProfileException;
 
 import poly.com.model.Company;
@@ -47,6 +54,33 @@ public class ProfileService {
         }
 
         return profileRepository.save(entity);
+    }
+
+    public Profile updateProfile(Long userId, ProfileDTO dto) {
+        Optional<Profile> existedOptional = profileRepository.findById(userId);
+
+        if (existedOptional.isEmpty()) {
+            throw new ProfileException("Profile không tồn tại.");
+        }
+
+        Profile existedProfile = existedOptional.get();
+
+        // Cập nhật thông tin từ DTO
+        existedProfile.setName(dto.getName());
+        existedProfile.setEmail(dto.getEmail());
+        existedProfile.setPhone(dto.getPhone());
+        existedProfile.setAddress(dto.getAddress());
+        existedProfile.setSex(dto.getSex());
+        existedProfile.setDateOfBirth(dto.getDateOfBirth());
+
+        // Xử lý upload ảnh logo nếu có
+        MultipartFile logoFile = dto.getLogoFile();
+        if (logoFile != null && !logoFile.isEmpty()) {
+            String fileName = fileStorageService.storeImageProfileFile(logoFile);
+            existedProfile.setLogo(fileName);
+        }
+
+        return profileRepository.save(existedProfile);
     }
 
     /**
@@ -127,4 +161,14 @@ public class ProfileService {
         userRepository.save(user);
     }
 
+    public PageResponse<ProfileSearchResult> searchProfiles(String name, String desiredLocation, WorkType workType,
+                                                            EducationLevel degree, Integer pageNo) {
+        // Tạo đối tượng pageable, mỗi trang sẽ có 10 kết quả
+        Pageable pageable = PageRequest.of(pageNo - 1, 10);
+        // Gọi repository để lấy kết quả phân trang
+        Page<ProfileSearchResult> page = profileRepository.searchProfilesWithAgeAndCount(name, desiredLocation, workType, degree, pageable);
+
+        // Trả về PageResponse
+        return new PageResponse<>(page);
+    }
 }

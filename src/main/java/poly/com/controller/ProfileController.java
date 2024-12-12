@@ -1,102 +1,92 @@
 package poly.com.controller;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import poly.com.dto.CompanyDto;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import poly.com.dto.ProfileDTO;
-import poly.com.model.Company;
+import poly.com.dto.response.Auth.AuthenticationResponse;
 import poly.com.model.Profile;
-import poly.com.service.FileStorageService;
-import poly.com.service.MapValidationErrorService;
 import poly.com.service.ProfileService;
 
-@RestController
-@Tag(name = "Profile Controller")
-@RequestMapping("/api/v1/profile")
+@Controller
+@RequestMapping("/user-profile")
+@RequiredArgsConstructor
+@Slf4j
 public class ProfileController {
-    @Autowired
-    private ProfileService profileService;
 
-    @Autowired
-    MapValidationErrorService mapValidationErrorService;
+    private final ProfileService profileService;
 
-    @Autowired
-    private FileStorageService fileStorageService;
+    // Hiển thị trang profile
+    @GetMapping("")
+    public String showProfilePage(HttpSession session, Model model) {
+        // Lấy thông tin user từ session
+        AuthenticationResponse user = (AuthenticationResponse) session.getAttribute("user");
 
-    @Operation(summary = "Add Profile", description = "API create new Profile")
-    @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE,
-            MediaType.APPLICATION_FORM_URLENCODED_VALUE,
-            MediaType.MULTIPART_FORM_DATA_VALUE},
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> saveOrUpdate(@Valid @ModelAttribute ProfileDTO dto, BindingResult result) {
-        ResponseEntity<?> responseEntity= mapValidationErrorService.mapValidationFields(result) ;
-
-        if (responseEntity != null){
-            return responseEntity;
+        if (user == null) {
+            return "redirect:/auth/login";
         }
-        Profile entity = profileService.save(dto);
-//        dto.setId(entity.getId());
-        dto.setName(entity.getName());
-        dto.setAddress(entity.getAddress());
-        dto.setPhone(entity.getPhone());
-        dto.setEmail(entity.getEmail());
-        dto.setSex(entity.getSex());
-        dto.setDateOfBirth(entity.getDateOfBirth());
-        dto.setLogo(entity.getLogo());
 
+        // Lấy thông tin profile
+        Profile profile = profileService.findById(user.getId());
 
-        return new ResponseEntity<>(entity, HttpStatus.CREATED);
-    }
-    @Operation(summary = "Update Profile", description = "API update Profile")
-    @PatchMapping("/{id}")
-    public ResponseEntity<?> updateProfile(@PathVariable("id")Long id,
-                                           @RequestBody ProfileDTO dto) {
-        Profile entity = new Profile();
-        BeanUtils.copyProperties(dto, entity);
+        // Chuyển đổi sang DTO để sử dụng trong form
+        ProfileDTO profileDTO = new ProfileDTO();
+        profileDTO.setId(profile.getId());
+        profileDTO.setName(profile.getName());
+        profileDTO.setEmail(profile.getEmail());
+        profileDTO.setPhone(profile.getPhone());
+        profileDTO.setAddress(profile.getAddress());
+        profileDTO.setSex(profile.getSex());
+        profileDTO.setDateOfBirth(profile.getDateOfBirth());
+        profileDTO.setLogo(profile.getLogo());
 
-        entity = profileService.update(id, entity);
-
-        dto.setId(entity.getId());
-
-        return new ResponseEntity<>(dto, HttpStatus.CREATED);
-    }
-    @Operation(summary = "Get Profile", description = "API get Profile")
-    @GetMapping()
-    public ResponseEntity<?> getProfile(){
-        return new ResponseEntity<>(profileService.findAll(), HttpStatus.OK);
+        model.addAttribute("profileDTO", profileDTO);
+        return "User/V3/profile";
     }
 
-    @Operation(summary = "Get Profile Pageable", description = "API get Profile pageable")
-    @GetMapping("/page")
-    public ResponseEntity<?> getProfile(
-            @PageableDefault(size = 5, sort = "name", direction = Sort.Direction.ASC)
-            Pageable pageable){
+    // Cập nhật profile
+    @PostMapping("/update")
+    public String updateProfile(
+            @Valid @ModelAttribute("profileDTO") ProfileDTO profileDTO,
+            BindingResult bindingResult,
+            @RequestParam(value = "logoFile", required = false) MultipartFile logoFile,
+            HttpSession session,
+            RedirectAttributes redirectAttributes,
+            Model model) {
 
-        return new ResponseEntity<>(profileService.findAll(pageable), HttpStatus.OK);
-    }
-    @Operation(summary = "Get Profile with ID", description = "API get Profile with ID")
-    @GetMapping("/{id}/getedit")
-    public ResponseEntity<?> getProfile(@PathVariable("id")Long id){
+        // Lấy thông tin user từ session
+        AuthenticationResponse user = (AuthenticationResponse) session.getAttribute("user");
 
-        return new ResponseEntity<>(profileService.findById(id), HttpStatus.OK);
-    }
+        if (user == null) {
+            return "redirect:/auth/login";
+        }
 
-    @Operation(summary = "Delete Profile", description = "API delete Profile")
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteProfile(@PathVariable("id")Long id){
-        profileService.deleteById(id);
+        // Kiểm tra validation
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("profileDTO", profileDTO);
+            return "User/V3/profile";
+        }
 
-        return new ResponseEntity<>("Profile with Id " + id + " was deleted", HttpStatus.OK);
+        try {
+            // Đặt file logo vào DTO
+            profileDTO.setLogoFile(logoFile);
+
+            // Cập nhật profile
+            Profile updatedProfile = profileService.updateProfile(user.getId(), profileDTO);
+
+            redirectAttributes.addFlashAttribute("successMessage", "Cập nhật thông tin thành công!");
+            return "redirect:/user-profile";
+        } catch (Exception e) {
+            log.error("Lỗi khi cập nhật profile: ", e);
+            redirectAttributes.addFlashAttribute("errorMessage", "Cập nhật thông tin thất bại: " + e.getMessage());
+            return "redirect:/user-profile";
+        }
     }
 }
