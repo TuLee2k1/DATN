@@ -383,75 +383,69 @@
         <main class="content">
           <div class="container mt-1">
             <h4 class="mb-4">Thông tin cá nhân</h4>
-
-            <!-- Hiển thị thông báo -->
-            <div th:if="${successMessage}" class="alert alert-success" role="alert">
-              [[${successMessage}]]
-            </div>
-            <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
-              [[${errorMessage}]]
-            </div>
-
-            <form id="profileForm" th:action="@{/user-profile/update}" th:object="${profileDTO}"
-                  method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
-
+            <form th:action="@{/user-profile/update}" th:object="${profile}" method="post" enctype="multipart/form-data" id="profileForm" onsubmit="return validateForm()">
               <h5 class="h6 fw-bold mb-3">Ảnh đại diện</h5>
               <div class="mb-3 text-center">
                 <div class="position-relative d-inline-block rounded-full border border-secondary"
                      style="width: 8rem; height: 8rem; overflow: hidden;"
                      onclick="document.getElementById('avatar').click()">
-                  <img th:src="${profileDTO.logo != null ? '/uploads/profiles/' + profileDTO.logo : 'default-avatar.png'}"
+                  <img th:src="${profile?.logo != null && !#strings.isEmpty(profile.logo)
+? '/uploads/logoprofile/' + profile.getLogo()
+: '/Admin/images/person_3.jpg'}"
                        alt="Ảnh đại diện"
                        class="w-100 h-100 object-cover" id="avatarPreview">
                 </div>
                 <input type="file" id="avatar" name="logoFile" accept="image/*" class="d-none"
                        onchange="previewAvatar(event)">
               </div>
-              <p class="text-center text-secondary small">
-                Nhấn vào ảnh để thay đổi (Kích cỡ ảnh khuyến dùng từ 1000x1000px trở lên)
-              </p>
-
+              <p class="text-center text-secondary small">Nhấn vào ảnh để thay đổi
+                (Kích cỡ ảnh khuyến dùng từ 1000x1000px trở lên)</p>
               <div class="row">
                 <div class="col-md-6 mb-3">
                   <label class="form-label" for="fullName">Họ và tên</label>
-                  <input class="form-control" id="fullName" type="text"
-                         th:field="*{name}" />
-                  <div class="error" id="fullNameError"
-                       th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+                  <input class="form-control" id="fullName" name="name" type="text"
+                         th:value="${profile.name}" />
+                  <div class="error" id="fullNameError"></div>
                 </div>
                 <div class="col-md-6 mb-3">
                   <label class="form-label" for="dateOfBirth">Ngày sinh</label>
-                  <input class="form-control" id="dateOfBirth" type="date"
-                         th:field="*{dateOfBirth}" />
+                  <input class="form-control" id="dateOfBirth" name="dateOfBirth"
+                         th:value="${#temporals.format(profile.dateOfBirth, 'yyyy-MM-dd')}"
+                         type="date" />
                   <div class="error" id="dobError"></div>
                 </div>
               </div>
-
               <div class="row mb-3">
                 <div class="col-md-6 mb-3">
                   <label for="contactEmail" class="form-label">Email cá nhân</label>
-                  <input type="email" class="form-control" id="contactEmail"
-                         th:field="*{email}" />
+                  <input type="email" class="form-control" id="contactEmail" name="email"
+                         th:value="${profile.email}" />
                 </div>
                 <div class="col-md-6 mb-3">
                   <label class="form-label" for="phone">Số điện thoại</label>
-                  <input class="form-control" id="phone"
-                         th:field="*{phone}" />
+                  <input class="form-control" id="phone" name="phone"
+                         th:value="${profile.phone}" type="text" />
                   <div class="error" id="phoneError"></div>
                 </div>
               </div>
 
               <div class="mb-3">
                 <label class="form-label" for="address">Địa chỉ</label>
-                <input class="form-control" id="address"
-                       th:field="*{address}" />
+                <input class="form-control" id="address" name="address"
+                       th:value="${profile.address}" type="text" />
                 <div class="error" id="addressError"></div>
               </div>
 
+              <div class="mb-3">
+                <label class="form-label" for="sex">Giới tính</label>
+                <select class="form-control" id="sex" name="sex">
+                  <option value="Nam" th:selected="${profile.sex == 'Nam'}">Nam</option>
+                  <option value="Nữ" th:selected="${profile.sex == 'Nữ'}">Nữ</option>
+                  <option value="Khác" th:selected="${profile.sex == 'Khác'}">Khác</option>
+                </select>
+              </div>
+
               <div class="d-flex justify-content-end mt-4">
-                <button class="btn btn-secondary me-3" type="button" onclick="enableEditing()">
-                  Chỉnh sửa
-                </button>
                 <button class="btn btn-primary" type="submit">Lưu</button>
               </div>
             </form>
@@ -529,20 +523,20 @@
       feather.replace();
 
       function previewAvatar(event) {
-        const file = event.target.files[0];
-        const reader = new FileReader();
-        reader.onload = function() {
-          document.getElementById('avatarPreview').src = reader.result;
-        }
-        reader.readAsDataURL(file);
+        var input = event.target;
+        var reader = new FileReader();
+        reader.onload = function(){
+          var dataURL = reader.result;
+          var output = document.getElementById('avatarPreview');
+          output.src = dataURL;
+        };
+        reader.readAsDataURL(input.files[0]);
       }
 
-      function enableEditing() {
-        const inputs = document.querySelectorAll('#profileForm input');
-        inputs.forEach(input => {
-          input.removeAttribute('readonly');
-          input.classList.add('is-editable');
-        });
+
+      function validateForm() {
+        // Thêm validation client-side nếu cần
+        return true;
       }
     </script>
   </body>
