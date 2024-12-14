@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -12,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
@@ -41,9 +43,13 @@ public class AdminCompanyController {
     @Operation(summary = "Get All Company", description = "API get all company")
 
     @RequestMapping("")
-    public String listAll(ModelMap model){
-        List<Company> companies = companyService.findAll();
+    public String listAll(@RequestParam(defaultValue = "1") Integer pageNo, Model model){
+        Page<Company> companies = companyService.companyPage(pageNo);
+
         model.addAttribute("companies", companies);
+
+        model.addAttribute("currentPage", pageNo);
+        model.addAttribute("totalPages", companies.getTotalPages());
         return "admin/companies/company";
     }
 

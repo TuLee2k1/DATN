@@ -49,5 +49,6 @@ public interface ProfileRepository extends JpaRepository<Profile, Long> {
                                                             @Param("degree") EducationLevel degree,
                                                             Pageable pageable);
 
+    Page<Profile> findAll(Pageable pageable);
 
 }
