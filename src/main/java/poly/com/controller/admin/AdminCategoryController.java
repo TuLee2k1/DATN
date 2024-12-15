@@ -6,6 +6,9 @@ import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -43,8 +46,11 @@ public class AdminCategoryController {
     @Autowired
     JobPostService jobPostService;
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping
     public String listAll(ModelMap model,@RequestParam(defaultValue = "1") Integer pageNo,@RequestParam(defaultValue = "1") Integer pageNo2) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
         Page<JobCategory> list = jobCategoryService.getJobCategories(pageNo);
         model.addAttribute("categories", list);
         model.addAttribute("currentPageC", pageNo);
@@ -60,8 +66,11 @@ public class AdminCategoryController {
         return "admin/categories/category";
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/add")
     public String addCategory(@RequestParam("categoryName") String categoryName, RedirectAttributes redirectAttributes) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
         if (categoryName == null || categoryName.trim().isEmpty()) {
             redirectAttributes.addFlashAttribute("error", "Category name cannot be empty.");
             return "redirect:/admin/categories";
@@ -77,8 +86,10 @@ public class AdminCategoryController {
     }
 
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("delete/{id}")
     public ModelAndView delete(ModelMap model, @PathVariable("id") Long id , RedirectAttributes redirectAttributes) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         boolean isUsedInJobPosts = jobPostService.isJobCategoryUsed(id);
         boolean isUsedInSubCategory = subCategoryService.isJobCategoryUsedInSubCategory(id);
@@ -107,8 +118,11 @@ public class AdminCategoryController {
     }
 
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/add_subcategory")
     public String addSubCategory(@ModelAttribute SubCategory subCategory, RedirectAttributes redirectAttributes) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
         try {
             // Lưu SubCategory vào database
             subCategoryRepository.save(subCategory);
@@ -121,8 +135,11 @@ public class AdminCategoryController {
         }
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("deleteSub/{id}")
     public ModelAndView deleteSubCategory(@PathVariable("id") Long id , RedirectAttributes redirectAttributes) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
         // Kiểm tra xem danh mục có đang được sử dụng trong các bài đăng không
         boolean isUsedInJobPosts = jobPostService.isSubCategoryUsed(id);// Bạn cần tạo phương thức này trong jobPostService để kiểm tra
 

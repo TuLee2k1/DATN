@@ -118,7 +118,7 @@ public class ProfileService {
     }
 
     public Page<Profile> getAllByAdmin(Integer pageNo) {
-        Pageable pageable = PageRequest.of(pageNo - 1, 1);
+        Pageable pageable = PageRequest.of(pageNo - 1, 5);
         return profileRepository.findAll(pageable);
     }
 

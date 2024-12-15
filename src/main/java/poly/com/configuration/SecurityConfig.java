@@ -48,6 +48,7 @@ public class SecurityConfig {
            "/swagger-ui/**",
                   "/Tim-kiem"
           ).permitAll()
+                 .requestMatchers("/admin/**").hasRole("ADMIN")
           .requestMatchers("/Company/**").hasRole("COMPANY")
           .anyRequest().authenticated()
 

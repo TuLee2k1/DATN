@@ -12,6 +12,9 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -42,8 +45,11 @@ public class AdminCompanyController {
 
     @Operation(summary = "Get All Company", description = "API get all company")
 
-    @RequestMapping("")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping
     public String listAll(@RequestParam(defaultValue = "1") Integer pageNo, Model model){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
         Page<Company> companies = companyService.companyPage(pageNo);
 
         model.addAttribute("companies", companies);
@@ -53,8 +59,10 @@ public class AdminCompanyController {
         return "admin/companies/company";
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("delete/{id}")
     public ModelAndView delete(ModelMap model,  @PathVariable("id") Long id ) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         companyService.deleteById(id);
 
@@ -66,8 +74,10 @@ public class AdminCompanyController {
 
 
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/images/{fileName:.+}")
     public ModelAndView deleteLogoCompany(ModelMap model,@PathVariable String fileName){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         fileStorageService.deleteCompanyImageFile(fileName);
 

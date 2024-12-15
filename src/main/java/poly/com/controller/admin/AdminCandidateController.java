@@ -2,6 +2,9 @@ package poly.com.controller.admin;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
@@ -27,8 +30,11 @@ public class AdminCandidateController {
     @Autowired
     MapValidationErrorService mapValidationErrorService;
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping
     public String listAll(ModelMap model,@RequestParam(defaultValue = "1") Integer pageNo){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
         Page<Profile> candidate = profileService.getAllByAdmin(pageNo);
         model.addAttribute("candidates", candidate);
 
@@ -37,8 +43,10 @@ public class AdminCandidateController {
         return "admin/candidates/candidate";
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("delete/{id}")
     public ModelAndView delete(ModelMap model, @PathVariable("id") Long id ) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         profileService.deleteById(id);
 
@@ -50,8 +58,11 @@ public class AdminCandidateController {
 
 
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/images/{fileName:.+}")
     public ModelAndView deleteAvatar(ModelMap model,@PathVariable String fileName){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
 
         fileStorageService.deleteProfileImageFile(fileName);
 
