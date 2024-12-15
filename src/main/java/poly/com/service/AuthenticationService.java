@@ -253,7 +253,7 @@ public class AuthenticationService {
 //            return "/JobPost/create";
             return "/company-account";
         } else if (roles.contains(RoleType.ROLE_ADMIN)) {
-            return "/admin/dashboard";
+            return "/admin/thongke";
         } else if (roles.contains(RoleType.ROLE_USER)) {
             return "/auth/user/dashboard";
         }

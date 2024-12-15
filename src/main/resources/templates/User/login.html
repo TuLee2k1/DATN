@@ -148,7 +148,7 @@
                 localStorage.setItem('userInfo', JSON.stringify(data));
 
                 if (userInfo.roles.includes("ROLE_ADMIN")) {
-                    window.location.href = "http://localhost:8080/admin";
+                    window.location.href = "http://localhost:8080/admin/thongke";
                 } else if (userInfo.roles.includes("ROLE_USER")) {
                     window.location.href = "http://localhost:8080";
 

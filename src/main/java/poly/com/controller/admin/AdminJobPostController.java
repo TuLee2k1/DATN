@@ -2,6 +2,9 @@ package poly.com.controller.admin;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -32,9 +35,11 @@ public class AdminJobPostController {
 
 
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("delete/{id}")
     public ModelAndView delete(ModelMap model, @PathVariable("id") Long id ) {
 
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         jobPostService.deleteById(id);
 
         model.addAttribute("message", "Job Post is deleted!");
@@ -44,8 +49,11 @@ public class AdminJobPostController {
     }
 
     // Phương thức duyệt JobPost
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/approve/{id}")
     public String approveJobPost(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
         try {
             jobPostService.approveJobPost(id); // Gọi service để duyệt
             redirectAttributes.addFlashAttribute("message", "Job post approved successfully.");
@@ -56,8 +64,11 @@ public class AdminJobPostController {
         }
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("details/{id}")
     public String getJobPostDetails(@PathVariable("id") Long id, Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
         JobPost jobPost = jobPostService.findById(id); // Sử dụng query với JOIN FETCH
         if (jobPost == null) {
             model.addAttribute("error", "JobPost not found!");
@@ -67,12 +78,14 @@ public class AdminJobPostController {
         return "/admin/jobpost-details/jobpost-detail";
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping
     public String list(
             @RequestParam(defaultValue = "statusEnum", required = false) String statusEnum,
             @RequestParam(defaultValue = "1") Integer pageNo,
             @RequestParam(required = false) String jobTitle,  // Thêm tham số jobTitle
             ModelMap model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         Page<JobPost> jobPosts;
 
