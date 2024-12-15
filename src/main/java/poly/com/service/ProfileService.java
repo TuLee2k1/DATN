@@ -117,6 +117,11 @@ public class ProfileService {
         return profileRepository.findAll();
     }
 
+    public Page<Profile> getAllByAdmin(Integer pageNo) {
+        Pageable pageable = PageRequest.of(pageNo - 1, 1);
+        return profileRepository.findAll(pageable);
+    }
+
     /**
      * Lấy danh sách profile phân trang
      */

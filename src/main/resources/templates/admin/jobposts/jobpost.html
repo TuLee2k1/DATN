@@ -178,7 +178,6 @@
                         <th>Thành phố</th>
                         <th>Ngày tạo</th>
                         <th>Ngày kết thúc</th>
-                        <th>Lương</th>
                         <th>Trạng thái</th>
                         <th>Actions</th>
                     </tr>
@@ -191,7 +190,7 @@
                         <td th:text="${jobPost.city}"></td>
                         <td th:text="${#dates.format(jobPost.createDate, 'dd-MM-yyyy')}"></td>
                         <td th:text="${#dates.format(jobPost.endDate, 'dd-MM-yyyy')}"></td>
-                        <td th:text="${jobPost.minSalary} + ' - ' + ${jobPost.maxSalary}"></td>
+                        
                         <td>
                             <span th:class="${jobPost.statusEnum.name == 'ACTIVE' ? 'status-active' :
                                             (jobPost.statusEnum.name == 'PENDING' ? 'status-pending' :
@@ -215,9 +214,9 @@
                             </a>
 
                             <a th:href="@{'/admin/jobposts/details/' + ${jobPost.id}}"
-                               class="btn btn-outline-warning btn-sm rounded-circle"
+                               class="btn btn-outline-secondary btn-sm rounded-circle"
                                style="width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center; font-size: 24px;">
-                                <i class="align-middle" data-feather="more-horizontal"></i>
+                                <i class="align-middle" data-feather="eye"></i>
                             </a>
                         </td>
                     </tr>

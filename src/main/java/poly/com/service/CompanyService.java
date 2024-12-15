@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,6 +18,7 @@ import poly.com.exception.FileStorageException;
 import poly.com.model.Company;
 import poly.com.model.JobCategory;
 import poly.com.model.Profile;
+import poly.com.model.User;
 import poly.com.repository.CompanyRepository;
 import poly.com.repository.JobCategoryRepository;
 import poly.com.repository.ProfileRepository;
@@ -79,9 +81,11 @@ public class CompanyService {
         }
     }
 //
-//
-    public List<Company> findAll() {
-        return companyRepository.findAll();
+//cho admin
+    public Page<Company> companyPage(Integer pageNo) {
+        Pageable pageable = PageRequest.of(pageNo - 1, 2);
+
+        return companyRepository.findAll(pageable);
     }
 
 
