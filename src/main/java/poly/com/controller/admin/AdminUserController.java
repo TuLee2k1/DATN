@@ -26,16 +26,21 @@ public class AdminUserController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping
-    public String getAllUsers( @RequestParam(defaultValue = "1") Integer pageNo,Model model) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    public String getAllUsers(@RequestParam(defaultValue = "1") Integer pageNo,
+                              @RequestParam(required = false) String email,
+                              Model model) {
+        // Lấy danh sách người dùng với phân trang và tìm kiếm theo email
+        Page<User> users = userService.users(email, pageNo);
 
-        Page<User> users = userService.users(pageNo);
+        // Đưa dữ liệu vào model
         model.addAttribute("users", users); // Đẩy danh sách user vào model
+        model.addAttribute("currentPage", pageNo); // Trang hiện tại
+        model.addAttribute("totalPages", users.getTotalPages()); // Tổng số trang
+        model.addAttribute("searchKeyword", email); // Từ khóa tìm kiếm (email)
 
-        model.addAttribute("currentPage", pageNo);
-        model.addAttribute("totalPages", users.getTotalPages());
         return "admin/users/user"; // Tên của file HTML trong thư mục templates
     }
+
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/{id}/lock")

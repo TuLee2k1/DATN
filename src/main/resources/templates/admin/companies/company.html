@@ -157,10 +157,9 @@
                         <td>
                             <div class="align-items-center gap-2">
                                 <!-- Nút xóa -->
-                                <a
+                                <a th:href="@{'/admin/companies/details/' + ${company.id}}"
                                    class="btn btn-outline-secondary btn-sm rounded-circle"
-                                   style="width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center; font-size: 24px;"
-                                   onclick="return confirm('Bạn có chắc chắn muốn xóa công ty này?');">
+                                   style="width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center; font-size: 24px;">
                                     <i class="align-middle" data-feather="eye"></i>
                                 </a>
                             </div>

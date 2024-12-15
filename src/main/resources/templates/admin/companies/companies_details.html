@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html charset="UTF-8" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{/admin/layout.html}">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Responsive Admin &amp; Dashboard Template based on Bootstrap 5">
+    <meta name="author" content="AdminKit">
+    <meta name="keywords" content="admin, bootstrap, bootstrap 5, admin, dashboard, template, responsive, css, sass, html, theme, front-end, ui kit, web">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amarante&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Sumana:wght@400;700&family=Yeseva+One&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="shortcut icon" href="/img/icons/icon-48x48.png" />
+    <link rel="canonical" href="https://demo-basic.adminkit.io/" />
+
+    <title>Admin</title>
+
+    <link href="/css/app.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+    <style>
+
+        .content{
+            font-family: "Nunito", sans-serif;
+        }
+        .status-active {
+            background-color: #77ba86; /* Màu nền xanh nhạt */
+            color: #000000; /* Màu chữ xanh đậm */
+            padding: 5px;
+            border-radius: 5px;
+            font-family: "Nunito", sans-serif;
+        }
+
+        .status-pending {
+            background-color: #f1e239; /* Màu nền vàng nhạt */
+            color: #000000; /* Màu chữ vàng đậm */
+            padding: 5px;
+            border-radius: 5px;
+            font-family: "Nunito", sans-serif;
+        }
+
+        .status-deleted {
+            background-color: #ef3852; /* Màu nền đỏ nhạt */
+            color: #000000; /* Màu chữ đỏ đậm */
+            padding: 5px;
+            border-radius: 5px;
+            font-family: "Nunito", sans-serif;
+        }
+
+        .status-default {
+            background-color: #e2e3e5; /* Màu nền xám nhạt */
+            color: #6c757d; /* Màu chữ xám đậm */
+            padding: 5px;
+            border-radius: 5px;
+            font-family: "Nunito", sans-serif;
+        }
+        .filter-bar select {
+            width: 100%; /* Chiều rộng của select sẽ tự động chiếm hết không gian có sẵn */
+            max-width: 500px; /* Giới hạn chiều rộng của dropdown select (nếu cần) */
+        }
+        .filter-bar {
+            width: 100%; /* Đảm bảo bộ lọc chiếm hết chiều rộng của phần chứa */
+            max-width: 800px; /* Giới hạn chiều rộng tối đa (nếu cần) */
+            margin-bottom: 20px; /* Khoảng cách giữa bộ lọc và bảng */
+        }
+
+        /* Bố cục tổng thể */
+        .pagination-nav {
+            display: flex;
+            justify-content: flex-end; /* Căn về góc phải */
+            padding: 10px;
+            margin-top: 20px;
+        }
+
+        .pagination {
+            list-style: none;
+            display: flex;
+            gap: 5px;
+            padding: 0;
+            margin: 0;
+        }
+
+        /* Định dạng từng mục phân trang */
+        .page-item {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 5px 10px;
+            text-align: center;
+            font-size: 14px; /* Kích thước nhỏ hơn */
+            background-color: white;
+            color: gray;
+        }
+
+        .page-item a {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        /* Hover màu xám */
+        .page-item:hover {
+            background-color: #f0f0f0;
+            color: gray;
+            cursor: pointer;
+        }
+
+        /* Mục đang được chọn */
+        .page-item.active {
+            background-color: #ddd; /* Màu xám */
+            color: gray;
+            pointer-events: none;
+            font-weight: bold;
+        }
+
+        /* Mục bị vô hiệu hóa */
+        .page-item.disabled {
+            color: #ccc;
+            pointer-events: none;
+            border-color: #eee;
+        }
+
+        /* Ẩn đường viền khi hover trên mục bị vô hiệu hóa */
+        .page-item.disabled:hover {
+            background-color: white;
+            cursor: not-allowed;
+        }
+
+
+    </style>
+
+</head>
+
+<body>
+
+<main class="content" layout:fragment="content">
+
+    <h1>Chi tiết công ty</h1>
+
+    <table class="table table-bordered">
+        <tr>
+            <th>ID</th>
+            <td th:text="${company.id}"></td>
+        </tr>
+        <tr>
+            <th>Tên công ty</th>
+            <td th:text="${company.name}"></td>
+        </tr>
+        <tr>
+            <th>Số điện thoại</th>
+            <td th:text="${company.phone}"></td>
+        </tr>
+        <tr>
+            <th>Email</th>
+            <td th:text="${company.email}"></td>
+        </tr>
+        <tr>
+            <th>Mã số thuế</th>
+            <td th:text="${company.tax_code}"></td>
+        </tr>
+        <tr>
+            <th>Logo</th>
+            <td>
+                <img th:src="${company?.logo != null && !#strings.isEmpty(company.logo)
+? '/uploads/logocompany/' + company.getLogo()
+: '/Admin/images/person_3.jpg'}"
+                     class="rounded-circle"       alt="Logo" width="50" height="50" style="width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center; font-size: 30px;" >
+
+            </td>
+        </tr>
+        <tr>
+            <th>Website</th>
+            <td th:text="${company.website}"></td>
+        </tr>
+        <tr>
+            <th>Địa chỉ</th>
+            <td th:text="${company.address}"></td>
+        </tr>
+        <tr>
+            <th>Thành phố</th>
+            <td th:text="${company.city}"></td>
+        </tr>
+        <tr>
+            <th>Quận</th>
+            <td th:text="${company.district}"></td>
+        </tr>
+        <tr>
+            <th>Mô tả</th>
+            <td th:text="${company.description}"></td>
+        </tr>
+        <tr>
+            <th>Loại hình doanh nghiệp</th>
+            <td th:text="${company.businessType}"></td>
+        </tr>
+        <tr>
+            <th>Ngành nghề</th>
+            <td th:text="${company.inducstry}"></td>
+        </tr>
+        <tr>
+            <th>Năm thành lập</th>
+            <td th:text="${company.yearEstablished}"></td>
+        </tr>
+        <tr>
+            <th>Số lượng nhân viên</th>
+            <td th:text="${company.employeeCount}"></td>
+        </tr>
+        <tr>
+            <th>Giấy phép kinh doanh</th>
+            <td th:text="${company.businessLicense}"></td>
+        </tr>
+
+
+        <tr>
+            <th>Người tạo</th>
+            <td th:text="${company.user.username}"></td>
+        </tr>
+    </table>
+
+    <div class="button-container">
+        <a th:href="@{'/admin/companies'}"
+           class="btn btn-outline-secondary btn-sm"
+           style="display: inline-flex; align-items: center; justify-content: center; font-size: 16px; padding: 10px 20px;">
+            Trở về danh sách công ty
+        </a>
+    </div>
+
+</main>
+
+<script src="/js/app.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+<script>
+    let message = /*[[${message}]]*/'';
+    if (message) {
+        toastr.success(message);
+    }
+</script>
+
+</body>
+</html>
