@@ -88,4 +88,5 @@ public interface JobPostRepository extends JpaRepository<JobPost, Long> {
   boolean existsByJobCategoryId(Long jobCategoryId);
 
 
+
 }

@@ -5,6 +5,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import poly.com.model.JobPost;
+import poly.com.repository.JobPostRepository;
 import poly.com.util.AuthenticationUtil;
 import poly.com.dto.response.Follow.CompanyFollowResponse;
 import poly.com.dto.response.Follow.JobPostFollowResponse;
@@ -21,6 +23,7 @@ public class FollowService {
 
     private final FollowRepository followRepository;
     private AuthenticationUtil authenticationUtil;
+    private final JobPostRepository jobPostRepository;
 
     public Follow toggleFollowCompany(Long companyId) {
         var user = authenticationUtil.getAuthenticatedUser();
@@ -88,6 +91,31 @@ public class FollowService {
          .build();
 
         return followRepository.save(follow);
+    }
+    @Transactional
+    public boolean toggleFollow(Long userId, Long jobPostId) {
+        // Tìm kiếm xem đã follow chưa
+        return followRepository.findByUserIdAndJobPostId(userId, jobPostId)
+                .map(existingFollow -> {
+                    // Nếu đã tồn tại thì xóa follow
+                    followRepository.delete(existingFollow);
+                    return false;
+                })
+                .orElseGet(() -> {
+                    // Nếu chưa follow thì tạo mới
+                    JobPost jobPost = jobPostRepository.findById(jobPostId)
+                            .orElseThrow(() -> new RuntimeException("Job post not found"));
+
+                    Follow newFollow = Follow.builder()
+                            .userId(userId)
+                            .jobPostId(jobPostId)
+                            .companyId(jobPost.getCompany().getId())
+                            .followDate(new Date())
+                            .build();
+
+                    followRepository.save(newFollow);
+                    return true;
+                });
     }
 
     public void unfollow(Long followId) {

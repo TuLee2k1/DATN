@@ -52,4 +52,8 @@ public interface JobProfileRepository extends JpaRepository<JobProfile, Long> {
 
     // Lọc theo công ty
     List<JobProfile> findByJobPost_Company(Company company);
+
+    List<JobProfile> findByUser_Id(Long userId);
+
+
 }
