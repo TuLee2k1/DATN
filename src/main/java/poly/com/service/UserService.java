@@ -39,10 +39,10 @@ public class UserService {
         return false; // Không tìm thấy người dùng
     }
 
-    public Page<User> users(Integer pageNo) {
+    public Page<User> users(String email,Integer pageNo) {
         Pageable pageable = PageRequest.of(pageNo - 1, 5);
 
 
-        return userRepository.findAll(pageable);
+        return userRepository.findByEmailContaining(email,pageable);
     }
 }

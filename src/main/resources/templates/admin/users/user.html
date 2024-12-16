@@ -179,7 +179,15 @@
         <div class="col-12 col-lg-12 col-xxl-12 ">
             <div class="card flex-fill">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">Danh sách tài khoản</h5>
+                    <div class="filter-bar mb-3 gap-2">
+                        <form method="get" th:action="@{/admin/users}" class="d-flex gap-2">
+                            <!-- Input tìm kiếm theo email của tài khoản -->
+                            <input type="text" name="email" placeholder="Tìm kiếm theo email của tài khoản"
+                                   th:value="${searchKeyword}" class="form-control form-control-sm">
+                            <!-- Nút Tìm kiếm -->
+                            <button type="submit" class="btn btn-primary btn-sm"><i class="align-middle" data-feather="search"></i></button>
+                        </form>
+                    </div>
                 </div>
                 <table class="table table-hover my-0">
                     <thead>
@@ -221,7 +229,7 @@
                             <!-- Nút khóa tài khoản -->
                             <form th:if="${!user.accountLocked}" th:action="@{/admin/users/{id}/lock(id=${user.id})}"  method="post" style="display: inline;">
                                 <button type="submit"
-                                        class="btn btn-outline-warning btn-sm rounded-circle"
+                                        class="btn btn-outline-danger btn-sm rounded-circle"
                                         style="width: 40px; height: 40px;"
 
                                         onclick="return confirm('Bạn có chắc chắn muốn khóa tài khoản này?');">
@@ -231,7 +239,7 @@
 
                             <form th:if="${user.accountLocked}" th:action="@{/admin/users/{id}/unlock(id=${user.id})}" method="post" style="display: inline;">
                                 <button type="submit"
-                                        class="btn btn-outline-warning btn-sm rounded-circle"
+                                        class="btn btn-outline-success btn-sm rounded-circle"
                                         style="width: 40px; height: 40px;"
 
                                         onclick="return confirm('Bạn có chắc chắn muốn mở khóa tài khoản này?');">

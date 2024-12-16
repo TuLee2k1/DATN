@@ -24,7 +24,6 @@ import poly.com.dto.request.Auth.LoginRequest;
 import poly.com.dto.request.Auth.RegisterCompanyRequest;
 import poly.com.dto.request.Auth.UserChangepasswordDTO;
 import poly.com.dto.response.Auth.AuthenticationResponse;
-import poly.com.exception.ApiResponse;
 import poly.com.service.AuthenticationService;
 
 import java.io.IOException;
@@ -157,20 +156,20 @@ public class AuthenticationController {
     private static final Logger logger1 = LoggerFactory.getLogger(AuthenticationController.class);
 
     @PostMapping("/activate-account")
-    public String activateAccountUser (@RequestParam String token, Model model) {
+    public ResponseEntity<String> activateAccountUser (@RequestParam String token, Model model) {
         if (token == null || token.isEmpty()) {
             model.addAttribute("error", "Token cannot be null or empty.");
-            return "error"; // Trả về trang lỗi
+            return ResponseEntity.badRequest().body("Mã xác thưc không hợp lệ!");
         }
 
         try {
             authenticationService.activateAccount(token);
             System.out.println("Activated account successfully");
-            return "user/login"; // Chuyển hướng đến trang đăng nhập
+            return ResponseEntity.ok("Activated account successfully");
         } catch (Exception e) {
             logger.error("Error activating account: {}", e.getMessage());
             model.addAttribute("error", "An error occurred while activating the account.");
-            return "error"; // Trả về trang lỗi
+            return ResponseEntity.badRequest().body("Mã xác thưc không hợp lệ!");
         }
     }
 
@@ -191,12 +190,10 @@ public class AuthenticationController {
     }
 
     @PostMapping("/forgot-password")
-    public ApiResponse<AuthenticationResponse> forgotPassword(@RequestParam @Valid String email) throws MessagingException {
+    public ResponseEntity<String> forgotPassword(@RequestParam @Valid String email) throws MessagingException {
         authenticationService.forgotPassword(email);
-        return ApiResponse.<AuthenticationResponse>builder()
-                .status(HttpStatus.OK.value())
-                .message("Password reset link sent successfully")
-                .build();
+        System.out.println("Forgot password email: " + email);
+        return ResponseEntity.ok("Password reset link sent to " + email);
     }
 
 //    @PreAuthorize("hasRole('ROLE_COMPANY')")

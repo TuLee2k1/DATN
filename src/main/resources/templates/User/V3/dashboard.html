@@ -368,28 +368,29 @@
               <div class="col-md-3 col-sm-6 mb-3 d-flex">
                 <div class="card card-custom card-green card-shadow flex-fill">
                   TOTAL RESUMES<br />
-                  <span style="font-size: 2rem">0</span>
+                  <span style="font-size: 2rem" th:text="${totalResumes}">0</span>
                 </div>
               </div>
               <div class="col-md-3 col-sm-6 mb-3 d-flex">
                 <div class="card card-custom card-blue card-shadow flex-fill">
                   APPROVED RESUMES<br />
-                  <span style="font-size: 2rem">0</span>
+                  <span style="font-size: 2rem" th:text="${approvedResumes}">0</span>
                 </div>
               </div>
               <div class="col-md-3 col-sm-6 mb-3 d-flex">
                 <div class="card card-custom card-blue card-shadow flex-fill">
                   BOOKMARKED<br />
-                  <span style="font-size: 2rem">0</span>
+                  <span style="font-size: 2rem" th:text="${bookmarkedForUser}">0</span>
                 </div>
               </div>
               <div class="col-md-3 col-sm-6 mb-3 d-flex">
                 <div class="card card-custom card-orange card-shadow flex-fill">
                   APPLIED JOBS<br />
-                  <span style="font-size: 2rem">0</span>
+                  <span style="font-size: 2rem" th:text="${applied}">0</span>
                 </div>
               </div>
             </div>
+
             <div class="row mt-4">
               <div class="card col-md-6 mb-3">
                 <div class="recent-activities">
@@ -411,6 +412,7 @@
             </div>
           </div>
         </main>
+
 
         <footer class="footer">
           <div class="container-fluid">

@@ -3,6 +3,8 @@ package poly.com.Enum;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.util.Collection;
+
 @Getter
     public enum WorkType
     {
@@ -21,4 +23,5 @@ import lombok.Getter;
         WorkType(String name) {
         this.name = name;
     }
-}
+
+    }

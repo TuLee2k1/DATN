@@ -231,7 +231,7 @@
                         <li><a href="http://localhost:8080" class="nav-link active">Trang Chủ</a></li>
                         <li id="about"><a>Về Chúng Tôi</a></li>
 
-                        <li id="contact"><a >Liên Hệ</a></li>
+                        <li id="contact"><a>Liên Hệ</a></li>
                         <li id="signupBtn1" class="d-lg-none"><a><span class="mr-2 icon-add"></span>Đăng Kí</a></li>
                         <li id="loginBtn1" class="d-lg-none"><a><span class="mr-2 icon-lock_outline">Đăng Nhập</a></li>
                         <li class="has-children" id="userInfo2" >
@@ -241,19 +241,19 @@
                                 Lê
                             </a>
                             <!-- Dropdown menu -->
-                                <ul id="dropdownMenu1" class="dropdown">
-                               <li> <a href=""  id="dashboard1">Tài khoản</a></li>
-                               <li> <a href=""  id="logoutBtn1">Đăng xuất</a></li>
-                                </ul>
+                            <ul id="dropdownMenu1" class="dropdown">
+                                <li> <a href=""  id="dashboard1">Tài khoản</a></li>
+                                <li> <a href=""  id="logoutBtn1">Đăng xuất</a></li>
+                            </ul>
                         </li>
                         <li id="userInfo1">
 
-                                <a id="tuyendung1" class="text-lg font-semibold">
-                                    <div class="text-xs">DÀNH CHO</div>
-<!--                                    <i class="fas fa-briefcase text-blue-400"></i>-->
-                                    <p class="text-lg font-semibold">Nhà Tuyển Dụng</p>
-                                    <div class="text-xs">Đăng tin miễn phí</div>
-                                </a>
+                            <a id="tuyendung1" class="text-lg font-semibold">
+                                <div class="text-xs">DÀNH CHO</div>
+                                <!--                                    <i class="fas fa-briefcase text-blue-400"></i>-->
+                                <p class="text-lg font-semibold">Nhà Tuyển Dụng</p>
+                                <div class="text-xs">Đăng tin miễn phí</div>
+                            </a>
 
                         </li>
                     </ul>
@@ -312,95 +312,53 @@
 
 
     <!-- HOME -->
-    <section class="home-section section-hero overlay bg-image"
-             style="background-image: url('/Admin/images/hero_1.jpg');" id="home-section">
-
+    <section class="section-hero overlay inner-page bg-image" style="background-image: url('/Admin/images/hero_1.jpg');" id="home-section">
         <div class="container">
-            <div class="row align-items-center justify-content-center">
-                <div class="col-md-12">
-                    <div class="mb-5 text-center">
-                        <h1 class="text-white font-weight-bold">Cách Dễ Nhất Để Có Được Công Việc Mơ Uớc Của Bạn</h1>
+            <div class="row">
+                <div class="col-md-7">
+                    <h1 class="text-white font-weight-bold">About Us</h1>
+                    <div class="custom-breadcrumbs">
+                        <a href="#">Home</a> <span class="mx-2 slash">/</span>
+                        <span class="text-white"><strong>About Us</strong></span>
                     </div>
-                    <form method="post" class="search-jobs-form" th:action="@{/Tim-kiem}">
-                        <div class="row mb-5">
-                            <div class="col-12 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
-                                <input type="text" name="searchTerm" class="form-control form-control-lg"
-                                       placeholder="Job title, Company...">
-                            </div>
-                            <div class="col-12 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
-                                <input type="text" name="location"  class="form-control form-control-lg"
-                                       placeholder=" Tất cả Tỉnh/Thành Phố" id="city">
-                            </div>
-                            <div class="col-12 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
-                                <select name="jobType" class="form-control form-control-lg" data-style="btn-white btn-lg" data-width="100%"
-                                        data-live-search="true" id="workType">
-                                    <option value="">Tất cả hình thức</option>
-                                    <option th:each="type : ${T(poly.com.Enum.WorkType).values()}"
-                                            th:value="${type}"
-                                            th:text="${type.getName()}">
-                                    </option>
-
-
-                                </select>
-                            </div>
-                            <div class="col-12 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
-                                <button type="submit" class="btn btn-primary btn-lg btn-block text-white btn-search">
-                                    <span class="icon-search icon mr-2"></span>Tìm kiếm
-                                </button>
-                            </div>
-                        </div>
-                    </form>
                 </div>
             </div>
         </div>
-
-        <a href="#next" class="scroll-button smoothscroll">
-            <span class=" icon-keyboard_arrow_down"></span>
-        </a>
-
     </section>
 
-    <section class="py-5 bg-image overlay-primary fixed overlay" id="next"
 
-             style="background-image: url('/Admin/images/hero_1.jpg');">
 
+
+    <section class="site-section pb-0">
         <div class="container">
-            <div class="row mb-5 justify-content-center">
-                <div class="col-md-7 text-center">
-                    <h2 class="section-title mb-2 text-white">Thống Kê Trang Web DreamJob</h2>
+            <div class="row align-items-center">
+                <div class="col-lg-6 mb-5 mb-lg-0">
+                    <a data-fancybox data-ratio="2" href="https://vimeo.com/317571768" class="block__96788">
+                        <span class="play-icon"><span class="icon-play"></span></span>
+                        <img src="/Admin/images/sq_img_6.jpg" alt="Image" class="img-fluid img-shadow">
+                    </a>
+                </div>
+                <div class="col-lg-5 ml-auto">
+                    <h2 class="section-title mb-3">Tổng Quan Về Dream Job</h2>
+                    <p class="lead">"Dream Job là nền tảng tuyển dụng hàng đầu, giúp kết nối những ứng viên tài năng với các công ty uy tín. Chúng tôi cam kết mang đến những cơ hội việc làm tốt nhất cho ứng viên và giúp các doanh nghiệp tìm kiếm nhân tài chất lượng."</p>
                 </div>
             </div>
-            <div class="row pb-0 block__19738 section-counter">
+        </div>
+    </section>
 
-                <div class="col-6 col-md-6 col-lg-3 mb-5 mb-lg-0">
-                    <div class="d-flex align-items-center justify-content-center mb-2">
-                        <strong class="number" th:data-number="${totalUser}" >0</strong>
-                    </div>
-                    <span class="caption">Ứng Viên</span>
+    <section class="site-section pt-0">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 mb-5 mb-lg-0 order-md-2">
+                    <a data-fancybox data-ratio="2" href="https://vimeo.com/317571768" class="block__96788">
+                        <span class="play-icon"><span class="icon-play"></span></span>
+                        <img src="/Admin/images/sq_img_8.jpg" alt="Image" class="img-fluid img-shadow">
+                    </a>
                 </div>
-
-                <div class="col-6 col-md-6 col-lg-3 mb-5 mb-lg-0">
-                    <div class="d-flex align-items-center justify-content-center mb-2">
-                        <strong class="number" th:data-number="${totalJobPosts}">0</strong>
-                    </div>
-                    <span class="caption">Bài Đăng</span>
+                <div class="col-lg-5 mr-auto order-md-1  mb-5 mb-lg-0">
+                    <h2 class="section-title mb-3">Sứ Mệnh & Tầm Nhìn</h2>
+                    <p class="lead">"Sứ mệnh của Dream Job là mang đến cho ứng viên những cơ hội việc làm phù hợp với kỹ năng và đam mê. Chúng tôi luôn hướng tới việc tạo ra một môi trường làm việc công bằng, sáng tạo và hiệu quả."</p>
                 </div>
-
-                <div class="col-6 col-md-6 col-lg-3 mb-5 mb-lg-0">
-                    <div class="d-flex align-items-center justify-content-center mb-2">
-                        <strong class="number" th:data-number="${totalJobProfiles}">0</strong>
-                    </div>
-                    <span class="caption">Việc Đã Tuyển</span>
-                </div>
-
-                <div class="col-6 col-md-6 col-lg-3 mb-5 mb-lg-0">
-                    <div class="d-flex align-items-center justify-content-center mb-2">
-                        <strong class="number" th:data-number="${totalCompanies}" >0</strong>
-                    </div>
-                    <span class="caption">Công ty</span>
-                </div>
-
-
             </div>
         </div>
     </section>
@@ -408,170 +366,31 @@
 
     <section class="site-section">
         <div class="container">
-
-            <div class="row mb-5 justify-content-center">
-                <div class="col-md-7 text-center">
-                    <h2 class="section-title mb-2" th:text="${jobListings.getTotalElements()} + ' Danh Sách Công Việc'">43,167 Danh Sách Công Việc</h2>
+            <div class="row mb-5">
+                <div class="col-12 text-center" data-aos="fade">
+                    <h2 class="section-title mb-3">Tại Sao Lựa Chọn Dream Job</h2>
                 </div>
             </div>
 
-            <ul class="job-listings mb-5" th:each="job : ${jobListings}">
-                <li class="job-listing d-block d-sm-flex pb-3 pb-sm-0 align-items-center">
-                    <a th:href="@{/job-posts/detail/{id}(id=${job.id})}" class="w-100"></a>
-                    <div class="job-listing-logo">
-                        <img th:src="${job?.companyLogoUrl != null && !#strings.isEmpty(job.companyLogoUrl)
-? '/uploads/logocompany/' + job.companyLogoUrl
-: '/Admin/images/person_3.jpg'}" class="img-fluid">
-                    </div>
+            <div class="row align-items-center block__69944">
 
-                    <div class="job-listing-about d-sm-flex custom-width w-100 justify-content-between mx-4">
-                        <div class="job-listing-position custom-width w-50 mb-3 mb-sm-0">
-                            <h2 th:text="${job.jobTitle}">Tên công việc</h2>
-                            <strong th:text="${job.companyName}">Tên công ty</strong>
-                        </div>
-                        <div class="job-listing-location mb-3 mb-sm-0 custom-width w-25">
-                            <span class="icon-room"></span> <span th:text="${job.getCity()}">Vị trí</span>
-                        </div>
-                        <div class="job-listing-meta">
-                <span th:with="status=${job.workType.name()}"
-                      th:class="${'badge ' +
-                      (status == 'PART_TIME' ? 'bg-success' :
-                       status == 'FULL_TIME' ? 'bg-info' : 'bg-danger')}"
-                      th:text="${status}"></span>
-                        </div>
-                    </div>
-                </li>
-            </ul>
-
-            <div class="row pagination-wrap">
-                <div class="col-md-6 text-center text-md-left mb-4 mb-md-0">
-                    <span th:text="'Hiển thị 1-' + ${totalPages} +' của ' + ${jobListings.getTotalElements()} + ' Việc làm'">Showing 1-7 Of 43,167 Jobs</span>
+                <div class="col-md-6">
+                    <img src="/Admin/images/person_6.jpg" alt="Image" class="img-fluid mb-4 rounded">
                 </div>
-                <div class="col-md-6 text-center text-md-right">
-                    <div class="custom-pagination ml-auto">
-                        <a th:href="${currentPage == 1} ? '#' : @{/(status='ACTIVE', pageNo=${currentPage - 1}, pageSize=5)}"
-                           class="prev"
-                           th:classappend="${currentPage == 1} ? 'disabled'">Prev</a>
-                        <div class="d-inline-block">
-                <span th:each="i : ${#numbers.sequence(1, totalPages)}">
-                    <a th:href="@{/(status='ACTIVE', pageNo=${i}, pageSize=5)}"
-                       th:classappend="${i == currentPage} ? 'active'">
-                        <span th:text="${i}"></span>
-                    </a>
-                </span>
-                        </div>
-                        <a th:href="${currentPage == totalPages} ? '#' : @{/(status='ACTIVE', pageNo=${currentPage + 1}, pageSize=5)}"
-                           class="next"
-                           th:classappend="${currentPage == totalPages} ? 'disabled'">Next</a>
+
+                <div class="col-md-6">
+                    <h4>Tại Sao Lựa Chọn Dream Job?</h4>
+
+                    <p>"Với nền tảng công nghệ hiện đại, Dream Job giúp bạn dễ dàng tìm kiếm và ứng tuyển các công việc phù hợp. Chúng tôi cung cấp dịch vụ hỗ trợ chuyên nghiệp và những cơ hội nghề nghiệp đa dạng, từ các công ty lớn đến các startup sáng tạo."</p>
+                    <div class="social mt-4">
+                        <a href="#"><span class="icon-facebook"></span></a>
+                        <a href="#"><span class="icon-twitter"></span></a>
+                        <a href="#"><span class="icon-instagram"></span></a>
+                        <a href="#"><span class="icon-linkedin"></span></a>
                     </div>
                 </div>
             </div>
-
-        </div>
     </section>
-
-    <section class="py-5 bg-image overlay-primary fixed overlay"
-             style="background-image: url('/Admin/images/hero_1.jpg');">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-md-8">
-                    <h2 class="text-white">Bạn Đang Tìm Việc Làm</h2>
-                </div>
-                <div class="col-md-3 ml-auto">
-                    <a href="#" class="btn btn-warning btn-block btn-lg">Đăng Kí Ngay</a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-
-    <section class="site-section py-4">
-        <div class="container">
-
-            <div class="row align-items-center">
-                <div class="col-12 text-center mt-4 mb-5">
-                    <div class="row justify-content-center">
-                        <div class="col-md-7">
-                            <h2 class="section-title mb-2">Các Công Ty Nổi Bật</h2>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-6 col-lg-3 col-md-6 text-center">
-                    <img src="/Admin/images/job_logo_4.jpg" alt="Image" class="img-fluid logo-1">
-                </div>
-                <div class="col-6 col-lg-3 col-md-6 text-center">
-                    <img src="/Admin/images/job_logo_3.jpg" alt="Image" class="img-fluid logo-2">
-                </div>
-                <div class="col-6 col-lg-3 col-md-6 text-center">
-                    <img src="/Admin/images/job_logo_1.jpg" alt="Image" class="img-fluid logo-3">
-                </div>
-                <div class="col-6 col-lg-3 col-md-6 text-center">
-                    <img src="/Admin/images/job_logo_2.jpg" alt="Image" class="img-fluid logo-4">
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-
-<section class="bg-light pt-5 testimony-full">
-
-    <div class="owl-carousel single-carousel">
-
-
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-6 align-self-center text-center text-lg-left">
-                    <blockquote>
-                        <p>&ldquo;Chúng tôi cung cấp một môi trường làm việc thân thiện, năng động và đầy thử thách, nơi bạn có thể học hỏi, chia sẻ ý tưởng và phát triển sự nghiệp. Hãy tham gia cùng chúng tôi để trở thành một phần của đội ngũ sáng tạo, nơi mà những ý tưởng mới được trân trọng và khuyến khích..&rdquo;</p>
-                        <p><cite> &mdash; Corey Woods, @Dribbble</cite></p>
-                    </blockquote>
-                </div>
-                <div class="col-lg-6 align-self-end text-center text-lg-right">
-                    <img src="/Admin/images/person_transparent_2.png" alt="Image" class="img-fluid mb-0">
-                </div>
-            </div>
-        </div>
-
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-6 align-self-center text-center text-lg-left">
-                    <blockquote>
-                        <p>&ldquo;Chúng tôi cung cấp một môi trường làm việc thân thiện, năng động và đầy thử thách, nơi bạn có thể học hỏi, chia sẻ ý tưởng và phát triển sự nghiệp. Hãy tham gia cùng chúng tôi để trở thành một phần của đội ngũ sáng tạo, nơi mà những ý tưởng mới được trân trọng và khuyến khích.&rdquo;</p>
-                        <p><cite> &mdash; Chris Peters, @Google</cite></p>
-                    </blockquote>
-                </div>
-                <div class="col-lg-6 align-self-end text-center text-lg-right">
-                    <img src="/Admin/images/person_transparent.png" alt="Image" class="img-fluid mb-0">
-                </div>
-            </div>
-        </div>
-
-    </div>
-
-</section>
-
-<section class="pt-5 bg-image overlay-primary fixed overlay" style="background-image: url('/Admin/images/hero_1.jpg');">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-6 align-self-center text-center text-md-left mb-5 mb-md-0">
-                <h2 class="text-white">Get The Mobile Apps</h2>
-                <p class="mb-0">
-                    <a href="#" class="btn btn-dark btn-md px-4 border-width-2"><span
-                            class="icon-apple mr-3"></span>App
-                        Store</a>
-                    <a href="#" class="btn btn-dark btn-md px-4 border-width-2"><span
-                            class="icon-android mr-3"></span>Play
-                        Store</a>
-                </p>
-            </div>
-            <div class="col-md-6 ml-auto align-self-end">
-                <img src="/Admin/images/apps.png" alt="" class="img-fluid">
-            </div>
-        </div>
-    </div>
-</section>
-
 
 <!-- FOOTER -->
 <footer class="site-footer">
@@ -704,11 +523,11 @@
         // Xóa thông tin người dùng khỏi localStorage
         localStorage.removeItem('userInfo');
         if(localStorage.getItem('userInfo')){
-        // Cập nhật giao diện người dùng
-        document.getElementById('authButtons').style.display = 'none';
-        document.getElementById('userInfo1').style.display = 'none';
-        document.getElementById('userInfo2').style.display = 'none';
-        document.getElementById('userInfo').style.display = 'flex';
+            // Cập nhật giao diện người dùng
+            document.getElementById('authButtons').style.display = 'none';
+            document.getElementById('userInfo1').style.display = 'none';
+            document.getElementById('userInfo2').style.display = 'none';
+            document.getElementById('userInfo').style.display = 'flex';
         }else {
             document.getElementById('authButtons').style.display = 'none';
             document.getElementById('userInfo').style.display = 'none';
@@ -725,7 +544,6 @@
     document.getElementById('dashboard').addEventListener('click', function () {
         window.location.href = "users/dashboard";
     });
-
     document.getElementById('about').addEventListener('click', function () {
         window.location.href = "about";
     });
@@ -758,60 +576,60 @@
     //         }
     //     }
 
-        // // Thêm sự kiện cho nút đăng xuất
-        // document.getElementById('tuyendung1').addEventListener('click', function () {
-        //     const getUserInfo = localStorage.getItem("userInfo")
-        //     if (getUserInfo){
-        //         const userInfo = JSON.parse(getUserInfo);
-        //         const userRole = userInfo.userInfo.roles;
-        //         console.log(userRole);
-        //         console.log(userInfo);
-        //
-        //         if (userRole[0] === "ROLE_COMPANY" || userRole[0] === "ROLE_ADMIN"){
-        //
-        //             window.location.href = '/job-posts/create';
-        //         }
-        //         else {
-        //             // Xóa thông tin người dùng khỏi localStorage
-        //             localStorage.removeItem('userInfo');
-        //             // Cập nhật giao diện người dùng
-        //             document.getElementById('loginBtn1').style.display = 'block';
-        //             document.getElementById('signupBtn1').style.display = 'block';
-        //             document.getElementById('username1').style.display = 'none';
-        //             document.getElementById('userInfo').style.display = 'none';
-        //             console.log("User  logged out.");
-        //             window.location.href = '/auth/login';
-        //         }
-        //     }
-        //
-        // });
+    // // Thêm sự kiện cho nút đăng xuất
+    // document.getElementById('tuyendung1').addEventListener('click', function () {
+    //     const getUserInfo = localStorage.getItem("userInfo")
+    //     if (getUserInfo){
+    //         const userInfo = JSON.parse(getUserInfo);
+    //         const userRole = userInfo.userInfo.roles;
+    //         console.log(userRole);
+    //         console.log(userInfo);
+    //
+    //         if (userRole[0] === "ROLE_COMPANY" || userRole[0] === "ROLE_ADMIN"){
+    //
+    //             window.location.href = '/job-posts/create';
+    //         }
+    //         else {
+    //             // Xóa thông tin người dùng khỏi localStorage
+    //             localStorage.removeItem('userInfo');
+    //             // Cập nhật giao diện người dùng
+    //             document.getElementById('loginBtn1').style.display = 'block';
+    //             document.getElementById('signupBtn1').style.display = 'block';
+    //             document.getElementById('username1').style.display = 'none';
+    //             document.getElementById('userInfo').style.display = 'none';
+    //             console.log("User  logged out.");
+    //             window.location.href = '/auth/login';
+    //         }
+    //     }
+    //
+    // });
 
-            // Thêm sự kiện cho nút đăng xuất
-            document.getElementById('tuyendung').addEventListener('click', function () {
-                const getUserInfo = localStorage.getItem("userInfo")
-                if (getUserInfo) {
-                    const userInfo = JSON.parse(getUserInfo);
-                    const userRole = userInfo.userInfo.roles;
-                    console.log(userRole);
-                    console.log(userInfo);
+    // Thêm sự kiện cho nút đăng xuất
+    document.getElementById('tuyendung').addEventListener('click', function () {
+        const getUserInfo = localStorage.getItem("userInfo")
+        if (getUserInfo) {
+            const userInfo = JSON.parse(getUserInfo);
+            const userRole = userInfo.userInfo.roles;
+            console.log(userRole);
+            console.log(userInfo);
 
-                    if (userRole[0] === "ROLE_COMPANY" || userRole[0] === "ROLE_ADMIN") {
+            if (userRole[0] === "ROLE_COMPANY" || userRole[0] === "ROLE_ADMIN") {
 
-                        window.location.href = '/job-posts/create';
-                    } else {
-                        // Xóa thông tin người dùng khỏi localStorage
-                        localStorage.removeItem('userInfo');
-                        // Cập nhật giao diện người dùng
-                        document.getElementById('loginBtn1').style.display = 'block';
-                        document.getElementById('signupBtn1').style.display = 'block';
-                        document.getElementById('username1').style.display = 'none';
-                        document.getElementById('userInfo').style.display = 'none';
-                        console.log("User  logged out.");
-                        window.location.href = '/auth/login';
-                    }
-                }
+                window.location.href = '/job-posts/create';
+            } else {
+                // Xóa thông tin người dùng khỏi localStorage
+                localStorage.removeItem('userInfo');
+                // Cập nhật giao diện người dùng
+                document.getElementById('loginBtn1').style.display = 'block';
+                document.getElementById('signupBtn1').style.display = 'block';
+                document.getElementById('username1').style.display = 'none';
+                document.getElementById('userInfo').style.display = 'none';
+                console.log("User  logged out.");
+                window.location.href = '/auth/login';
+            }
+        }
 
-            });
+    });
 </script>
 
 <script>
@@ -824,6 +642,7 @@
         // Chuyển hướng đến trang đăng ký
         window.location.href = '/auth/register/user';
     });
+
 
     // document.addEventListener('DOMContentLoaded', function () {
     //     document.getElementById('loginBtn1').addEventListener('click', function () {

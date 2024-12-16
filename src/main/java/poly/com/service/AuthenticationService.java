@@ -60,11 +60,13 @@ public class AuthenticationService {
         validateEmailAndPasswordUser(request.getEmail(), request.getPassword(), request.getIsPassword());
 
         User user = createUser(request.getFirstname(), request.getLastname(), request.getEmail(), request.getPassword(), RoleType.ROLE_USER);
-        userRepository.save(user);
+
+
         var profile = Profile.builder()
                 .user_id(user)
                 .build();
         userRepository.save(user);
+
         profileRepository.save(profile);
         sendValidationEmail(user);
 
@@ -222,10 +224,8 @@ public class AuthenticationService {
 
             // Lưu thông tin cần thiết vào session
             session.setAttribute("user", user);
-            session.setAttribute("userId", user.getId());
-            session.setAttribute("userEmail", user.getEmail());
-            session.setAttribute("userRoles", userRoles);
             session.setAttribute("SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext());
+            System.out.println("Day la SecurityContextHolder.getContext(): " + SecurityContextHolder.getContext());
 
             // Kiểm tra role và set URL chuyển hướng
             String redirectUrl = determineRedirectUrl(userRoles);
@@ -380,7 +380,6 @@ public class AuthenticationService {
         String newVerificationCode = generateActivationCode(6);
         VerifyUser verifyUser = verifyRepository.findByUser(user)
          .orElseThrow(() -> new UserNotFoundException("Token not found for user"));
-
         verifyUser.setToken(newVerificationCode);
         verifyUser.setCreatedAt(LocalDateTime.now());
         verifyUser.setExpiredAt(LocalDateTime.now().plusMinutes(15));

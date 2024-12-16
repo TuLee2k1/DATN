@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import poly.com.dto.CompanyDto;
 import poly.com.model.Company;
+import poly.com.model.JobPost;
 import poly.com.service.CompanyService;
 import poly.com.service.FileStorageService;
 import poly.com.service.MapValidationErrorService;
@@ -58,6 +59,20 @@ public class AdminCompanyController {
         model.addAttribute("totalPages", companies.getTotalPages());
         return "admin/companies/company";
     }
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("details/{id}")
+    public String getCompanyDetails(@PathVariable("id") Long id, Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        Company company = companyService.findById(id);
+        if (company == null) {
+            model.addAttribute("error", "JobPost not found!");
+            return "error"; // Hoặc một trang báo lỗi phù hợp
+        }
+        model.addAttribute("company", company);
+        return "/admin/companies/companies_details";
+    }
+
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("delete/{id}")

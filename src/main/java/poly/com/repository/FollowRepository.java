@@ -28,8 +28,10 @@ public interface FollowRepository extends JpaRepository<Follow, Long> {
     Optional<Follow> findByUserIdAndJobPostId(Long userId, Long jobPostId);
 
     Optional<Follow> findByCompanyIdAndUserId(Long companyId, Long userId);
+
     Page<Follow> findByUserId(Long userId, Pageable pageable);
     void deleteByJobPostIdAndUserId(Long jobPostId, Long userId);
+
     Optional<Follow> findByUserIdAndCompanyId (Long userId, Long companyId);
 
     @Query("""
@@ -62,16 +64,10 @@ public interface FollowRepository extends JpaRepository<Follow, Long> {
     ORDER BY c.name ASC """, nativeQuery = true)
     Page<CompanyFollowResponse> findCompaniesFollowedByUser(@Param("userId") Long userId,Pageable pageable);
 
-//    @Query("SELECT new poly.com.dto.response.UserExperienceResponse( " +
-//     "p.name, " +
-//     "FUNCTION('TIMESTAMPDIFF', YEAR, p.dateOfBirth, CURRENT_DATE) AS age, " +
-//     "MAX(e.salary), " +
-//     "MIN(e.salary), " +
-//     "e.jobTitle, " +
-//     "p.address) " +
-//     "FROM Profile p " +
-//     "LEFT JOIN p.experiences e " +
-//     "GROUP BY p.name, p.dateOfBirth, e.jobTitle, p.address")
-//    List<UserExperienceResponse> getUserExperienceDetails();
+    boolean existsByCompanyIdAndUserId (Long companyId, Long userid);
+
+    @Query("SELECT COUNT(f) FROM Follow f WHERE f.userId = :userId")
+    Long countBookmarksByUserId(@Param("userId") Long userId);
+
 
 }
