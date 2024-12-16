@@ -160,7 +160,7 @@
           </a>
         </li>
         <li class="sidebar-item">
-          <a class="sidebar-link" href="lichsumuahang.html">
+          <a class="sidebar-link" href="hosodaluu.html">
             <i class="align-middle" data-feather="package"></i>
             <span>Lịch sử đơn hàng</span>
           </a>
@@ -447,11 +447,13 @@
           method="post"
           th:object="${jobPostRequest}">
 
+
       <!-- Thêm hidden input để đảm bảo ID được truyền -->
 
       <div class="container custom-container mt-1">
 
         <h4 class="mb-4">Thông tin cơ bản</h4>
+
 
         <input type="hidden" th:field="*{id}" />
         <div class="mb-3">
@@ -505,6 +507,39 @@
               Vui lòng chọn chuyên ngành
             </div>
           </div>
+
+
+          <div class="bordered-box mb-3">
+            <h5>Địa chỉ</h5>
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label for="city" class="form-label">
+                  Tỉnh / Thành phố
+                  <i class="fa fa-question-circle" data-bs-toggle="tooltip" title="Chọn tỉnh/thành phố"></i>
+                </label>
+                <select class="form-select form-select-lg" id="city" th:field="*{city}"
+                        th:data-selected="${jobPostRequest.city}" required>
+                  <option value="">Chọn Tỉnh hoặc Thành phố</option>
+                </select>
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('city')}" th:errors="*{city}">
+                  Vui lòng chọn thành phố
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <label for="district" class="form-label">
+                  Quận / Huyện
+                  <i class="fa fa-question-circle" data-bs-toggle="tooltip" title="Chọn quận/huyện"></i>
+                </label>
+                <select class="form-select form-select-lg" id="district" th:field="*{district}"
+                        th:data-selected="${jobPostRequest.district}" required>
+                  <option value="">Chọn Quận hoặc Huyện</option>
+                </select>
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('district')}" th:errors="*{district}">
+                  Quận/Huyện không được để trống
+                </div>
+              </div>
+
         </div>
 
         <div class="row mb-3">
@@ -513,6 +548,7 @@
             <input type="number" class="form-control" id="quantity" th:field="*{quantity}" min="1" placeholder="Chỉ nhập số, VD: 10" required>
             <div class="invalid-feedback" th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}">
               Số lượng phải lớn hơn 0
+
             </div>
           </div>
 
@@ -525,7 +561,7 @@
           </div>
         </div>
 
-        <div class="bordered-box mb-3">
+<!--         <div class="bordered-box mb-3">
           <h5>Địa chỉ</h5>
           <div class="row mb-3">
             <div class="col-md-6">
@@ -550,7 +586,7 @@
                 Quận/Huyện không được để trống
               </div>
             </div>
-          </div>
+          </div> -->
 
           <div class="mb-3">
             <label for="address" class="form-label">Số nhà, tên đường <i class="fa fa-question-circle"></i></label>
@@ -673,6 +709,80 @@
   document.getElementById("danhsachtindang").addEventListener("click", function() {
     window.location.href = '/job-posts/Listing';
   });
+
+
+  // Hàm format tên tỉnh/thành phố
+  function formatProvinceName(name) {
+    if (!name) return '';
+    // Loại bỏ tiền tố "Thành phố", "Tỉnh"
+    return name.replace(/^(Thành phố|Tỉnh)\s+/i, '').trim();
+  }
+
+  // Hàm format tên quận/huyện
+  function formatDistrictName(name) {
+    if (!name) return '';
+    // Loại bỏ tiền tố "Quận", "Huyện", "Thị xã"
+    return name.replace(/^(Quận|Huyện|Thị xã)\s+/i, '').trim();
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    const citySelect = document.getElementById('city');
+    const districtSelect = document.getElementById('district');
+    const selectedCity = citySelect.getAttribute('data-selected');
+    const selectedDistrict = districtSelect.getAttribute('data-selected');
+    let locationData = [];
+
+    // Fetch dữ liệu từ file JSON
+    fetch('/dataApi.json')
+            .then(response => response.json())
+            .then(data => {
+              locationData = data;
+
+              // Điền dữ liệu Tỉnh/Thành phố
+              locationData.forEach(province => {
+                const option = document.createElement('option');
+                option.value = province.name;
+                option.textContent = formatProvinceName(province.name); // Format tên tỉnh/thành phố
+                if (province.name === selectedCity) {
+                  option.selected = true;
+                }
+                citySelect.appendChild(option);
+              });
+
+              // Điền dữ liệu Quận/Huyện nếu có tỉnh đã chọn
+              if (selectedCity) {
+                updateDistricts(selectedCity, selectedDistrict);
+              }
+
+              // Khi chọn Tỉnh/Thành phố
+              citySelect.addEventListener('change', function () {
+                updateDistricts(this.value);
+              });
+
+              function updateDistricts(cityName, selectedDistrict = null) {
+                const province = locationData.find(p => p.name === cityName);
+                districtSelect.innerHTML = '<option value="">Chọn Quận hoặc Huyện</option>';
+                if (province && province.districts) {
+                  province.districts.forEach(district => {
+                    const option = document.createElement('option');
+                    option.value = district.name;
+                    option.textContent = formatDistrictName(district.name); // Format tên quận/huyện
+                    if (district.name === selectedDistrict) {
+                      option.selected = true;
+                    }
+                    districtSelect.appendChild(option);
+                  });
+                }
+              }
+            })
+            .catch(error => {
+              console.error('Lỗi tải dữ liệu:', error);
+            });
+  });
+
+
+
+
 
 </script>
 <!--<script th:src="@{../js/app.js}"></script>-->

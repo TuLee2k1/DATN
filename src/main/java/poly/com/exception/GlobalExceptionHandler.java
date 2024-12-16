@@ -18,6 +18,4 @@ import java.util.stream.Collectors;
 @ControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler  {
-
-
 }

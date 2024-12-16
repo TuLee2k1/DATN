@@ -76,12 +76,16 @@ public interface JobPostRepository extends JpaRepository<JobPost, Long> {
 
 
 
-
-
   @Modifying
   @Transactional
   @Query("DELETE FROM JobPost WHERE id = ?1 AND statusEnum IN (poly.com.Enum.StatusEnum.PENDING, poly.com.Enum.StatusEnum.REJECTED)")
   void deleteJobPostByStatusEnum(Long id);
+
+  // Kiểm tra xem có bài đăng nào sử dụng subCategoryId không
+  boolean existsBySubCategoryId(Long subCategoryId);
+
+  // Kiểm tra xem có bài đăng nào sử dụng jobCategoryId không
+  boolean existsByJobCategoryId(Long jobCategoryId);
 
 
 

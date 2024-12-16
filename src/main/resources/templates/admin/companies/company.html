@@ -38,6 +38,67 @@
             margin-bottom: 15px;
             /* Khoảng cách giữa các mục */
         }
+
+        /* Bố cục tổng thể */
+        .pagination-nav {
+            display: flex;
+            justify-content: flex-end; /* Căn về góc phải */
+            padding: 10px;
+            margin-top: 20px;
+        }
+
+        .pagination {
+            list-style: none;
+            display: flex;
+            gap: 5px;
+            padding: 0;
+            margin: 0;
+        }
+
+        /* Định dạng từng mục phân trang */
+        .page-item {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 5px 10px;
+            text-align: center;
+            font-size: 14px; /* Kích thước nhỏ hơn */
+            background-color: white;
+            color: gray;
+        }
+
+        .page-item a {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        /* Hover màu xám */
+        .page-item:hover {
+            background-color: #f0f0f0;
+            color: gray;
+            cursor: pointer;
+        }
+
+        /* Mục đang được chọn */
+        .page-item.active {
+            background-color: #ddd; /* Màu xám */
+            color: gray;
+            pointer-events: none;
+            font-weight: bold;
+        }
+
+        /* Mục bị vô hiệu hóa */
+        .page-item.disabled {
+            color: #ccc;
+            pointer-events: none;
+            border-color: #eee;
+        }
+
+        /* Ẩn đường viền khi hover trên mục bị vô hiệu hóa */
+        .page-item.disabled:hover {
+            background-color: white;
+            cursor: not-allowed;
+        }
     </style>
 
 </head>
@@ -82,8 +143,11 @@
                     <tr  th:each="company : ${companies}">
                         <td th:text="${company.id}"></td>
                         <td th:text="${company.name}"></td>
-                        <td>
-                            <img th:src="${company.logo}" alt="Logo" width="50" height="50">
+                        <td >
+                            <img th:src="${company?.logo != null && !#strings.isEmpty(company.logo)
+? '/uploads/logocompany/' + company.getLogo()
+: '/Admin/images/person_3.jpg'}"
+                          class="rounded-circle"       alt="Logo" width="50" height="50" style="width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center; font-size: 30px;" >
                         </td>
                         <td th:text="${company.email}"></td>
                         <td th:text="${company.addressAndDistrict()}"></td>
@@ -93,17 +157,68 @@
                         <td>
                             <div class="align-items-center gap-2">
                                 <!-- Nút xóa -->
-                                <a th:href="@{'/admin/companies/delete/' + ${company.id}}"
-                                   class="btn btn-outline-danger btn-sm rounded-circle"
-                                   style="width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center; font-size: 24px;"
-                                   onclick="return confirm('Bạn có chắc chắn muốn xóa công ty này?');">
-                                    <i class="align-middle" data-feather="trash-2"></i>
+                                <a th:href="@{'/admin/companies/details/' + ${company.id}}"
+                                   class="btn btn-outline-secondary btn-sm rounded-circle"
+                                   style="width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center; font-size: 24px;">
+                                    <i class="align-middle" data-feather="eye"></i>
                                 </a>
                             </div>
                         </td>
                     </tr>
                     </tbody>
                 </table>
+                <nav class="pagination-nav" th:if="${totalPages > 1}">
+                    <ul class="pagination">
+
+
+                        <li class="page-item previous-item" th:classappend="${currentPage == 1 ? 'disabled' : ''}">
+                            <a class="page-link" th:href="@{/admin/companies(pageNo=${currentPage - 1})}">
+                                Previous
+                            </a>
+                        </li>
+
+
+                        <li class="page-item" th:if="${currentPage > 2}">
+                            <a class="page-link" th:href="@{/admin/companies(pageNo=${1})}">1</a>
+                        </li>
+
+
+                        <li class="page-item disabled" th:if="${currentPage > 3}">
+                            <span class="page-link">...</span>
+                        </li>
+
+
+                        <li class="page-item" th:each="pageNumber : ${#numbers.sequence(currentPage - 1, currentPage + 1)}"
+                            th:classappend="${pageNumber == currentPage ? 'active' : ''}"
+                            th:if="${pageNumber > 0 && pageNumber <= totalPages}">
+
+                            <a class="page-link" th:href="@{/admin/companies(pageNo=${pageNumber})}"
+                               th:text="${pageNumber}">
+                            </a>
+                        </li>
+
+
+
+                        <li class="page-item disabled" th:if="${currentPage < totalPages - 2}">
+                            <span class="page-link">...</span>
+                        </li>
+
+
+                        <li class="page-item" th:if="${currentPage < totalPages - 1}">
+                            <a class="page-link" th:href="@{/admin/companies(pageNo=${totalPages})}"
+                               th:text="${totalPages}">
+                            </a>
+                        </li>
+
+
+                        <li class="page-item next-item" th:classappend="${currentPage == totalPages ? 'disabled' : ''}">
+                            <a class="page-link" th:href="@{/admin/companies(pageNo=${currentPage + 1})}">
+                                Next
+                            </a>
+
+                        </li>
+                    </ul>
+                </nav>
             </div>
         </div>
     </div>

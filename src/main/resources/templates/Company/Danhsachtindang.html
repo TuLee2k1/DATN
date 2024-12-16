@@ -163,7 +163,7 @@
 				  </a>
 				</li>
 				<li class="sidebar-item">
-				  <a class="sidebar-link" href="lichsumuahang.html">
+				  <a class="sidebar-link" href="hosodaluu.html">
 					<i class="align-middle" data-feather="package"></i>
 					<span>Lịch sử đơn hàng</span>
 				  </a>
@@ -454,13 +454,13 @@
 								<tbody>
 								<tr th:each="job : ${jobListings}" class="text-center">
 									<td data-label="Ẩn/Hiện" class="text-center">
-										<div class="form-check form-switch d-flex justify-content-center">
-											<input class="form-check-input toggle-view"
-												   type="checkbox"
-												   role="switch"
-												   th:checked="${job.status == T(poly.com.model.JobPostStatus).Open}"
-												   th:data-id="${job.id}">
-										</div>
+<!--										<div class="form-check form-switch d-flex justify-content-center">-->
+<!--											<input class="form-check-input toggle-view"-->
+<!--												   type="checkbox"-->
+<!--												   role="switch"-->
+<!--												   th:checked="${job.status == (poly.com.model.JobPostStatus).Open}"-->
+<!--												   th:data-id="${job.id}">-->
+<!--										</div>-->
 									</td>
 									<td data-label="Tên tin đăng" class="fw-bold" th:text="${job.jobTitle}"></td>
 									<td data-label="Ngày tạo" th:text="${#dates.format(job.createDate, 'dd/MM/yyyy')}"></td>

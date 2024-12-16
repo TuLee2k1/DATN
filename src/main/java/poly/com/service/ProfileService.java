@@ -13,21 +13,20 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import poly.com.Enum.EducationLevel;
 import poly.com.Enum.WorkType;
+import poly.com.Util.AuthenticationUtil;
 import poly.com.dto.ProfileDTO;
+import poly.com.dto.request.profileRequest;
 import poly.com.dto.response.PageResponse;
 import poly.com.dto.response.ProfileSearchResult;
 import poly.com.exception.ProfileException;
 
-import poly.com.model.Company;
-import poly.com.model.JobProfile;
+import poly.com.model.*;
 
-import poly.com.model.Profile;
-import poly.com.model.User;
+import poly.com.repository.FollowRepository;
 import poly.com.repository.ProfileRepository;
 import poly.com.repository.UserRepository;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -38,6 +37,8 @@ public class ProfileService {
     private final UserRepository userRepository;
     private final FileStorageService fileStorageService;
     private final PasswordEncoder passwordEncoder;
+    private final AuthenticationUtil authenticationUtil;
+    private final FollowRepository followRepository;
 
     /**
      * Tạo mới hoặc lưu thông tin profile
@@ -56,31 +57,31 @@ public class ProfileService {
         return profileRepository.save(entity);
     }
 
-    public Profile updateProfile(Long userId, ProfileDTO dto) {
-        Optional<Profile> existedOptional = profileRepository.findById(userId);
+    public Profile saveProfile(profileRequest request, Long userId) {
+        Optional<Profile> existingProfile = profileRepository.findById(userId);
+        Profile profile;
 
-        if (existedOptional.isEmpty()) {
-            throw new ProfileException("Profile không tồn tại.");
+        if (existingProfile.isPresent()) {
+            profile = existingProfile.get();
+        } else {
+            profile = new Profile();
         }
 
-        Profile existedProfile = existedOptional.get();
+        // Cập nhật thông tin từ request
+        profile.setName(request.getName());
+        profile.setEmail(request.getEmail());
+        profile.setPhone(request.getPhone());
+        profile.setAddress(request.getAddress());
+        profile.setSex(request.getSex());
+        profile.setDateOfBirth(request.getDateOfBirth());
 
-        // Cập nhật thông tin từ DTO
-        existedProfile.setName(dto.getName());
-        existedProfile.setEmail(dto.getEmail());
-        existedProfile.setPhone(dto.getPhone());
-        existedProfile.setAddress(dto.getAddress());
-        existedProfile.setSex(dto.getSex());
-        existedProfile.setDateOfBirth(dto.getDateOfBirth());
-
-        // Xử lý upload ảnh logo nếu có
-        MultipartFile logoFile = dto.getLogoFile();
-        if (logoFile != null && !logoFile.isEmpty()) {
-            String fileName = fileStorageService.storeImageProfileFile(logoFile);
-            existedProfile.setLogo(fileName);
+        // Xử lý file logo nếu có
+        if (request.getLogoFile() != null && !request.getLogoFile().isEmpty()) {
+            String fileName = fileStorageService.storeImageProfileFile(request.getLogoFile());
+            profile.setLogo(fileName);
         }
 
-        return profileRepository.save(existedProfile);
+        return profileRepository.save(profile);
     }
 
     /**
@@ -114,6 +115,11 @@ public class ProfileService {
      */
     public List<Profile> findAll() {
         return profileRepository.findAll();
+    }
+
+    public Page<Profile> getAllByAdmin(Integer pageNo) {
+        Pageable pageable = PageRequest.of(pageNo - 1, 5);
+        return profileRepository.findAll(pageable);
     }
 
     /**
@@ -161,14 +167,62 @@ public class ProfileService {
         userRepository.save(user);
     }
 
+
+
+
+    /**
+     * Tìm kiếm các hồ sơ với các tham số tìm kiếm và phân trang.
+     * @param name Tên người dùng
+     * @param desiredLocation Vị trí mong muốn
+     * @param workType Loại công việc
+     * @param degree Bằng cấp
+
+     * @return Trang kết quả tìm kiếm
+     */
+//    public PageResponse<ProfileSearchResult> searchProfiles(String name, String desiredLocation,
+//                                                            WorkType workType, String degree, Integer pageNo) {
+//        Pageable pageable = PageRequest.of(pageNo - 1, 10);
+//
+//        Page<ProfileSearchResult> results = profileRepository.searchProfilesWithAgeAndCount(name, desiredLocation, workType, degree, pageable);
+//
+//        return new PageResponse<>(results);
+//    }
+
+
     public PageResponse<ProfileSearchResult> searchProfiles(String name, String desiredLocation, WorkType workType,
                                                             EducationLevel degree, Integer pageNo) {
+
         // Tạo đối tượng pageable, mỗi trang sẽ có 10 kết quả
         Pageable pageable = PageRequest.of(pageNo - 1, 10);
         // Gọi repository để lấy kết quả phân trang
         Page<ProfileSearchResult> page = profileRepository.searchProfilesWithAgeAndCount(name, desiredLocation, workType, degree, pageable);
-
-        // Trả về PageResponse
         return new PageResponse<>(page);
     }
+
+    public PageResponse<ProfileSearchResult> searchProfilesSave(String name, Integer pageNo) {
+        var companyID = authenticationUtil.getCurrentUser().getCompany().getId();
+        Pageable pageable = PageRequest.of(pageNo - 1, 10);
+        Page<ProfileSearchResult> page = profileRepository.searchProfilesWithCompanyIdAndName(companyID,name, pageable);
+        return new PageResponse<>(page);
+    }
+
+    public List<Map<String, Object>> getAllFieldsByProfileId(Long userId) {
+        List<Object[]> results = profileRepository.searchProfileWithAllFields(userId);
+
+        List<Map<String, Object>> response = new ArrayList<>();
+        for (Object[] result : results) {
+            Profile profile = (Profile) result[0];
+            Follow follow = (Follow) result[1];
+            Company company = (Company) result[2];
+
+            Map<String, Object> map = new HashMap<>();
+            map.put("profile", profile);
+            map.put("follow", follow);
+            map.put("company", company);
+
+            response.add(map);
+        }
+        return response;
+    }
+
 }

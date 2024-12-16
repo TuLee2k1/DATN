@@ -28,14 +28,15 @@ public interface ProfileRepository extends JpaRepository<Profile, Long> {
     List<Profile> findByIdNotAndNameContainsIgnoreCase(Long id, String name);
 
     @Query("SELECT new poly.com.dto.response.ProfileSearchResult(" +
-        "p.user_id.id, " +
+     "p.user_id.id, " +
      "p.name, " +
      "YEAR(CURRENT_DATE) - YEAR(p.dateOfBirth), " +  // Tính tuổi
      "p.desiredLocation, " +
      "p.desired_salary, " +
      "p.address, " +
      "COUNT(p) OVER(), " +  // Đếm tất cả kết quả (tổng số)
-     "p.workType) " +
+     "p.workType, " +
+     "p.exp) " +
      "FROM Profile p " +
      "LEFT JOIN School s ON p.id = s.profile_id.id " +
      "LEFT JOIN Experience e ON p.id = e.profile.id " +
@@ -48,6 +49,33 @@ public interface ProfileRepository extends JpaRepository<Profile, Long> {
                                                             @Param("workType") WorkType workType,
                                                             @Param("degree") EducationLevel degree,
                                                             Pageable pageable);
+
+
+    @Query("SELECT new poly.com.dto.response.ProfileSearchResult(" +
+     "p.user_id.id, " +
+     "p.name, " +
+     "(YEAR(CURRENT_DATE) - YEAR(p.dateOfBirth)), " +  // Tính tuổi
+     "p.desiredLocation, " +
+     "p.desired_salary, " +
+     "p.address, " +
+     "p.exp, " +
+     "p.email, " +
+     "p.phone, " +
+     "f.followDate) " +
+     "FROM Profile p " +
+     "JOIN Follow f ON p.user_id.id = f.userId " +  // Kết nối với bảng Follow qua user_id
+     "WHERE f.companyId = :companyId " +  // Điều kiện company_id
+     "AND (:name IS NULL OR p.name LIKE %:name%)")  // Điều kiện tìm kiếm tên
+    Page<ProfileSearchResult> searchProfilesWithCompanyIdAndName(@Param("companyId") Long companyId,
+                                                                 @Param("name") String name,
+                                                                 Pageable pageable);
+
+    @Query("SELECT p, f, c " +
+     "FROM Profile p " +
+     "JOIN Follow f ON p.user_id.id = f.userId " +
+     "JOIN Company c ON f.companyId = c.id " +
+     "WHERE p.user_id.id = :userId")
+    List<Object[]> searchProfileWithAllFields(@Param("userId") Long userId);
 
 
 }

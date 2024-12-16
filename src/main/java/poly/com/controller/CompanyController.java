@@ -80,11 +80,11 @@ public class CompanyController {
         return new ResponseEntity<>(dto, HttpStatus.CREATED);
     }
 
-    @Operation(summary = "Get All Company", description = "API get all company")
-    @GetMapping()
-    public ResponseEntity<?> getCompany(){
-        return new ResponseEntity<>(companyService.findAll(), HttpStatus.OK);
-    }
+//    @Operation(summary = "Get All Company", description = "API get all company")
+//    @GetMapping()
+//    public ResponseEntity<?> getCompany(){
+//        return new ResponseEntity<>(companyService.findAll(), HttpStatus.OK);
+//    }
 
     @Operation(summary = "Get all Pageable Company", description = "API get all pageable company")
     @GetMapping("/page")

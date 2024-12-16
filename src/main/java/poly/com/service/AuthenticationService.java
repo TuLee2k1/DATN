@@ -60,7 +60,17 @@ public class AuthenticationService {
         validateEmailAndPasswordUser(request.getEmail(), request.getPassword(), request.getIsPassword());
 
         User user = createUser(request.getFirstname(), request.getLastname(), request.getEmail(), request.getPassword(), RoleType.ROLE_USER);
+        var profile = Profile.builder()
+         .user_id(user)
+         .build();
         userRepository.save(user);
+
+        var profile = Profile.builder()
+                .user_id(user)
+                .build();
+        userRepository.save(user);
+
+        profileRepository.save(profile);
         sendValidationEmail(user);
 
         String jwtToken = jwtService.generateToken(user);
@@ -217,10 +227,8 @@ public class AuthenticationService {
 
             // Lưu thông tin cần thiết vào session
             session.setAttribute("user", user);
-            session.setAttribute("userId", user.getId());
-            session.setAttribute("userEmail", user.getEmail());
-            session.setAttribute("userRoles", userRoles);
             session.setAttribute("SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext());
+            System.out.println("Day la SecurityContextHolder.getContext(): " + SecurityContextHolder.getContext());
 
             // Kiểm tra role và set URL chuyển hướng
             String redirectUrl = determineRedirectUrl(userRoles);
@@ -232,7 +240,6 @@ public class AuthenticationService {
                     .refreshToken(refreshToken) // Thêm refresh token vào response
                     .email(user.getEmail())
                     .fullName(user.getFullName())
-                    .firstName(user.getFirstname())
                     .roles(userRoles)
                     .redirectUrl(redirectUrl) // Thêm URL chuyển hướng vào response
                     .build();
@@ -249,7 +256,7 @@ public class AuthenticationService {
 //            return "/JobPost/create";
             return "/company-account";
         } else if (roles.contains(RoleType.ROLE_ADMIN)) {
-            return "/admin/dashboard";
+            return "/admin/thongke";
         } else if (roles.contains(RoleType.ROLE_USER)) {
             return "/auth/user/dashboard";
         }
@@ -363,6 +370,9 @@ public class AuthenticationService {
         verifyRepository.save(savedVerifyUser );
     }
 
+    /**
+     * Gửi lại mã xác thực qua email
+     */
     public void resendVerificationCode(String email) throws MessagingException {
         User user = userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException("User not found"));
 
@@ -372,8 +382,7 @@ public class AuthenticationService {
 
         String newVerificationCode = generateActivationCode(6);
         VerifyUser verifyUser = verifyRepository.findByUser(user)
-                .orElseThrow(() -> new UserNotFoundException("Token not found for user"));
-
+         .orElseThrow(() -> new UserNotFoundException("Token not found for user"));
         verifyUser.setToken(newVerificationCode);
         verifyUser.setCreatedAt(LocalDateTime.now());
         verifyUser.setExpiredAt(LocalDateTime.now().plusMinutes(15));
@@ -465,7 +474,7 @@ public class AuthenticationService {
         }
     }
 
-    //để lấy hiển thị tất cả thông tin user
+    //để lấy hiển thị tất cả thông tin user dùng cho admin
     public List<User> findAllUsers() {
         return userRepository.findAll();
     }
