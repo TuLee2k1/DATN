@@ -56,10 +56,10 @@ public class AdminJobPostController {
 
         try {
             jobPostService.approveJobPost(id); // Gọi service để duyệt
-            redirectAttributes.addFlashAttribute("message", "Job post approved successfully.");
+            redirectAttributes.addFlashAttribute("message", "Duyệt bài đăng thành công!");
             return "redirect:/admin/jobposts"; // Điều hướng lại trang danh sách JobPosts
         } catch (RuntimeException e) {
-            redirectAttributes.addFlashAttribute("message", "Error: " + e.getMessage());
+            redirectAttributes.addFlashAttribute("error", "Bài đăng này đã bị xóa!");
             return "redirect:/admin/jobposts"; // Quay lại danh sách JobPosts nếu có lỗi
         }
     }

@@ -128,9 +128,60 @@
             cursor: not-allowed;
         }
 
+        /*css cu thông baso*/
+        .custom-alert {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1050;
+            width: auto;
+            max-width: 300px;
+            padding: 10px 20px;
+            margin: 0;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .alert-success {
+            background-color: #28a745; /* Màu xanh cho thông báo thành công */
+            color: white;
+        }
+
+        .alert-warning {
+            background-color: #ffc107; /* Màu vàng cho thông báo lỗi */
+            color: black;
+        }
+
+        .custom-alert span {
+            display: inline-block;
+            width: 100%;
+        }
+
+
+
 
     </style>
 
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var successAlert = document.querySelector('.alert-success');
+            var errorAlert = document.querySelector('.alert-warning');
+
+            // Nếu có thông báo thành công
+            if (successAlert) {
+                setTimeout(function() {
+                    successAlert.style.display = 'none'; // Ẩn thông báo sau 3 giây
+                }, 3000);
+            }
+
+            // Nếu có thông báo lỗi
+            if (errorAlert) {
+                setTimeout(function() {
+                    errorAlert.style.display = 'none'; // Ẩn thông báo sau 3 giây
+                }, 3000);
+            }
+        });
+    </script>
 </head>
 
 <body>
@@ -138,9 +189,14 @@
 <!-- PHẦN CONTENT -->
 <main class="content" layout:fragment="content">
 
-    <!-- Hiển Thị Thông Báo -->
-    <div th:if="${message}" class="alert alert-success" role="alert">
+    <!-- Thông báo thành công -->
+    <div th:if="${message}" class="alert alert-success custom-alert" role="alert">
         <span th:text="${message}"></span>
+    </div>
+
+    <!-- Thông báo lỗi -->
+    <div th:if="${error}" class="alert alert-warning custom-alert" role="alert">
+        <span th:text="${error}"></span>
     </div>
 
     <div class="row">
