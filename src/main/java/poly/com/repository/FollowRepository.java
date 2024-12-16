@@ -75,4 +75,8 @@ public interface FollowRepository extends JpaRepository<Follow, Long> {
 //     "GROUP BY p.name, p.dateOfBirth, e.jobTitle, p.address")
 //    List<UserExperienceResponse> getUserExperienceDetails();
 
+    @Query("SELECT COUNT(f) FROM Follow f WHERE f.userId = :userId")
+    Long countBookmarksByUserId(@Param("userId") Long userId);
+
+
 }
