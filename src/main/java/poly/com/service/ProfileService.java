@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import poly.com.Enum.EducationLevel;
 import poly.com.Enum.WorkType;
-import poly.com.Util.AuthenticationUtil;
+import poly.com.util.AuthenticationUtil;
 import poly.com.dto.ProfileDTO;
 import poly.com.dto.request.profileRequest;
 import poly.com.dto.response.PageResponse;

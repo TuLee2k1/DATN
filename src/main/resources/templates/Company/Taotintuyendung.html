@@ -18,6 +18,8 @@
   <link rel="shortcut icon" href="img/icons/icon-48x48.png" />
 
   <link rel="canonical" href="https://demo-basic.adminkit.io/" />
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css">
 
   <title>Tạo tin tuyển dụng</title>
 
@@ -331,7 +333,7 @@
                   <div class="row g-0 align-items-center">
                     <div class="col-2">
                       <img
-                              src="img/avatars/avatar-5.jpg"
+                              src="/img/avatars/avatar-5.jpg"
                               class="avatar img-fluid rounded-circle"
                               alt="Vanessa Tucker" />
                     </div>
@@ -348,7 +350,7 @@
                   <div class="row g-0 align-items-center">
                     <div class="col-2">
                       <img
-                              src="img/avatars/avatar-2.jpg"
+                              src="/img/avatars/avatar-2.jpg"
                               class="avatar img-fluid rounded-circle"
                               alt="William Harris" />
                     </div>
@@ -365,7 +367,7 @@
                   <div class="row g-0 align-items-center">
                     <div class="col-2">
                       <img
-                              src="img/avatars/avatar-4.jpg"
+                              src="/img/avatars/avatar-4.jpg"
                               class="avatar img-fluid rounded-circle"
                               alt="Christina Mason" />
                     </div>
@@ -382,7 +384,7 @@
                   <div class="row g-0 align-items-center">
                     <div class="col-2">
                       <img
-                              src="img/avatars/avatar-3.jpg"
+                              src="/img/avatars/avatar-3.jpg"
                               class="avatar img-fluid rounded-circle"
                               alt="Sharon Lessman" />
                     </div>
@@ -415,7 +417,7 @@
                     href="#"
                     data-bs-toggle="dropdown">
               <img
-                      src="img/avatars/avatar.jpg"
+                      src="/img/avatars/avatar.jpg"
                       class="avatar img-fluid rounded me-1"
                       alt="Charles Hall" />
               <span class="text-dark">Charles Hall</span>
@@ -443,7 +445,7 @@
       </div>
     </nav>
 
-    <form th:action="@{${jobPostRequest.id != null ?   '/job-posts/' + jobPostRequest.id + '/update' :   '/job-posts/create'}}"
+    <form id="jobForm"  th:action="@{${jobPostRequest.id != null ?   '/job-posts/' + jobPostRequest.id + '/update' :   '/job-posts/create'}}"
           method="post"
           th:object="${jobPostRequest}">
 
@@ -458,36 +460,37 @@
         <input type="hidden" th:field="*{id}" />
         <div class="mb-3">
           <label for="jobTitle" class="form-label">Tiêu đề tin tuyển dụng <i class="fa fa-question-circle"></i></label>
-          <input type="text" class="form-control" id="jobTitle" th:field="*{jobTitle}" placeholder="Vị trí hiển thị đang tuyển" required>
-          <div class="invalid-feedback" th:if="${#fields.hasErrors('jobTitle')}" th:errors="*{jobTitle}">
-            Tiêu đề công việc không được để trống
+          <input type="text" class="form-control" id="jobTitle" th:field="*{jobTitle}" placeholder="Vị trí hiển thị đang tuyển">
+          <div id="error-jobTitle" class="text-danger" th:if="${#fields.hasErrors('jobTitle')}" th:errors="*{jobTitle}" style="display: block">
+            Vui lòng nhập tiêu đề công việc!
+
           </div>
         </div>
         <div class="row mb-3">
           <div class="col-md-6">
             <label for="jobCategoryId" class="form-label">Ngành nghề <i class="fa fa-question-circle"></i></label>
-            <select class="form-select" id="jobCategoryId" th:field="*{jobCategoryId}" required>
+            <select class="form-select" id="jobCategoryId" th:field="*{jobCategoryId}">
               <option value="">Chọn ngành nghề</option>
               <option th:each="category : ${jobCategories}"
                       th:value="${category.id}"
                       th:text="${category.categoryName}">
               </option>
             </select>
-            <div class="invalid-feedback" th:if="${#fields.hasErrors('jobCategoryId')}" th:errors="*{jobCategoryId}">
+            <div id="error-Category" class="text-danger" th:if="${#fields.hasErrors('jobCategoryId')}" th:errors="*{jobCategoryId}">
               Vui lòng chọn ngành nghề
             </div>
           </div>
 
           <div class="col-md-6">
             <label for="exp" class="form-label">Kinh nghiệm <i class="fa fa-question-circle"></i></label>
-            <select class="form-select" id="exp" th:field="*{exp}" required>
+            <select class="form-select" id="exp" th:field="*{exp}">
               <option value="">Chọn kinh nghiệm</option>
               <option th:each="experience : ${T(poly.com.Enum.Exp).values()}"
                       th:value="${experience}"
                       th:text="${experience.getName()}">
               </option>
             </select>
-            <div class="invalid-feedback" th:if="${#fields.hasErrors('exp')}" th:errors="*{exp}">
+            <div id="error-Exp" class="text-danger" th:if="${#fields.hasErrors('exp')}" th:errors="*{exp}">
               Vui lòng chọn kinh nghiệm
             </div>
           </div>
@@ -496,14 +499,14 @@
         <div class="row mb-3">
           <div class="col-md-6">
             <label for="subCategoryIds" class="form-label">Chuyên ngành <i class="fa fa-question-circle"></i></label>
-            <select class="form-select" id="subCategoryIds" th:field="*{subCategoryIds}" required>
+            <select class="form-select" id="subCategoryIds" th:field="*{subCategoryIds}">
               <option value="">Chọn chuyên ngành</option>
               <option th:each="subCategory : ${subCategories}"
                       th:value="${subCategory.id}"
                       th:text="${subCategory.subCategoryName}">
               </option>
             </select>
-            <div class="invalid-feedback" th:if="${#fields.hasErrors('subCategoryIds')}" th:errors="*{subCategoryIds}">
+            <div id="error-SubCategory" class="text-danger" th:if="${#fields.hasErrors('subCategoryIds')}" th:errors="*{subCategoryIds}">
               Vui lòng chọn chuyên ngành
             </div>
           </div>
@@ -518,10 +521,10 @@
                   <i class="fa fa-question-circle" data-bs-toggle="tooltip" title="Chọn tỉnh/thành phố"></i>
                 </label>
                 <select class="form-select form-select-lg" id="city" th:field="*{city}"
-                        th:data-selected="${jobPostRequest.city}" required>
+                        th:data-selected="${jobPostRequest.city}">
                   <option value="">Chọn Tỉnh hoặc Thành phố</option>
                 </select>
-                <div class="invalid-feedback" th:if="${#fields.hasErrors('city')}" th:errors="*{city}">
+                <div id="error-City" class="text-danger" th:if="${#fields.hasErrors('city')}" th:errors="*{city}">
                   Vui lòng chọn thành phố
                 </div>
               </div>
@@ -532,10 +535,10 @@
                   <i class="fa fa-question-circle" data-bs-toggle="tooltip" title="Chọn quận/huyện"></i>
                 </label>
                 <select class="form-select form-select-lg" id="district" th:field="*{district}"
-                        th:data-selected="${jobPostRequest.district}" required>
+                        th:data-selected="${jobPostRequest.district}">
                   <option value="">Chọn Quận hoặc Huyện</option>
                 </select>
-                <div class="invalid-feedback" th:if="${#fields.hasErrors('district')}" th:errors="*{district}">
+                <div id="error-District" class="text-danger" th:if="${#fields.hasErrors('district')}" th:errors="*{district}">
                   Quận/Huyện không được để trống
                 </div>
               </div>
@@ -545,8 +548,8 @@
         <div class="row mb-3">
           <div class="col-md-6">
             <label for="quantity" class="form-label">Số lượng tuyển <i class="fa fa-question-circle"></i></label>
-            <input type="number" class="form-control" id="quantity" th:field="*{quantity}" min="1" placeholder="Chỉ nhập số, VD: 10" required>
-            <div class="invalid-feedback" th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}">
+            <input type="number" class="form-control" id="quantity" th:field="*{quantity}" min="1" placeholder="Chỉ nhập số, VD: 10">
+            <div id="error-Quantity" class="text-danger" th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}">
               Số lượng phải lớn hơn 0
 
             </div>
@@ -554,44 +557,18 @@
 
           <div class="col-md-6">
             <label for="endDate" class="form-label">Hạn nộp hồ sơ <i class="fa fa-question-circle"></i></label>
-            <input type="date" class="form-control" id="endDate" th:field="*{endDate}" required>
-            <div class="invalid-feedback" th:if="${#fields.hasErrors('endDate')}" th:errors="*{endDate}">
+            <input type="date" class="form-control" id="endDate" th:field="*{endDate}">
+            <div id="error-endDate" class="text-danger" th:if="${#fields.hasErrors('endDate')}" th:errors="*{endDate}">
               Ngày kết thúc không được để trống
             </div>
           </div>
         </div>
 
-<!--         <div class="bordered-box mb-3">
-          <h5>Địa chỉ</h5>
-          <div class="row mb-3">
-            <div class="col-md-6">
-              <label for="city" class="form-label">Tỉnh / Thành phố <i class="fa fa-question-circle"></i></label>
-              <select class="form-select" id="city" th:field="*{city}" required>
-                <option value="">Chọn Tỉnh hoặc Thành phố</option>
-                <option value="Hà Nội">Hà Nội</option>
-                <option value="Hồ Chí Minh">Hồ Chí Minh</option>
-                <option value="Đà Nẵng">Đà Nẵng</option>
-                <option value="Hải Phòng">Hải Phòng</option>
-                <option value="Cần Thơ">Cần Thơ</option>
-              </select>
-              <div class="invalid-feedback" th:if="${#fields.hasErrors('city')}" th:errors="*{city}">
-                Vui lòng chọn thành phố
-              </div>
-            </div>
-
-            <div class="col-md-6">
-              <label for="district" class="form-label">Quận / Huyện <i class="fa fa-question-circle"></i></label>
-              <input type="text" class="form-control" id="district" th:field="*{district}" placeholder="VD: Quận 1" required>
-              <div class="invalid-feedback" th:if="${#fields.hasErrors('district')}" th:errors="*{district}">
-                Quận/Huyện không được để trống
-              </div>
-            </div>
-          </div> -->
 
           <div class="mb-3">
             <label for="address" class="form-label">Số nhà, tên đường <i class="fa fa-question-circle"></i></label>
-            <input type="text" class="form-control" id="address" th:field="*{address}" placeholder="VD: 23 Trần Cao Vân, phường Đa Kao" required>
-            <div class="invalid-feedback" th:if="${#fields.hasErrors('address')}" th:errors="*{address}">
+            <input type="text" class="form-control" id="address" th:field="*{address}" placeholder="VD: 23 Trần Cao Vân, phường Đa Kao">
+            <div id="error-address" class="text-danger" th:if="${#fields.hasErrors('address')}" th:errors="*{address}">
               Địa chỉ chi tiết không được để trống
             </div>
           </div>
@@ -601,21 +578,21 @@
         <div class="row mb-3">
           <div class="col-md-6">
             <label for="workType" class="form-label">Hình thức làm việc <i class="fa fa-question-circle"></i></label>
-            <select class="form-select" id="workType" th:field="*{workType}" required>
+            <select class="form-select" id="workType" th:field="*{workType}">
               <option value="">Chọn hình thức làm việc</option>
               <option th:each="type : ${T(poly.com.Enum.WorkType).values()}"
                       th:value="${type}"
                       th:text="${type.getName()}">
               </option>
             </select>
-            <div class="invalid-feedback" th:if="${#fields.hasErrors('workType')}" th:errors="*{workType}">
+            <div id="error-workType" class="text-danger" th:if="${#fields.hasErrors('workType')}" th:errors="*{workType}">
               Vui lòng chọn hình thức làm việc
             </div>
           </div>
 
           <div class="col-md-6">
             <label for="jobLevel" class="form-label">Cấp bậc <i class="fa fa-question-circle"></i></label>
-            <select class="form-select" id="jobLevel" th:field="*{jobLevel}" required>
+            <select class="form-select" id="jobLevel" th:field="*{jobLevel}">
               <option value="">Chọn cấp bậc</option>
               <option th:each="level : ${T(poly.com.Enum.JobLevel).values()}"
                       th:value="${level}"
@@ -623,7 +600,7 @@
 
               </option>
             </select>
-            <div class="invalid-feedback" th:if="${#fields.hasErrors('jobLevel')}" th:errors="*{jobLevel}">
+            <div id="error-jobLevel" class="text-danger" th:if="${#fields.hasErrors('jobLevel')}" th:errors="*{jobLevel}">
               Vui lòng chọn cấp bậc công việc
             </div>
           </div>
@@ -634,16 +611,16 @@
         <div class="row mb-3">
           <div class="col-md-6">
             <label for="minSalary" class="form-label">Lương tối thiểu <i class="fa fa-question-circle"></i></label>
-            <input type="number" class="form-control" id="minSalary" th:field="*{minSalary}" min="0" step="0.1" placeholder="0" required>
-            <div class="invalid-feedback" th:if="${#fields.hasErrors('minSalary')}" th:errors="*{minSalary}">
+            <input type="number" class="form-control" id="minSalary" th:field="*{minSalary}" placeholder="0">
+            <div id="error-minSalary" class="text-danger" th:if="${#fields.hasErrors('minSalary')}" th:errors="*{minSalary}">
               Lương tối thiểu phải lớn hơn hoặc bằng 0
             </div>
           </div>
 
           <div class="col-md-6">
             <label for="maxSalary" class="form-label">Lương tối đa <i class="fa fa-question-circle"></i></label>
-            <input type="number" class="form-control" id="maxSalary" th:field="*{maxSalary}" min="0" step="0.1" placeholder="0" required>
-            <div class="invalid-feedback" th:if="${#fields.hasErrors('maxSalary')}" th:errors="*{maxSalary}">
+            <input type="number" class="form-control" id="maxSalary" th:field="*{maxSalary}" placeholder="0">
+            <div id="error-maxSalary" class="text-danger" th:if="${#fields.hasErrors('maxSalary')}" th:errors="*{maxSalary}">
               Lương tối đa phải lớn hơn hoặc bằng 0
             </div>
           </div>
@@ -652,24 +629,24 @@
         <h4 class="mb-4">Công việc chi tiết</h4>
         <div class="mb-3">
           <label for="jobDescription" class="form-label">Mô tả công việc</label>
-          <textarea class="form-control" id="jobDescription" th:field="*{jobDescription}" rows="5" placeholder="Nhập mô tả công việc..." required></textarea>
-          <div class="invalid-feedback" th:if="${#fields.hasErrors('jobDescription')}" th:errors="*{jobDescription}">
+          <textarea class="form-control" id="jobDescription" th:field="*{jobDescription}" rows="5" placeholder="Nhập mô tả công việc..." ></textarea>
+          <div id="error-jobDescription" class="text-danger" th:if="${#fields.hasErrors('jobDescription')}" th:errors="*{jobDescription}">
             Mô tả công việc không được để trống
           </div>
         </div>
 
         <div class="mb-3">
           <label for="jobRequire" class="form-label">Yêu cầu công việc</label>
-          <textarea class="form-control" id="jobRequire" th:field="*{jobRequire}" rows="5" placeholder="Nhập yêu cầu công việc..." required></textarea>
-          <div class="invalid-feedback" th:if="${#fields.hasErrors('jobRequire')}" th:errors="*{jobRequire}">
+          <textarea class="form-control" id="jobRequire" th:field="*{jobRequire}" rows="5" placeholder="Nhập yêu cầu công việc..."></textarea>
+          <div id="error-jobRequire" class="text-danger" th:if="${#fields.hasErrors('jobRequire')}" th:errors="*{jobRequire}">
             Yêu cầu công việc không được để trống
           </div>
         </div>
 
         <div class="mb-3">
           <label for="jobBenefit" class="form-label">Quyền lợi</label>
-          <textarea class="form-control" id="jobBenefit" th:field="*{jobBenefit}" rows="5" placeholder="Nhập quyền lợi công việc..." required></textarea>
-          <div class="invalid-feedback" th:if="${#fields.hasErrors('jobBenefit')}" th:errors="*{jobBenefit}">
+          <textarea class="form-control" id="jobBenefit" th:field="*{jobBenefit}" rows="5" placeholder="Nhập quyền lợi công việc..."></textarea>
+          <div id="error-jobBenefit" class="text-danger" th:if="${#fields.hasErrors('jobBenefit')}" th:errors="*{jobBenefit}">
             Quyền lợi không được để trống
           </div>
         </div>
@@ -689,6 +666,210 @@
   </div>
 </div>
 <script>
+  // document.getElementById('jobForm').addEventListener('submit', function(event) {
+  //   event.preventDefault();
+  //   const jobTitleInput = document.getElementById('jobTitle');
+  //   const errorTitle = document.getElementById('error-jobTitle');
+
+    // const jobCategoryInput = document.getElementById('jobCategoryId');
+    // const errorCategory = document.getElementById('error-Category');
+    //
+    // const jobExpInput = document.getElementById('exp');
+    // const errorExp = document.getElementById('error-Exp');
+    //
+    // const jobSubCategoryInput = document.getElementById('subCategoryIds');
+    // const errorSubCatrgory = document.getElementById('error-SubCategory');
+    //
+    // const jobQuantityInput = document.getElementById('quantity');
+    // const errorQuantity = document.getElementById('error-Quantity');
+    //
+    // const jobEndDateInput = document.getElementById('endDate');
+    // const errorEndate = document.getElementById('error-endDate');
+    //
+    // const jobCityInput = document.getElementById('city');
+    // const errorCity = document.getElementById('error-City');
+    //
+    // const jobDistrictInput = document.getElementById('district');
+    // const errorDistrict = document.getElementById('error-District');
+    //
+    // const jobAddresInput = document.getElementById('address');
+    // const errorAddress = document.getElementById('error-address');
+    //
+    // const jobWorkTypeInput = document.getElementById('workType');
+    // const errorWorkType = document.getElementById('error-workType');
+    //
+    // const jobJobLevelInput = document.getElementById('jobLevel');
+    // const errorJobLevel = document.getElementById('error-jobLevel');
+    //
+    // const jobMinSalaryInput = document.getElementById('minSalary');
+    // const errorMinSalary = document.getElementById('error-minSalary');
+    //
+    // const jobMaxSalaryInput = document.getElementById('maxSalary');
+    // const errorMaxSalary = document.getElementById('error-maxSalary');
+    //
+    // const jobJobDescriptionInput = document.getElementById('jobDescription');
+    // const errorJobDescription = document.getElementById('error-jobDescription');
+    //
+    // const jobJobRequiredInput = document.getElementById('jobRequire');
+    // const errorJobRequired = document.getElementById('error-jobRequire');
+    //
+    // const jobJobBenefitInput = document.getElementById('jobBenefit');
+    // const errorJobBenefit = document.getElementById('error-jobBenefit');
+    //
+    // let isValid = true;
+
+    // Kiểm tra nếu trường nhập liệu trống
+    // if (!jobTitleInput.value.trim()) {
+    //   event.preventDefault(); // Ngăn chặn gửi form
+    //   errorTitle.style.display = 'block'; // Hiển thị thông báo lỗi
+    //   jobTitleInput.focus();
+    // } else {
+    //   errorTitle.style.display = 'none'; // Ẩn thông báo lỗi nếu có giá trị
+    // }
+
+    // if (!jobCategoryInput.value.trim()) {
+    //   // event.preventDefault(); // Ngăn chặn gửi form
+    //   errorCategory.style.display = 'block'; // Hiển thị thông báo lỗi
+    //   jobCategoryInput.focus();
+    //   isValid = false;
+    // } else {
+    //   errorCategory.style.display = 'none'; // Ẩn thông báo lỗi nếu có giá trị
+    // }
+    //
+    // if (!jobExpInput.value.trim()) {
+    //   // event.preventDefault(); // Ngăn chặn gửi form
+    //   errorExp.style.display = 'block'; // Hiển thị thông báo lỗi
+    //   jobExpInput.focus();
+    //   isValid = false;
+    // } else {
+    //   errorExp.style.display = 'none'; // Ẩn thông báo lỗi nếu có giá trị
+    // }
+    //
+    // if (!jobSubCategoryInput.value.trim()) {
+    //   // event.preventDefault(); // Ngăn chặn gửi form
+    //   errorSubCatrgory.style.display = 'block'; // Hiển thị thông báo lỗi
+    //   jobSubCategoryInput.focus();
+    //   isValid = false;
+    // } else {
+    //   errorSubCatrgory.style.display = 'none'; // Ẩn thông báo lỗi nếu có giá trị
+    // }
+    //
+    // if (!jobQuantityInput.value.trim()) {
+    //   // event.preventDefault(); // Ngăn chặn gửi form
+    //   errorQuantity.style.display = 'block'; // Hiển thị thông báo lỗi
+    //   jobQuantityInput.focus();
+    //   isValid = false;
+    // } else {
+    //   errorQuantity.style.display = 'none'; // Ẩn thông báo lỗi nếu có giá trị
+    // }
+    //
+    // if (!jobEndDateInput.value.trim()) {
+    //   // event.preventDefault(); // Ngăn chặn gửi form
+    //   errorEndate.style.display = 'block'; // Hiển thị thông báo lỗi
+    //   jobEndDateInput.focus();
+    //   isValid = false;
+    // } else {
+    //   errorEndate.style.display = 'none'; // Ẩn thông báo lỗi nếu có giá trị
+    // }
+    //
+    // if (!jobCityInput.value.trim()) {
+    //   // event.preventDefault(); // Ngăn chặn gửi form
+    //   errorCity.style.display = 'block'; // Hiển thị thông báo lỗi
+    //   jobCityInput.focus();
+    //   isValid = false;
+    // } else {
+    //   errorCity.style.display = 'none'; // Ẩn thông báo lỗi nếu có giá trị
+    // }
+    //
+    // if (!jobDistrictInput.value.trim()) {
+    //   // event.preventDefault(); // Ngăn chặn gửi form
+    //   errorDistrict.style.display = 'block'; // Hiển thị thông báo lỗi
+    //   jobDistrictInput.focus();
+    //   isValid = false;
+    // } else {
+    //   errorDistrict.style.display = 'none'; // Ẩn thông báo lỗi nếu có giá trị
+    // }
+    //
+    // if (!jobAddresInput.value.trim()) {
+    //   // event.preventDefault(); // Ngăn chặn gửi form
+    //   errorAddress.style.display = 'block'; // Hiển thị thông báo lỗi
+    //   jobAddresInput.focus();
+    //   isValid = false;
+    // } else {
+    //   errorAddress.style.display = 'none'; // Ẩn thông báo lỗi nếu có giá trị
+    // }
+    //
+    // if (!jobWorkTypeInput.value.trim()) {
+    //   // event.preventDefault(); // Ngăn chặn gửi form
+    //   errorWorkType.style.display = 'block'; // Hiển thị thông báo lỗi
+    //   jobWorkTypeInput.focus();
+    //   isValid = false;
+    // } else {
+    //   errorWorkType.style.display = 'none'; // Ẩn thông báo lỗi nếu có giá trị
+    // }
+    //
+    // if (!jobJobLevelInput.value.trim()) {
+    //   // event.preventDefault(); // Ngăn chặn gửi form
+    //   errorJobLevel.style.display = 'block'; // Hiển thị thông báo lỗi
+    //   jobJobLevelInput.focus();
+    //   isValid = false;
+    // } else {
+    //   errorJobLevel.style.display = 'none'; // Ẩn thông báo lỗi nếu có giá trị
+    // }
+    //
+    // if (!jobMinSalaryInput.value.trim()) {
+    //   // event.preventDefault(); // Ngăn chặn gửi form
+    //   errorMinSalary.style.display = 'block'; // Hiển thị thông báo lỗi
+    //   jobMinSalaryInput.focus();
+    //   isValid = false;
+    // } else {
+    //   errorMinSalary.style.display = 'none'; // Ẩn thông báo lỗi nếu có giá trị
+    // }
+    //
+    // if (!jobMinSalaryInput.value.trim()) {
+    //   // event.preventDefault(); // Ngăn chặn gửi form
+    //   errorMaxSalary.style.display = 'block'; // Hiển thị thông báo lỗi
+    //   jobMaxSalaryInput.focus();
+    //   isValid = false;
+    // } else {
+    //   errorMaxSalary.style.display = 'none'; // Ẩn thông báo lỗi nếu có giá trị
+    // }
+    //
+    // if (!jobJobDescriptionInput.value.trim()) {
+    //   // event.preventDefault(); // Ngăn chặn gửi form
+    //   errorJobDescription.style.display = 'block'; // Hiển thị thông báo lỗi
+    //   jobJobDescriptionInput.focus();
+    //   isValid = false;
+    // } else {
+    //   errorJobDescription.style.display = 'none'; // Ẩn thông báo lỗi nếu có giá trị
+    // }
+    //
+    // if (!jobJobRequiredInput.value.trim()) {
+    //   // event.preventDefault(); // Ngăn chặn gửi form
+    //   errorJobRequired.style.display = 'block'; // Hiển thị thông báo lỗi
+    //   jobJobRequiredInput.focus();
+    //   isValid = false;
+    // } else {
+    //   errorJobRequired.style.display = 'none'; // Ẩn thông báo lỗi nếu có giá trị
+    // }
+    //
+    // if (!jobJobBenefitInput.value.trim()) {
+    //   // event.preventDefault(); // Ngăn chặn gửi form
+    //   errorJobBenefit.style.display = 'block'; // Hiển thị thông báo lỗi
+    //   jobJobBenefitInput.focus();
+    //   isValid = false;
+    // } else {
+    //   errorJobBenefit.style.display = 'none'; // Ẩn thông báo lỗi nếu có giá trị
+    // }
+
+    // Ngăn chặn gửi form nếu có lỗi
+    // if (!isValid) {
+    //   event.preventDefault();
+    // }
+
+
+  // });
+
   function fetchArticles() {
     fetch('/job-posts/Listing', {
       method: 'GET',
@@ -732,47 +913,62 @@
     const selectedDistrict = districtSelect.getAttribute('data-selected');
     let locationData = [];
 
+    const cityChoices = new Choices(citySelect, {
+      searchEnabled: true, // Bật tìm kiếm
+      searchPlaceholderValue: 'Tìm kiếm tỉnh/thành phố',
+      itemSelectText: 'Nhấn để chọn',
+      shouldSort: true,  // Không sắp xếp lại danh sách
+      placeholder: true,
+      noResultsText: 'Không tìm thấy',
+    });
+
+    const districtChoices = new Choices(districtSelect, {
+      searchEnabled: true,
+      searchPlaceholderValue: 'Tìm kiếm tỉnh/thành phố',
+      shouldSort: true,
+      itemSelectText: 'Nhấn để chọn',
+      placeholder: true,
+      noResultsText: 'Không tìm thấy',
+    });
+
+
     // Fetch dữ liệu từ file JSON
     fetch('/dataApi.json')
             .then(response => response.json())
             .then(data => {
               locationData = data;
 
-              // Điền dữ liệu Tỉnh/Thành phố
-              locationData.forEach(province => {
-                const option = document.createElement('option');
-                option.value = province.name;
-                option.textContent = formatProvinceName(province.name); // Format tên tỉnh/thành phố
-                if (province.name === selectedCity) {
-                  option.selected = true;
-                }
-                citySelect.appendChild(option);
-              });
+              // Điền dữ liệu Tỉnh/Thành phố vào Choices.js
+              const cityOptions = locationData.map(province => ({
+                value: province.name,
+                label: formatProvinceName(province.name),
+                selected: province.name === selectedCity,
+              }));
+              cityChoices.setChoices(cityOptions, 'value', 'label', true);
 
               // Điền dữ liệu Quận/Huyện nếu có tỉnh đã chọn
               if (selectedCity) {
                 updateDistricts(selectedCity, selectedDistrict);
               }
 
-              // Khi chọn Tỉnh/Thành phố
+              // Lắng nghe sự kiện chọn Tỉnh/Thành phố
               citySelect.addEventListener('change', function () {
                 updateDistricts(this.value);
               });
 
               function updateDistricts(cityName, selectedDistrict = null) {
                 const province = locationData.find(p => p.name === cityName);
-                districtSelect.innerHTML = '<option value="">Chọn Quận hoặc Huyện</option>';
-                if (province && province.districts) {
-                  province.districts.forEach(district => {
-                    const option = document.createElement('option');
-                    option.value = district.name;
-                    option.textContent = formatDistrictName(district.name); // Format tên quận/huyện
-                    if (district.name === selectedDistrict) {
-                      option.selected = true;
-                    }
-                    districtSelect.appendChild(option);
-                  });
-                }
+                const districtOptions = province && province.districts
+                        ? province.districts.map(district => ({
+                          value: district.name,
+                          label: formatDistrictName(district.name),
+                          selected: district.name === selectedDistrict,
+                        }))
+                        : [];
+
+                // Xóa dữ liệu cũ và cập nhật dữ liệu mới cho district
+                districtChoices.clearChoices();
+                districtChoices.setChoices(districtOptions, 'value', 'label', true);
               }
             })
             .catch(error => {
@@ -780,12 +976,9 @@
             });
   });
 
-
-
-
-
 </script>
 <!--<script th:src="@{../js/app.js}"></script>-->
 <script src="/js/app.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
 </body>
 </html>

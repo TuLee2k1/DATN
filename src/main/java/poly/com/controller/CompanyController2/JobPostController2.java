@@ -115,6 +115,7 @@ public class JobPostController2 {
             Model model,
             HttpSession session
     ) {
+        System.out.println("JobTitle:  " + request.getJobTitle());
         var ID = request.getId();
         System.out.println("Xem ID nhận biết Create hay Update ID:  " + ID);
         AuthenticationResponse user = (AuthenticationResponse) session.getAttribute("user");
@@ -127,6 +128,7 @@ public class JobPostController2 {
             model.addAttribute("isEdit", id != null);
             prepareModelForForm(model, user);
             model.addAttribute("errorMessage", "Có lỗi xảy ra: " + bindingResult.getAllErrors());
+            System.out.println(bindingResult.getAllErrors());
             model.addAttribute("jobPostRequest", request);
             return "Company/Taotintuyendung";
         }

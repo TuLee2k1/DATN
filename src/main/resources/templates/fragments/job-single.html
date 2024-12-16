@@ -120,9 +120,9 @@
           // Kiểm tra avatar và gán giá trị
           // const avatarSrc = user.avatar ? user.avatar : defaultAvatar;
           // document.getElementById('userAvatar').src = avatarSrc;
-          document.getElementById('username1').textContent = user.userInfo.firstName;
-          document.getElementById('username').textContent = user.userInfo.firstName;// Giả sử username là thuộc tính trong user
-          console.log(user.userInfo.firstName);
+          document.getElementById('username1').textContent = user.userInfo.fullName;
+          document.getElementById('username').textContent = user.userInfo.fullName;// Giả sử username là thuộc tính trong user
+          console.log(user.userInfo.fullName);
           document.getElementById('authButtons').style.display = 'none';
           // document.getElementById('loginBtn1').style.display = 'none';
           // document.getElementById('signupBtn1').style.display = 'none';
