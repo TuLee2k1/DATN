@@ -67,7 +67,7 @@ public class AuthenticationService {
                 .build();
         userRepository.save(user);
 
-        profileRepository.save(profile)
+        profileRepository.save(profile);
         sendValidationEmail(user);
 
         String jwtToken = jwtService.generateToken(user);

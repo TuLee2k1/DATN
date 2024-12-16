@@ -285,4 +285,16 @@ public class HomeController {
         }
         return jobListActiveResponses;
     }
+
+    @GetMapping("/about")
+    public String about(Model model) {
+        return "fragments/about";
+    }
+
+    @GetMapping("/contact")
+    public String contact(Model model) {
+        return "fragments/contact";
+    }
+
+
 }
