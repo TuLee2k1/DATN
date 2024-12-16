@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Company Carousel</title>
+    <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+    />
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+
+
+        .company-logo {
+            width: 100px;
+            height: auto;
+        }
+        .company-info {
+            background-color: #e9ecef;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #e9ecef;
+        }
+        .company-info h1 {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .company-info .badge {
+            font-size: 14px;
+        }
+        .highlight-section {
+            background-color: #e9ecef;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .company-description,
+        .contact-info,
+        .job-listings,
+        .share-company {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .job-listings .job-item {
+            border: 1px solid #e9ecef;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        .job-listings .job-item:hover {
+            border-color: #28a745;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .job-listings .job-item img {
+            width: 50px;
+            height: auto;
+        }
+        .job-listings .job-item .btn {
+            font-size: 14px;
+        }
+        .job-listings .job-item .separator {
+            margin: 0 5px;
+        }
+        .contact-info img {
+            width: 100%;
+            height: auto;
+        }
+        .share-company .btn {
+            font-size: 14px;
+        }
+        @media (max-width: 767.98px) {
+            .input-group {
+                flex-direction: column;
+            }
+            .input-group .form-control,
+            .input-group .form-select,
+            .input-group .btn {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container custom-container mt-1">
+    <div class="row mt-4">
+        <div class="col-12 company-info">
+            <div class="d-flex align-items-center">
+                <img
+                        alt="Company logo"
+                        class="company-logo me-3"
+                        height="100"
+                        src="https://storage.googleapis.com/a1aa/image/VdfPxeNKRquzt0zc589e6UYO4GmwG6W45uMmjUej0H2N2ReeE.jpg"
+                        width="100"
+                />
+                <div>
+                    <h1>Công ty Cổ phần Bất Động Sản Thế Kỷ</h1>
+                    <span class="badge bg-warning text-dark">
+              Pro Company
+            </span>
+                    <span class="ms-3">
+              <i class="fas fa-users"> </i>
+              3000+ nhân viên
+            </span>
+                    <span class="ms-3">
+              <i class="fas fa-user-friends"> </i>
+              12 người theo dõi
+            </span>
+                </div>
+            </div>
+            <button class="btn btn-success mt-3">+ Theo dõi công ty</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="highlight-section">
+                <div class="company-description">
+                    <h5>Giới thiệu công ty</h5>
+                    <p>
+                        CEN GROUP - ĐƠN VỊ KINH DOANH BẤT ĐỘNG SẢN HÀNG ĐẦU VIỆT
+                        NAM
+                    </p>
+                    <p>
+                        Cen Group thành lập từ năm 2002, với thành viên đầu tiên
+                        là Công ty Cổ phần bất động sản Thế Kỷ - Cen Land (Mã CP:
+                        CRE)
+                    </p>
+                    <p>
+                        Cen Group có hơn 1,5 triệu khách hàng thân thiết; hàng vạn
+                        công tác viên; hàng vạn công tác viên; hàng chục Công ty
+                        thành viên và văn phòng trên toàn quốc; trực thuộc và là
+                        cầu nối của các Chủ đầu tư, các tổ chức tài chính và khách
+                        hàng.
+                    </p>
+                    <p>- Hệ sinh thái Dịch vụ Bất động sản</p>
+                    <p>
+                        Cen Group là Hệ sinh thái Dịch vụ Bất động sản đầu tiên và
+                        duy nhất tại Việt Nam với hơn 3.000 nhân sự trên toàn
+                        quốc. Nguồn nhân sự tư vấn chuyên nghiệp, giàu kinh
+                        nghiệm, am hiểu thị trường, luôn sẵn sàng phục vụ khách
+                        hàng.
+                    </p>
+                    <a class="text-success" href="#">
+                        Xem thêm
+                        <i class="fas fa-chevron-down"> </i>
+                    </a>
+                </div>
+                <div class="job-listings">
+                    <h5>Tuyển dụng</h5>
+                    <div class="input-group mb-3">
+                        <input
+                                class="form-control"
+                                placeholder="Tìm việc, công ty, từ điển tuyển dụng"
+                                type="text"
+                        />
+                        <select class="form-select">
+                            <option selected>Toàn thời gian</option>
+                            <option value="1">Bán thời gian</option>
+                            <option value="2">Thực tập</option>
+                        </select>
+                        <button class="btn btn-success" type="button">
+                            Tìm kiếm
+                        </button>
+                    </div>
+                    <div class="job-item d-flex align-items-center">
+                        <img
+                                alt="Company logo"
+                                height="50"
+                                src="https://storage.googleapis.com/a1aa/image/VdfPxeNKRquzt0zc589e6UYO4GmwG6W45uMmjUej0H2N2ReeE.jpg"
+                                width="50"
+                        />
+                        <div class="ms-3">
+                            <h6>Chuyên Viên Tuyển Dụng</h6>
+                            <p class="mb-1">Công ty Cổ phần Bất Động Sản Thế Kỷ</p>
+                            <span> 15 - 20 triệu </span>
+                            <span class="separator"> | </span>
+                            <span> Hà Nội </span>
+                            <span class="separator"> | </span>
+                            <span> Còn 29 ngày để ứng tuyển </span>
+                        </div>
+                        <button class="btn btn-success ms-auto">Ứng tuyển</button>
+                    </div>
+                    <div class="job-item d-flex align-items-center">
+                        <img
+                                alt="Company logo"
+                                height="50"
+                                src="https://storage.googleapis.com/a1aa/image/VdfPxeNKRquzt0zc589e6UYO4GmwG6W45uMmjUej0H2N2ReeE.jpg"
+                                width="50"
+                        />
+                        <div class="ms-3">
+                            <h6>Giảng Viên Cao Đẳng Ngành Kỹ Thuật Làm Bánh</h6>
+                            <p class="mb-1">Công ty Cổ phần Bất Động Sản Thế Kỷ</p>
+                            <span> 15 - 20 triệu </span>
+                            <span class="separator"> | </span>
+                            <span> Hà Nội </span>
+                            <span class="separator"> | </span>
+                            <span> Còn 27 ngày để ứng tuyển </span>
+                        </div>
+                        <button class="btn btn-success ms-auto">Ứng tuyển</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="highlight-section">
+                <div class="contact-info">
+                    <h5>Thông tin liên hệ</h5>
+                    <p>
+                        <i class="fas fa-map-marker-alt"> </i>
+                        Địa chỉ công ty
+                    </p>
+                    <p>Tầng 1, Tòa B Sky City, số 88 Láng Hạ</p>
+                    <p>
+                        <i class="fas fa-map"> </i>
+                        Xem bản đồ
+                    </p>
+                    <img
+                            alt="Map showing company location"
+                            height="200"
+                            src="https://storage.googleapis.com/a1aa/image/5qz0DbTr8e3cFax8mY5hHNbRO2xv67sdNzK3mptFImgyOy7JA.jpg"
+                            width="300"
+                    />
+                </div>
+                <div class="share-company">
+                    <h5>Chia sẻ công ty tới bạn bè</h5>
+                    <button class="btn btn-outline-secondary mb-2">
+                        Sao chép đường dẫn
+                    </button>
+                    <div>
+                        <a class="btn btn-outline-primary" href="#">
+                            <i class="fab fa-facebook-f"> </i>
+                        </a>
+                        <a class="btn btn-outline-info" href="#">
+                            <i class="fab fa-twitter"> </i>
+                        </a>
+                        <a class="btn btn-outline-danger" href="#">
+                            <i class="fab fa-linkedin-in"> </i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

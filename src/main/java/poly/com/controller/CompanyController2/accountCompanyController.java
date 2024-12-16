@@ -5,10 +5,10 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-
 import org.springframework.stereotype.Controller;
 
 import org.springframework.ui.Model;
@@ -27,11 +27,9 @@ import poly.com.repository.JobCategoryRepository;
 import poly.com.service.CompanyService;
 import poly.com.service.JobCategoryService;
 import poly.com.service.ProfileService;
-import poly.com.Util.AuthenticationUtil;
+import poly.com.util.AuthenticationUtil;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 @RequestMapping("/company-account")
@@ -55,7 +53,7 @@ public class accountCompanyController {
     }
 
 
-    @GetMapping
+    @GetMapping("")
     public String showProfileForm(Model model, HttpSession session, RedirectAttributes redirectAttributes) {
 
         AuthenticationResponse user = (AuthenticationResponse) session.getAttribute("user");
@@ -66,8 +64,10 @@ public class accountCompanyController {
             return "redirect:/auth/login";
         }
 
-        model.addAttribute("profile", profileService.findById(user.getId()));
-        model.addAttribute("company", companyService.findById(user.getId()));
+//        model.addAttribute("profile", profileService.findById(user.getId()));
+        System.out.println(company.getName());
+        System.out.println(company.getLogo());
+        model.addAttribute("company", company);
         model.addAttribute("userEmail", user.getEmail());
         model.addAttribute("jobCategories", jobCategories);
         return "Company/Thongtintaikhoan";
@@ -124,6 +124,7 @@ public class accountCompanyController {
         // Kiểm tra validation
         if (bindingResult.hasErrors()) {
             model.addAttribute("company", companyService.findById(user.getId()));
+            System.out.println("đuongan anh"+companyService.findById(user.getId()).getLogo());
             model.addAttribute("userEmail", user.getEmail());
             return "Company/Thongtintaikhoan";
         }
@@ -131,9 +132,9 @@ public class accountCompanyController {
         try {
             // Đặt file logo vào request
             profileDto.setFileLogo(fileLogo);
-
+        System.out.println("Hình Ảnh: "+profileDto.getFileLogo());
             // Lưu profile
-            Profile savedProfile = companyService.saveProfile(profileDto, user.getId());
+            Company savedProfile = companyService.saveProfile(profileDto, user.getId());
 
             // Thêm thông báo thành công
             redirectAttributes.addFlashAttribute("successMessage", "Cập nhật thông tin thành công!");
@@ -152,9 +153,11 @@ public class accountCompanyController {
      @Valid @ModelAttribute CompanyRequest companyRequest,
      BindingResult bindingResult,
      HttpSession session,
+     Model model,
      RedirectAttributes redirectAttributes) {
         // Lấy user hiện tại từ session
         AuthenticationResponse user = (AuthenticationResponse) session.getAttribute("user");
+        System.out.println(user.getEmail());
 
         // Kiểm tra quyền truy cập
         if (user == null || !user.getRoles().contains(RoleType.ROLE_COMPANY)) {
@@ -162,21 +165,26 @@ public class accountCompanyController {
             return "redirect:/auth/login";
         }
 
-        // Kiểm tra validation
-        if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("errors", bindingResult.getFieldErrors());
-            return "redirect:/company-account";
-        }
+//        // Kiểm tra validation
+//        if (bindingResult.hasErrors()) {
+//            redirectAttributes.addFlashAttribute("errors", bindingResult.getFieldErrors());
+//            System.out.println(bindingResult.hasErrors());
+//        }
 
         try {
             // Đặt userId từ session
+            System.out.println(user.getId());
+            System.out.println(user.getEmail());
             companyRequest.setUserId(user.getId());
-
+            System.out.println(companyRequest.getUserId());
+            System.out.println(companyRequest.getCompanyName());
+            System.out.println(companyRequest.getLogoFile());
             // Gọi service để lưu thông tin công ty
             Company savedCompany = companyService.save(companyRequest);
 
             // Thêm thông báo thành công
             redirectAttributes.addFlashAttribute("successMessage", "Cập nhật thông tin công ty thành công!");
+            model.addAttribute("company", savedCompany);
 
             return "redirect:/company-account";
         } catch (Exception e) {

@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,10 +18,11 @@ import poly.com.exception.FileStorageException;
 import poly.com.model.Company;
 import poly.com.model.JobCategory;
 import poly.com.model.Profile;
+import poly.com.model.User;
 import poly.com.repository.CompanyRepository;
 import poly.com.repository.JobCategoryRepository;
 import poly.com.repository.ProfileRepository;
-import poly.com.Util.AuthenticationUtil;
+import poly.com.util.AuthenticationUtil;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
@@ -79,9 +81,11 @@ public class CompanyService {
         }
     }
 //
-//
-    public List<Company> findAll() {
-        return companyRepository.findAll();
+//cho admin
+    public Page<Company> companyPage(Integer pageNo) {
+        Pageable pageable = PageRequest.of(pageNo - 1, 2);
+
+        return companyRepository.findAll(pageable);
     }
 
 
@@ -115,15 +119,13 @@ public class CompanyService {
     }
 
 
-
-
-    public Profile saveProfile(@Valid accountRequest request, Long id) throws IllegalAccessException {
+    public Company saveProfile(@Valid accountRequest request, Long id) throws IllegalAccessException {
         // Lấy user hiện tại từ authentication
         var currentUser = authenticationUtil.getCurrentUser();
 
         // Tìm profile hiện tại hoặc tạo mới
-        Profile profile = profileRepository.findById(currentUser.getId())
-                .orElse(new Profile());
+        Company profile = companyRepository.findById(currentUser.getId())
+                .orElse(new Company());
 
         // Xử lý upload logo nếu có
         if (request.getFileLogo() != null && !request.getFileLogo().isEmpty()) {
@@ -143,10 +145,9 @@ public class CompanyService {
         profile.setName(request.getName());
         profile.setPhone(request.getPhone());
         profile.setAddress(request.getAddress());
-        profile.setUser_id(currentUser);
 
         // Lưu và trả về profile
-        return profileRepository.save(profile);
+        return companyRepository.save(profile);
     }
 
 

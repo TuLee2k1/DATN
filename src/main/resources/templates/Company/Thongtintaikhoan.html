@@ -395,7 +395,7 @@
                             <h5 class="h5 fw-bold">Thông tin tài khoản</h5>
 
                         </div>
-                        <form th:action="@{/company-account/update-profile}" th:object="${profile}" method="post" enctype="multipart/form-data">
+<!--                        <form th:action="@{/company-account/update-profile}" th:object="${company}" method="post" enctype="multipart/form-data">-->
                             <!--                            &lt;!&ndash; Ảnh đại diện &ndash;&gt;-->
                             <!--                            <h5 class="h6 fw-bold mb-3">Ảnh đại diện</h5>-->
                             <!--                            <div class="mb-3 text-center">-->
@@ -427,24 +427,24 @@
                                 <button type="button" class="btn btn-link mt-2 p-0 text-primary" data-bs-toggle="modal" data-bs-target="#changePasswordModal">Thay đổi mật khẩu</button>
                             </div>
 
-                            <hr class="section-divider" />
-                            <!-- Thông tin liên hệ -->
-                            <h5 class="h6 fw-bold mb-3">Thông tin liên hệ</h5>
-                            <div class="mb-3">
-                                <label for="fullName" class="form-label text-secondary">Họ và tên</label>
-                                <input type="text" class="form-control" id="fullName" th:field="*{name}"
-                                       placeholder="Nguyễn Văn A">
-                            </div>
-                            <div class="mb-3">
-                                <label for="phone" class="form-label text-secondary">Số điện thoại</label>
-                                <input type="text" class="form-control" id="phone" th:field="*{phone}" placeholder="0123456789">
-                            </div>
-                            <div class="mb-3">
-                                <label for="address" class="form-label text-secondary">Địa chỉ liên hệ</label>
-                                <input type="text" class="form-control" id="address" th:field="*{address}" placeholder="77 Nguyễn Minh Châu">
-                            </div>
-                            <button type="submit" class="btn btn-custom">Cập nhật</button>
-                        </form>
+<!--                            <hr class="section-divider" />-->
+<!--                            &lt;!&ndash; Thông tin liên hệ &ndash;&gt;-->
+<!--                            <h5 class="h6 fw-bold mb-3">Thông tin liên hệ</h5>-->
+<!--                            <div class="mb-3">-->
+<!--                                <label for="fullName" class="form-label text-secondary">Họ và tên</label>-->
+<!--                                <input type="text" class="form-control" id="fullName" th:field="*{name}"-->
+<!--                                       placeholder="Nguyễn Văn A">-->
+<!--                            </div>-->
+<!--                            <div class="mb-3">-->
+<!--                                <label for="phone" class="form-label text-secondary">Số điện thoại</label>-->
+<!--                                <input type="text" class="form-control" id="phone" th:field="*{phone}" placeholder="0123456789">-->
+<!--                            </div>-->
+<!--                            <div class="mb-3">-->
+<!--                                <label for="address" class="form-label text-secondary">Địa chỉ liên hệ</label>-->
+<!--                                <input type="text" class="form-control" id="address" th:field="*{address}" placeholder="77 Nguyễn Minh Châu">-->
+<!--                            </div>-->
+<!--                            <button type="submit" class="btn btn-custom">Cập nhật</button>-->
+<!--                        </form>-->
                     </div>
 
                     <!-- Thông tin công ty -->
@@ -460,6 +460,13 @@
                               method="post"
                               enctype="multipart/form-data">
 
+                            <!-- Hiển thị lỗi chung -->
+<!--                            <div th:if="${#fields.hasErrors('*')}" class="alert alert-danger">-->
+<!--                                <ul>-->
+<!--                                    <li th:each="err : ${#fields.errors('*')}" th:text="${err}">Lỗi nhập liệu</li>-->
+<!--                                </ul>-->
+<!--                            </div>-->
+
                             <!-- Ảnh đại diện -->
                             <h5 class="h6 fw-bold mb-3">Logo công ty</h5>
                             <div class="mb-3 text-center">
@@ -467,7 +474,7 @@
                                      style="width: 8rem; height: 8rem; overflow: hidden;"
                                      onclick="document.getElementById('logo').click()">
                                     <img th:src="${company?.logo != null && !#strings.isEmpty(company.logo)
-? '/uploads/logocompany/' + company.logo
+? '/uploads/logocompany/' + company.getLogo()
 : '/Admin/images/person_3.jpg'}"
                                          alt="Logo công ty"
                                          class="w-100 h-100 object-cover" id="companyLogo">
@@ -490,7 +497,7 @@
                                        class="form-control"
                                        id="taxId"
                                        name="tax_code"
-                                       th:value="${company.tax_code}"
+                                       th:value="${company.getTax_code()}"
                                        placeholder="Nhập mã số thuế">
                             </div>
 
@@ -499,8 +506,8 @@
                                 <input type="text"
                                        class="form-control"
                                        id="companyName"
-                                       name="name"
-                                       th:value="${company.name}"
+                                       name="companyName"
+                                       th:value="${company.getName()}"
                                        placeholder="Tên công ty">
                             </div>
 
@@ -527,7 +534,7 @@
                                        class="form-control"
                                        id="location"
                                        name="city"
-                                       th:value="${company.city}"
+                                       th:value="${company.getCity()}"
                                        placeholder="Nhập địa điểm">
                             </div>
 
@@ -535,9 +542,9 @@
                                 <label for="address" class="form-label">Địa chỉ</label>
                                 <input type="text"
                                        class="form-control"
-                                       id="CompanyAddress"
-                                       name="address"
-                                       th:value="${company.address}"
+                                       id="Address"
+                                       name="Address"
+                                       th:value="${company.getAddress()}"
                                        placeholder="Nhập địa chỉ">
                             </div>
 
@@ -545,9 +552,9 @@
                                 <label for="phone" class="form-label">Điện thoại cố định</label>
                                 <input type="text"
                                        class="form-control"
-                                       id="CompanyPhone"
-                                       name="phone"
-                                       th:value="${company.phone}"
+                                       id="Phone"
+                                       name="Phone"
+                                       th:value="${company.getPhone()}"
                                        placeholder="Nhập số điện thoại">
                             </div>
                             <div class="mb-3">
@@ -556,7 +563,7 @@
                                        class="form-control"
                                        id="companyEmail"
                                        name="companyEmail"
-                                       th:value="${company.email}"
+                                       th:value="${company.getEmail()}"
                                        placeholder="Nhập email công ty">
                             </div>
 
@@ -566,7 +573,7 @@
                                        class="form-control"
                                        id="companyWebsite"
                                        name="website"
-                                       th:value="${company.website}"
+                                       th:value="${company.getWebsite()}"
                                        placeholder="Nhập đường dẫn web của công ty">
                             </div>
 
@@ -577,7 +584,7 @@
                                           name="description"
                                           rows="5"
                                           placeholder="Nhập mô tả công ty"
-                                          th:text="${company.description}"></textarea>
+                                          th:text="${company.getDescription()}"></textarea>
                             </div>
                             <div class="mb-3">
                                 <label for="jobCategory" class="form-label">Lĩnh vực</label>

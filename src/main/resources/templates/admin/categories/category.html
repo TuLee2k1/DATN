@@ -63,7 +63,115 @@
             background-color: #dc3545;
             /* Màu đỏ cho lỗi */
         }
+        .custom-alert {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1050;
+            width: auto;
+            max-width: 300px;
+            padding: 10px 20px;
+            margin: 0;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .alert-success {
+            background-color: #28a745; /* Màu xanh cho thông báo thành công */
+            color: white;
+        }
+
+        .alert-warning {
+            background-color: #ffc107; /* Màu vàng cho thông báo lỗi */
+            color: black;
+        }
+
+        .custom-alert span {
+            display: inline-block;
+            width: 100%;
+        }
+
+        /* Bố cục tổng thể */
+        .pagination-nav {
+            display: flex;
+            justify-content: flex-end; /* Căn về góc phải */
+            padding: 10px;
+            margin-top: 20px;
+        }
+
+        .pagination {
+            list-style: none;
+            display: flex;
+            gap: 5px;
+            padding: 0;
+            margin: 0;
+        }
+
+        /* Định dạng từng mục phân trang */
+        .page-item {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 5px 10px;
+            text-align: center;
+            font-size: 14px; /* Kích thước nhỏ hơn */
+            background-color: white;
+            color: gray;
+        }
+
+        .page-item a {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        /* Hover màu xám */
+        .page-item:hover {
+            background-color: #f0f0f0;
+            color: gray;
+            cursor: pointer;
+        }
+
+        /* Mục đang được chọn */
+        .page-item.active {
+            background-color: #ddd; /* Màu xám */
+            color: gray;
+            pointer-events: none;
+            font-weight: bold;
+        }
+
+        /* Mục bị vô hiệu hóa */
+        .page-item.disabled {
+            color: #ccc;
+            pointer-events: none;
+            border-color: #eee;
+        }
+
+        /* Ẩn đường viền khi hover trên mục bị vô hiệu hóa */
+        .page-item.disabled:hover {
+            background-color: white;
+            cursor: not-allowed;
+        }
     </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var successAlert = document.querySelector('.alert-success');
+            var errorAlert = document.querySelector('.alert-warning');
+
+            // Nếu có thông báo thành công
+            if (successAlert) {
+                setTimeout(function() {
+                    successAlert.style.display = 'none'; // Ẩn thông báo sau 3 giây
+                }, 3000);
+            }
+
+            // Nếu có thông báo lỗi
+            if (errorAlert) {
+                setTimeout(function() {
+                    errorAlert.style.display = 'none'; // Ẩn thông báo sau 3 giây
+                }, 3000);
+            }
+        });
+    </script>
 
 </head>
 
@@ -75,10 +183,16 @@
 
 <!-- PHẦN CONTENT -->
 <main class="content" layout:fragment="content">
+    <div th:if="${message}" class="alert alert-success custom-alert" >
+        <span th:text="${message}" role="alert"></span>
+    </div>
+    <div th:if="${error}" class="alert alert-warning custom-alert" >
+        <span th:text="${error}" role="alert"></span>
+    </div>
     <div class="row">
         <h1 class="h3 mb-3"><strong>Category Job</strong></h1>
         <div class="d-flex">
-            <div class="card flex-fill" style="border: 2px solid #029393; border-radius: 9px;">
+            <div class="card flex-fill" >
                 <div class="card-header">
                     <h5 class="card-title mb-0">Add Category Job</h5>
                     <!-- Form để thêm JobCategory -->
@@ -89,7 +203,7 @@
                         </button>
                     </form>
                     <!-- Hiển thị thông báo lỗi nếu có -->
-                    <div th:if="${error}" class="alert alert-danger mt-2" th:text="${error}"></div>
+
                 </div>
 
                 <table class="table table-hover mt-3 my-0">
@@ -106,15 +220,181 @@
                         <td th:text="${category.categoryName}">Category Name</td> <!-- Hiển thị Tên -->
                         <td>
 
-                            <a th:href="@{'/admin/categories/delete/' + ${category.id}}" class="btn btn-outline-danger btn-sm rounded-circle"
-                               style="width: 30px; height: 30px;">
-                                <i class="align-middle" data-feather="trash"></i>
+                            <a th:href="@{'/admin/categories/delete/' + ${category.id}}"
+                               class="btn btn-outline-danger btn-sm rounded-circle"
+                               style="width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center; font-size: 24px;"
+                               onclick="return confirm('Bạn có chắc chắn muốn xóa Danh mục này?');">
+
+                                <i class="align-middle" data-feather="trash-2"></i>
                             </a>
                         </td>
                     </tr>
                     </tbody>
                 </table>
+                <nav class="pagination-nav" th:if="${totalPagesC > 1}">
+                    <ul class="pagination">
+
+
+                        <li class="page-item previous-item" th:classappend="${currentPageC == 1 ? 'disabled' : ''}">
+                            <a class="page-link" th:href="@{/admin/categories(pageNo=${currentPageC - 1})}">
+                                Previous
+                            </a>
+                        </li>
+
+
+                        <li class="page-item" th:if="${currentPageC > 2}">
+                            <a class="page-link" th:href="@{/admin/categories(pageNo=${1})}">1</a>
+                        </li>
+
+
+                        <li class="page-item disabled" th:if="${currentPageC > 3}">
+                            <span class="page-link">...</span>
+                        </li>
+
+
+                        <li class="page-item" th:each="pageNumber : ${#numbers.sequence(currentPageC - 1, currentPageC + 1)}"
+                            th:classappend="${pageNumber == currentPageC ? 'active' : ''}"
+                            th:if="${pageNumber > 0 && pageNumber <= totalPagesC}">
+
+                            <a class="page-link" th:href="@{/admin/categories(pageNo=${pageNumber})}"
+                               th:text="${pageNumber}">
+                            </a>
+                        </li>
+
+
+
+                        <li class="page-item disabled" th:if="${currentPageC < totalPagesC - 2}">
+                            <span class="page-link">...</span>
+                        </li>
+
+
+                        <li class="page-item" th:if="${currentPageC < totalPagesC - 1}">
+                            <a class="page-link" th:href="@{/admin/categories(pageNo=${totalPagesC})}"
+                               th:text="${totalPagesC}">
+                            </a>
+                        </li>
+
+
+                        <li class="page-item next-item" th:classappend="${currentPageC == totalPagesC ? 'disabled' : ''}">
+                            <a class="page-link" th:href="@{/admin/categories(pageNo=${currentPageC + 1})}">
+                                Next
+                            </a>
+
+                        </li>
+                    </ul>
+                </nav>
             </div>
+        </div>
+        <div class="d-flex">
+        <div class="card flex-fill">
+            <div class="card-header">
+                <h5 class="card-title mb-0">Add SubCategory</h5>
+                <!-- Form để thêm SubCategory -->
+                <form th:action="@{/admin/categories/add_subcategory}" method="post" class="d-flex mt-2">
+                    <!-- Tên SubCategory -->
+                    <input type="text" class="form-control" name="subCategoryName" placeholder="SubCategory Name" required>
+                    <!-- Mô tả SubCategory -->
+                    <input type="text" class="form-control ms-2" name="description" placeholder="Description" required>
+                    <!-- Trạng thái SubCategory -->
+                    <select class="form-control ms-2" name="status">
+                        <option value="true">Active</option>
+                        <option value="false">Inactive</option>
+                    </select>
+                    <!-- Chọn JobCategory -->
+                    <select class="form-control ms-2" name="jobCategory.id" required>
+                        <option th:each="category : ${Allcategories}" th:value="${category.id}" th:text="${category.categoryName}"></option>
+                    </select>
+                    <button type="submit" class="btn btn-outline-primary btn-sm rounded-3 ms-2" style="width: 40px; height: 40px;">
+                        <i class="align-middle" data-feather="plus-circle"></i>
+                    </button>
+                </form>
+                <!-- Hiển thị thông báo lỗi nếu có -->
+
+            </div>
+            <table class="table table-hover mt-3 my-0">
+                <thead>
+                <tr>
+                    <th class="d-none d-xl-table-cell">ID</th>
+                    <th>SubCategory Name</th>
+                    <th>Description</th>
+                    <th>Job Category</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="subCategory : ${subCategories}">
+                    <td th:text="${subCategory.id}"></td>
+                    <td th:text="${subCategory.subCategoryName}"></td>
+                    <td th:text="${subCategory.description}"></td>
+                    <td th:text="${subCategory.jobCategory.categoryName}"></td>
+                    <td th:text="${subCategory.status ? 'Active' : 'Inactive'}"></td>
+                    <td>
+
+                        <a th:href="@{'/admin/categories/deleteSub/' + ${subCategory.id}}"
+                           class="btn btn-outline-danger btn-sm rounded-circle"
+                           style="width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center; font-size: 24px;"
+                           onclick="return confirm('Bạn có chắc chắn muốn xóa Danh mục con này?');">
+                            <i class="align-middle" data-feather="trash-2"></i>
+                        </a>
+                    </td>
+
+                </tr>
+                </tbody>
+            </table>
+            <nav class="pagination-nav" th:if="${totalPagesS > 1}">
+                <ul class="pagination">
+
+
+                    <li class="page-item previous-item" th:classappend="${currentPageS == 1 ? 'disabled' : ''}">
+                        <a class="page-link" th:href="@{/admin/categories(pageNo2=${currentPageS - 1})}">
+                            Previous
+                        </a>
+                    </li>
+
+
+                    <li class="page-item" th:if="${currentPageS > 2}">
+                        <a class="page-link" th:href="@{/admin/categories(pageNo2=${1})}">1</a>
+                    </li>
+
+
+                    <li class="page-item disabled" th:if="${currentPageS > 3}">
+                        <span class="page-link">...</span>
+                    </li>
+
+
+                    <li class="page-item" th:each="pageNumber : ${#numbers.sequence(currentPageS - 1, currentPageS + 1)}"
+                        th:classappend="${pageNumber == currentPageS ? 'active' : ''}"
+                        th:if="${pageNumber > 0 && pageNumber <= totalPagesS}">
+
+                        <a class="page-link" th:href="@{/admin/categories(pageNo2=${pageNumber})}"
+                           th:text="${pageNumber}">
+                        </a>
+                    </li>
+
+
+
+                    <li class="page-item disabled" th:if="${currentPageS < totalPagesS - 2}">
+                        <span class="page-link">...</span>
+                    </li>
+
+
+                    <li class="page-item" th:if="${currentPageS < totalPagesS - 1}">
+                        <a class="page-link" th:href="@{/admin/categories(pageNo2=${totalPages})}"
+                           th:text="${totalPagesS}">
+                        </a>
+                    </li>
+
+
+                    <li class="page-item next-item" th:classappend="${currentPageS == totalPagesS ? 'disabled' : ''}">
+                        <a class="page-link" th:href="@{/admin/categories(pageNo2=${currentPageS + 1})}">
+                            Next
+                        </a>
+
+                    </li>
+                </ul>
+            </nav>
+        </div>
         </div>
     </div>
 </main>

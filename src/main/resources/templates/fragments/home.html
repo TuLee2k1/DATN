@@ -328,9 +328,9 @@
                 <li class="job-listing d-block d-sm-flex pb-3 pb-sm-0 align-items-center">
                     <a th:href="@{/job-posts/detail/{id}(id=${job.id})}" class="w-100"></a>
                     <div class="job-listing-logo">
-                        <img th:src="${job.companyLogoUrl != null ? job.companyLogoUrl : '/Admin/images/job_logo_5.jpg'}"
-                             alt="Logo của công ty"
-                             class="img-fluid">
+                        <img th:src="${job?.companyLogoUrl != null && !#strings.isEmpty(job.companyLogoUrl)
+? '/uploads/logocompany/' + job.companyLogoUrl
+: '/Admin/images/person_3.jpg'}" class="img-fluid">
                     </div>
 
                     <div class="job-listing-about d-sm-flex custom-width w-100 justify-content-between mx-4">

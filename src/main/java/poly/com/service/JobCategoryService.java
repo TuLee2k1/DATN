@@ -1,6 +1,9 @@
 package poly.com.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import poly.com.exception.JobCategoryException;
 import poly.com.model.JobCategory;
@@ -39,6 +42,11 @@ public class JobCategoryService {
 
     public List<JobCategory> getAllJobCategories() {
         return jobCategoryRepository.findAll();
+    }
+
+    public Page<JobCategory> getJobCategories(Integer pageNo) {
+        Pageable pageable = PageRequest.of(pageNo - 1, 3);
+        return jobCategoryRepository.findAll(pageable);
     }
 
     public JobCategory findById(Long id) {

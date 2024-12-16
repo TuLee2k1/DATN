@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import poly.com.Enum.StatusEnum;
 import poly.com.dto.response.JobPost.JobListActiveResponse;
 import poly.com.repository.CompanyRepository;
-import poly.com.Util.AuthenticationUtil;
+import poly.com.util.AuthenticationUtil;
 
 import poly.com.dto.request.JobPost.JobPostRequest;
 import poly.com.dto.request.JobPost.JobPostTitleResponse;
@@ -448,6 +448,18 @@ public class JobPostService {
         return jobPostRepository.findByAdmin(pageable, status,jobTitle);
     }
 
+    // Phương thức kiểm tra xem danh mục có đang được sử dụng trong các bài đăng không
+    public boolean isSubCategoryUsed(Long subCategoryId) {
+        // Kiểm tra xem có bản ghi nào trong bảng job_post sử dụng subCategoryId này không
+        return jobPostRepository.existsBySubCategoryId(subCategoryId);
+    }
+
+
+    // Kiểm tra xem danh mục có đang được sử dụng trong các bài đăng không
+    public boolean isJobCategoryUsed(Long jobCategoryId) {
+        // Kiểm tra xem có bản ghi nào trong bảng job_post sử dụng jobCategoryId này không
+        return jobPostRepository.existsByJobCategoryId(jobCategoryId);
+    }
 
 
     //để hiển thị trang chi tiết job post

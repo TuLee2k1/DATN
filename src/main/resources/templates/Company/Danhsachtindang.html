@@ -31,7 +31,7 @@
         }
 
 		.custom-container {
-            max-width: 100%; /* Chiều rộng gần bằng 100% nhưng vẫn giữ viền */
+            max-width: 110%; /* Chiều rộng gần bằng 100% nhưng vẫn giữ viền */
             margin: 0 auto; /* Căn giữa */
 }
 		/* Bố cục tổng thể */
@@ -454,13 +454,13 @@
 								<tbody>
 								<tr th:each="job : ${jobListings}" class="text-center">
 									<td data-label="Ẩn/Hiện" class="text-center">
-										<div class="form-check form-switch d-flex justify-content-center">
-											<input class="form-check-input toggle-view"
-												   type="checkbox"
-												   role="switch"
-												   th:checked="${job.status == T(poly.com.model.JobPostStatus).Open}"
-												   th:data-id="${job.id}">
-										</div>
+<!--										<div class="form-check form-switch d-flex justify-content-center">-->
+<!--											<input class="form-check-input toggle-view"-->
+<!--												   type="checkbox"-->
+<!--												   role="switch"-->
+<!--												   th:checked="${job.status == (poly.com.model.JobPostStatus).Open}"-->
+<!--												   th:data-id="${job.id}">-->
+<!--										</div>-->
 									</td>
 									<td data-label="Tên tin đăng" class="fw-bold" th:text="${job.jobTitle}"></td>
 									<td data-label="Ngày tạo" th:text="${#dates.format(job.createDate, 'dd/MM/yyyy')}"></td>

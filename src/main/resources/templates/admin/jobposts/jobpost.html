@@ -128,9 +128,60 @@
             cursor: not-allowed;
         }
 
+        /*css cu thông baso*/
+        .custom-alert {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1050;
+            width: auto;
+            max-width: 300px;
+            padding: 10px 20px;
+            margin: 0;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .alert-success {
+            background-color: #28a745; /* Màu xanh cho thông báo thành công */
+            color: white;
+        }
+
+        .alert-warning {
+            background-color: #ffc107; /* Màu vàng cho thông báo lỗi */
+            color: black;
+        }
+
+        .custom-alert span {
+            display: inline-block;
+            width: 100%;
+        }
+
+
+
 
     </style>
 
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var successAlert = document.querySelector('.alert-success');
+            var errorAlert = document.querySelector('.alert-warning');
+
+            // Nếu có thông báo thành công
+            if (successAlert) {
+                setTimeout(function() {
+                    successAlert.style.display = 'none'; // Ẩn thông báo sau 3 giây
+                }, 3000);
+            }
+
+            // Nếu có thông báo lỗi
+            if (errorAlert) {
+                setTimeout(function() {
+                    errorAlert.style.display = 'none'; // Ẩn thông báo sau 3 giây
+                }, 3000);
+            }
+        });
+    </script>
 </head>
 
 <body>
@@ -138,9 +189,14 @@
 <!-- PHẦN CONTENT -->
 <main class="content" layout:fragment="content">
 
-    <!-- Hiển Thị Thông Báo -->
-    <div th:if="${message}" class="alert alert-success" role="alert">
+    <!-- Thông báo thành công -->
+    <div th:if="${message}" class="alert alert-success custom-alert" role="alert">
         <span th:text="${message}"></span>
+    </div>
+
+    <!-- Thông báo lỗi -->
+    <div th:if="${error}" class="alert alert-warning custom-alert" role="alert">
+        <span th:text="${error}"></span>
     </div>
 
     <div class="row">
@@ -178,7 +234,6 @@
                         <th>Thành phố</th>
                         <th>Ngày tạo</th>
                         <th>Ngày kết thúc</th>
-                        <th>Lương</th>
                         <th>Trạng thái</th>
                         <th>Actions</th>
                     </tr>
@@ -191,7 +246,7 @@
                         <td th:text="${jobPost.city}"></td>
                         <td th:text="${#dates.format(jobPost.createDate, 'dd-MM-yyyy')}"></td>
                         <td th:text="${#dates.format(jobPost.endDate, 'dd-MM-yyyy')}"></td>
-                        <td th:text="${jobPost.minSalary} + ' - ' + ${jobPost.maxSalary}"></td>
+                        
                         <td>
                             <span th:class="${jobPost.statusEnum.name == 'ACTIVE' ? 'status-active' :
                                             (jobPost.statusEnum.name == 'PENDING' ? 'status-pending' :
@@ -215,9 +270,9 @@
                             </a>
 
                             <a th:href="@{'/admin/jobposts/details/' + ${jobPost.id}}"
-                               class="btn btn-outline-warning btn-sm rounded-circle"
+                               class="btn btn-outline-secondary btn-sm rounded-circle"
                                style="width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center; font-size: 24px;">
-                                <i class="align-middle" data-feather="more-horizontal"></i>
+                                <i class="align-middle" data-feather="eye"></i>
                             </a>
                         </td>
                     </tr>

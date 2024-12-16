@@ -9,7 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import poly.com.Enum.StatusEnum;
-import poly.com.Util.AuthenticationUtil;
+import poly.com.util.AuthenticationUtil;
 import poly.com.dto.response.PageResponse;
 import poly.com.model.Company;
 import poly.com.model.JobProfile;
