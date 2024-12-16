@@ -232,6 +232,7 @@ public class AuthenticationService {
                     .refreshToken(refreshToken) // Thêm refresh token vào response
                     .email(user.getEmail())
                     .fullName(user.getFullName())
+                    .firstName(user.getFirstname())
                     .roles(userRoles)
                     .redirectUrl(redirectUrl) // Thêm URL chuyển hướng vào response
                     .build();
@@ -362,9 +363,6 @@ public class AuthenticationService {
         verifyRepository.save(savedVerifyUser );
     }
 
-    /**
-     * Gửi lại mã xác thực qua email
-     */
     public void resendVerificationCode(String email) throws MessagingException {
         User user = userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException("User not found"));
 
@@ -374,7 +372,7 @@ public class AuthenticationService {
 
         String newVerificationCode = generateActivationCode(6);
         VerifyUser verifyUser = verifyRepository.findByUser(user)
-         .orElseThrow(() -> new UserNotFoundException("Token not found for user"));
+                .orElseThrow(() -> new UserNotFoundException("Token not found for user"));
 
         verifyUser.setToken(newVerificationCode);
         verifyUser.setCreatedAt(LocalDateTime.now());

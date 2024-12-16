@@ -12,6 +12,7 @@ import poly.com.Enum.StatusEnum;
 import poly.com.Enum.WorkType;
 import poly.com.model.JobPostStatus;
 import poly.com.model.Company;
+import poly.com.model.SubCategory;
 
 
 import java.util.Date;
@@ -82,6 +83,7 @@ public class JobPostRequest {
     private Exp exp; // Kinh nghiệm
 
     private String companyName;
+
 
 
 

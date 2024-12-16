@@ -3,6 +3,7 @@ package poly.com.dto.response.Auth;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import poly.com.Enum.RoleType;
+import poly.com.model.Profile;
 
 import java.util.List;
 
@@ -20,6 +21,8 @@ public class AuthenticationResponse {
     private Long id;
     private String email;
     private String fullName;
+    private String firstName;
     private List<RoleType> roles;
     private String redirectUrl;
+    private Profile profile;
 }

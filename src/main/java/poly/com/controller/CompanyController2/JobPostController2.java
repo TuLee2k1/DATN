@@ -155,22 +155,34 @@ public class JobPostController2 {
 
     // Chi tiết bài đăng
     @GetMapping("/detail/{id}")
-    public String showJobPostDetail(@PathVariable Long id, Model model) {
+    public String showJobPostDetail(@PathVariable Long id, Model model,
+                                    @RequestParam(defaultValue = "ACTIVE") String status,
+                                    @RequestParam(required = false) Integer pageNo, // Không có giá trị mặc định
+                                    @RequestParam(defaultValue = "5") Integer pageSize) {
+        // Nếu pageNo không được truyền từ frontend, gán giá trị mặc định là 1
+        if (pageNo == null) {
+            pageNo = 1;
+        }
+
+
         JobPostRequest jobPost = jobPostService.getJobPost(id);
 
         Date DateNow = new Date();
 
         // Lấy danh sách công việc
-        Page<JobListActiveResponse> jobListings = jobPostService.getJobListingsByStatus("ACTIVE", 1, 10);
+        Page<JobListActiveResponse> jobListings = jobPostService.getJobListingsByStatus(status, pageNo, pageSize);
         model.addAttribute("jobListings", jobListings);
-        model.addAttribute("currentPage", 1);
+        model.addAttribute("currentPage", pageNo);
         model.addAttribute("totalPages", jobListings.getTotalPages());
         model.addAttribute("currentDate", DateNow);
+        model.addAttribute("status", status);
 
         // Tạo DTO để bind dữ liệu
         ApplyCVRequest applicationForm = new ApplyCVRequest();
         model.addAttribute("applicationForm", applicationForm);
         model.addAttribute("jobPost", jobPost);
+        System.out.println("Id JOB: "+jobPost.getId());
+
 
         return "fragments/job-single";
     }
@@ -239,6 +251,7 @@ public class JobPostController2 {
 
         try {
             System.out.println("Id Job: "+jobPostId);
+            model.addAttribute("jobPostId",jobPostId);
             System.out.println("Thông tin: "+ applicationForm.getName());
             System.out.println("Thông tin resume: "+ resume);
             // Gọi service để lưu CV

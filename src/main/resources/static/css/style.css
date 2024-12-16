@@ -54,12 +54,14 @@
         color: #fff;
         display: inline-block;
         padding: 5px 20px; }
+
       .site-navbar .site-navigation .site-menu a {
         text-decoration: none !important;
         display: inline-block;
         position: relative; }
       .site-navbar .site-navigation .site-menu > li {
-        display: inline-block; }
+        display: inline-block;
+      }
         .site-navbar .site-navigation .site-menu > li > a {
           padding: 20px 20px !important;
           color: rgba(255, 255, 255, 0.5);
