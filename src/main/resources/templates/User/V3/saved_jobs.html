@@ -35,6 +35,23 @@
     <link rel="stylesheet" href="/css/index.css" />
     <link rel="stylesheet" href="/css/card-fluid.css" />
     <link rel="stylesheet" href="/css/user.css" />
+
+    <style>
+      .pagination-nav {
+        display: flex;
+        justify-content: flex-end; /* Căn về góc phải */
+        padding: 10px;
+        margin-top: 20px;
+      }
+
+      .pagination {
+        list-style: none;
+        display: flex;
+        gap: 5px;
+        padding: 0;
+        margin: 0;
+      }
+    </style>
   </head>
 
   <body>
@@ -42,14 +59,14 @@
       <!-- sidebar -->
       <nav id="sidebar" class="sidebar js-sidebar">
         <div class="sidebar-content js-simplebar">
-          <a class="sidebar-brand" href="index.html">
+          <a class="sidebar-brand" href="http://localhost:8080">
             <img
-              alt="Logo"
-              class="rounded-circle me-3"
-              height="50"
-              id="logo"
-              src="/static/img/icons/logo2.jpg"
-              width="50"
+                    alt="Logo"
+                    class="rounded-circle me-3"
+                    height="50"
+                    id="logo"
+                    src="/img/icons/logo2.jpg"
+                    width="50"
             />
             <span class="align-middle">Dreamers</span>
           </a>
@@ -57,7 +74,7 @@
           <ul class="sidebar-nav">
             <li class="sidebar-header">Pages</li>
 
-            <li class="sidebar-item active">
+            <li class="sidebar-item ">
               <a class="sidebar-link" href="/User/V3/dashboard.html">
                 <i class="align-middle" data-feather="sliders"></i>
                 <span class="align-middle">Dashboard</span>
@@ -65,39 +82,23 @@
             </li>
 
             <li class="sidebar-item">
-              <a class="sidebar-link" href="/User/V3/profile.html">
+              <a class="sidebar-link" href="/user-profile">
                 <i class="align-middle" data-feather="user"></i>
                 <span class="align-middle">Profile</span>
               </a>
             </li>
+
             <li class="sidebar-item">
-              <a class="sidebar-link" href="/User/V3/resume_.html">
+              <a class="sidebar-link" href="/user-resume">
                 <i class="align-middle" data-feather="clipboard"></i>
                 <span class="align-middle">Resume</span>
               </a>
             </li>
 
             <li class="sidebar-item">
-              <a class="sidebar-link" href="/User/V3/calender.html">
-                <i class="align-middle" data-feather="calendar"></i>
-                <span class="align-middle">Calender</span>
-              </a>
-            </li>
-
-            <li class="sidebar-item">
-              <a class="sidebar-link" href="/User/V3/apply.html">
+              <a class="sidebar-link" href="/user-applied">
                 <i class="align-middle" data-feather="check-square"></i>
                 <span class="align-middle">Applied job</span>
-              </a>
-            </li>
-
-            <li class="sidebar-item">
-              <a
-                class="sidebar-link"
-                href="/User/V3/EmployersViewPage.html"
-              >
-                <i class="align-middle" data-feather="users"></i>
-                <span class="align-middle">Recruiter follow</span>
               </a>
             </li>
 
@@ -383,264 +384,87 @@
             <h4>Việc làm đã lưu</h4>
             <div class="job-section">
               <div class="saved-jobs">
-                <div class="job-card">
+                <!-- Hiển thị danh sách công việc -->
+                <div class="job-card" th:each="job : ${savedJobs}">
                   <img
-                    alt="Company logo"
-                    height="80"
-                    src="https://storage.googleapis.com/a1aa/image/4wtMJJTVBHIUH5S4PhMyIvzdlAmmZrH5QJStAJDfJtPabU3JA.jpg"
-                    width="80"
-                  />
+                          alt="Company logo"
+                          height="80"
+                          width="80"
+                          th:src="@{/uploads/logocompany/{logo}(logo=${job.companyLogo})}" />
                   <div class="job-details">
-                    <h5>
-                      Nhân Viên Kinh Doanh Bất Động Sản - Đi Làm Ngay - Lương Up
-                      To 50 Triệu
-                    </h5>
-                    <p>Công Ty TNHH Đầu Tư Địa Ốc Aqua</p>
+                    <h5 th:text="${job.jobTitle}"></h5>
+                    <p th:text="${job.companyName}"></p>
                     <div class="icons">
+          <span>
+            <i class="fas fa-money-bill-wave"></i>
+            <span th:text="${job.minSalary} + ' - ' + ${job.maxSalary} + ' triệu'"></span>
+          </span>
                       <span>
-                        <i class="fas fa-money-bill-wave"> </i>
-                        10 - 50 triệu
-                      </span>
-                      <span>
-                        <i class="fas fa-map-marker-alt"> </i>
-                        TP.HCM
-                      </span>
-                      <span>
-                        <i class="fas fa-calendar-alt"> </i>
-                        14/10/2024
-                      </span>
-                    </div>
-                  </div>
-                  <div class="favorite">
-                    <i
-                      class="fas fa-solid fa-heart favorite-icon"
-                      style="cursor: pointer; color: #007bff"
-                    >
-                    </i>
-                  </div>
-                </div>
-                <div class="job-card">
-                  <img
-                    alt="Company logo"
-                    height="80"
-                    src="https://storage.googleapis.com/a1aa/image/4wtMJJTVBHIUH5S4PhMyIvzdlAmmZrH5QJStAJDfJtPabU3JA.jpg"
-                    width="80"
-                  />
-                  <div class="job-details">
-                    <h5>
-                      Nhân Viên Kinh Doanh Bất Động Sản - Đi Làm Ngay - Lương Up
-                      To 50 Triệu
-                    </h5>
-                    <p>Công Ty TNHH Đầu Tư Địa Ốc Aqua</p>
-                    <div class="icons">
-                      <span>
-                        <i class="fas fa-money-bill-wave"> </i>
-                        10 - 50 triệu
-                      </span>
-                      <span>
-                        <i class="fas fa-map-marker-alt"> </i>
-                        TP.HCM
-                      </span>
-                      <span>
-                        <i class="fas fa-calendar-alt"> </i>
-                        14/10/2024
-                      </span>
-                    </div>
-                  </div>
-                  <div class="favorite">
-                    <i
-                      class="fas fa-solid fa-heart favorite-icon"
-                      style="cursor: pointer; color: #007bff"
-                    >
-                    </i>
-                  </div>
-                </div>
-                <div class="job-card">
-                  <img
-                    alt="Company logo"
-                    height="80"
-                    src="https://storage.googleapis.com/a1aa/image/4wtMJJTVBHIUH5S4PhMyIvzdlAmmZrH5QJStAJDfJtPabU3JA.jpg"
-                    width="80"
-                  />
-                  <div class="job-details">
-                    <h5>
-                      Nhân Viên Kinh Doanh Bất Động Sản - Đi Làm Ngay - Lương Up
-                      To 50 Triệu
-                    </h5>
-                    <p>Công Ty TNHH Đầu Tư Địa Ốc Aqua</p>
-                    <div class="icons">
-                      <span>
-                        <i class="fas fa-money-bill-wave"> </i>
-                        10 - 50 triệu
-                      </span>
-                      <span>
-                        <i class="fas fa-map-marker-alt"> </i>
-                        TP.HCM
-                      </span>
-                      <span>
-                        <i class="fas fa-calendar-alt"> </i>
-                        14/10/2024
-                      </span>
-                    </div>
-                  </div>
-                  <div class="favorite">
-                    <i
-                      class="fas fa-solid fa-heart favorite-icon"
-                      style="cursor: pointer; color: #007bff"
-                    >
-                    </i>
-                  </div>
-                </div>
-                <div class="job-card">
-                  <img
-                    alt="Company logo"
-                    height="80"
-                    src="https://storage.googleapis.com/a1aa/image/4wtMJJTVBHIUH5S4PhMyIvzdlAmmZrH5QJStAJDfJtPabU3JA.jpg"
-                    width="80"
-                  />
-                  <div class="job-details">
-                    <h5>
-                      Nhân Viên Kinh Doanh Bất Động Sản - Đi Làm Ngay - Lương Up
-                      To 50 Triệu
-                    </h5>
-                    <p>Công Ty TNHH Đầu Tư Địa Ốc Aqua</p>
-                    <div class="icons">
-                      <span>
-                        <i class="fas fa-money-bill-wave"> </i>
-                        10 - 50 triệu
-                      </span>
-                      <span>
-                        <i class="fas fa-map-marker-alt"> </i>
-                        TP.HCM
-                      </span>
-                      <span>
-                        <i class="fas fa-calendar-alt"> </i>
-                        14/10/2024
-                      </span>
-                    </div>
-                  </div>
-                  <div class="favorite">
-                    <i
-                      class="fas fa-solid fa-heart favorite-icon"
-                      style="cursor: pointer; color: #007bff"
-                    >
-                    </i>
-                  </div>
-                </div>
-
-                <div class="job-card">
-                  <img
-                    alt="Company logo"
-                    height="80"
-                    src="https://storage.googleapis.com/a1aa/image/4wtMJJTVBHIUH5S4PhMyIvzdlAmmZrH5QJStAJDfJtPabU3JA.jpg"
-                    width="80"
-                  />
-                  <div class="job-details">
-                    <h5>
-                      Nhân Viên Kinh Doanh Bất Động Sản - Đi Làm Ngay - Lương Up
-                      To 50 Triệu
-                    </h5>
-                    <p>Công Ty TNHH Đầu Tư Địa Ốc Aqua</p>
-                    <div class="icons">
-                      <span>
-                        <i class="fas fa-money-bill-wave"> </i>
-                        10 - 50 triệu
-                      </span>
-                      <span>
-                        <i class="fas fa-map-marker-alt"> </i>
-                        TP.HCM
-                      </span>
-                      <span>
-                        <i class="fas fa-calendar-alt"> </i>
-                        14/10/2024
-                      </span>
-                    </div>
-                  </div>
-                  <div class="favorite">
-                    <i
-                      class="fas fa-solid fa-heart favorite-icon"
-                      style="cursor: pointer; color: #007bff"
-                    >
-                    </i>
-                  </div>
-                </div>
-                <div class="job-card">
-                  <img
-                    alt="Company logo"
-                    height="80"
-                    src="https://storage.googleapis.com/a1aa/image/4wtMJJTVBHIUH5S4PhMyIvzdlAmmZrH5QJStAJDfJtPabU3JA.jpg"
-                    width="80"
-                  />
-                  <div class="job-details">
-                    <h5>
-                      Nhân Viên Kinh Doanh Bất Động Sản - Đi Làm Ngay - Lương Up
-                      To 50 Triệu
-                    </h5>
-                    <p>Công Ty TNHH Đầu Tư Địa Ốc Aqua</p>
-                    <div class="icons">
-                      <span>
-                        <i class="fas fa-money-bill-wave"> </i>
-                        10 - 50 triệu
-                      </span>
-                      <span>
-                        <i class="fas fa-map-marker-alt"> </i>
-                        TP.HCM
-                      </span>
-                      <span>
-                        <i class="fas fa-calendar-alt"> </i>
-                        14/10/2024
-                      </span>
-                    </div>
-                  </div>
-                  <div class="favorite">
-                    <i
-                      class="fas fa-solid fa-heart favorite-icon"
-                      style="cursor: pointer; color: #007bff"
-                    >
-                    </i>
-                  </div>
-                </div>
-                <div class="job-card">
-                  <img
-                    alt="Company logo"
-                    height="80"
-                    src="https://storage.googleapis.com/a1aa/image/4wtMJJTVBHIUH5S4PhMyIvzdlAmmZrH5QJStAJDfJtPabU3JA.jpg"
-                    width="80"
-                  />
-                  <div class="job-details">
-                    <h5>
-                      Nhân Viên Kinh Doanh Bất Động Sản - Đi Làm Ngay - Lương Up
-                      To 50 Triệu
-                    </h5>
-                    <p>Công Ty TNHH Đầu Tư Địa Ốc Aqua</p>
-                    <div class="icons">
-                      <span>
-                        <i class="fas fa-money-bill-wave"> </i>
-                        10 - 50 triệu
-                      </span>
-                      <span>
-                        <i class="fas fa-map-marker-alt"> </i>
-                        TP.HCM
-                      </span>
-                      <span>
-                        <i class="fas fa-calendar-alt"> </i>
-                        14/10/2024
-                      </span>
+            <i class="fas fa-map-marker-alt"></i>
+            <span th:text="${job.city}"></span>
+          </span>
                     </div>
                   </div>
 
-                  <div class="favorite">
-                    <i
-                      class="fas fa-solid fa-heart favorite-icon"
-                      style="cursor: pointer; color: #007bff"
-                    >
-                    </i>
-                  </div>
+                  <!-- Heart icon with job ID for unfollow -->
+<!--                  <div class="favorite toggle-follow-job" th:data-jobId="${job.id}">-->
+<!--                    <i class="far fa-heart"></i>-->
+<!--                  </div>-->
                 </div>
               </div>
             </div>
-          </div>
+
+              <!-- Phân trang -->
+              <nav class="pagination-nav" th:if="${totalPages > 1}">
+                <ul class="pagination justify-content-center">
+                  <li class="page-item previous-item" th:classappend="${currentPage == 1 ? 'disabled' : ''}">
+                    <a class="page-link"
+                       th:href="@{/job-posts/Listing(pageNo=${currentPage - 1}, jobTitle=${selectedJobTitle}, statusEnum=${selectedStatus})}">
+                      <i class="fas fa-chevron-left me-2"></i>Trước
+                    </a>
+                  </li>
+
+                  <li class="page-item" th:if="${currentPage > 2}">
+                    <a class="page-link"
+                       th:href="@{/job-posts/Listing(pageNo=${1}, jobTitle=${selectedJobTitle}, statusEnum=${selectedStatus})}">1</a>
+                  </li>
+
+                  <li class="page-item disabled" th:if="${currentPage > 3}">
+                    <span class="page-link">...</span>
+                  </li>
+
+                  <li class="page-item"
+                      th:each="pageNumber : ${#numbers.sequence(currentPage - 1, currentPage + 1)}"
+                      th:classappend="${pageNumber == currentPage ? 'active' : ''}"
+                      th:if="${pageNumber > 0 && pageNumber <= totalPages}">
+                    <a class="page-link"
+                       th:href="@{/job-posts/Listing(pageNo=${pageNumber}, jobTitle=${selectedJobTitle}, statusEnum=${selectedStatus})}"
+                       th:text="${pageNumber}">
+                    </a>
+                  </li>
+
+                  <li class="page-item disabled" th:if="${currentPage < totalPages - 2}">
+                    <span class="page-link">...</span>
+                  </li>
+
+                  <li class="page-item" th:if="${currentPage < totalPages - 1}">
+                    <a class="page-link"
+                       th:href="@{/job-posts/Listing(pageNo=${totalPages}, jobTitle=${selectedJobTitle}, statusEnum=${selectedStatus})}"
+                       th:text="${totalPages}">
+                    </a>
+                  </li>
+
+                  <li class="page-item next-item" th:classappend="${currentPage == totalPages ? 'disabled' : ''}">
+                    <a class="page-link"
+                       th:href="@{/job-posts/Listing(pageNo=${currentPage + 1}, jobTitle=${selectedJobTitle}, statusEnum=${selectedStatus})}">
+                      Tiếp<i class="fas fa-chevron-right ms-2"></i>
+                    </a>
+                  </li>
+                </ul>
+              </nav>
+            </div>
         </main>
+
 
         <footer class="footer">
           <div class="container-fluid">
@@ -704,26 +528,47 @@
         </footer>
       </div>
     </div>
-    <script>
-      // Lấy tất cả các icon yêu thích
-      const favoriteIcons = document.querySelectorAll(".favorite-icon");
 
-      favoriteIcons.forEach((icon) => {
-        icon.addEventListener("click", function () {
-          // Kiểm tra màu sắc hiện tại và thay đổi màu
-          if (this.style.color === "rgb(0, 123, 255)") {
-            // Màu gốc #007bff
-            this.style.color = "#cadcf0"; // Đổi sang màu mới
-          } else {
-            this.style.color = "#007bff"; // Đổi trở về màu gốc
-          }
-        });
-      });
-    </script>
     <script src="js/app.js"></script>
     <script src="https://unpkg.com/feather-icons"></script>
     <script>
-      feather.replace();
+      document.addEventListener("DOMContentLoaded", function() {
+        var favoriteButtons = document.querySelectorAll(".favorite.toggle-follow-job");
+
+        favoriteButtons.forEach(function(favoriteButton) {
+          favoriteButton.addEventListener("click", function() {
+            var jobPostId = this.getAttribute("data-job-id");
+            var heartIcon = this.querySelector('i');
+
+            fetch('/follow/toggle-follow-job/' + jobPostId, {
+              method: 'POST',
+            })
+                    .then(response => {
+                      if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                      }
+                      return response.json();
+                    })
+                    .then(data => {
+                      // Toggle heart icon classes
+                      if (heartIcon.classList.contains('far')) {
+                        heartIcon.classList.remove('far');
+                        heartIcon.classList.add('fas');
+                      } else {
+                        heartIcon.classList.remove('fas');
+                        heartIcon.classList.add('far');
+                      }
+
+                      alert(data.message);
+                    })
+                    .catch(error => {
+                      console.error('Error:', error);
+                      alert('Có lỗi xảy ra: ' + error.message);
+                    });
+          });
+        });
+      });
+
     </script>
   </body>
 </html>

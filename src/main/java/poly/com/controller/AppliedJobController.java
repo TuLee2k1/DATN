@@ -63,19 +63,6 @@ public class AppliedJobController {
         return "User/V3/apply";
     }
 
-    @PostMapping("/toggle-follow")
-    @ResponseBody
-    public ResponseEntity<Boolean> toggleFollow(
-            HttpSession session,
-            @RequestParam Long jobPostId
-    ) {
-        Long userId = (Long) session.getAttribute("userId");
-        if (userId == null) {
-            return ResponseEntity.status(401).body(false);
-        }
 
-        boolean isFollowed = followService.toggleFollow(userId, jobPostId);
-        return ResponseEntity.ok(isFollowed);
-    }
 
 }

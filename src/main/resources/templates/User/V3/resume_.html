@@ -34,6 +34,57 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="/css/index.css" />
+    <style>
+      .custom-alert {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 1050;
+        width: auto;
+        max-width: 300px;
+        padding: 10px 20px;
+        margin: 0;
+        border-radius: 5px;
+        font-size: 16px;
+        transition: 0.3s;
+      }
+
+      .alert-success {
+        background-color: #28a745; /* Màu xanh cho thông báo thành công */
+        color: white;
+      }
+
+      .alert-warning {
+        background-color: #ffc107; /* Màu vàng cho thông báo lỗi */
+        color: black;
+      }
+
+      .custom-alert span {
+        display: inline-block;
+        width: 100%;
+      }
+    </style>
+    <script>
+
+      document.addEventListener("DOMContentLoaded", function() {
+        var successAlert = document.querySelector('.alert-success');
+        var errorAlert = document.querySelector('.alert-warning');
+
+        // Nếu có thông báo thành công
+        if (successAlert) {
+          setTimeout(function() {
+            successAlert.style.display = 'none'; // Ẩn thông báo sau 3 giây
+          }, 3000);
+        }
+
+        // Nếu có thông báo lỗi
+        if (errorAlert) {
+          setTimeout(function() {
+            errorAlert.style.display = 'none'; // Ẩn thông báo sau 3 giây
+          }, 3000);
+        }
+      });
+    </script>
   </head>
 
   <body>
@@ -41,14 +92,14 @@
       <!-- sidebar -->
       <nav id="sidebar" class="sidebar js-sidebar">
         <div class="sidebar-content js-simplebar">
-          <a class="sidebar-brand" href="index.html">
+          <a class="sidebar-brand" href="http://localhost:8080">
             <img
-              alt="Logo"
-              class="rounded-circle me-3"
-              height="50"
-              id="logo"
-              src="/img/icons/logo2.jpg"
-              width="50"
+                    alt="Logo"
+                    class="rounded-circle me-3"
+                    height="50"
+                    id="logo"
+                    src="/img/icons/logo2.jpg"
+                    width="50"
             />
             <span class="align-middle">Dreamers</span>
           </a>
@@ -56,68 +107,52 @@
           <ul class="sidebar-nav">
             <li class="sidebar-header">Pages</li>
 
-            <li class="sidebar-item active">
-              <a class="sidebar-link" href="/User/V3/dashboard.html">
+            <li class="sidebar-item ">
+              <a class="sidebar-link" href="/users/dashboard">
                 <i class="align-middle" data-feather="sliders"></i>
                 <span class="align-middle">Dashboard</span>
               </a>
             </li>
 
             <li class="sidebar-item">
-              <a class="sidebar-link" href="/User/V3/profile.html">
+              <a class="sidebar-link" href="/user-profile">
                 <i class="align-middle" data-feather="user"></i>
-                <span class="align-middle">Profile</span>
+                <span class="align-middle">Thông tin cá nhân</span>
               </a>
             </li>
+
             <li class="sidebar-item">
-              <a class="sidebar-link" href="/User/V3/resume_.html">
+              <a class="sidebar-link" href="/user-resume">
                 <i class="align-middle" data-feather="clipboard"></i>
-                <span class="align-middle">Resume</span>
+                <span class="align-middle">Hồ sơ ứng tuyển</span>
               </a>
             </li>
 
             <li class="sidebar-item">
-              <a class="sidebar-link" href="/User/V3/calender.html">
-                <i class="align-middle" data-feather="calendar"></i>
-                <span class="align-middle">Calender</span>
-              </a>
-            </li>
-
-            <li class="sidebar-item">
-              <a class="sidebar-link" href="/User/V3/apply.html">
+              <a class="sidebar-link" href="/user-applied">
                 <i class="align-middle" data-feather="check-square"></i>
-                <span class="align-middle">Applied job</span>
+                <span class="align-middle">Danh sách bài đăng</span>
               </a>
             </li>
 
             <li class="sidebar-item">
-              <a
-                class="sidebar-link"
-                href="/User/V3/EmployersViewPage.html"
-              >
-                <i class="align-middle" data-feather="users"></i>
-                <span class="align-middle">Recruiter follow</span>
-              </a>
-            </li>
-
-            <li class="sidebar-item">
-              <a class="sidebar-link" href="/User/V3/saved_jobs.html">
+              <a class="sidebar-link" href="#">
                 <i class="align-middle" data-feather="bookmark"></i>
-                <span class="align-middle">Bookmarks</span>
+                <span class="align-middle">Bài viết đã lưu</span>
               </a>
             </li>
 
             <li class="sidebar-item">
               <a class="sidebar-link" href="#">
                 <i class="align-middle" data-feather="message-square"></i>
-                <span class="align-middle">Messages</span>
+                <span class="align-middle">Tin nhắn</span>
               </a>
             </li>
 
             <li class="sidebar-item">
-              <a class="sidebar-link" href="/User/V3/Notification.html">
+              <a class="sidebar-link" href="#">
                 <i class="align-middle" data-feather="bell"></i>
-                <span class="align-middle">Notifications</span>
+                <span class="align-middle">Thông báo</span>
               </a>
             </li>
           </ul>
@@ -376,6 +411,15 @@
         </nav>
 
         <main class="content">
+          <!-- Thông báo thành công -->
+          <div th:if="${successMessage}" class="alert alert-success custom-alert" role="alert">
+            <span th:text="${successMessage}"></span>
+          </div>
+
+          <!-- Thông báo lỗi -->
+          <div th:if="${errorMessage}" class="alert alert-warning custom-alert" role="alert">
+            <span th:text="${errorMessage}"></span>
+          </div>
           <div class="container mt-1">
             <h4 class="mb-4">MY RESUME</h4>
             <form th:action="@{/user-resume/update}" th:object="${resumeRequest}" method="post">
@@ -559,6 +603,160 @@
 
     <script>
         feather.replace();
+        function validateForm(event) {
+          let isValid = true;
+
+          // Lấy giá trị các input
+          const name = document.getElementById('contactName').value.trim();
+          const email = document.getElementById('contactEmail').value.trim();
+          const phone = document.getElementById('contactPhone').value.trim();
+          const address = document.getElementById('interviewAddress').value.trim();
+          const sex = document.getElementById('sex').value.trim();
+          const dateOfBirth = document.getElementById('dateOfBirth').value.trim();
+          const schoolName = document.getElementById('schoolName').value.trim();
+          const degree = document.getElementById('degree').value.trim();
+          const startDate = document.getElementById('startDate').value.trim();
+          const endDate = document.getElementById('endDate').value.trim();
+          const gpa = document.getElementById('gpa').value.trim();
+          const jobTitle = document.getElementById('jobTitle').value.trim();
+          const companyName = document.getElementById('companyName').value.trim();
+          const startJobDate = document.getElementById('startJobDate').value.trim();
+          const endJobDate = document.getElementById('endJobDate').value.trim();
+          const jobDescription = document.getElementById('jobDescription').value.trim();
+
+          // Xóa thông báo lỗi trước đó
+          document.querySelectorAll('.error').forEach(el => el.remove());
+          document.querySelectorAll('.is-invalid').forEach(el => el.classList.remove('is-invalid'));
+
+          // Kiểm tra Họ và tên
+          const namePattern = /^[^\d]*$/; // Không chứa số
+          if (name === '') {
+            const nameField = document.getElementById('contactName');
+            nameField.classList.add('is-invalid');
+            nameField.insertAdjacentHTML('afterend', '<div class="error text-danger">Họ và tên không được để trống.</div>');
+            isValid = false;
+          } else if (!namePattern.test(name)) {
+            const nameField = document.getElementById('contactName');
+            nameField.classList.add('is-invalid');
+            nameField.insertAdjacentHTML('afterend', '<div class="error text-danger">Họ và tên không được chứa số.</div>');
+            isValid = false;
+          }
+
+          // Kiểm tra Email
+          const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          if (!emailPattern.test(email)) {
+            const emailField = document.getElementById('contactEmail');
+            emailField.classList.add('is-invalid');
+            emailField.insertAdjacentHTML('afterend', '<div class="error text-danger">Email không đúng định dạng.</div>');
+            isValid = false;
+          }
+
+          // Kiểm tra Số điện thoại
+          const phonePattern = /^[0-9]{10,11}$/; // Chấp nhận 10-11 chữ số
+          if (!phonePattern.test(phone)) {
+            const phoneField = document.getElementById('contactPhone');
+            phoneField.classList.add('is-invalid');
+            phoneField.insertAdjacentHTML('afterend', '<div class="error text-danger">Số điện thoại không hợp lệ (10-11 chữ số).</div>');
+            isValid = false;
+          }
+
+          // Kiểm tra Địa chỉ phỏng vấn
+          if (address === '') {
+            const addressField = document.getElementById('interviewAddress');
+            addressField.classList.add('is-invalid');
+            addressField.insertAdjacentHTML('afterend', '<div class="error text-danger">Địa chỉ không được để trống.</div>');
+            isValid = false;
+          }
+
+          // Kiểm tra Giới tính
+          if (sex === '') {
+            const sexField = document.getElementById('sex');
+            sexField.classList.add('is-invalid');
+            sexField.insertAdjacentHTML('afterend', '<div class="error text-danger">Vui lòng chọn giới tính.</div>');
+            isValid = false;
+          }
+
+          // Kiểm tra Ngày sinh
+          if (dateOfBirth === '') {
+            const dobField = document.getElementById('dateOfBirth');
+            dobField.classList.add('is-invalid');
+            dobField.insertAdjacentHTML('afterend', '<div class="error text-danger">Ngày sinh không được để trống.</div>');
+            isValid = false;
+          }
+
+          // Kiểm tra Tên trường
+          if (schoolName === '') {
+            const schoolField = document.getElementById('schoolName');
+            schoolField.classList.add('is-invalid');
+            schoolField.insertAdjacentHTML('afterend', '<div class="error text-danger">Tên trường không được để trống.</div>');
+            isValid = false;
+          }
+
+          // Kiểm tra Bằng cấp
+          if (degree === '') {
+            const degreeField = document.getElementById('degree');
+            degreeField.classList.add('is-invalid');
+            degreeField.insertAdjacentHTML('afterend', '<div class="error text-danger">Vui lòng chọn bằng cấp.</div>');
+            isValid = false;
+          }
+
+          // Kiểm tra Ngày bắt đầu và kết thúc học tập
+          if (startDate && endDate && new Date(startDate) > new Date(endDate)) {
+            const endDateField = document.getElementById('endDate');
+            endDateField.classList.add('is-invalid');
+            endDateField.insertAdjacentHTML('afterend', '<div class="error text-danger">Ngày kết thúc phải sau ngày bắt đầu.</div>');
+            isValid = false;
+          }
+
+          // Kiểm tra GPA
+          if (gpa && (gpa < 0 || gpa > 4)) {
+            const gpaField = document.getElementById('gpa');
+            gpaField.classList.add('is-invalid');
+            gpaField.insertAdjacentHTML('afterend', '<div class="error text-danger">GPA phải nằm trong khoảng từ 0 đến 4.</div>');
+            isValid = false;
+          }
+
+          // Kiểm tra Tiêu đề công việc
+          if (jobTitle === '') {
+            const jobTitleField = document.getElementById('jobTitle');
+            jobTitleField.classList.add('is-invalid');
+            jobTitleField.insertAdjacentHTML('afterend', '<div class="error text-danger">Tiêu đề công việc không được để trống.</div>');
+            isValid = false;
+          }
+
+          // Kiểm tra Tên công ty
+          if (companyName === '') {
+            const companyField = document.getElementById('companyName');
+            companyField.classList.add('is-invalid');
+            companyField.insertAdjacentHTML('afterend', '<div class="error text-danger">Tên công ty không được để trống.</div>');
+            isValid = false;
+          }
+
+          // Kiểm tra Ngày bắt đầu và kết thúc công việc
+          if (startJobDate && endJobDate && new Date(startJobDate) > new Date(endJobDate)) {
+            const endJobDateField = document.getElementById('endJobDate');
+            endJobDateField.classList.add('is-invalid');
+            endJobDateField.insertAdjacentHTML('afterend', '<div class="error text-danger">Ngày kết thúc phải sau ngày bắt đầu.</div>');
+            isValid = false;
+          }
+
+          // Kiểm tra Mô tả công việc
+          if (jobDescription === '') {
+            const jobDescriptionField = document.getElementById('jobDescription');
+            jobDescriptionField.classList.add('is-invalid');
+            jobDescriptionField.insertAdjacentHTML('afterend', '<div class="error text-danger">Mô tả công việc không được để trống.</div>');
+            isValid = false;
+          }
+
+          // Ngăn form submit nếu không hợp lệ
+          if (!isValid) {
+            event.preventDefault();
+          }
+        }
+
+        // Gắn sự kiện validate vào form
+        document.querySelector('form').addEventListener('submit', validateForm);
+
     </script>
   </body>
 </html>

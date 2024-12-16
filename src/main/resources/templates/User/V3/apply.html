@@ -35,6 +35,57 @@
   />
   <link rel="stylesheet" href="/css/index.css" />
   <link rel="stylesheet" href="/css/user.css" />
+  <style>
+    .custom-alert {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1050;
+      width: auto;
+      max-width: 300px;
+      padding: 10px 20px;
+      margin: 0;
+      border-radius: 5px;
+      font-size: 16px;
+      transition: 0.3s;
+    }
+
+    .alert-success {
+      background-color: #28a745; /* Màu xanh cho thông báo thành công */
+      color: white;
+    }
+
+    .alert-warning {
+      background-color: #ffc107; /* Màu vàng cho thông báo lỗi */
+      color: black;
+    }
+
+    .custom-alert span {
+      display: inline-block;
+      width: 100%;
+    }
+  </style>
+  <script>
+
+    document.addEventListener("DOMContentLoaded", function() {
+      var successAlert = document.querySelector('.alert-success');
+      var errorAlert = document.querySelector('.alert-warning');
+
+      // Nếu có thông báo thành công
+      if (successAlert) {
+        setTimeout(function() {
+          successAlert.style.display = 'none'; // Ẩn thông báo sau 3 giây
+        }, 3000);
+      }
+
+      // Nếu có thông báo lỗi
+      if (errorAlert) {
+        setTimeout(function() {
+          errorAlert.style.display = 'none'; // Ẩn thông báo sau 3 giây
+        }, 3000);
+      }
+    });
+  </script>
 </head>
 
 <body>
@@ -42,7 +93,7 @@
   <!-- sidebar -->
   <nav id="sidebar" class="sidebar js-sidebar">
     <div class="sidebar-content js-simplebar">
-      <a class="sidebar-brand" href="index.html">
+      <a class="sidebar-brand" href="http://localhost:8080">
         <img
                 alt="Logo"
                 class="rounded-circle me-3"
@@ -57,68 +108,52 @@
       <ul class="sidebar-nav">
         <li class="sidebar-header">Pages</li>
 
-        <li class="sidebar-item active">
-          <a class="sidebar-link" href="/User/V3/dashboard.html">
+        <li class="sidebar-item ">
+          <a class="sidebar-link" href="/users/dashboard">
             <i class="align-middle" data-feather="sliders"></i>
             <span class="align-middle">Dashboard</span>
           </a>
         </li>
 
         <li class="sidebar-item">
-          <a class="sidebar-link" href="/User/V3/profile.html">
+          <a class="sidebar-link" href="/user-profile">
             <i class="align-middle" data-feather="user"></i>
-            <span class="align-middle">Profile</span>
+            <span class="align-middle">Thông tin cá nhân</span>
           </a>
         </li>
+
         <li class="sidebar-item">
-          <a class="sidebar-link" href="/User/V3/resume_.html">
+          <a class="sidebar-link" href="/user-resume">
             <i class="align-middle" data-feather="clipboard"></i>
-            <span class="align-middle">Resume</span>
+            <span class="align-middle">Hồ sơ ứng tuyển</span>
           </a>
         </li>
 
         <li class="sidebar-item">
-          <a class="sidebar-link" href="/User/V3/calender.html">
-            <i class="align-middle" data-feather="calendar"></i>
-            <span class="align-middle">Calender</span>
-          </a>
-        </li>
-
-        <li class="sidebar-item">
-          <a class="sidebar-link" href="/User/V3/apply.html">
+          <a class="sidebar-link" href="/user-applied">
             <i class="align-middle" data-feather="check-square"></i>
-            <span class="align-middle">Applied job</span>
+            <span class="align-middle">Danh sách bài đăng</span>
           </a>
         </li>
 
         <li class="sidebar-item">
-          <a
-                  class="sidebar-link"
-                  href="/User/V3/EmployersViewPage.html"
-          >
-            <i class="align-middle" data-feather="users"></i>
-            <span class="align-middle">Recruiter follow</span>
-          </a>
-        </li>
-
-        <li class="sidebar-item">
-          <a class="sidebar-link" href="/User/V3/saved_jobs.html">
+          <a class="sidebar-link" href="#">
             <i class="align-middle" data-feather="bookmark"></i>
-            <span class="align-middle">Bookmarks</span>
+            <span class="align-middle">Bài viết đã lưu</span>
           </a>
         </li>
 
         <li class="sidebar-item">
           <a class="sidebar-link" href="#">
             <i class="align-middle" data-feather="message-square"></i>
-            <span class="align-middle">Messages</span>
+            <span class="align-middle">Tin nhắn</span>
           </a>
         </li>
 
         <li class="sidebar-item">
-          <a class="sidebar-link" href="/User/V3/Notification.html">
+          <a class="sidebar-link" href="#">
             <i class="align-middle" data-feather="bell"></i>
-            <span class="align-middle">Notifications</span>
+            <span class="align-middle">Thông báo</span>
           </a>
         </li>
       </ul>
@@ -553,11 +588,12 @@
           </div>
           <div class="row">
             <div class="col-md-6" th:each="job, iterStat : ${suggestedJobs}" th:if="${iterStat.index < 4}">
-              <div class="card job-card">
-                <h5 th:text="${job.jobTitle}">Nhân Viên R&D</h5>
-                <div class="favorite" onclick="toggleFavorite(this)">
-                  <i class="far fa-heart"></i>
-                </div>
+            <div class="card job-card">
+              <h5 th:text="${job.jobTitle}">Nhân Viên R&D</h5>
+              <div class="favorite toggle-follow-job"
+                   th:attr="data-job-id=${job.id}">
+                <i class="far fa-heart"></i>
+              </div>
                 <div class="d-flex align-items-center mb-2">
                   <img th:src="${job.logo}"
                        alt="Company Logo"
@@ -654,11 +690,76 @@
 <script src="/js/app.js"></script>
 <script src="https://unpkg.com/feather-icons"></script>
 
+
+
 <script>
-  function removeBadge(element) {
-    element.style.display = "none";
-  }
-  feather.replace();
+  document.addEventListener("DOMContentLoaded", function() {
+    var favoriteButtons = document.querySelectorAll(".favorite.toggle-follow-job");
+
+    favoriteButtons.forEach(function(favoriteButton) {
+      favoriteButton.addEventListener("click", function() {
+        var jobPostId = this.getAttribute("data-job-id");
+        var heartIcon = this.querySelector('i');
+
+        fetch('/follow/toggle-follow-job/' + jobPostId, {
+          method: 'POST',
+        })
+                .then(response => {
+                  if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                  }
+                  return response.json();
+                })
+                .then(data => {
+                  // Toggle heart icon classes
+                  if (heartIcon.classList.contains('far')) {
+                    heartIcon.classList.remove('far');
+                    heartIcon.classList.add('fas');
+                  } else {
+                    heartIcon.classList.remove('fas');
+                    heartIcon.classList.add('far');
+                  }
+
+                  alert(data.message);
+                })
+                .catch(error => {
+                  console.error('Error:', error);
+                  alert('Có lỗi xảy ra: ' + error.message);
+                });
+      });
+    });
+  });
+
+
+  // function toggleFavoriteJob(element) {
+  //   const jobId = element.getAttribute('data-job-id');
+  //   const heartIcon = element.querySelector('i');
+  //
+  //   // Disable button và xử lý
+  //   element.style.pointerEvents = 'none';
+  //
+  //   fetch(`/Tim-kiem`, {
+  //     method: 'GET',
+  //     headers: { 'Content-Type': 'application/json' },
+  //   })
+  //           .then(response => {
+  //             if (!response.ok) {
+  //               throw new Error("Không thể cập nhật trạng thái theo dõi.");
+  //             }
+  //             return response.text();
+  //           })
+  //           .then(message => {
+  //             // Thay đổi trạng thái icon
+  //             heartIcon.classList.toggle('far');
+  //             heartIcon.classList.toggle('fas');
+  //           })
+  //           .catch(error => {
+  //             alert(error.message);
+  //           })
+  //           .finally(() => {
+  //             element.style.pointerEvents = 'auto';
+  //           });
+  // }
 </script>
 </body>
 </html>
