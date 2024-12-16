@@ -32,6 +32,7 @@ public class ProfileController {
             return "redirect:/auth/login";
         }
 
+
         try {
             Profile profile = profileService.findById(user.getId());
             System.out.println(user.getId());
@@ -44,6 +45,7 @@ public class ProfileController {
             model.addAttribute("profile", newProfile);
             return "User/V3/profile";
         }
+
     }
 
     @PostMapping("/update")
