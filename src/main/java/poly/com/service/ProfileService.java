@@ -117,9 +117,9 @@ public class ProfileService {
         return profileRepository.findAll();
     }
 
-    public Page<Profile> getAllByAdmin(Integer pageNo) {
+    public Page<Profile> getAllByAdmin(String name,Integer pageNo) {
         Pageable pageable = PageRequest.of(pageNo - 1, 5);
-        return profileRepository.findAll(pageable);
+        return profileRepository.findAll(name,pageable);
     }
 
     /**
