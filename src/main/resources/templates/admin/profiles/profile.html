@@ -42,8 +42,57 @@
             margin-bottom: 15px;
             /* Khoảng cách giữa các mục */
         }
+
+        /*thông báo*/
+        .custom-alert {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1050;
+            width: auto;
+            max-width: 300px;
+            padding: 10px 20px;
+            margin: 0;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .alert-success {
+            background-color: #28a745; /* Màu xanh cho thông báo thành công */
+            color: white;
+        }
+
+        .alert-warning {
+            background-color: #ffc107; /* Màu vàng cho thông báo lỗi */
+            color: black;
+        }
+
+        .custom-alert span {
+            display: inline-block;
+            width: 100%;
+        }
     </style>
 
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var successAlert = document.querySelector('.alert-success');
+            var errorAlert = document.querySelector('.alert-warning');
+
+            // Nếu có thông báo thành công
+            if (successAlert) {
+                setTimeout(function() {
+                    successAlert.style.display = 'none'; // Ẩn thông báo sau 3 giây
+                }, 3000);
+            }
+
+            // Nếu có thông báo lỗi
+            if (errorAlert) {
+                setTimeout(function() {
+                    errorAlert.style.display = 'none'; // Ẩn thông báo sau 3 giây
+                }, 3000);
+            }
+        });
+    </script>
 </head>
 
 <body>
@@ -58,44 +107,15 @@
         <div class="row d-flex profile-body p-4 border rounded shadow-sm">
             <h1 class="h3 mb-3"><strong>Profile </strong></h1>
 
-            <!-- Profile Information -->
-            <div class="col-md-12">
-                <!-- Name Fields -->
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <label for="firstName" class="form-label">UserName</label>
-                        <input type="text" class="form-control" id="firstName" value="tienlake">
-                    </div>
-                    <div class="col-md-6">
-                        <label  class="form-label">Password</label>
-                        <input type="password" class="form-control" id="lastName" value="lake3">
-                    </div>
-                </div>
-
-                <!-- Email and Phone Fields -->
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <label for="email" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="email" value="honhutuyen201092004@outlook.com">
-                    </div>
-                    <div class="col-md-6 ">
-                        <label for="role" class="form-label">Role</label>
-                        <input type="text" class="form-control" id="role" value="Admin" readonly>
-                    </div>
-                </div>
-
-                <!-- About Me Section -->
-                <div class="mb-4">
-                    <label for="aboutMe" class="form-label">About Me</label>
-                    <textarea class="form-control" id="aboutMe" rows="4" placeholder="Type something..."></textarea>
-                </div>
-
-                <!-- Save Changes Button -->
-                <div class="text-end">
-                    <button class="btn btn-success">Save Changes</button>
-                </div>
+            <!-- Thông báo thành công -->
+            <div th:if="${message}" class="alert alert-success custom-alert" role="alert">
+                <span th:text="${message}"></span>
             </div>
-        </div>
+
+            <!-- Thông báo lỗi -->
+            <div th:if="${error}" class="alert alert-warning custom-alert" role="alert">
+                <span th:text="${error}"></span>
+            </div>
 
 
 
@@ -106,25 +126,24 @@
 
             <div class="col-md-12">
 
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <label  class="form-label">Current Password</label>
-                        <input type="password" class="form-control"  value="tienlake">
-                    </div>
-                    <div class="col-md-6 ">
-                        <label  class="form-label">New Password</label>
-                        <input type="password" class="form-control"  value="lake3">
-                    </div>
+                <form th:action="@{/admin/profiles/change-password-admin}" method="post">
+                <div class="mb-3">
+                    <label for="currentPassword" class="form-label">Mật khẩu hiện tại</label>
+                    <input type="password" class="form-control" id="currentPassword" name="currentPassword" required>
                 </div>
-
-
-
-                <!-- Save Changes Button -->
-                <div class="text-end">
-                    <button class="btn btn-success">Save Changes</button>
+                <div class="mb-3">
+                    <label for="newPassword" class="form-label">Mật khẩu mới</label>
+                    <input type="password" class="form-control" id="newPassword" name="newPassword" required>
                 </div>
+                <div class="mb-3">
+                    <label for="confirmNewPassword" class="form-label">Nhập lại mật khẩu mới</label>
+                    <input type="password" class="form-control" id="confirmNewPassword" name="confirmNewPassword" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Xác nhận</button>
+            </form>
             </div>
         </div>
+    </div>
     </div>
 </main>
 

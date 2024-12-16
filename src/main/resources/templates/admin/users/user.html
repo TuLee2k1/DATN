@@ -181,6 +181,15 @@
                 <div class="card-header">
                     <h5 class="card-title mb-0">Danh sách tài khoản</h5>
                 </div>
+                <div class="filter-bar mb-3 gap-2">
+
+                    <!-- Dropdown lọc trạng thái -->
+                        <form method="get" th:action="@{/admin/users} " class="d-flex gap-2">
+                            <input type="text" name="email" th:value="${searchKeyword}" placeholder="Search by email">
+                            <button type="submit" class="btn btn-primary btn-sm"><i class="align-middle" data-feather="search"></i></button>
+                        </form>
+
+                </div>
                 <table class="table table-hover my-0">
                     <thead>
                     <tr>
