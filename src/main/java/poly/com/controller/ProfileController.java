@@ -54,8 +54,6 @@ public class ProfileController {
         dto.setSex(entity.getSex());
         dto.setDateOfBirth(entity.getDateOfBirth());
         dto.setLogo(entity.getLogo());
-
-
         return new ResponseEntity<>(entity, HttpStatus.CREATED);
     }
     @Operation(summary = "Update Profile", description = "API update Profile")

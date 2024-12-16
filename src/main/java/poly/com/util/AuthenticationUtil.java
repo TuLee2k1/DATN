@@ -35,7 +35,7 @@ public class AuthenticationUtil {
          .orElseThrow(() -> new UserNotFoundException("Không tìm thấy thông tin người dùng"));
     }
 
-    public static Authentication getAuthentication() {
+    public Authentication getAuthentication() {
         return SecurityContextHolder.getContext().getAuthentication(); // người dùng đnăg nhập sẽ lưu thông tin vào đây,
         // Muốn lấy dữ liệu người dùng thì gọi thằng này ra
     }
