@@ -8,10 +8,8 @@ import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 import poly.com.Enum.Exp;
 import poly.com.Enum.JobLevel;
-import poly.com.Enum.StatusEnum;
 import poly.com.Enum.WorkType;
-import poly.com.model.JobPostStatus;
-import poly.com.model.Company;
+
 
 
 import java.util.Date;
@@ -26,7 +24,9 @@ public class JobPostRequest {
     private Long id;
     private Long userId;
     private String userEmail;
+
     @NotBlank(message = "Job title is required")
+    @NotNull(message = "Job title is required")
     private String jobTitle; // Tên công việc
 
     @NotBlank(message = "Job description is required")

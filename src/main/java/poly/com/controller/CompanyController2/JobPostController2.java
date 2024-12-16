@@ -107,6 +107,7 @@ public class JobPostController2 {
             model.addAttribute("isEdit", id != null);
             prepareModelForForm(model, user);
             model.addAttribute("errorMessage", "Có lỗi xảy ra: " + bindingResult.getAllErrors());
+            model.addAttribute("jobPostRequest", request);
             return "Company/Taotintuyendung";
         }
         System.out.println("Xem ID nhận biết Create hay Update:  " + request.getId());

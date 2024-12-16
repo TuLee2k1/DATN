@@ -12,21 +12,19 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import poly.com.Enum.EducationLevel;
 import poly.com.Enum.WorkType;
+import poly.com.Util.AuthenticationUtil;
 import poly.com.dto.ProfileDTO;
 import poly.com.dto.response.PageResponse;
 import poly.com.dto.response.ProfileSearchResult;
 import poly.com.exception.ProfileException;
 
-import poly.com.model.Company;
-import poly.com.model.JobProfile;
+import poly.com.model.*;
 
-import poly.com.model.Profile;
-import poly.com.model.User;
+import poly.com.repository.FollowRepository;
 import poly.com.repository.ProfileRepository;
 import poly.com.repository.UserRepository;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -37,6 +35,8 @@ public class ProfileService {
     private final UserRepository userRepository;
     private final FileStorageService fileStorageService;
     private final PasswordEncoder passwordEncoder;
+    private final AuthenticationUtil authenticationUtil;
+    private final FollowRepository followRepository;
 
     /**
      * Tạo mới hoặc lưu thông tin profile
@@ -141,7 +141,7 @@ public class ProfileService {
      * @param desiredLocation Vị trí mong muốn
      * @param workType Loại công việc
      * @param degree Bằng cấp
-     * @param pageable Tham số phân trang
+
      * @return Trang kết quả tìm kiếm
      */
 //    public PageResponse<ProfileSearchResult> searchProfiles(String name, String desiredLocation,
@@ -155,13 +155,38 @@ public class ProfileService {
 
     public PageResponse<ProfileSearchResult> searchProfiles(String name, String desiredLocation, WorkType workType,
                                                             EducationLevel degree, Integer pageNo) {
+
         // Tạo đối tượng pageable, mỗi trang sẽ có 10 kết quả
         Pageable pageable = PageRequest.of(pageNo - 1, 10);
         // Gọi repository để lấy kết quả phân trang
         Page<ProfileSearchResult> page = profileRepository.searchProfilesWithAgeAndCount(name, desiredLocation, workType, degree, pageable);
-
-        // Trả về PageResponse
         return new PageResponse<>(page);
+    }
+
+    public PageResponse<ProfileSearchResult> searchProfilesSave(String name, Integer pageNo) {
+        var companyID = authenticationUtil.getCurrentUser().getCompany().getId();
+        Pageable pageable = PageRequest.of(pageNo - 1, 10);
+        Page<ProfileSearchResult> page = profileRepository.searchProfilesWithCompanyIdAndName(companyID,name, pageable);
+        return new PageResponse<>(page);
+    }
+
+    public List<Map<String, Object>> getAllFieldsByProfileId(Long userId) {
+        List<Object[]> results = profileRepository.searchProfileWithAllFields(userId);
+
+        List<Map<String, Object>> response = new ArrayList<>();
+        for (Object[] result : results) {
+            Profile profile = (Profile) result[0];
+            Follow follow = (Follow) result[1];
+            Company company = (Company) result[2];
+
+            Map<String, Object> map = new HashMap<>();
+            map.put("profile", profile);
+            map.put("follow", follow);
+            map.put("company", company);
+
+            response.add(map);
+        }
+        return response;
     }
 
 }

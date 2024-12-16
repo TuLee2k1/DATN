@@ -163,7 +163,7 @@
           </a>
         </li>
         <li class="sidebar-item">
-          <a class="sidebar-link" href="lichsumuahang.html">
+          <a class="sidebar-link" href="hosodaluu.html">
             <i class="align-middle" data-feather="package"></i>
             <span>Lịch sử đơn hàng</span>
           </a>
@@ -451,7 +451,7 @@
 
         <form th:action="@{${jobPostRequest.id != null ? '/job-posts/' + jobPostRequest.id + '/update' : '/job-posts/create'}}"
               method="post"
-              th:object="${jobPostRequest}">
+              th:object="${jobPostRequest}" >
 
           <input type="hidden" th:field="*{id}" />
 
@@ -460,9 +460,9 @@
           <div class="mb-3">
             <label for="jobTitle" class="form-label">Tiêu đề tin tuyển dụng <i class="fa fa-question-circle"></i></label>
             <input type="text" class="form-control form-control-lg" id="jobTitle" th:field="*{jobTitle}" placeholder="Vị trí hiển thị đang tuyển" required>
-            <div class="invalid-feedback" th:if="${#fields.hasErrors('jobTitle')}" th:errors="*{jobTitle}">
+            <p class="invalid-feedback" th:if="${#fields.hasErrors('jobTitle')}" th:errors="*{jobTitle}">
               Tiêu đề công việc không được để trống
-            </div>
+            </p>
           </div>
 
           <div class="row mb-3">
@@ -540,7 +540,8 @@
                   Tỉnh / Thành phố
                   <i class="fa fa-question-circle" data-bs-toggle="tooltip" title="Chọn tỉnh/thành phố"></i>
                 </label>
-                <select class="form-select form-select-lg" id="city" th:field="*{city}" required>
+                <select class="form-select form-select-lg" id="city" th:field="*{city}"
+                        th:data-selected="${jobPostRequest.city}" required>
                   <option value="">Chọn Tỉnh hoặc Thành phố</option>
                 </select>
                 <div class="invalid-feedback" th:if="${#fields.hasErrors('city')}" th:errors="*{city}">
@@ -553,7 +554,8 @@
                   Quận / Huyện
                   <i class="fa fa-question-circle" data-bs-toggle="tooltip" title="Chọn quận/huyện"></i>
                 </label>
-                <select class="form-select form-select-lg" id="district" th:field="*{district}" required>
+                <select class="form-select form-select-lg" id="district" th:field="*{district}"
+                        th:data-selected="${jobPostRequest.district}" required>
                   <option value="">Chọn Quận hoặc Huyện</option>
                 </select>
                 <div class="invalid-feedback" th:if="${#fields.hasErrors('district')}" th:errors="*{district}">
@@ -695,63 +697,79 @@
     document.getElementById("danhsachtindang").addEventListener("click", function() {
     window.location.href = '/job-posts/Listing';
   });
-  document.addEventListener('DOMContentLoaded', function() {
+
+  // Hàm format tên tỉnh/thành phố
+  function formatProvinceName(name) {
+    if (!name) return '';
+    // Loại bỏ tiền tố "Thành phố", "Tỉnh"
+    return name.replace(/^(Thành phố|Tỉnh)\s+/i, '').trim();
+  }
+
+  // Hàm format tên quận/huyện
+  function formatDistrictName(name) {
+    if (!name) return '';
+    // Loại bỏ tiền tố "Quận", "Huyện", "Thị xã"
+    return name.replace(/^(Quận|Huyện|Thị xã)\s+/i, '').trim();
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
     const citySelect = document.getElementById('city');
     const districtSelect = document.getElementById('district');
+    const selectedCity = citySelect.getAttribute('data-selected');
+    const selectedDistrict = districtSelect.getAttribute('data-selected');
     let locationData = [];
 
-    // Fetch dữ liệu địa chỉ
+    // Fetch dữ liệu từ file JSON
     fetch('/dataApi.json')
             .then(response => response.json())
             .then(data => {
               locationData = data;
 
-              // Điền dữ liệu tỉnh/thành phố
-              const provinceChoices = new Choices(citySelect, {
-                searchEnabled: true,
-                searchPlaceholderValue: 'Tìm tỉnh/thành phố',
-                noResultsText: 'Không tìm thấy',
-                itemSelectText: 'Chọn',
-                choices: data.map(province => ({
-                  value: province.name,
-                  label: province.name
-                }))
-              });
-
-              // Khởi tạo Choices cho quận/huyện
-              const districtChoices = new Choices(districtSelect, {
-                searchEnabled: true,
-                searchPlaceholderValue: 'Tìm quận/huyện',
-                noResultsText: 'Không tìm thấy',
-                itemSelectText: 'Chọn'
-              });
-
-              // Sự kiện thay đổi tỉnh
-              citySelect.addEventListener('change', function() {
-                // Xóa các quận cũ
-                districtChoices.clearChoices();
-
-                // Tìm tỉnh được chọn
-                const selectedProvince = locationData.find(p => p.name === this.value);
-
-                if (selectedProvince && selectedProvince.districts) {
-                  // Thêm quận của tỉnh đó
-                  districtChoices.setChoices(
-                          selectedProvince.districts.map(district => ({
-                            value: district.name,
-                            label: district.name
-                          })),
-                          'value',
-                          'label',
-                          true
-                  );
+              // Điền dữ liệu Tỉnh/Thành phố
+              locationData.forEach(province => {
+                const option = document.createElement('option');
+                option.value = province.name;
+                option.textContent = formatProvinceName(province.name); // Format tên tỉnh/thành phố
+                if (province.name === selectedCity) {
+                  option.selected = true;
                 }
+                citySelect.appendChild(option);
               });
+
+              // Điền dữ liệu Quận/Huyện nếu có tỉnh đã chọn
+              if (selectedCity) {
+                updateDistricts(selectedCity, selectedDistrict);
+              }
+
+              // Khi chọn Tỉnh/Thành phố
+              citySelect.addEventListener('change', function () {
+                updateDistricts(this.value);
+              });
+
+              function updateDistricts(cityName, selectedDistrict = null) {
+                const province = locationData.find(p => p.name === cityName);
+                districtSelect.innerHTML = '<option value="">Chọn Quận hoặc Huyện</option>';
+                if (province && province.districts) {
+                  province.districts.forEach(district => {
+                    const option = document.createElement('option');
+                    option.value = district.name;
+                    option.textContent = formatDistrictName(district.name); // Format tên quận/huyện
+                    if (district.name === selectedDistrict) {
+                      option.selected = true;
+                    }
+                    districtSelect.appendChild(option);
+                  });
+                }
+              }
             })
             .catch(error => {
               console.error('Lỗi tải dữ liệu:', error);
-              alert('Không thể tải danh sách địa chỉ');
-            }); });
+            });
+  });
+
+
+
+
 </script>
 <!--<script th:src="@{../js/app.js}"></script>-->
 <script src="/js/app.js"></script>

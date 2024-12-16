@@ -2,11 +2,8 @@ package poly.com.controller.CompanyController2;
 
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -16,19 +13,13 @@ import poly.com.Enum.StatusEnum;
 import poly.com.Util.AuthenticationUtil;
 import poly.com.Util.ExcelUtils;
 import poly.com.dto.request.JobPost.JobPostTitleResponse;
-import poly.com.dto.response.Auth.AuthenticationResponse;
 import poly.com.dto.response.PageResponse;
-import poly.com.model.JobPost;
 import poly.com.model.JobProfile;
 import poly.com.model.User;
 import poly.com.service.JobPostService;
 import poly.com.service.JobProfileService;
 
 import java.io.IOException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.function.Function;
 
@@ -58,7 +49,6 @@ public String getApplicationProfile(
 
     // Lấy danh sách các bài đăng công việc
     List<JobPostTitleResponse> companyJobPosts = jobPostService.getJobPostTitle();
-
 
     model.addAttribute("statusEnum", StatusEnum.values());
         // Nếu có jobPostId, lưu lại trong model để lọc
@@ -109,8 +99,6 @@ public String getApplicationProfile(
     model.addAttribute("activeProfiles", activeProfiles);
     model.addAttribute("inactiveProfiles", inactiveProfiles);
     model.addAttribute("deletedProfiles", deletedProfiles);
-
-
 
     return "Company/Hosoungtuyen";
 }
@@ -189,73 +177,4 @@ public String getApplicationProfile(
         }
     }
 
-
-
-
-
-    //    @PreAuthorize("hasRole('ROLE_COMPANY')")
-//    @GetMapping
-//    public String getApplicationProfile(
-//     Model model,
-//     Authentication authentication,
-//     @RequestParam(defaultValue = "") Long jobPostId,
-//     @RequestParam(defaultValue = "1") Integer pageNo
-//    ) {
-//        User user = (User) authentication.getPrincipal();
-//
-//        // Lấy danh sách các bài đăng việc làm của công ty
-//        List<JobPostTitleResponse> companyJobPosts = jobPostService.getJobPostTitle();
-//
-//        // Kiểm tra nếu có jobPostId được truyền vào
-//        PageResponse<JobProfile> jobProfiles;
-//        if (jobPostId != null) {
-//            // Lọc hồ sơ theo jobPostId
-//            jobProfiles = jobProfileService.getALlProfileByJobPostid(jobPostId,pageNo);
-//        } else {
-//            // Lấy tất cả hồ sơ của công ty
-//            jobProfiles = jobProfileService.getAllProfilesByCompany(user.getCompany(),pageNo);
-//        }
-//
-//        model.addAttribute("jobProfiles", jobProfiles.getContent());
-//        model.addAttribute("jobPostsTitle", companyJobPosts);
-//        model.addAttribute("totalPages", jobProfiles.getTotalPages());
-//        model.addAttribute("currentPage", pageNo);
-//
-//        // Nếu có jobPostId, thêm vào model để giữ trạng thái lọc
-//        if (jobPostId != null) {
-//            model.addAttribute("selectedJobPostId", jobPostId);
-//        }
-//        return "Company/Hosoungtuyen";
-//    }
-
-
-
-//    @PreAuthorize("hasRole('ROLE_COMPANY')")
-//    @GetMapping("/profile/{profileId}")
-//    public String getProfileDetails(@PathVariable Long profileId, Model model) {
-//        // Lấy chi tiết một hồ sơ cụ thể
-//        JobProfile jobProfile = jobProfileService.getJobProfileById(profileId);
-//        model.addAttribute("jobProfile", jobProfile);
-//
-//        return "Company/ChiTietHoSoUngVien";
-//    }
-//
-//    @PreAuthorize("hasRole('ROLE_COMPANY')")
-//    @PostMapping("/profile/{profileId}/status")
-//    public String updateProfileStatus(
-//     @PathVariable Long profileId,
-//     @RequestParam String status,
-//     RedirectAttributes redirectAttributes
-//    ) {
-//        try {
-//            // Cập nhật trạng thái hồ sơ ứng tuyển
-//            jobProfileService.updateProfileStatus(profileId, status);
-//            redirectAttributes.addFlashAttribute("successMessage", "Cập nhật trạng thái hồ sơ thành công");
-//        } catch (Exception e) {
-//            log.error("Lỗi khi cập nhật trạng thái hồ sơ", e);
-//            redirectAttributes.addFlashAttribute("errorMessage", "Có lỗi xảy ra khi cập nhật trạng thái");
-//        }
-//
-//        return "redirect:/Company/ApplicationProfile/profile/" + profileId;
-//    }
 }

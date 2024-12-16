@@ -45,6 +45,7 @@ public class SecurityConfig {
            "/logout",
            "/v3/**",
            "**",
+              "/js/**",
            "/swagger-ui/**"
           ).permitAll()
           .requestMatchers("/Company/**").hasRole("COMPANY")
