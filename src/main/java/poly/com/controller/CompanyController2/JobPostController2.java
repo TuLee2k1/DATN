@@ -7,12 +7,14 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.data.domain.Page;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import poly.com.Enum.RoleType;
 import poly.com.Enum.StatusEnum;
@@ -24,9 +26,24 @@ import poly.com.dto.response.JobPost.JobListActiveResponse;
 import poly.com.dto.response.JobPost.JobListingResponse;
 import poly.com.dto.response.JobPost.JobPostResponse;
 import poly.com.dto.response.PageResponse;
+import poly.com.model.JobProfile;
+import poly.com.repository.JobPostRepository;
+import poly.com.service.ApplyCVService;
 import poly.com.service.JobCategoryService;
 import poly.com.service.JobPostService;
 import poly.com.service.SubCategoryService;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
 @Controller
 @RequiredArgsConstructor
@@ -38,6 +55,9 @@ public class JobPostController2 {
     private final JobPostService jobPostService;
     private final JobCategoryService jobCategoryService;
     private final SubCategoryService subCategoryService;
+    private static String UPLOAD_DIR = System.getProperty("user.dir") + "/uploads/fileCV";
+    private final JobPostRepository jobPostRepository;
+    private final ApplyCVService applyCVService;
 
     // Phương thức hỗ trợ để chuẩn bị model cho form
     private void prepareModelForForm(Model model, AuthenticationResponse user) {
@@ -139,12 +159,14 @@ public class JobPostController2 {
     public String showJobPostDetail(@PathVariable Long id, Model model) {
         JobPostRequest jobPost = jobPostService.getJobPost(id);
 
+        Date DateNow = new Date();
 
         // Lấy danh sách công việc
         Page<JobListActiveResponse> jobListings = jobPostService.getJobListingsByStatus("ACTIVE", 1, 10);
         model.addAttribute("jobListings", jobListings);
         model.addAttribute("currentPage", 1);
         model.addAttribute("totalPages", jobListings.getTotalPages());
+        model.addAttribute("currentDate", DateNow);
 
         // Tạo DTO để bind dữ liệu
         ApplyCVRequest applicationForm = new ApplyCVRequest();
@@ -152,6 +174,87 @@ public class JobPostController2 {
         model.addAttribute("jobPost", jobPost);
 
         return "fragments/job-single";
+    }
+
+    // Xử lý submit form
+
+    @PostMapping("/detail/{jobPostId}")
+    public ResponseEntity<Map<String, String>> submitApplication(
+            @PathVariable Long jobPostId,
+            @Valid @ModelAttribute("applicationForm") ApplyCVRequest applicationForm,
+            BindingResult bindingResult, Model model
+    ) throws IOException {
+        Map<String, String> response = new HashMap<>();
+
+        JobPostRequest jobPost = jobPostService.getJobPost(jobPostId);
+        model.addAttribute("jobPost", jobPost);
+        // Kiểm tra validation
+        if (bindingResult.hasErrors()) {
+            // Nếu có lỗi, quay lại form
+            System.out.println(bindingResult.getAllErrors());
+            String errorMessage = bindingResult.getAllErrors().stream()
+                    .map(Object::toString)
+                    .collect(Collectors.joining(", "));
+            response.put("errorMessage", "Vui lòng kiểm tra lại thông tin: " + errorMessage);
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        String fileName = applicationForm.getResume().getOriginalFilename();
+        Path filePath = Paths.get(UPLOAD_DIR, fileName);
+        Files.write(filePath, applicationForm.getResume().getBytes());
+
+
+        // Kiểm tra file
+        MultipartFile resume = applicationForm.getResume();
+        if (resume == null || resume.isEmpty()) {
+            bindingResult.rejectValue("resume", "error.resume", "Vui lòng chọn file CV");
+            response.put("errorMessage", "Vui lòng chọn file CV.");
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        // Kiểm tra kích thước file (5MB)
+        if (resume.getSize() > 5 * 1024 * 1024) {
+            bindingResult.rejectValue("resume", "error.resume", "Kích thước file không được vượt quá 5MB");
+            response.put("errorMessage", "Kích thước file không được vượt quá 5MB.");
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        // Kiểm tra định dạng file
+        String originalFilename = resume.getOriginalFilename();
+        String fileExtension = originalFilename.substring(originalFilename.lastIndexOf(".") + 1).toLowerCase();
+        String[] allowedExtensions = {"pdf", "doc", "docx"};
+
+        boolean isValidExtension = false;
+        for (String ext : allowedExtensions) {
+            if (fileExtension.equals(ext)) {
+                isValidExtension = true;
+                break;
+            }
+        }
+
+        if (!isValidExtension) {
+            bindingResult.rejectValue("resume", "error.resume", "Chỉ chấp nhận file PDF, DOC, DOCX");
+            response.put("errorMessage", "Chỉ chấp nhận file PDF, DOC, DOCX.");
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        try {
+            System.out.println("Id Job: "+jobPostId);
+            System.out.println("Thông tin: "+ applicationForm.getName());
+            System.out.println("Thông tin resume: "+ resume);
+            // Gọi service để lưu CV
+            JobProfile savedProfile = applyCVService.submitCv(resume, applicationForm, jobPostId);
+            System.out.println("thông tin save "+savedProfile);
+            System.out.println("Id Job progile: "+savedProfile.getId());
+            // Thông báo thành công
+            response.put("successMessage","Ứng tuyển thành công");
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            // Xử lý lỗi
+            model.addAttribute("errorMessage", "Có lỗi xảy ra: " + e.getMessage());
+            response.put("errorMessage", "Có lỗi xảy ra: " + e.getMessage());
+            return ResponseEntity.badRequest().body(response);
+        }
     }
 
     // Danh sách bài đăng

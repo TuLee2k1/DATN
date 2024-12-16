@@ -8,6 +8,7 @@ import poly.com.model.Company;
 import poly.com.model.JobPost;
 import poly.com.model.JobPostStatus;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 

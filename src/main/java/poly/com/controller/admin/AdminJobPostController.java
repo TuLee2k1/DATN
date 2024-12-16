@@ -1,22 +1,17 @@
 package poly.com.controller.admin;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import poly.com.dto.response.JobPost.JobPostResponse;
-import poly.com.model.JobCategory;
+import poly.com.Enum.StatusEnum;
 import poly.com.model.JobPost;
 import poly.com.service.JobPostService;
 import poly.com.service.MapValidationErrorService;
-
-import java.util.List;
 
 @Controller
 @RequestMapping("admin/jobposts")
@@ -28,12 +23,12 @@ public class AdminJobPostController {
     @Autowired
     MapValidationErrorService mapValidationErrorService;
 
-    @RequestMapping
-    public String list(ModelMap model) {
-        List<JobPost> list = jobPostService.findAll(); // Lấy tất cả Job Posts
-        model.addAttribute("jobPosts", list); // Truyền danh sách Job Posts sang view
-        return "admin/jobposts/jobpost"; // Trỏ đến file Thymeleaf hiển thị danh sách
-    }
+//    @RequestMapping
+//    public String list(ModelMap model) {
+//        List<JobPost> list = jobPostService.findAll(); // Lấy tất cả Job Posts
+//        model.addAttribute("jobPosts", list); // Truyền danh sách Job Posts sang view
+//        return "admin/jobposts/jobpost"; // Trỏ đến file Thymeleaf hiển thị danh sách
+//    }
 
 
 
@@ -71,4 +66,44 @@ public class AdminJobPostController {
         model.addAttribute("jobPost", jobPost);
         return "/admin/jobpost-details/jobpost-detail";
     }
+
+    @GetMapping
+    public String list(
+            @RequestParam(defaultValue = "statusEnum", required = false) String statusEnum,
+            @RequestParam(defaultValue = "1") Integer pageNo,
+            @RequestParam(required = false) String jobTitle,  // Thêm tham số jobTitle
+            ModelMap model) {
+
+        Page<JobPost> jobPosts;
+
+        if (jobTitle != null && !jobTitle.isEmpty()) {
+            // Nếu có tìm kiếm theo tiêu đề
+            jobPosts = jobPostService.getJobListingsAdmin(pageNo, statusEnum, jobTitle);
+        } else {
+            if (statusEnum != null && !statusEnum.isEmpty()) {
+                try {
+                    jobPosts = jobPostService.getJobListingsAdmin(pageNo, statusEnum,jobTitle); // Lấy bài đăng theo trạng thái
+                } catch (IllegalArgumentException e) {
+                    model.addAttribute("error", "Invalid status value!");
+                    jobPosts = jobPostService.getJobListingsAdmin(pageNo); // Lấy tất cả nếu trạng thái không hợp lệ
+                }
+            } else {
+                jobPosts = jobPostService.getJobListingsAdmin(pageNo); // Lấy tất cả bài đăng nếu không có trạng thái
+            }
+        }
+
+        // Thêm dữ liệu vào ModelMap
+        model.addAttribute("jobPostsAd", jobPosts);
+        model.addAttribute("statusEnum", statusEnum);
+        model.addAttribute("jobListings", jobPosts.getContent());
+        model.addAttribute("currentPage", pageNo);
+        model.addAttribute("totalPages", jobPosts.getTotalPages());
+        model.addAttribute("selectedStatus", statusEnum);
+        model.addAttribute("searchKeyword", jobTitle);  // Thêm vào model để trả về form tìm kiếm
+
+        return "admin/jobposts/jobpost"; // Trả về template
+    }
+
+
+
 }

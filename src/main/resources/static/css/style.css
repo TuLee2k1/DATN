@@ -1672,3 +1672,8 @@ h1, h2, h3, h4 {
   display: block; /* Hiển thị danh sách thả xuống */
 }
 
+.disabled {
+  pointer-events: none; /* Ngăn không cho nhấn */
+  opacity: 0.5; /* Làm mờ nút */
+}
+

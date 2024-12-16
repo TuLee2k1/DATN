@@ -130,15 +130,15 @@
 
         <tr>
             <th>Loại công việc</th>
-            <td th:text="${jobPost.workType}"></td>
+            <td th:text="${jobPost.workType.name}"></td>
         </tr>
         <tr>
             <th>Kinh nghiệm</th>
-            <td th:text="${jobPost.exp}"></td>
+            <td th:text="${jobPost.exp.name}"></td>
         </tr>
         <tr>
             <th>Cấp độ công việc</th>
-            <td th:text="${jobPost.jobLevel}"></td>
+            <td th:text="${jobPost.jobLevel.name}"></td>
         </tr>
         <tr>
             <th>Công ty</th>
