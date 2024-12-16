@@ -12,16 +12,23 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import poly.com.Enum.Exp;
+import poly.com.Enum.JobLevel;
 import poly.com.Enum.StatusEnum;
+import poly.com.Enum.WorkType;
+import poly.com.dto.request.JobPost.JobPostRequest;
 import poly.com.dto.response.JobPost.JobListActiveResponse;
 import poly.com.model.JobPost;
 
+import poly.com.model.Profile;
 import poly.com.repository.CompanyRepository;
 import poly.com.repository.JobPostRepository;
 import poly.com.repository.ProfileRepository;
 import poly.com.repository.UserRepository;
 
+import poly.com.service.JobCategoryService;
 import poly.com.service.JobPostService;
+import poly.com.service.SubCategoryService;
 import poly.com.service.ThongkeService;
 
 import java.util.Map;
@@ -29,11 +36,15 @@ import java.util.Map;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
+
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("")
 public class HomeController {
     private final JobPostService jobPostService;
+    private final JobCategoryService jobCategoryService;
+    private final SubCategoryService subCategoryService;
 
     private final JobPostRepository jobPostRepository;
 
@@ -77,6 +88,13 @@ public class HomeController {
         model.addAttribute("totalJobProfiles", stats.get("totalJobProfiles"));
 
 
+        JobPostRequest jobPostRequest =
+                new JobPostRequest(); // Tạo đối tượng mới để tạo bài đăng
+        System.out.println("JobPostController2.showJobPostForm:  " + jobPostRequest.getId());
+
+        model.addAttribute("jobPostRequest", jobPostRequest);
+        System.out.println("Show thong tin jobPostRequest nhận đuọc :  " + jobPostRequest);
+
         return "fragments/home";
     }
 
@@ -86,7 +104,20 @@ public class HomeController {
             @RequestParam(required = false) String searchTerm,
             @RequestParam(required = false) String jobType,
             @RequestParam(required = false) String location,
+            @RequestParam(required = false) Long jobCategory,
+            @RequestParam(required = false) Exp exp,
+            @RequestParam(required = false) WorkType workType,
+            @RequestParam(required = false) JobLevel jobLevel,
+            @RequestParam(required = false) Integer page, // Tham số trang hiện tại
+            @RequestParam(defaultValue = "10") Integer size, // Kích thước trang
             Model model) {
+
+        // Nếu pageNo không được truyền từ frontend, gán giá trị mặc định là 1
+        if (page == null) {
+            page = 1;
+        }
+
+        System.out.println("JobType: " + jobType);
 
         // Chuyển đổi từ String sang StatusEnum
         StatusEnum statusEnum;
@@ -104,15 +135,99 @@ public class HomeController {
         List<JobListActiveResponse> jobListActiveResponses = convertToJobListActiveResponse(jobPosts);
 
         // Bước 2: Lọc theo searchTerm, jobType và location
-        List<JobListActiveResponse> filteredJobList = filterJobListings(jobListActiveResponses, searchTerm, jobType, location);
+        List<JobListActiveResponse> filteredJobList = filterJobListings(jobListActiveResponses, searchTerm, jobType, location, jobCategory,exp,workType,jobLevel);
 
-        System.out.println("Filer: "+filteredJobList.size());
+        System.out.println("Filtered: " + filteredJobList.size());
+
+        // Tính toán chỉ số bắt đầu và kết thúc cho phân trang
+        int totalElements = filteredJobList.size();
+        int totalPages = (int) Math.ceil((double) totalElements / size);
+        int start = (page - 1) * size;
+        int end = Math.min(start + size, totalElements);
+
+        // Lấy danh sách công việc cho trang hiện tại
+        List<JobListActiveResponse> paginatedJobList = filteredJobList.subList(start, end);
+
+        JobPostRequest jobPostRequest = new JobPostRequest(); // Tạo đối tượng mới để tạo bài đăng
+
+        model.addAttribute("jobPostRequest", jobPostRequest);
+        System.out.println("JobPost: " + jobPostRequest);
+
+        model.addAttribute("jobCategories", jobCategoryService.getAllJobCategories());
+        model.addAttribute("subCategories", subCategoryService.getAllSubCategories());
 
         // Cập nhật model
-        model.addAttribute("jobListings", filteredJobList);
-        model.addAttribute("totalElements", filteredJobList.size());
-        model.addAttribute("currentPage", 1); // Không có phân trang, nên trang hiện tại là 1
-        model.addAttribute("totalPages", 1); // Chỉ có một trang
+        model.addAttribute("jobListings", paginatedJobList);
+        model.addAttribute("totalElements", totalElements);
+        model.addAttribute("currentPage", page); // Trang hiện tại
+        model.addAttribute("totalPages", totalPages); // Tổng số trang
+
+        return "user/Search"; // Tên của template Thymeleaf
+    }
+
+    @GetMapping("/Tim-kiem")
+    public String getJobListingsPage(
+            @RequestParam(defaultValue = "ACTIVE") String status,
+            @RequestParam(required = false) String searchTerm,
+            @RequestParam(required = false) String jobType,
+            @RequestParam(required = false) String location,
+            @RequestParam(required = false) Long jobCategory,
+            @RequestParam(required = false) Exp exp,
+            @RequestParam(required = false) WorkType workType,
+            @RequestParam(required = false) JobLevel jobLevel,
+            @RequestParam(required = false) Integer page, // Tham số trang hiện tại
+            @RequestParam(defaultValue = "10") Integer size, // Kích thước trang
+            Model model) {
+
+        // Nếu pageNo không được truyền từ frontend, gán giá trị mặc định là 1
+        if (page == null) {
+            page = 1;
+        }
+
+        System.out.println("JobType: " + jobType);
+
+        // Chuyển đổi từ String sang StatusEnum
+        StatusEnum statusEnum;
+        try {
+            statusEnum = StatusEnum.fromString(status);
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("error", "Invalid status value: " + status);
+            return "user/Search"; // Trả về trang tìm kiếm với thông báo lỗi
+        }
+
+        // Lấy tất cả các công việc với trạng thái cụ thể
+        List<JobPost> jobPosts = jobPostService.getJobPostsByStatus(statusEnum);
+
+        // Chuyển đổi danh sách JobPost sang JobListActiveResponse
+        List<JobListActiveResponse> jobListActiveResponses = convertToJobListActiveResponse(jobPosts);
+
+        // Bước 2: Lọc theo searchTerm, jobType và location
+        List<JobListActiveResponse> filteredJobList = filterJobListings(jobListActiveResponses, searchTerm, jobType, location, jobCategory,exp,workType,jobLevel);
+
+        System.out.println("Filtered: " + filteredJobList.size());
+
+        // Tính toán chỉ số bắt đầu và kết thúc cho phân trang
+        int totalElements = filteredJobList.size();
+        int totalPages = (int) Math.ceil((double) totalElements / size);
+        int start = (page - 1) * size;
+        int end = Math.min(start + size, totalElements);
+
+        // Lấy danh sách công việc cho trang hiện tại
+        List<JobListActiveResponse> paginatedJobList = filteredJobList.subList(start, end);
+
+        JobPostRequest jobPostRequest = new JobPostRequest(); // Tạo đối tượng mới để tạo bài đăng
+
+        model.addAttribute("jobPostRequest", jobPostRequest);
+        System.out.println("JobPost: " + jobPostRequest);
+
+        model.addAttribute("jobCategories", jobCategoryService.getAllJobCategories());
+        model.addAttribute("subCategories", subCategoryService.getAllSubCategories());
+
+        // Cập nhật model
+        model.addAttribute("jobListings", paginatedJobList);
+        model.addAttribute("totalElements", totalElements);
+        model.addAttribute("currentPage", page); // Trang hiện tại
+        model.addAttribute("totalPages", totalPages); // Tổng số trang
 
         return "user/Search"; // Tên của template Thymeleaf
     }
@@ -128,6 +243,10 @@ public class HomeController {
                     response.setCity(jobPost.getCity());
                     response.setCompanyLogoUrl(jobPost.getCompany().getLogo());
                     response.setWorkType(jobPost.getWorkType());
+                    response.setJobCategoryId(jobPost.getJobCategory().getId());
+                    response.setExp(jobPost.getExp());
+                    response.setWorkType(jobPost.getWorkType());
+                    response.setJobLevel(jobPost.getJobLevel());
                     // Thiết lập các thuộc tính khác nếu cần
                     return response;
                 })
@@ -138,7 +257,11 @@ public class HomeController {
     private List<JobListActiveResponse> filterJobListings(List<JobListActiveResponse> jobListActiveResponses,
                                                           String searchTerm,
                                                           String jobType,
-                                                          String location) {
+                                                          String location,
+                                                          Long jobCategory,
+                                                          Exp exp,
+                                                          WorkType workType,
+                                                          JobLevel jobLevel) {
         if (searchTerm != null && !searchTerm.isEmpty()) {
             jobListActiveResponses = jobPostService.filterBySearchTerm(jobListActiveResponses, searchTerm);
         }
@@ -147,6 +270,18 @@ public class HomeController {
         }
         if (location != null && !location.isEmpty()) {
             jobListActiveResponses = jobPostService.filterByLocation(jobListActiveResponses, location);
+        }
+        if (jobCategory != null) {
+            jobListActiveResponses = jobPostService.filterByJobCategory(jobListActiveResponses, jobCategory);
+        }
+        if (exp!= null) {
+            jobListActiveResponses = jobPostService.filterByExp(jobListActiveResponses, exp);
+        }
+        if (workType!= null) {
+            jobListActiveResponses = jobPostService.filterByWorkType(jobListActiveResponses, workType);
+        }
+        if (jobLevel!= null) {
+            jobListActiveResponses = jobPostService.filterByJobLevel(jobListActiveResponses, jobLevel);
         }
         return jobListActiveResponses;
     }

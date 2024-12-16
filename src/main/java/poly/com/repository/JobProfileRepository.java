@@ -56,4 +56,7 @@ public interface JobProfileRepository extends JpaRepository<JobProfile, Long> {
     List<JobProfile> findByUser_Id(Long userId);
 
 
+    @Query("SELECT COUNT(jp) FROM JobProfile jp WHERE jp.user.id = :userId")
+    Long countByUserId(@Param("userId") Long userId);
+
 }

@@ -26,7 +26,7 @@ public class Follow extends AbstractEntity {
 
     @Temporal(TemporalType.DATE)
     @Column(name = "follow_date")
-    private Date followDate;
+    private Date followDate; // Ngày theo dõi
 
     @PrePersist
     public void prePersist() {

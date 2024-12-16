@@ -2,6 +2,8 @@ package poly.com.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
+
+import org.springframework.data.jpa.repository.Query;
 import poly.com.model.VerifyUser;
 import poly.com.model.User;
 

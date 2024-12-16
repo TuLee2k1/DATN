@@ -22,8 +22,10 @@ import java.util.Optional;
 public class FollowService {
 
     private final FollowRepository followRepository;
+
     private AuthenticationUtil authenticationUtil;
     private final JobPostRepository jobPostRepository;
+
 
     public Follow toggleFollowCompany(Long companyId) {
         var user = authenticationUtil.getAuthenticatedUser();
@@ -47,7 +49,6 @@ public class FollowService {
         return followRepository.save(follow); // Trả về đối tượng mới tạo
     }
 
-
     public Follow toggleFollowJobPost(Long jobPostId) {
         var user = authenticationUtil.getAuthenticatedUser();
 
@@ -70,27 +71,26 @@ public class FollowService {
         return followRepository.save(follow);
     }
 
-
-    public Follow toggleFollowApplicant(Long userId) {
+    public Follow toggleFollowUser(Long userId) {
         var companyId = authenticationUtil.getAuthenticatedUser().getCompany().getId();
 
-        // Kiểm tra xem công ty đã theo dõi ứng viên chưa
+        // Check if the company is already following the user
         Optional<Follow> existingFollow = followRepository.findByCompanyIdAndUserId(companyId, userId);
 
         if (existingFollow.isPresent()) {
-            // Nếu đã theo dõi, xóa mối quan hệ
+            // If already following, delete the relationship
             followRepository.delete(existingFollow.get());
-            return null;
+            return null; // Return null to indicate unfollow
         }
 
-        // Nếu chưa theo dõi, tạo mối quan hệ mới
+        // If not following, create a new follow relationship
         Follow follow = Follow.builder()
          .companyId(companyId)
          .userId(userId)
          .followDate(new Date())
          .build();
 
-        return followRepository.save(follow);
+        return followRepository.save(follow); // Return the newly created follow object
     }
     @Transactional
     public boolean toggleFollow(Long userId, Long jobPostId) {
@@ -162,12 +162,22 @@ public class FollowService {
         return followRepository.findUserFollowedJobPosts(userId, pageable);
     }
 
-
     public Page<CompanyFollowResponse> getFollowedCompanies(Pageable pageable) {
         var userId = authenticationUtil.getAuthenticatedUser().getId();
         return followRepository.findCompaniesFollowedByUser(userId, pageable);
     }
 
+    public boolean isCompanyFollowingCandidate(Long companyId, Long userId) {
+        return followRepository.existsByCompanyIdAndUserId(companyId, userId);
+    }
 
+    public boolean isFollowing(Long userId) {
+        System.out.println("userId: " + userId);
+        var companyId = authenticationUtil.getAuthenticatedUser().getCompany().getId();
+        System.out.println("companyId: " + companyId);
+
+        // Kiểm tra xem đã theo dõi chưa
+        return followRepository.existsByCompanyIdAndUserId(companyId, userId);
+    }
 
 }

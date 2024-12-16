@@ -9,7 +9,10 @@ import org.springframework.data.domain.*;
 
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import poly.com.Enum.Exp;
+import poly.com.Enum.JobLevel;
 import poly.com.Enum.StatusEnum;
+import poly.com.Enum.WorkType;
 import poly.com.dto.response.JobPost.JobListActiveResponse;
 import poly.com.repository.CompanyRepository;
 import poly.com.util.AuthenticationUtil;
@@ -364,9 +367,11 @@ public class JobPostService {
     public Page<JobListActiveResponse> convertToJobListActiveResponse(Page<JobPost> jobListings) {
         return jobListings.map(jobPost -> {
             Company company = jobPost.getCompany();
+            JobCategory jobCategory = jobPost.getJobCategory();
             Long companyId = (company != null) ? company.getId() : null;
             String companyLogoUrl = (company != null) ? company.getLogo() : null;
             String companyName = (company != null) ? company.getName() : null;
+            Long jobCategoryId = (jobCategory != null) ? jobCategory.getId() : null;
 
             return new JobListActiveResponse(
                     jobPost.getId(),
@@ -380,7 +385,10 @@ public class JobPostService {
                     companyName,
                     jobPost.getWorkType(),
                     jobPost.getStatus(),
-                    jobPost.getCity()
+                    jobPost.getCity(),
+                    jobCategoryId,
+                    jobPost.getExp(),
+                    jobPost.getJobLevel()
 
             );
         });
@@ -475,8 +483,9 @@ public class JobPostService {
     }
 
     public List<JobListActiveResponse> filterByJobType(List<JobListActiveResponse> jobListings, String jobType) {
+       System.out.println("JobTypeService: "+jobType);
         return jobListings.stream()
-                .filter(job -> job.getWorkType().equals(jobType))
+                .filter(job -> job.getWorkType() == WorkType.valueOf(jobType)) // Nếu jobType là tên enum
                 .collect(Collectors.toList());
     }
 
@@ -491,6 +500,56 @@ public class JobPostService {
                 .collect(Collectors.toList());
     }
 
+    public List<JobListActiveResponse> filterByJobCategory(List<JobListActiveResponse> jobListings, Long jobCategory) {
+        System.out.println("Filtering by jobCategory: " + jobCategory);
+
+// In ra tất cả các job và jobCategoryId của chúng
+        jobListings.forEach(job -> {
+            System.out.println("Job ID: " + job.getId() + ", Job Category ID: " + job.getJobCategoryId());
+        });
+
+        return jobListings.stream()
+                .filter(job -> {
+                    System.out.println("List: " + job.getJobCategoryId());
+                    Long jobcate = job.getJobCategoryId();
+                    System.out.println("Job Category: " + jobcate); // In ra tên thành phố
+                    return jobcate != null && jobcate.equals(jobCategory);
+                })
+                .collect(Collectors.toList());
+    }
+    public List<JobListActiveResponse> filterByExp(List<JobListActiveResponse> jobListings, Exp exp) {
+       System.out.println("Filtering by exp: " + exp);
+        return jobListings.stream()
+                .filter(job -> {
+                    System.out.println("List: " + job.getExp());
+                    Exp jobExp = job.getExp();
+                    System.out.println("Job Exp: " + jobExp); // In ra tên thành phố
+                    return jobExp != null && jobExp.equals(exp);
+                })
+                .collect(Collectors.toList());
+    }
+    public List<JobListActiveResponse> filterByWorkType(List<JobListActiveResponse> jobListings, WorkType workType) {
+        System.out.println("Filtering by worktype: " + workType);
+        return jobListings.stream()
+                .filter(job -> {
+                    System.out.println("List: " + job.getWorkType());
+                    WorkType jobWorkType = job.getWorkType();
+                    System.out.println("Job WorkType: " + jobWorkType); // In ra tên thành phố
+                    return jobWorkType != null && jobWorkType.equals(workType);
+                })
+                .collect(Collectors.toList());
+    }
+    public List<JobListActiveResponse> filterByJobLevel(List<JobListActiveResponse> jobListings, JobLevel jobLevel) {
+        System.out.println("Filtering by jobLevel: " + jobLevel);
+        return jobListings.stream()
+                .filter(job -> {
+                    System.out.println("List: " + job.getJobLevel());
+                    JobLevel jobjobLevel = job.getJobLevel();
+                    System.out.println("Job Level: " + jobjobLevel); // In ra tên thành phố
+                    return jobjobLevel != null && jobjobLevel.equals(jobLevel);
+                })
+                .collect(Collectors.toList());
+    }
 
 //    public Page<JobListActiveResponse> getSearchJobListingsByStatus(String status, String searchTerm, String jobType, String location, Integer pageNo, Integer pageSize) {
 //        Pageable pageable = PageRequest.of(pageNo - 1, pageSize);

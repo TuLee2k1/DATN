@@ -14,6 +14,10 @@
 
     <link rel="stylesheet" href="/fonts/icomoon/style.css">
     <link rel="stylesheet" href="/fonts/line-icons/style.css">
+    <link rel="stylesheet" href="/css/animate.min.css">
+    <link rel="stylesheet" href="/css/quill.snow.css">
+    <link rel="stylesheet" href="/css/jquery.fancybox.min.css">
+    <link rel="stylesheet" href="/css/owl.carousel.min.css">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
@@ -24,6 +28,11 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+    <!-- Bootstrap Select CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.min.css">
+    <!-- Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
     <!-- MAIN CSS -->
     <link rel="stylesheet" href="/css/style.css">
     <style>
@@ -33,9 +42,18 @@
         }
 
         #userInfo {
-            display: none; /* Ẩn thông tin người dùng trên thiết bị nhỏ */
+            display: none;
             align-items: center; /* Căn giữa các phần tử trong userInfo */
             margin-left: auto; /* Đẩy toàn bộ userInfo sang bên phải */
+        }
+        #userInfo1 {
+            display: none;
+
+        }
+
+        #userInfo2 {
+            display: none;
+
         }
 
         #username {
@@ -71,6 +89,20 @@
             opacity: 0.5; /* Làm mờ nút */
         }
 
+
+        #userInfo:hover #dropdownMenu {
+            display: block; /* Hiện dropdown menu khi hover vào userInfo */
+        }
+
+
+        #userInfo #dropdownMenu a{
+            text-decoration: none;
+        }
+
+        #tuyendung:hover{
+            opacity: 0.5;
+        }
+
     </style>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
@@ -86,14 +118,22 @@
                 // Kiểm tra avatar và gán giá trị
                 // const avatarSrc = user.avatar ? user.avatar : defaultAvatar;
                 // document.getElementById('userAvatar').src = avatarSrc;
-                document.getElementById('username').textContent = user.userInfo.fullName; // Giả sử username là thuộc tính trong user
+                document.getElementById('username').textContent = user.userInfo.fullName;
+                document.getElementById('username1').textContent = user.userInfo.fullName; // Giả sử username là thuộc tính trong user
                 console.log(user.userInfo.fullName);
                 document.getElementById('authButtons').style.display = 'none';
-                document.getElementById('userInfo').style.display = 'flex'; // Hoặc 'block' tùy thuộc vào layout
+                // document.getElementById('loginBtn1').style.display = 'none';
+                // document.getElementById('signupBtn1').style.display = 'none';
+                document.getElementById('userInfo').style.display = 'flex';
+                // document.getElementById('username1').style.display = 'flex'; // Hoặc 'block' tùy thuộc vào layout
             } else {
                 // Nếu không có thông tin người dùng, đảm bảo rằng các nút vẫn hiển thị
-                document.getElementById('authButtons').style.display = 'flex';
-                document.getElementById('userInfo').style.display = 'none'; // Hoặc 'block' tùy thuộc vào layout
+                document.getElementById('authButtons').style.display = 'block';
+                // document.getElementById('loginBtn1').style.display = 'block';
+                // document.getElementById('signupBtn1').style.display = 'block';
+                document.getElementById('userInfo').style.display = 'none';
+                // document.getElementById('userInfo1').style.display = 'none';
+                // document.getElementById('userInfo2').style.display = 'none';// Hoặc 'block' tùy thuộc vào layout
             }
         });
 
@@ -135,6 +175,37 @@
 
     </script>
 
+    <script>
+        // Hàm để kiểm tra kích thước cửa sổ
+        function checkWindowSize() {
+            const userInfo1 = document.getElementById('userInfo1');
+            const userInfo2 = document.getElementById('userInfo2');
+            const userInfo = document.getElementById('userInfo'); // Nếu bạn vẫn cần kiểm tra userInfo
+            const userlogin = localStorage.getItem('userInfo');
+            const btnSignup = document.getElementById('signupBtn1');
+            const btnLogin = document.getElementById('loginBtn1');
+            if(userlogin) {
+                if (window.innerWidth < 768) { // Ngưỡng cho thiết bị di động
+                    userInfo1.style.display = 'block'; // Hiện userInfo1
+                    userInfo2.style.display = 'block'; // Hiện userInfo2
+                    userInfo.style.display = 'none'; // Ẩn userInfo
+                    btnSignup.style.display = 'none';
+                    btnLogin.style.display = 'none'
+                } else {
+                    userInfo1.style.display = 'none'; // Ẩn userInfo1
+                    userInfo2.style.display = 'none'; // Ẩn userInfo2
+                    userInfo.style.display = 'flex'; // Hiện userInfo
+                }
+            }
+        }
+
+        // Kiểm tra kích thước cửa sổ khi tải trang
+        window.onload = checkWindowSize;
+
+        // Kiểm tra kích thước cửa sổ khi thay đổi kích thước
+        window.onresize = checkWindowSize;
+    </script>
+
 </head>
 
 <body id="top">
@@ -167,6 +238,30 @@
                             </ul>
                         </li>
                         <li><a href="contact.html">Liên Hệ</a></li>
+                        <li id="signupBtn1" class="d-lg-none"><a><span class="mr-2 icon-add"></span>Đăng Kí</a></li>
+                        <li id="loginBtn1" class="d-lg-none"><a><span class="mr-2 icon-lock_outline">Đăng Nhập</a></li>
+                        <li class="has-children" id="userInfo2" >
+
+                            <a id="username1" class="text-lg font-semibold flex items-center">
+                                <img src="/img/avatars/avatar-2.jpg" class="w-8 h-8 bg-white rounded-full flex items-center justify-center"><!-- Hình ảnh người dùng -->
+                                Lê
+                            </a>
+                            <!-- Dropdown menu -->
+                                <ul id="dropdownMenu1" class="dropdown">
+                               <li> <a href=""  id="dashboard1">Tài khoản</a></li>
+                               <li> <a href=""  id="logoutBtn1">Đăng xuất</a></li>
+                                </ul>
+                        </li>
+                        <li id="userInfo1">
+
+                                <a id="tuyendung1" class="text-lg font-semibold">
+                                    <div class="text-xs">DÀNH CHO</div>
+<!--                                    <i class="fas fa-briefcase text-blue-400"></i>-->
+                                    <p class="text-lg font-semibold">Nhà Tuyển Dụng</p>
+                                    <div class="text-xs">Đăng tin miễn phí</div>
+                                </a>
+
+                        </li>
                     </ul>
                 </nav>
 
@@ -180,19 +275,15 @@
                         </button>
                     </div>
 
-                    <div id="userInfo" class="flex items-center p-4" style="display: flex; position: relative;">
-                        <!-- Notification Bell -->
-                        <!--                            <div class="relative">-->
-                        <!--                                <i class="fas fa-bell text-white text-xl"></i>-->
-                        <!--                                <button class="absolute top-0 right-0 bg-red-600 text-white text-xs rounded-full px-1">1</button>-->
-                        <!--                            </div>-->
-                        <!-- User Icon -->
-                        <div class="ml-4">
-                            <div class="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                                <i class="fas fa-user text-purple-800"></i>
-                            </div>
+                    <div id="userInfo" class="flex items-center p-4">
+                        <div id="avt" class="ml-4">
+                            <img th:src="${profile?.logo != null && !#strings.isEmpty(profile.logo)
+? '/uploads/logoprofile/' + profile.getLogo()
+: '/Admin/images/person_3.jpg'}" class="w-8 h-8 bg-white rounded-full flex items-center justify-center">
+
                         </div>
-                        <div class="ml-2 text-white flex items-center relative">
+
+                        <div id="name" class="ml-2 text-white flex items-center relative">
                             <span id="username" class="cursor-pointer truncate" style="max-width: 100px;">Lê</span>
                             <i class="fas fa-caret-down ml-1"></i>
 
@@ -203,12 +294,13 @@
                                 <a href="#" class="block px-4 py-2 hover:bg-gray-200" id="logoutBtn">Đăng xuất</a>
                             </div>
                         </div>
+
                         <!-- Divider -->
                         <div class="ml-4 border-l border-white h-6"></div>
                         <!-- Employer Section -->
-                        <div class="ml-4 text-white flex items-center">
+                        <div id="tuyendung" class="ml-4 text-white flex items-center">
                             <i class="fas fa-briefcase text-blue-400"></i>
-                            <div id="tuyendung" class="ml-2">
+                            <div  class="ml-2">
                                 <div class="text-xs">DÀNH CHO</div>
                                 <div class="text-lg font-semibold">Nhà Tuyển Dụng</div>
                                 <div class="text-xs">Đăng tin miễn phí</div>
@@ -235,7 +327,7 @@
                     <div class="mb-5 text-center">
                         <h1 class="text-white font-weight-bold">Cách Dễ Nhất Để Có Được Công Việc Mơ Uớc Của Bạn</h1>
                     </div>
-                    <form method="post" class="search-jobs-form" th:action="@{/Tim-kiem}" >
+                    <form method="post" class="search-jobs-form" th:action="@{/Tim-kiem}">
                         <div class="row mb-5">
                             <div class="col-12 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
                                 <input type="text" name="searchTerm" class="form-control form-control-lg"
@@ -246,15 +338,20 @@
                                        placeholder=" Tất cả Tỉnh/Thành Phố" id="city">
                             </div>
                             <div class="col-12 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
-                                <select name="jobType" class="selectpicker" data-style="btn-white btn-lg" data-width="100%"
-                                        data-live-search="true" title="Select Work Type">
+                                <select name="jobType" class="form-control form-control-lg" data-style="btn-white btn-lg" data-width="100%"
+                                        data-live-search="true" id="workType">
                                     <option value="">Tất cả hình thức</option>
+                                    <option th:each="type : ${T(poly.com.Enum.WorkType).values()}"
+                                            th:value="${type}"
+                                            th:text="${type.getName()}">
+                                    </option>
+
 
                                 </select>
                             </div>
                             <div class="col-12 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
                                 <button type="submit" class="btn btn-primary btn-lg btn-block text-white btn-search">
-                                    <span class="icon-search icon mr-2"></span>Search Job
+                                    <span class="icon-search icon mr-2"></span>Tìm kiếm
                                 </button>
                             </div>
                         </div>
@@ -320,7 +417,7 @@
 
             <div class="row mb-5 justify-content-center">
                 <div class="col-md-7 text-center">
-                    <h2 class="section-title mb-2">43,167 Danh Sách Công Việc</h2>
+                    <h2 class="section-title mb-2" th:text="${jobListings.getTotalElements()} + ' Danh Sách Công Việc'">43,167 Danh Sách Công Việc</h2>
                 </div>
             </div>
 
@@ -354,7 +451,7 @@
 
             <div class="row pagination-wrap">
                 <div class="col-md-6 text-center text-md-left mb-4 mb-md-0">
-                    <span>Showing 1-7 Of 43,167 Jobs</span>
+                    <span th:text="'Hiển thị 1-' + ${totalPages} +' của ' + ${jobListings.getTotalElements()} + ' Việc làm'">Showing 1-7 Of 43,167 Jobs</span>
                 </div>
                 <div class="col-md-6 text-center text-md-right">
                     <div class="custom-pagination ml-auto">
@@ -476,7 +573,7 @@
                 </p>
             </div>
             <div class="col-md-6 ml-auto align-self-end">
-                <img src="/Admin/images/apps.png" alt="Free Website Template by Free-Template.co" class="img-fluid">
+                <img src="/Admin/images/apps.png" alt="" class="img-fluid">
             </div>
         </div>
     </div>
@@ -531,7 +628,14 @@
             </div>
         </div>
 
-
+        <div class="row text-center">
+            <div class="col-12">
+                <p class="copyright"><small>
+                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                    Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved <i class="icon-heart text-danger" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank" >DreamJob</a>
+                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></small></p>
+            </div>
+        </div>
     </div>
 </footer>
 
@@ -577,8 +681,8 @@
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         console.log('DOM fully loaded and parsed'); // Thông báo khi DOM đã được tải xong
-        const username = document.getElementById('username');
-        const dropdownMenu = document.getElementById('dropdownMenu');
+        const username = document.getElementById('username1');
+        const dropdownMenu = document.getElementById('dropdownMenu1');
 
         username.addEventListener('click', (event) => {
             event.stopPropagation(); // Ngăn chặn sự kiện click lan truyền
@@ -590,32 +694,124 @@
         });
     });
 
+    // // Thêm sự kiện cho nút đăng xuất
+    // document.getElementById('logoutBtn1').addEventListener('click', function () {
+    //     // Xóa thông tin người dùng khỏi localStorage
+    //     localStorage.removeItem('userInfo');
+    //     // Cập nhật giao diện người dùng
+    //     document.getElementById('authButtons').style.display = 'block';
+    //     document.getElementById('userInfo1').style.display = 'none';
+    //     document.getElementById('userInfo2').style.display = 'none';
+    //     console.log("User  logged out.");
+    //     window.location.href = "http://localhost:8080";
+    // });
+
     // Thêm sự kiện cho nút đăng xuất
     document.getElementById('logoutBtn').addEventListener('click', function () {
         // Xóa thông tin người dùng khỏi localStorage
         localStorage.removeItem('userInfo');
+        if(localStorage.getItem('userInfo')){
         // Cập nhật giao diện người dùng
-        document.getElementById('authButtons').style.display = 'block';
-        document.getElementById('userInfo').style.display = 'none';
-        console.log("User  logged out.");
-        window.location.href = "http://localhost:8080";
+        document.getElementById('authButtons').style.display = 'none';
+        document.getElementById('userInfo1').style.display = 'none';
+        document.getElementById('userInfo2').style.display = 'none';
+        document.getElementById('userInfo').style.display = 'flex';
+        }else {
+            document.getElementById('authButtons').style.display = 'none';
+            document.getElementById('userInfo').style.display = 'none';
+            console.log("User  logged out.");
+            window.location.href = "http://localhost:8080";
+        }
+    });
+
+
+    document.getElementById('dashboard1').addEventListener('click', function () {
+        window.location.href = "auth/user/dashboard";
     });
 
     document.getElementById('dashboard').addEventListener('click', function () {
-        window.location.href = "auth/user/dashboard";
+        window.location.href = "users/dashboard";
     });
 
 
     // Thêm sự kiện cho nút đăng xuất
-    document.getElementById('tuyendung').addEventListener('click', function () {
-        // Xóa thông tin người dùng khỏi localStorage
-        localStorage.removeItem('userInfo');
-        // Cập nhật giao diện người dùng
-        document.getElementById('authButtons').style.display = 'block';
-        document.getElementById('userInfo').style.display = 'none';
-        console.log("User  logged out.");
-        window.location.href = '/auth/login';
-    });
+    // document.getElementById('tuyendung').addEventListener('click', function () {
+    //     const getUserInfo = localStorage.getItem("userInfo")
+    //     if (getUserInfo){
+    //         const userInfo = JSON.parse(getUserInfo);
+    //         const userRole = userInfo.userInfo.roles;
+    //         console.log(userRole);
+    //         console.log(userInfo);
+    //
+    //         if (userRole[0] === "ROLE_COMPANY" || userRole[0] === "ROLE_ADMIN"){
+    //
+    //             window.location.href = '/job-posts/create';
+    //         }
+    //         else {
+    //             // Xóa thông tin người dùng khỏi localStorage
+    //             localStorage.removeItem('userInfo');
+    //             // Cập nhật giao diện người dùng
+    //             document.getElementById('authButtons').style.display = 'block';
+    //             document.getElementById('userInfo').style.display = 'none';
+    //             console.log("User  logged out.");
+    //             window.location.href = '/auth/login';
+    //         }
+    //     }
+
+        // // Thêm sự kiện cho nút đăng xuất
+        // document.getElementById('tuyendung1').addEventListener('click', function () {
+        //     const getUserInfo = localStorage.getItem("userInfo")
+        //     if (getUserInfo){
+        //         const userInfo = JSON.parse(getUserInfo);
+        //         const userRole = userInfo.userInfo.roles;
+        //         console.log(userRole);
+        //         console.log(userInfo);
+        //
+        //         if (userRole[0] === "ROLE_COMPANY" || userRole[0] === "ROLE_ADMIN"){
+        //
+        //             window.location.href = '/job-posts/create';
+        //         }
+        //         else {
+        //             // Xóa thông tin người dùng khỏi localStorage
+        //             localStorage.removeItem('userInfo');
+        //             // Cập nhật giao diện người dùng
+        //             document.getElementById('loginBtn1').style.display = 'block';
+        //             document.getElementById('signupBtn1').style.display = 'block';
+        //             document.getElementById('username1').style.display = 'none';
+        //             document.getElementById('userInfo').style.display = 'none';
+        //             console.log("User  logged out.");
+        //             window.location.href = '/auth/login';
+        //         }
+        //     }
+        //
+        // });
+
+            // Thêm sự kiện cho nút đăng xuất
+            document.getElementById('tuyendung').addEventListener('click', function () {
+                const getUserInfo = localStorage.getItem("userInfo")
+                if (getUserInfo) {
+                    const userInfo = JSON.parse(getUserInfo);
+                    const userRole = userInfo.userInfo.roles;
+                    console.log(userRole);
+                    console.log(userInfo);
+
+                    if (userRole[0] === "ROLE_COMPANY" || userRole[0] === "ROLE_ADMIN") {
+
+                        window.location.href = '/job-posts/create';
+                    } else {
+                        // Xóa thông tin người dùng khỏi localStorage
+                        localStorage.removeItem('userInfo');
+                        // Cập nhật giao diện người dùng
+                        document.getElementById('loginBtn1').style.display = 'block';
+                        document.getElementById('signupBtn1').style.display = 'block';
+                        document.getElementById('username1').style.display = 'none';
+                        document.getElementById('userInfo').style.display = 'none';
+                        console.log("User  logged out.");
+                        window.location.href = '/auth/login';
+                    }
+                }
+
+            });
 </script>
 
 <script>
@@ -629,8 +825,20 @@
         window.location.href = '/auth/register/user';
     });
 
+    // document.addEventListener('DOMContentLoaded', function () {
+    //     document.getElementById('loginBtn1').addEventListener('click', function () {
+    //         window.location.href = '/auth/login';
+    //     });
+    //
+    //     document.getElementById('signupBtn1').addEventListener('click', function () {
+    //         window.location.href = '/auth/register/user';
+    //     });
+    // });
 
 </script>
+
+
+
 </body>
 
 </html>
