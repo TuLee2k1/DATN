@@ -592,12 +592,15 @@
         document.querySelectorAll('.error').forEach(el => el.innerText = '');
         document.querySelectorAll('.is-invalid').forEach(el => el.classList.remove('is-invalid'));
 
-        // Kiểm tra họ và tên
+        // Kiểm tra họ và tên (không được để trống và không được chứa số)
         if (fullName === '') {
           document.getElementById('fullNameError').innerText = 'Họ và tên không được để trống.';
           isValid = false;
+        } else if (/\d/.test(fullName)) { // Kiểm tra xem có số không
+          document.getElementById('fullNameError').innerText = 'Họ và tên không được chứa số.';
+          document.getElementById('fullName').classList.add('is-invalid');
+          isValid = false;
         }
-
 
         // Kiểm tra email
         const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -621,12 +624,12 @@
           isValid = false;
         }
 
-
         // Nếu form không hợp lệ, ngăn submit
         if (!isValid) {
           event.preventDefault(); // Ngăn form submit
         }
       }
+
 
       // Gắn sự kiện vào form
       document.getElementById('profileForm').addEventListener('submit', validateForm);
