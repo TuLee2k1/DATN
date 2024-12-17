@@ -4,6 +4,11 @@ import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -14,8 +19,10 @@ import poly.com.util.AuthenticationUtil;
 import poly.com.util.ExcelUtils;
 import poly.com.dto.request.JobPost.JobPostTitleResponse;
 import poly.com.dto.response.PageResponse;
+import poly.com.exception.FileNotFoundException;
 import poly.com.model.JobProfile;
 import poly.com.model.User;
+import poly.com.service.FileStorageService;
 import poly.com.service.JobPostService;
 import poly.com.service.JobProfileService;
 
@@ -34,16 +41,17 @@ public class ApplicationProfileController {
     private final JobPostService jobPostService;
     private final ExcelUtils excelUtils;
     private final AuthenticationUtil authenticationUtil;
+    private final FileStorageService fileStorageService;
 
     @PreAuthorize("hasRole('ROLE_COMPANY')")
-@GetMapping
-public String getApplicationProfile(
- Model model,
- Authentication authentication,
- @RequestParam(defaultValue = "") Long jobPostId,
- @RequestParam(defaultValue = "1") Integer pageNo,
- @RequestParam(defaultValue = "") StatusEnum status // Thêm tham số trạng thái vào URL
-) {
+    @GetMapping
+    public String getApplicationProfile(
+     Model model,
+     Authentication authentication,
+     @RequestParam(defaultValue = "") Long jobPostId,
+     @RequestParam(defaultValue = "1") Integer pageNo,
+     @RequestParam(defaultValue = "") StatusEnum status // Thêm tham số trạng thái vào URL
+    ) {
 
     User user = (User) authentication.getPrincipal();
 
@@ -79,26 +87,24 @@ public String getApplicationProfile(
     }
         Long totalProfiles = jobProfileService.countTotalProfilesByJobPost(jobPostId);
         Long pendingProfiles = jobProfileService.countProfilesByJobPostAndStatus(jobPostId, StatusEnum.PENDING);
-        Long verifiedProfiles = jobProfileService.countProfilesByJobPostAndStatus(jobPostId, StatusEnum.VERIFIED);
         Long rejectedProfiles = jobProfileService.countProfilesByJobPostAndStatus(jobPostId, StatusEnum.REJECTED);
         Long activeProfiles = jobProfileService.countProfilesByJobPostAndStatus(jobPostId, StatusEnum.ACTIVE);
-        Long inactiveProfiles = jobProfileService.countProfilesByJobPostAndStatus(jobPostId, StatusEnum.INACTIVE);
         Long deletedProfiles = jobProfileService.countProfilesByJobPostAndStatus(jobPostId, StatusEnum.DELETED);
 
 
         model.addAttribute("jobProfiles", jobProfiles.getContent());
-    model.addAttribute("jobPostsTitle", companyJobPosts);
-    model.addAttribute("totalPages", jobProfiles.getTotalPages());
-    model.addAttribute("currentPage", pageNo);
+        model.addAttribute("jobPostsTitle", companyJobPosts);
+        model.addAttribute("totalPages", jobProfiles.getTotalPages());
+        model.addAttribute("currentPage", pageNo);
 
     // Thêm số lượng hồ sơ theo trạng thái vào model
-    model.addAttribute("totalProfiles", totalProfiles);
-    model.addAttribute("pendingProfiles", pendingProfiles);
-    model.addAttribute("verifiedProfiles", verifiedProfiles);
-    model.addAttribute("rejectedProfiles", rejectedProfiles);
-    model.addAttribute("activeProfiles", activeProfiles);
-    model.addAttribute("inactiveProfiles", inactiveProfiles);
-    model.addAttribute("deletedProfiles", deletedProfiles);
+        model.addAttribute("totalProfiles", totalProfiles);
+        model.addAttribute("pendingProfiles", pendingProfiles);
+//        model.addAttribute("verifiedProfiles", verifiedProfiles);
+        model.addAttribute("rejectedProfiles", rejectedProfiles);
+        model.addAttribute("activeProfiles", activeProfiles);
+//        model.addAttribute("inactiveProfiles", inactiveProfiles);
+        model.addAttribute("deletedProfiles", deletedProfiles);
 
     return "Company/Hosoungtuyen";
 }
@@ -174,6 +180,37 @@ public String getApplicationProfile(
             } catch (IOException ioException) {
                 System.out.println("Lỗi khi xuất Excel"+ioException);
             }
+        }
+    }
+
+    @GetMapping("/downloadCv/{fileName}")
+    public ResponseEntity<Resource> downloadCv(@PathVariable String fileName) {
+        try {
+            Resource resource = fileStorageService.loadFileAsResource( fileName);
+            return ResponseEntity.ok()
+             .contentType(MediaType.APPLICATION_OCTET_STREAM)
+             .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+             .body(resource);
+        } catch (FileNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
+    @GetMapping("/updateStatus/{id}")
+    public String updateStatus(@PathVariable("id") Long id,
+                               @RequestParam("status") StatusEnum status,
+                               Model model) {
+        try {
+            // Gọi Service để cập nhật trạng thái
+            jobProfileService.updateStatus(id, status);
+
+            // Thông báo cập nhật thành công
+            model.addAttribute("message", "Trạng thái đã được cập nhật thành công!");
+            return "redirect:/Company/ApplicationProfile";
+        } catch (Exception e) {
+            // Thông báo cập nhật thất bại
+            model.addAttribute("error", "Cập nhật trạng thái thất bại!");
+            return "redirect:/Company/ApplicationProfile";
         }
     }
 

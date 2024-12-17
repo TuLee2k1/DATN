@@ -109,7 +109,7 @@
 	<!-- sidebar -->
 	<nav id="sidebar" class="sidebar js-sidebar">
 		<div class="sidebar-content js-simplebar">
-			<a class="sidebar-brand" href="Taikhoannhatuyendung.html">
+			<a class="sidebar-brand" href="http://localhost:8080">
 				<span class="align-middle">Dream job</span>
 			</a>
 
@@ -120,13 +120,13 @@
 					</div>
 				</li>
 				<li class="sidebar-item">
-					<a class="sidebar-link" href="Taotintuyendung.html">
+					<a class="sidebar-link" th:href="@{/job-posts/create}">
 						<i class="align-middle" data-feather="plus-square"></i>
 						<span>Tạo tin tuyển dụng</span>
 					</a>
 				</li>
 				<li class="sidebar-item">
-					<a class="sidebar-link" href="Danhsachtindang.html">
+					<a class="sidebar-link" id="danhsachtindang" th:href="@{/job-posts/Listing}">
 						<i class="align-middle" data-feather="file-text"></i>
 						<span>Quản lý tin đăng</span>
 					</a>
@@ -138,87 +138,35 @@
 					</div>
 				</li>
 				<li class="sidebar-item">
-					<a class="sidebar-link" href="Hosoungtuyen.html">
+					<a class="sidebar-link" th:href="@{/Company/ApplicationProfile}">
 						<i class="align-middle" data-feather="file"></i>
 						<span>Hồ sơ ứng tuyển</span>
 					</a>
 				</li>
 
 				<li class="sidebar-item">
-					<a class="sidebar-link" href="Timungvienmoi.html">
+					<a class="sidebar-link" th:href="@{/company/search-profiles}">
 						<i class="align-middle" data-feather="search"></i>
 						<span>Tìm ứng viên mới</span>
 					</a>
 				</li>
 
-				<li class="sidebar-header">
-					<div class="d-flex align-items-center">
-						<span>Quản lý dịch vụ</span>
-					</div>
-				</li>
 				<li class="sidebar-item">
-					<a class="sidebar-link" href="danhsachdonhang.html">
+					<a class="sidebar-link" th:href="@{/company/saved-profile}" >
 						<i class="align-middle" data-feather="shopping-bag"></i>
-						<span>Danh sách đơn hàng</span>
-					</a>
-				</li>
-				<li class="sidebar-item">
-					<a class="sidebar-link" href="hosodaluu.html">
-						<i class="align-middle" data-feather="package"></i>
-						<span>Lịch sử đơn hàng</span>
-					</a>
-				</li>
-				<li class="sidebar-item">
-					<a class="sidebar-link" href="thongtinthanhtoan.html">
-						<i class="align-middle" data-feather="credit-card"></i>
-						<span>Thông tin thanh toán</span>
+						<span>Hồ sơ đã lưu</span>
 					</a>
 				</li>
 
-				<li class="sidebar-header">
-					<div class="d-flex align-items-center">
-						<span>Tài khoản và thương hiệu</span>
-					</div>
-				</li>
 				<li class="sidebar-item">
-					<a class="sidebar-link" href="#">
+					<a class="sidebar-link" th:href="@{/company-account}">
 						<i class="align-middle" data-feather="user"></i>
 						<span>Tài khoản nhà tuyển dụng</span>
 					</a>
 				</li>
-				<li class="sidebar-item">
-					<a class="sidebar-link" href="#">
-						<i class="align-middle" data-feather="award"></i>
-						<span>Quảng bá thương hiệu</span>
-					</a>
-				</li>
-
-				<li class="sidebar-header">
-					<div class="d-flex align-items-center">
-						<span>Hướng dẫn và thông báo</span>
-					</div>
-				</li>
-				<li class="sidebar-item">
-					<a class="sidebar-link" href="#">
-						<i class="align-middle" data-feather="help-circle"></i>
-						<span>Hướng dẫn sử dụng</span>
-					</a>
-				</li>
-				<li class="sidebar-item">
-					<a class="sidebar-link" href="#">
-						<i class="align-middle" data-feather="bell"></i>
-						<span>Thông báo mới</span>
-					</a>
-				</li>
-				<li class="sidebar-item">
-					<a class="sidebar-link" href="#">
-						<i class="align-middle" data-feather="life-buoy"></i>
-						<span>Hỗ trợ</span>
-					</a>
-				</li>
 
 				<li class="sidebar-item mt-4">
-					<a href="#" class="btn btn-primary w-100">
+					<a th:href="@{http://localhost:8080/}"  class="btn btn-primary w-100">
 						<span>Cổng người tìm việc</span>
 						<span class="ms-2">Chuyển</span>
 					</a>
@@ -389,23 +337,20 @@
 							<i class="align-middle" data-feather="settings"></i>
 						</a>
 
-						<a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#"
-						   data-bs-toggle="dropdown">
-							<img src="img/avatars/avatar.jpg" class="avatar img-fluid rounded me-1"
-								 alt="Charles Hall" /> <span class="text-dark">Charles Hall</span>
+						<a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#" data-bs-toggle="dropdown">
+							<img th:src="${company?.logo != null && !#strings.isEmpty(company.logo)
+											? '/uploads/logocompany/' + company.getLogo()
+											: '/Admin/images/person_3.jpg'}"
+								  class="rounded-circle"       alt="Logo" width="50" height="50" style="width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center; font-size: 30px;" >
+
+							<span class="text-dark fw-bold"
+								  th:text="${#authentication.principal.companyDetails != null ? #authentication.principal.companyDetails.name : 'N/A'}">Charles Hall</span>
 						</a>
 						<div class="dropdown-menu dropdown-menu-end">
-							<a class="dropdown-item" href="Taikhoannhatuyendung.html"><i
+							<a class="dropdown-item" th:href="@{/company-account}"><i
 									class="align-middle me-1" data-feather="user"></i> Profile</a>
-							<a class="dropdown-item" href="#"><i class="align-middle me-1"
-																 data-feather="pie-chart"></i> Analytics</a>
 							<div class="dropdown-divider"></div>
-							<a class="dropdown-item" href="index.html"><i class="align-middle me-1"
-																		  data-feather="settings"></i> Settings & Privacy</a>
-							<a class="dropdown-item" href="#"><i class="align-middle me-1"
-																 data-feather="help-circle"></i> Help Center</a>
-							<div class="dropdown-divider"></div>
-							<a class="dropdown-item" href="#">Log out</a>
+							<a class="dropdown-item" th:href="@{/logout}">Log out</a>
 						</div>
 					</li>
 				</ul>
@@ -431,14 +376,6 @@
 										th:text="${workType.name}" th:selected="${workType.name() == selectedWorkType}"></option>
 							</select>
 
-							<!-- Tìm kiếm theo địa điểm -->
-							<select id="locationFilter" name="desiredLocation" class="form-select me-2 mb-2"
-									style="flex: 1 1 20%">
-								<option value="">Toàn quốc</option>
-								<option th:each="location : ${locations}" th:value="${location}"
-										th:text="${location}" th:selected="${location == selectedDesiredLocation}"></option>
-							</select>
-
 							<!-- Tìm kiếm theo bằng cấp -->
 							<select id="degreeFilter" name="degree" class="form-select me-2 mb-2"
 									style="flex: 1 1 20%">
@@ -456,17 +393,24 @@
 				<!-- Kết quả -->
 				<div class="col-12">
 					<div class="results-section">
-						<h5>Kết quả tìm thấy: <span class="text-danger" th:text="${totalElements}">0</span> hồ sơ</h5>
+						<h5 style="font-size: 24px; font-weight: bold;">
+							Kết quả tìm thấy:
+							<span class="text-danger" style="font-size: 28px; font-weight: bold;" th:text="${totalElements}">0</span> hồ sơ
+						</h5>
 
 						<!-- Hồ sơ -->
 						<div class="result-item border rounded mb-4 p-4 shadow-sm bg-light" th:each="profile : ${profiles}">
 							<!-- Header: Tên và Tuổi -->
-							<div class="d-flex justify-content-between align-items-center mb-3">
+							<div>
+								<!-- Tên và tuổi -->
 								<div class="d-inline-flex align-items-center">
-									<h5 th:text="${profile.name}" class="fw-bold text-primary mb-0 me-2">Phạm Thị Bích Liên</h5>
-									<span class="badge bg-info text-dark px-2 py-1" th:text="'Tuổi: ' + ${profile.age}">Tuổi: 25</span>
+									<h5 class="fw-bold text-primary mb-0 me-2" th:text="${profile.name}">Phạm Thu Thủy</h5>
+									<span class="text-muted" th:text="'(' + ${profile.age} + ' tuổi)'">(33 tuổi)</span>
 								</div>
-								<i class="fas fa-check-circle text-success"></i>
+								<!-- Chức vụ hiển thị dưới tên và tuổi -->
+								<div class="text-dark fw-semibold mt-1" th:text="${profile.desiredLocation}">
+									Nhân Viên Kế Toán
+								</div>
 							</div>
 
 							<!-- Thông tin chi tiết -->
@@ -475,13 +419,13 @@
 									<i class="fas fa-money-bill-wave me-2 text-success"></i>
 									<strong th:text="'Mong muốn: ' + ${profile.desiredSalary}">8 triệu</strong>
 								</span>
-											<span class="mx-3">|</span>
-											<span>
+								<span class="mx-3">|</span>
+								<span>
 									<i class="fas fa-briefcase me-2 text-warning"></i>
-									<span th:text="'Kinh nghiệm: ' + ${profile.exp}">1 năm 5 tháng</span>
+									<span th:text="'Kinh nghiệm: ' + ${profile.exp.name}">1 năm 5 tháng</span>
 								</span>
-											<span class="mx-3">|</span>
-											<span>
+								<span class="mx-3">|</span>
+								<span>
 									<i class="fas fa-map-marker-alt me-2 text-danger"></i>
 									<span th:text="'Địa chỉ: ' + ${profile.getAddress()}">TP.HCM</span>
 								</span>
@@ -493,136 +437,75 @@
 										th:data-followed="${profile.followed}"
 										th:text="${profile.followed ? 'Hủy theo dõi' : 'Theo dõi'}">
 								</button>
-								<button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#infoModal">
-									<i class="fas fa-eye me-1" th:data-id="${profile.id}">></i> Xem
-								</button>
+								<a th:href="@{/company/details/{id}(id=${profile.id})}"
+								   class="btn btn-info btn-sm fw-bold" style="background-color: #17a2b8; color: white;">
+									<i class="fas fa-eye"></i> <strong>Chi tiết</strong>
+								</a>
+
 							</div>
 						</div>
 					</div>
 
 					<!-- Phân trang -->
-					<nav aria-label="Page navigation">
+					<nav class="pagination-nav" th:if="${totalPages > 1}">
 						<ul class="pagination justify-content-center">
-							<li class="page-item"><a class="page-link" href="#">Trang trước</a></li>
-							<li class="page-item"><a class="page-link" href="#">1</a></li>
-							<li class="page-item"><a class="page-link" href="#">2</a></li>
-							<li class="page-item"><a class="page-link" href="#">3</a></li>
-							<li class="page-item"><a class="page-link" href="#">Trang sau</a></li>
+							<!-- Trang trước -->
+							<li class="page-item previous-item" th:classappend="${currentPage == 1 ? 'disabled' : ''}">
+								<a class="page-link"
+								   th:href="@{/company/search-profiles(name=${selectedName},  pageNo=${currentPage - 1})}">
+									<i class="fas fa-chevron-left me-2"></i>Trang trước
+								</a>
+							</li>
+
+							<!-- Trang đầu tiên -->
+							<li class="page-item" th:if="${currentPage > 2}">
+								<a class="page-link"
+								   th:href="@{/company/search-profiles(name=${selectedName},  pageNo=1)}">1</a>
+							</li>
+
+							<!-- Dấu ... nếu có nhiều trang -->
+							<li class="page-item disabled" th:if="${currentPage > 3}">
+								<span class="page-link">...</span>
+							</li>
+
+							<!-- Các trang xung quanh trang hiện tại -->
+							<li class="page-item"
+								th:each="pageNumber : ${#numbers.sequence(currentPage - 1, currentPage + 1)}"
+								th:classappend="${pageNumber == currentPage ? 'active' : ''}"
+								th:if="${pageNumber > 0 && pageNumber <= totalPages}">
+								<a class="page-link"
+								   th:href="@{/company/search-profiles(name=${selectedName},  pageNo=${pageNumber})}"
+								   th:text="${pageNumber}">
+								</a>
+							</li>
+
+							<!-- Dấu ... nếu có nhiều trang -->
+							<li class="page-item disabled" th:if="${currentPage < totalPages - 2}">
+								<span class="page-link">...</span>
+							</li>
+
+							<!-- Trang cuối cùng -->
+							<li class="page-item" th:if="${currentPage < totalPages - 1}">
+								<a class="page-link"
+								   th:href="@{/company/search-profiles(name=${selectedName},  pageNo=${totalPages})}"
+								   th:text="${totalPages}"></a>
+							</li>
+
+							<!-- Trang sau -->
+							<li class="page-item next-item" th:classappend="${currentPage == totalPages ? 'disabled' : ''}">
+								<a class="page-link"
+								   th:href="@{/company/search-profiles(name=${selectedName},  pageNo=${currentPage + 1})}">
+									Tiếp <i class="fas fa-chevron-right ms-2"></i>
+								</a>
+							</li>
 						</ul>
 					</nav>
+
+
 				</div>
 			</div>
 
 		</main>
-
-	</div>
-</div>
-<div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
-	<div class="modal-dialog custom-width "> <!-- Đã thêm lớp modal-lg -->
-		<div class="modal-content">
-			<div class="modal-header">
-				<h1 class="modal-title fs-5" id="infoModalLabel">Thông tin chi tiết hồ sơ</h1>
-				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-			</div>
-			<div class="modal-body">
-				<div class="container mt-5">
-					<!-- Profile Header -->
-					<div class="card shadow-sm mb-4">
-						<div class="card-body d-flex align-items-center">
-							<img src="https://storage.googleapis.com/a1aa/image/Yk19D3jEznp8N9x5mSt7E8h2seSASJ4cIhAcDwJDKlbRBj9JA.jpg" class="rounded-circle me-3" alt="Profile Picture" width="100" height="100">
-							<div>
-								<h2 class="h4 mb-0" id="modalName" >Đinh Tam</h2>
-								<p class="text-muted mb-1" id="modalPosition">QUẢN LÝ KHO VẬN</p>
-								<p class="text-muted mb-3" id="modalUpdated">Cập nhật một giờ trước</p>
-								<button class="btn btn-primary">Mua thông tin liên hệ</button>
-							</div>
-							<div class="ms-auto">
-								<button class="btn btn-link text-primary fs-3">
-									<i class="fas fa-heart"></i>
-								</button>
-								<button class="btn btn-link text-primary fs-3">
-									<i class="fas fa-print"></i>
-								</button>
-							</div>
-						</div>
-					</div>
-
-					<!-- Personal Information -->
-					<div class="card shadow-sm mb-4">
-						<div class="card-body">
-							<div class="h5 mb-3">Thông tin cá nhân</div>
-							<div class="alert alert-warning mb-4" role="alert">
-								Thông tin liên hệ từ hồ sơ sẽ không hiển thị, cho đến khi nhà tuyển dụng đã hoàn thành việc mua thông tin liên hệ ứng viên.
-							</div>
-
-							<div class="row">
-								<div class="col-md-6 mb-3">
-									<strong>Email:</strong> <a href="#">Thông tin đã ẩn</a>
-								</div>
-								<div class="col-md-6 mb-3">
-									<strong>Số điện thoại:</strong> <a href="#">Thông tin đã ẩn</a>
-								</div>
-								<div class="col-md-6 mb-3">
-									<strong>Ngày sinh & Giới tính:</strong> 1984, Nam
-								</div>
-								<div class="col-md-6 mb-3">
-									<strong>Tình trạng hôn nhân:</strong> Đã lập gia đình
-								</div>
-								<div class="col-md-6 mb-3">
-									<strong>Tỉnh / Thành phố:</strong> TP.HCM
-								</div>
-								<div class="col-md-6 mb-3">
-									<strong>Địa chỉ:</strong> 1885 Ấp 2, Xã Bình Mỹ, Huyện Củ Chi
-								</div>
-							</div>
-						</div>
-					</div>
-
-					<!-- General Information -->
-					<div class="card shadow-sm mb-4">
-						<div class="card-body">
-							<div class="h5 mb-3">Thông tin chung</div>
-							<div class="row">
-								<div class="col-md-4 mb-3">
-									<strong>Vị trí mong muốn:</strong> Quản Lý Kho Vận
-								</div>
-								<div class="col-md-4 mb-3">
-									<strong>Cấp bậc hiện tại:</strong> Quản lý nhóm - giám sát
-								</div>
-								<div class="col-md-4 mb-3">
-									<strong>Cấp bậc mong muốn:</strong> Quản lý nhóm - giám sát
-								</div>
-								<div class="col-md-4 mb-3">
-									<strong>Mức lương mong muốn:</strong> 23,000,000 (VND)
-								</div>
-								<div class="col-md-4 mb-3">
-									<strong>Trình độ học vấn:</strong> Trung cấp
-								</div>
-								<div class="col-md-4 mb-3">
-									<strong>Số năm kinh nghiệm:</strong> Hơn 5 năm
-								</div>
-								<div class="col-md-4 mb-3">
-									<strong>Hình thức làm việc:</strong> Toàn thời gian cố định
-								</div>
-								<div class="col-md-4 mb-3">
-									<strong>Nghề nghiệp:</strong> Thu mua - Kho Vận - Chuỗi cung ứng, Xuất Nhập Khẩu, Vận Tải - Lái xe - Giao nhận
-								</div>
-								<div class="col-md-4 mb-3">
-									<strong>Địa điểm làm việc:</strong> TP.HCM, Bình Dương
-								</div>
-								<div class="col-12 mb-3">
-									<strong>Kỹ năng cứng & mềm:</strong> Làm việc nhóm, Quản lý thời gian, Lập kế hoạch, Lãnh đạo quản lý đội nhóm, Thuyết phục và đàm phán, Làm việc độc lập, Kỹ năng lãnh đạo, logistics, Huấn luyện và đào tạo, kho vận
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-				<button type="button" class="btn btn-primary">Lưu thay đổi</button>
-			</div>
-		</div>
 	</div>
 </div>
 <script>
@@ -635,11 +518,10 @@
 			if (!input.value) {
 
 				input.removeAttribute('name'); // Loại bỏ thuộc tính name nếu không có giá trị
-			// 	input.value = ''; // Đặt giá trị rỗng
+				// 	input.value = ''; // Đặt giá trị rỗng
 			}
 		});
 	});
-
 </script>
 <script src="/js/company/toggle-follow.js"></script>
 <script src="/js/app.js"></script>

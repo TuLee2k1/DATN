@@ -3,6 +3,7 @@ package poly.com.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 import poly.com.Enum.EducationLevel;
 
 import java.time.LocalDate;
@@ -21,11 +22,11 @@ public class School extends AbstractEntity{
     @Enumerated(EnumType.STRING)
     private EducationLevel degree;
 
-    @JsonFormat(pattern = "dd-MM-yyyy")// ngày bắt đầu học
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "startDate")
     private LocalDate startDate;
 
-    @JsonFormat(pattern = "dd-MM-yyyy") // ngày kết thúc học
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "endDate")
     private LocalDate endDate;
 

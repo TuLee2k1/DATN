@@ -162,7 +162,7 @@
 			<!-- sidebar -->
 			<nav id="sidebar" class="sidebar js-sidebar">
 				<div class="sidebar-content js-simplebar">
-					<a class="sidebar-brand" href="Taikhoannhatuyendung.html">
+					<a class="sidebar-brand" href="http://localhost:8080">
 						<span class="align-middle">Dream job</span>
 					</a>
 
@@ -173,13 +173,13 @@
 							</div>
 						</li>
 						<li class="sidebar-item">
-							<a class="sidebar-link" href="Taotintuyendung.html">
+							<a class="sidebar-link" th:href="@{/job-posts/create}">
 								<i class="align-middle" data-feather="plus-square"></i>
 								<span>Tạo tin tuyển dụng</span>
 							</a>
 						</li>
 						<li class="sidebar-item">
-							<a class="sidebar-link" href="Danhsachtindang.html">
+							<a class="sidebar-link" id="danhsachtindang" th:href="@{/job-posts/Listing}">
 								<i class="align-middle" data-feather="file-text"></i>
 								<span>Quản lý tin đăng</span>
 							</a>
@@ -191,87 +191,35 @@
 							</div>
 						</li>
 						<li class="sidebar-item">
-							<a class="sidebar-link" href="Hosoungtuyen.html">
+							<a class="sidebar-link" th:href="@{/Company/ApplicationProfile}">
 								<i class="align-middle" data-feather="file"></i>
 								<span>Hồ sơ ứng tuyển</span>
 							</a>
 						</li>
 
 						<li class="sidebar-item">
-							<a class="sidebar-link" href="Timungvienmoi.html">
+							<a class="sidebar-link" th:href="@{/company/search-profiles}">
 								<i class="align-middle" data-feather="search"></i>
 								<span>Tìm ứng viên mới</span>
 							</a>
 						</li>
 
-						<li class="sidebar-header">
-							<div class="d-flex align-items-center">
-								<span>Quản lý dịch vụ</span>
-							</div>
-						</li>
 						<li class="sidebar-item">
-							<a class="sidebar-link" href="danhsachdonhang.html">
+							<a class="sidebar-link" th:href="@{/company/saved-profile}" >
 								<i class="align-middle" data-feather="shopping-bag"></i>
-								<span>Danh sách đơn hàng</span>
-							</a>
-						</li>
-						<li class="sidebar-item">
-							<a class="sidebar-link" href="hosodaluu.html">
-								<i class="align-middle" data-feather="package"></i>
-								<span>Lịch sử đơn hàng</span>
-							</a>
-						</li>
-						<li class="sidebar-item">
-							<a class="sidebar-link" href="thongtinthanhtoan.html">
-								<i class="align-middle" data-feather="credit-card"></i>
-								<span>Thông tin thanh toán</span>
+								<span>Hồ sơ đã lưu</span>
 							</a>
 						</li>
 
-						<li class="sidebar-header">
-							<div class="d-flex align-items-center">
-								<span>Tài khoản và thương hiệu</span>
-							</div>
-						</li>
 						<li class="sidebar-item">
-							<a class="sidebar-link" href="#">
+							<a class="sidebar-link" th:href="@{/company-account}">
 								<i class="align-middle" data-feather="user"></i>
 								<span>Tài khoản nhà tuyển dụng</span>
 							</a>
 						</li>
-						<li class="sidebar-item">
-							<a class="sidebar-link" href="#">
-								<i class="align-middle" data-feather="award"></i>
-								<span>Quảng bá thương hiệu</span>
-							</a>
-						</li>
-
-						<li class="sidebar-header">
-							<div class="d-flex align-items-center">
-								<span>Hướng dẫn và thông báo</span>
-							</div>
-						</li>
-						<li class="sidebar-item">
-							<a class="sidebar-link" href="#">
-								<i class="align-middle" data-feather="help-circle"></i>
-								<span>Hướng dẫn sử dụng</span>
-							</a>
-						</li>
-						<li class="sidebar-item">
-							<a class="sidebar-link" href="#">
-								<i class="align-middle" data-feather="bell"></i>
-								<span>Thông báo mới</span>
-							</a>
-						</li>
-						<li class="sidebar-item">
-							<a class="sidebar-link" href="#">
-								<i class="align-middle" data-feather="life-buoy"></i>
-								<span>Hỗ trợ</span>
-							</a>
-						</li>
 
 						<li class="sidebar-item mt-4">
-							<a href="#" class="btn btn-primary w-100">
+							<a th:href="@{http://localhost:8080/}"  class="btn btn-primary w-100">
 								<span>Cổng người tìm việc</span>
 								<span class="ms-2">Chuyển</span>
 							</a>
@@ -442,23 +390,20 @@
 									<i class="align-middle" data-feather="settings"></i>
 								</a>
 
-								<a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#"
-									data-bs-toggle="dropdown">
-									<img src="img/avatars/avatar.jpg" class="avatar img-fluid rounded me-1"
-										alt="Charles Hall" /> <span class="text-dark">Charles Hall</span>
+								<a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#" data-bs-toggle="dropdown">
+									<img th:src="${company?.logo != null && !#strings.isEmpty(company.logo)
+											? '/uploads/logocompany/' + company.getLogo()
+											: '/Admin/images/person_3.jpg'}"
+										  class="rounded-circle"       alt="Logo" width="50" height="50" style="width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center; font-size: 30px;" >
+
+									<span class="text-dark fw-bold"
+										  th:text="${#authentication.principal.companyDetails != null ? #authentication.principal.companyDetails.name : 'N/A'}">Charles Hall</span>
 								</a>
 								<div class="dropdown-menu dropdown-menu-end">
-									<a class="dropdown-item" href="Taikhoannhatuyendung.html"><i
+									<a class="dropdown-item" th:href="@{/company-account}"><i
 											class="align-middle me-1" data-feather="user"></i> Profile</a>
-									<a class="dropdown-item" href="#"><i class="align-middle me-1"
-											data-feather="pie-chart"></i> Analytics</a>
 									<div class="dropdown-divider"></div>
-									<a class="dropdown-item" href="index.html"><i class="align-middle me-1"
-											data-feather="settings"></i> Settings & Privacy</a>
-									<a class="dropdown-item" href="#"><i class="align-middle me-1"
-											data-feather="help-circle"></i> Help Center</a>
-									<div class="dropdown-divider"></div>
-									<a class="dropdown-item" href="#">Log out</a>
+									<a class="dropdown-item" th:href="@{/logout}">Log out</a>
 								</div>
 							</li>
 						</ul>
@@ -510,35 +455,22 @@
 											<span class="badge bg-light text-dark" th:text="${totalProfiles}">10</span>
 										</button>
 
-										<button type="submit" name="status" value="PENDING" class="btn">
+										<button type="submit" name="status" th:value="@{PENDING}" class="btn">
 											<i class="fas fa-clock"></i> Chờ đánh giá
 											<span class="badge bg-light text-dark" th:text="${pendingProfiles}">3</span>
 										</button>
 
-										<button type="submit" name="status" value="VERIFIED" class="btn">
-											<i class="fas fa-check"></i> Phù hợp
-											<span class="badge bg-light text-dark" th:text="${verifiedProfiles}">5</span>
-										</button>
 
-										<button type="submit" name="status" value="INTERVIEWING" class="btn">
-											<i class="fas fa-comments"></i> Đang phỏng vấn
-											<span class="badge bg-light text-dark" th:text="${inactiveProfiles}">2</span>
-										</button>
-
-										<button type="submit" name="status" value="HIRED" class="btn">
+										<button type="submit" name="status" th:value="@{ACTIVE}" class="btn">
 											<i class="fas fa-user-check"></i> Đã tuyển
 											<span class="badge bg-light text-dark" th:text="${activeProfiles}">1</span>
 										</button>
 
-										<button type="submit" name="status" value="REJECTED" class="btn">
+										<button type="submit" name="status" th:value="@{REJECTED}" class="btn">
 											<i class="fas fa-times"></i> Không phù hợp
 											<span class="badge bg-light text-dark" th:text="${rejectedProfiles}">4</span>
 										</button>
 
-										<button type="submit" name="status" value="DELETED" class="btn">
-											<i class="fas fa-trash"></i> Đã xóa
-											<span class="badge bg-light text-dark" th:text="${deletedProfiles}">0</span>
-										</button>
 									</from>
 								</div>
 							</div>
@@ -585,13 +517,14 @@
 									<td>
 										<div class="btn-group btn-group-sm" role="group">
 											<!-- Nút Chi tiết -->
-											<a th:href="@{/Company/ApplicationProfile/detail/{id}(id=${jobprofile.id})}"
+											<a th:href="@{/company/details/{id}(id=${jobprofile.id})}"
 											   class="btn btn-info btn-sm fw-bold" style="background-color: #17a2b8; color: white;">
 												<i class="fas fa-eye"></i> <strong>Chi tiết</strong>
 											</a>
 
 											<!-- Nút Tải CV -->
-											<a th:href="@{/Company/ApplicationProfile/download/{id}(id=${jobprofile.id})}"
+											<a
+													th:href="@{/Company/ApplicationProfile/download/{id}(id=${jobprofile.fileCV})}"
 											   class="btn btn-success btn-sm fw-bold" style="background-color: #28a745; color: white;">
 												<i class="fas fa-download"></i> <strong>Tải CV</strong>
 											</a>
@@ -606,7 +539,7 @@
 												<ul class="dropdown-menu">
 													<li>
 														<a class="dropdown-item"
-														   th:href="@{/Company/ApplicationProfile/updateStatus/{id}(id=${jobprofile.id}, status='APPROVED')}"
+														   th:href="@{/Company/ApplicationProfile/updateStatus/{id}(id=${jobprofile.id}, status='ACTIVE')}"
 														   onclick="return confirm('Bạn có chắc chắn muốn phê duyệt hồ sơ này?')">
 															<i class="fas fa-check-circle text-success"></i> Phê duyệt
 														</a>
@@ -627,6 +560,7 @@
 													</li>
 												</ul>
 											</div>
+
 										</div>
 									</td>
 								</tr>
@@ -640,21 +574,19 @@
 							</table>
 						</div>
 
-						<div class="footer-note text-center mt-4">
-							<i class="fas fa-exclamation-circle"></i> Hồ sơ sẽ bị xóa khỏi trang hồ sơ ứng tuyển sau 12 tháng kể từ ngày nộp
-						</div>
 
-					</form>
+
+						</form>
 								<nav class="pagination-nav" th:if="${totalPages > 1}">
 									<ul class="pagination justify-content-center">
 										<!-- Nút Trước -->
 										<li class="page-item previous-item" th:classappend="${currentPage == 1 ? 'disabled' : ''}">
 											<a class="page-link"
 											   th:href="@{/Company/ApplicationProfile(
-                   pageNo=${currentPage - 1},
-                   jobPostId=${selectedJobPostId},
-                   status=${selectedStatus ?: ''}
-               )}">
+													   pageNo=${currentPage - 1},
+													   jobPostId=${selectedJobPostId},
+													   status=${selectedStatus ?: ''}
+												   )}">
 												<i class="fas fa-chevron-left me-2"></i>Trước
 											</a>
 										</li>
@@ -663,10 +595,10 @@
 										<li class="page-item" th:if="${currentPage > 2}">
 											<a class="page-link"
 											   th:href="@{/Company/ApplicationProfile(
-                   pageNo=1,
-                   jobPostId=${selectedJobPostId},
-                   status=${selectedStatus ?: ''}
-               )}">1</a>
+											   pageNo=1,
+											   jobPostId=${selectedJobPostId},
+											   status=${selectedStatus ?: ''}
+										   )}">1</a>
 										</li>
 
 										<!-- Dấu ... nếu cách trang đầu tiên quá xa -->
@@ -681,10 +613,10 @@
 											th:if="${pageNumber > 0 && pageNumber <= totalPages}">
 											<a class="page-link"
 											   th:href="@{/Company/ApplicationProfile(
-                   pageNo=${pageNumber},
-                   jobPostId=${selectedJobPostId},
-                   status=${selectedStatus ?: ''}
-               )}"
+													   pageNo=${pageNumber},
+													   jobPostId=${selectedJobPostId},
+													   status=${selectedStatus ?: ''}
+												   )}"
 											   th:text="${pageNumber}">
 											</a>
 										</li>
@@ -698,10 +630,10 @@
 										<li class="page-item" th:if="${currentPage < totalPages - 2}">
 											<a class="page-link"
 											   th:href="@{/Company/ApplicationProfile(
-                   pageNo=${totalPages},
-                   jobPostId=${selectedJobPostId},
-                   status=${selectedStatus ?: ''}
-               )}"
+												   pageNo=${totalPages},
+												   jobPostId=${selectedJobPostId},
+												   status=${selectedStatus ?: ''}
+											   )}"
 											   th:text="${totalPages}">
 											</a>
 										</li>
@@ -710,10 +642,10 @@
 										<li class="page-item next-item" th:classappend="${currentPage == totalPages ? 'disabled' : ''}">
 											<a class="page-link"
 											   th:href="@{/Company/ApplicationProfile(
-                   pageNo=${currentPage + 1},
-                   jobPostId=${selectedJobPostId},
-                   status=${selectedStatus ?: ''}
-               )}">
+										   pageNo=${currentPage + 1},
+										   jobPostId=${selectedJobPostId},
+										   status=${selectedStatus ?: ''}
+									   )}">
 												Tiếp<i class="fas fa-chevron-right ms-2"></i>
 											</a>
 										</li>

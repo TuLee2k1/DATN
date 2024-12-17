@@ -1,5 +1,6 @@
 package poly.com.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.service.spi.ServiceException;
@@ -72,13 +73,14 @@ public class JobProfileService {
      * @return Tổng số hồ sơ
      */
     public Long countTotalProfilesByJobPost(Long jobPostId) {
+        var companyID = authenticationUtil.getCurrentUser().getCompany();
         try {
             if (jobPostId == null) {
-                // Nếu jobPostId là null, đếm tất cả hồ sơ ứng tuyển
-                return jobProfileRepository.count();
-            } else {
+                // Nếu jobPostId là null, đếm tất cả hồ sơ ứng tuyển theo công ty
+                return jobProfileRepository.countByCompany(companyID);
+            }else {
                 // Nếu jobPostId không null, đếm hồ sơ ứng tuyển theo jobPostId
-                return jobProfileRepository.countByJobPostId(jobPostId);
+                return jobProfileRepository.countByJobPostIdAndCompany(jobPostId, companyID);
             }
         } catch (Exception e) {
             log.error("Error counting total profiles for jobPostId: {}", jobPostId, e);
@@ -94,10 +96,11 @@ public class JobProfileService {
      * @return Số lượng hồ sơ theo trạng thái
      */
     public Long countProfilesByJobPostAndStatus(Long jobPostId, StatusEnum status) {
+        var companyID = authenticationUtil.getCurrentUser().getCompany();
         try {
             if (jobPostId == null) {
                 // Nếu jobPostId là null, đếm hồ sơ ứng tuyển theo trạng thái (tất cả bài đăng)
-                return jobProfileRepository.countByStatus(status);
+                return jobProfileRepository.countByStatus(status, companyID);
             } else {
                 // Nếu jobPostId không phải null, đếm hồ sơ ứng tuyển theo bài đăng và trạng thái
                 return jobProfileRepository.countByJobPostIdAndStatus(jobPostId, status);
@@ -140,6 +143,19 @@ public class JobProfileService {
 
     public List<JobProfile> getProfilesByCompany(Company company) {
         return jobProfileRepository.findByJobPost_Company(company);
+    }
+
+    @Transactional
+    public void updateStatus(Long id, StatusEnum status) {
+        // Tìm hồ sơ theo ID
+        JobProfile jobProfile = jobProfileRepository.findById(id)
+         .orElseThrow(() -> new RuntimeException("Không tìm thấy hồ sơ với ID: " + id));
+
+        // Cập nhật trạng thái
+        jobProfile.setStatus(status);
+
+        // Lưu thay đổi vào cơ sở dữ liệu
+        jobProfileRepository.save(jobProfile);
     }
 
 

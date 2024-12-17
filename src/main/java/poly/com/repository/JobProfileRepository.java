@@ -1,8 +1,10 @@
 package poly.com.repository;
 
+import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import poly.com.Enum.StatusEnum;
@@ -27,13 +29,11 @@ public interface JobProfileRepository extends JpaRepository<JobProfile, Long> {
 
     List<JobProfile> findByJobPost_IdAndJobPost_Company(Long jobPostId, Company company);
 
+    @Query("SELECT COUNT(jp) FROM JobProfile jp WHERE  jp.jobPost.company = :company")
+    Long countByCompany( @Param("company") Company company);
+
     Page<JobProfile> findByJobPost_Company(Company company, Pageable pageable);
 
-    @Query("SELECT COUNT(jp.status) FROM JobProfile jp WHERE jp.jobPost.id = :jobPostId AND jp.status = :status")
-    Long countByJobPostIdAndStatus(
-     @Param("jobPostId") Long jobPostId,
-     @Param("status") StatusEnum status
-    );
 
     @Query("SELECT jp FROM JobProfile jp WHERE jp.status = :status")
     Page<JobProfile> findByStatus(@Param("status") StatusEnum status, Pageable pageable
@@ -58,5 +58,25 @@ public interface JobProfileRepository extends JpaRepository<JobProfile, Long> {
 
     @Query("SELECT COUNT(jp) FROM JobProfile jp WHERE jp.user.id = :userId")
     Long countByUserId(@Param("userId") Long userId);
+
+    @Query("SELECT COUNT(jp.status) FROM JobProfile jp WHERE jp.status = :status AND jp.jobPost.company = :company")
+    public Long countByStatus(StatusEnum status, Company company);
+
+    @Query("SELECT COUNT(jp.status) FROM JobProfile jp WHERE jp.jobPost.id = :jobPostId AND jp.status = :status")
+    Long countByJobPostIdAndStatus(
+     @Param("jobPostId") Long jobPostId,
+     @Param("status") StatusEnum status
+    );
+
+    @Query("SELECT COUNT(jp) FROM JobProfile jp WHERE jp.jobPost.id = :jobPostId AND jp.jobPost.company = :company")
+    Long countByJobPostIdAndCompany(@Param("jobPostId") Long jobPostId, @Param("company") Company company);
+
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE JobProfile j SET j.status = :status WHERE j.id = :id")
+    void updateStatusById(@Param("id") Long id, @Param("status") StatusEnum status);
+
+
 
 }
