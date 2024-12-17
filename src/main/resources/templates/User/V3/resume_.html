@@ -85,6 +85,7 @@
         }
       });
     </script>
+
   </head>
 
   <body>
@@ -101,7 +102,7 @@
                     src="/img/icons/logo2.jpg"
                     width="50"
             />
-            <span class="align-middle">Dreamers</span>
+            <span class="align-middle">Dream Jobs</span>
           </a>
 
           <ul class="sidebar-nav">
@@ -131,30 +132,18 @@
             <li class="sidebar-item">
               <a class="sidebar-link" href="/user-applied">
                 <i class="align-middle" data-feather="check-square"></i>
-                <span class="align-middle">Danh sách bài đăng</span>
+                <span class="align-middle">Danh sách đơn ứng tuyển</span>
               </a>
             </li>
 
             <li class="sidebar-item">
-              <a class="sidebar-link" href="#">
+              <a class="sidebar-link" href="/user-saved">
                 <i class="align-middle" data-feather="bookmark"></i>
                 <span class="align-middle">Bài viết đã lưu</span>
               </a>
             </li>
 
-            <li class="sidebar-item">
-              <a class="sidebar-link" href="#">
-                <i class="align-middle" data-feather="message-square"></i>
-                <span class="align-middle">Tin nhắn</span>
-              </a>
-            </li>
 
-            <li class="sidebar-item">
-              <a class="sidebar-link" href="#">
-                <i class="align-middle" data-feather="bell"></i>
-                <span class="align-middle">Thông báo</span>
-              </a>
-            </li>
           </ul>
         </div>
       </nav>
@@ -348,62 +337,37 @@
                 </div>
               </li>
               <li class="nav-item dropdown">
+                <!-- Icon chỉ hiện trên màn hình nhỏ -->
                 <a
-                  class="nav-icon dropdown-toggle d-inline-block d-sm-none"
-                  href="#"
-                  data-bs-toggle="dropdown"
+                        class="nav-icon dropdown-toggle d-inline-block d-sm-none"
+                        href="#"
+                        data-bs-toggle="dropdown"
                 >
                   <i class="align-middle" data-feather="settings"></i>
                 </a>
 
+                <!-- Avatar và tên người dùng hiện trên màn hình lớn -->
                 <a
-                  class="nav-link dropdown-toggle d-none d-sm-inline-block"
-                  href="#"
-                  data-bs-toggle="dropdown"
+                        id="userInfo"
+                        class="nav-link dropdown-toggle d-none d-sm-inline-block"
+                        href="#"
+                        data-bs-toggle="dropdown"
                 >
-                  <img
-                    src="/img/avatars/avatar-5.jpg"
-                    class="avatar img-fluid rounded me-1"
-                    alt="Charles Hall"
-                  />
-                  <span class="text-dark">Charles Hall</span>
-                </a>
-                <div class="dropdown-menu dropdown-menu-end">
-                  <a class="dropdown-item" href="/static/User/V3/profile.html"
-                    ><i class="align-middle me-1" data-feather="user"></i>
-                    Profile</a
-                  >
 
-                  <a class="dropdown-item" href="#"
-                    ><i class="align-middle me-1" data-feather="key"></i> Forgot
-                    password</a
-                  >
-                  <a class="dropdown-item" href="#"
-                    ><i
-                      class="align-middle me-1"
-                      data-feather="alert-octagon"
-                    ></i>
-                    Change password</a
-                  >
-                  <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="index.html"
-                    ><i class="align-middle me-1" data-feather="settings"></i>
-                    Settings & Privacy</a
-                  >
-                  <a
-                    class="dropdown-item"
-                    href="/User/V3/User_Manual.html"
-                    ><i
-                      class="align-middle me-1"
-                      data-feather="help-circle"
-                    ></i>
-                    Help Center</a
-                  >
-                  <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="/User/V3/login&register.html"
-                    ><i class="align-middle me-1" data-feather="log-out"></i>Log
-                    out</a
-                  >
+                  <span id="username" class="text-dark">User Name</span>
+                </a>
+
+                <!-- Danh sách dropdown -->
+                <div class="dropdown-menu dropdown-menu-end">
+                  <a class="dropdown-item" href="user-profile">
+                    <i class="align-middle me-1" data-feather="user"></i> Profile
+                  </a>
+                  <a class="dropdown-item" href="#">
+                    <i class="align-middle me-1" data-feather="key"></i> Forgot password
+                  </a>
+                  <a class="dropdown-item" href="/user/change-password">
+                    <i class="align-middle me-1" data-feather="alert-octagon"></i> Change password
+                  </a>
                 </div>
               </li>
             </ul>
@@ -599,10 +563,28 @@
     </div>
 
     <script src="/js/app.js"></script>
+<!--    <script src="/js/resume.js"></script>-->
+
     <script src="https://unpkg.com/feather-icons"></script>
 
     <script>
         feather.replace();
+        document.addEventListener("DOMContentLoaded", function () {
+          // Kiểm tra xem có thông tin người dùng trong localStorage không
+          const userInfo = localStorage.getItem('userInfo');
+
+          if (userInfo) {
+            // Nếu có, chuyển đổi chuỗi JSON thành đối tượng
+            const user = JSON.parse(userInfo);
+
+            // Hiển thị thông tin người dùng
+            document.getElementById('username').textContent = user.userInfo.fullName;
+            document.getElementById('userInfo').style.display = 'flex';
+          } else {
+            // Nếu không có thông tin người dùng (không nên xảy ra vì phải đăng nhập mới vào được)
+            console.log('No user info found');
+          }
+        });
         function validateForm(event) {
           let isValid = true;
 
@@ -756,7 +738,6 @@
 
         // Gắn sự kiện validate vào form
         document.querySelector('form').addEventListener('submit', validateForm);
-
     </script>
   </body>
 </html>

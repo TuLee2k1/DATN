@@ -63,3 +63,31 @@ body {
   padding: 10px;
   min-height: 100px;
 }
+.custom-alert {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1050;
+  width: auto;
+  max-width: 300px;
+  padding: 10px 20px;
+  margin: 0;
+  border-radius: 5px;
+  font-size: 16px;
+  transition: 0.3s;
+}
+
+.alert-success {
+  background-color: #28a745; /* Màu xanh cho thông báo thành công */
+  color: white;
+}
+
+.alert-warning {
+  background-color: #ffc107; /* Màu vàng cho thông báo lỗi */
+  color: black;
+}
+
+.custom-alert span {
+  display: inline-block;
+  width: 100%;
+}

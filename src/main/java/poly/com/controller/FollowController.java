@@ -197,30 +197,6 @@ public class FollowController {
         }
     }
 
-    @DeleteMapping("/unfollow-job/{jobPostId}")
-    public ResponseEntity<Map<String, String>> unfollowJob(HttpSession session, @PathVariable Long jobPostId) {
-        try {
-            // Kiểm tra người dùng đã đăng nhập hay chưa
-            User currentUser = authenticationUtil.getCurrentUser();
-            if (currentUser == null) {
-                Map<String, String> response = new HashMap<>();
-                response.put("message", "Vui lòng đăng nhập trước khi thực hiện thao tác này.");
-                return ResponseEntity.status(401).body(response);
-            }
-
-            // Xóa trạng thái theo dõi công việc
-            followService.unfollowJobPost(jobPostId);
-
-            Map<String, String> response = new HashMap<>();
-            response.put("message", "Đã xóa khỏi danh sách theo dõi");
-            return ResponseEntity.ok(response);
-        } catch (Exception e) {
-            Map<String, String> response = new HashMap<>();
-            response.put("message", "Có lỗi xảy ra: " + e.getMessage());
-            return ResponseEntity.status(500).body(response);
-        }
-    }
-
 
 
 }

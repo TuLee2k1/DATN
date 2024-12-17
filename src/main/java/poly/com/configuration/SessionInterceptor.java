@@ -20,11 +20,11 @@ public class SessionInterceptor implements HandlerInterceptor {
 
         // Danh sách các đường dẫn không cần kiểm tra session
         List<String> allowedPaths = Arrays.asList("/auth/login", "/auth/authenticate", "/auth/register","**",
-         "/css/", "/js/", "/images/","/Tim-kiem");
+                "/css/", "/js/", "/images/","/Tim-kiem");
 
         // Kiểm tra xem đường dẫn hiện tại có thuộc danh sách được phép không
         boolean isAllowedPath = allowedPaths.stream()
-         .anyMatch(path -> requestURI.startsWith(path));
+                .anyMatch(path -> requestURI.startsWith(path));
 
         if (isAllowedPath) {
             return true;

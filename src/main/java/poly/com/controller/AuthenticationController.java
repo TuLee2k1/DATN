@@ -185,8 +185,8 @@ public class AuthenticationController {
 
     @PostMapping("/change-password")
     public String changePassword(@RequestBody @Valid UserChangepasswordDTO request) {
-            authenticationService.changePassword(request);
-           return "user/home";
+        authenticationService.changePassword(request);
+        return "user/home";
     }
 
     @PostMapping("/forgot-password")

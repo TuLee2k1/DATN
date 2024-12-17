@@ -181,11 +181,14 @@
 
             if (response.ok) {
                 const userInfo = await response.json(); // Nhận dữ liệu JSON từ server
+                console.log(userInfo); // Kiểm tra cấu trúc của userInfo
+
+                // Giả sử bạn có một hàm để lấy profile dựa trên userId
+
                 const data = {
                     userInfo,
-                    lastActive: Date.now()
-                }
-                console.log('User  Info:', data); // Ghi lại thông tin người dùng vào console
+                    lastActive: Date.now(),
+                };
                 localStorage.setItem('userInfo', JSON.stringify(data));
 
                 if (userInfo.roles.includes("ROLE_ADMIN")) {

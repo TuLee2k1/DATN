@@ -30,12 +30,12 @@ public interface FollowRepository extends JpaRepository<Follow, Long> {
     Optional<Follow> findByCompanyIdAndUserId(Long companyId, Long userId);
 
     Page<Follow> findByUserId(Long userId, Pageable pageable);
-    void deleteByJobPostIdAndUserId(Long jobPostId, Long userId);
 
     Optional<Follow> findByUserIdAndCompanyId (Long userId, Long companyId);
 
     @Query("""
         SELECT new poly.com.dto.response.Follow.JobPostFollowResponse(
+            jp.id,
             c.logo,
             jp.jobTitle,
             c.name,

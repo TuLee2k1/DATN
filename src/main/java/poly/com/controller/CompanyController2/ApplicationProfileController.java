@@ -100,10 +100,12 @@ public class ApplicationProfileController {
     // Thêm số lượng hồ sơ theo trạng thái vào model
         model.addAttribute("totalProfiles", totalProfiles);
         model.addAttribute("pendingProfiles", pendingProfiles);
-//        model.addAttribute("verifiedProfiles", verifiedProfiles);
+
+        model.addAttribute("verifiedProfiles", verifiedProfiles);
         model.addAttribute("rejectedProfiles", rejectedProfiles);
         model.addAttribute("activeProfiles", activeProfiles);
-//        model.addAttribute("inactiveProfiles", inactiveProfiles);
+        model.addAttribute("inactiveProfiles", inactiveProfiles);
+
         model.addAttribute("deletedProfiles", deletedProfiles);
 
     return "Company/Hosoungtuyen";
@@ -196,6 +198,7 @@ public class ApplicationProfileController {
         }
     }
 
+
     @GetMapping("/updateStatus/{id}")
     public String updateStatus(@PathVariable("id") Long id,
                                @RequestParam("status") StatusEnum status,
@@ -213,5 +216,6 @@ public class ApplicationProfileController {
             return "redirect:/Company/ApplicationProfile";
         }
     }
+
 
 }

@@ -30,7 +30,9 @@ public interface JobProfileRepository extends JpaRepository<JobProfile, Long> {
     List<JobProfile> findByJobPost_IdAndJobPost_Company(Long jobPostId, Company company);
 
     @Query("SELECT COUNT(jp) FROM JobProfile jp WHERE  jp.jobPost.company = :company")
+
     Long countByCompany( @Param("company") Company company);
+
 
     Page<JobProfile> findByJobPost_Company(Company company, Pageable pageable);
 
@@ -72,10 +74,12 @@ public interface JobProfileRepository extends JpaRepository<JobProfile, Long> {
     Long countByJobPostIdAndCompany(@Param("jobPostId") Long jobPostId, @Param("company") Company company);
 
 
+
     @Transactional
     @Modifying
     @Query("UPDATE JobProfile j SET j.status = :status WHERE j.id = :id")
     void updateStatusById(@Param("id") Long id, @Param("status") StatusEnum status);
+
 
 
 

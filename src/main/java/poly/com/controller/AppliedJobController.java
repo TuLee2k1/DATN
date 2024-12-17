@@ -2,25 +2,17 @@ package poly.com.controller;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import poly.com.dto.request.AppliedJobRequest;
 import poly.com.service.AppliedJobService;
 import poly.com.service.FollowService;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.List;
-import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
@@ -37,32 +29,30 @@ public class AppliedJobController {
             return "redirect:/auth/login";
         }
 
-        int pageSize = 5;
-
         // Lấy công việc đã ứng tuyển
         List<AppliedJobRequest> allAppliedJobs = appliedJobService.getAppliedJobsByUserId(userId);
 
         // Tính toán phân trang cho applied jobs
         int totalAppliedItems = allAppliedJobs.size();
-        int totalAppliedPages = (int) Math.ceil((double) totalAppliedItems / pageSize);
+        int totalAppliedPages = (int) Math.ceil((double) totalAppliedItems / PAGE_SIZE);
 
-        int startIndex = (page - 1) * pageSize;
-        int endIndex = Math.min(startIndex + pageSize, totalAppliedItems);
+        int startIndex = (page - 1) * PAGE_SIZE;
+        int endIndex = Math.min(startIndex + PAGE_SIZE, totalAppliedItems);
         List<AppliedJobRequest> appliedJobs = allAppliedJobs.subList(startIndex, endIndex);
 
-        // Lấy danh sách gợi ý
+        // Lấy danh sách gợi ý công việc và trộn ngẫu nhiên
         List<AppliedJobRequest> suggestedJobs = appliedJobService.getSuggestedJobs();
-
+        Collections.shuffle(suggestedJobs); // Trộn danh sách
+        List<AppliedJobRequest> randomSuggestedJobs = suggestedJobs.stream()
+                .limit(4) // Lấy 4 job ngẫu nhiên
+                .collect(Collectors.toList());
 
         // Thêm các biến vào Model
         model.addAttribute("appliedJobs", appliedJobs);
-        model.addAttribute("suggestedJobs", suggestedJobs);
+        model.addAttribute("suggestedJobs", randomSuggestedJobs); // Danh sách ngẫu nhiên
         model.addAttribute("totalPages", totalAppliedPages);
         model.addAttribute("currentPage", page);
 
         return "User/V3/apply";
     }
-
-
-
 }

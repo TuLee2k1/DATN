@@ -20,6 +20,7 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
       rel="stylesheet"
     />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link rel="shortcut icon" href="img/icons/icon-48x48.png" />
 
@@ -35,6 +36,57 @@
     <link rel="stylesheet" href="/css/index.css" />
     <link rel="stylesheet" href="/css/card-fluid.css" />
     <link rel="stylesheet" href="/css/user.css" />
+    <style>
+      .job-card {
+        display: flex;
+        align-items: center;
+        border: 1px solid #ddd;
+        margin-bottom: 15px;
+        padding: 15px;
+        border-radius: 8px;
+      }
+      .job-card img {
+        margin-right: 20px;
+        border-radius: 8px;
+      }
+      .job-details {
+        flex-grow: 1;
+      }
+      .icons {
+        display: flex;
+        gap: 15px;
+        margin-top: 10px;
+        color: #666;
+      }
+
+    </style>
+
+
+
+    <style>
+      .job-card {
+        display: flex;
+        align-items: center;
+        border: 1px solid #ddd;
+        margin-bottom: 15px;
+        padding: 15px;
+        border-radius: 8px;
+      }
+      .job-card img {
+        margin-right: 20px;
+        border-radius: 8px;
+      }
+      .job-details {
+        flex-grow: 1;
+      }
+      .icons {
+        display: flex;
+        gap: 15px;
+        margin-top: 10px;
+        color: #666;
+      }
+
+    </style>
 
     <style>
       .pagination-nav {
@@ -52,11 +104,32 @@
         margin: 0;
       }
     </style>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Kiểm tra xem có thông tin người dùng trong localStorage không
+        const userInfo = localStorage.getItem('userInfo');
+
+        if (userInfo) {
+          // Nếu có, chuyển đổi chuỗi JSON thành đối tượng
+          const user = JSON.parse(userInfo);
+
+          // Hiển thị thông tin người dùng
+          document.getElementById('username').textContent = user.userInfo.fullName;
+          document.getElementById('userInfo').style.display = 'flex';
+        } else {
+          // Nếu không có thông tin người dùng (không nên xảy ra vì phải đăng nhập mới vào được)
+          console.log('No user info found');
+        }
+      });
+
+    </script>
   </head>
 
   <body>
     <div class="wrapper">
       <!-- sidebar -->
+
       <nav id="sidebar" class="sidebar js-sidebar">
         <div class="sidebar-content js-simplebar">
           <a class="sidebar-brand" href="http://localhost:8080">
@@ -68,14 +141,14 @@
                     src="/img/icons/logo2.jpg"
                     width="50"
             />
-            <span class="align-middle">Dreamers</span>
+            <span class="align-middle">Dream Jobs</span>
           </a>
 
           <ul class="sidebar-nav">
             <li class="sidebar-header">Pages</li>
 
             <li class="sidebar-item ">
-              <a class="sidebar-link" href="/User/V3/dashboard.html">
+              <a class="sidebar-link" href="/users/dashboard">
                 <i class="align-middle" data-feather="sliders"></i>
                 <span class="align-middle">Dashboard</span>
               </a>
@@ -84,44 +157,32 @@
             <li class="sidebar-item">
               <a class="sidebar-link" href="/user-profile">
                 <i class="align-middle" data-feather="user"></i>
-                <span class="align-middle">Profile</span>
+                <span class="align-middle">Thông tin cá nhân</span>
               </a>
             </li>
 
             <li class="sidebar-item">
               <a class="sidebar-link" href="/user-resume">
                 <i class="align-middle" data-feather="clipboard"></i>
-                <span class="align-middle">Resume</span>
+                <span class="align-middle">Hồ sơ ứng tuyển</span>
               </a>
             </li>
 
             <li class="sidebar-item">
               <a class="sidebar-link" href="/user-applied">
                 <i class="align-middle" data-feather="check-square"></i>
-                <span class="align-middle">Applied job</span>
+                <span class="align-middle">Danh sách đơn ứng tuyển</span>
               </a>
             </li>
 
             <li class="sidebar-item">
-              <a class="sidebar-link" href="/User/V3/saved_jobs.html">
+              <a class="sidebar-link" href="/user-saved">
                 <i class="align-middle" data-feather="bookmark"></i>
-                <span class="align-middle">Bookmarks</span>
+                <span class="align-middle">Bài viết đã lưu</span>
               </a>
             </li>
 
-            <li class="sidebar-item">
-              <a class="sidebar-link" href="#">
-                <i class="align-middle" data-feather="message-square"></i>
-                <span class="align-middle">Messages</span>
-              </a>
-            </li>
 
-            <li class="sidebar-item">
-              <a class="sidebar-link" href="/User/V3/Notification.html">
-                <i class="align-middle" data-feather="bell"></i>
-                <span class="align-middle">Notifications</span>
-              </a>
-            </li>
           </ul>
         </div>
       </nav>
@@ -315,260 +376,142 @@
                 </div>
               </li>
               <li class="nav-item dropdown">
+                <!-- Icon chỉ hiện trên màn hình nhỏ -->
                 <a
-                  class="nav-icon dropdown-toggle d-inline-block d-sm-none"
-                  href="#"
-                  data-bs-toggle="dropdown"
+                        class="nav-icon dropdown-toggle d-inline-block d-sm-none"
+                        href="#"
+                        data-bs-toggle="dropdown"
                 >
                   <i class="align-middle" data-feather="settings"></i>
                 </a>
 
+                <!-- Avatar và tên người dùng hiện trên màn hình lớn -->
                 <a
-                  class="nav-link dropdown-toggle d-none d-sm-inline-block"
-                  href="#"
-                  data-bs-toggle="dropdown"
+                        id="userInfo"
+                        class="nav-link dropdown-toggle d-none d-sm-inline-block"
+                        href="#"
+                        data-bs-toggle="dropdown"
                 >
-                  <img
-                    src="/img/avatars/avatar-5.jpg"
-                    class="avatar img-fluid rounded me-1"
-                    alt="Charles Hall"
-                  />
-                  <span class="text-dark">Charles Hall</span>
-                </a>
-                <div class="dropdown-menu dropdown-menu-end">
-                  <a class="dropdown-item" href="/User/V3/profile.html"
-                    ><i class="align-middle me-1" data-feather="user"></i>
-                    Profile</a
-                  >
 
-                  <a class="dropdown-item" href="#"
-                    ><i class="align-middle me-1" data-feather="key"></i> Forgot
-                    password</a
-                  >
-                  <a class="dropdown-item" href="#"
-                    ><i
-                      class="align-middle me-1"
-                      data-feather="alert-octagon"
-                    ></i>
-                    Change password</a
-                  >
-                  <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="index.html"
-                    ><i class="align-middle me-1" data-feather="settings"></i>
-                    Settings & Privacy</a
-                  >
-                  <a
-                    class="dropdown-item"
-                    href="/User/V3/User_Manual.html"
-                    ><i
-                      class="align-middle me-1"
-                      data-feather="help-circle"
-                    ></i>
-                    Help Center</a
-                  >
-                  <div class="dropdown-divider"></div>
-                  <a
-                    class="dropdown-item"
-                    href="/User/V3/login&register.html"
-                    ><i class="align-middle me-1" data-feather="log-out"></i>Log
-                    out</a
-                  >
+                  <span id="username" class="text-dark">User Name</span>
+                </a>
+
+                <!-- Danh sách dropdown -->
+                <div class="dropdown-menu dropdown-menu-end">
+                  <a class="dropdown-item" href="user-profile">
+                    <i class="align-middle me-1" data-feather="user"></i> Profile
+                  </a>
+                  <a class="dropdown-item" href="#">
+                    <i class="align-middle me-1" data-feather="key"></i> Forgot password
+                  </a>
+                  <a class="dropdown-item" href="/user/change-password">
+                    <i class="align-middle me-1" data-feather="alert-octagon"></i> Change password
+                  </a>
                 </div>
               </li>
+
             </ul>
           </div>
         </nav>
 
+
         <main class="content">
+
           <div class="container mt-4">
             <h4>Việc làm đã lưu</h4>
+
+            <!-- Thông báo khi không có việc làm đã lưu -->
+            <div th:if="${#lists.isEmpty(savedJobs)}" class="alert alert-info">
+              Bạn chưa lưu việc làm nào.
+            </div>
+
             <div class="job-section">
               <div class="saved-jobs">
                 <!-- Hiển thị danh sách công việc -->
                 <div class="job-card" th:each="job : ${savedJobs}">
-                  <img
-                          alt="Company logo"
-                          height="80"
-                          width="80"
-                          th:src="@{/uploads/logocompany/{logo}(logo=${job.companyLogo})}" />
+                  <img alt="Company logo"
+                       height="80"
+                       width="80"
+                       th:src="@{/uploads/logocompany/{logo}(logo=${job.companyLogo})}" />
                   <div class="job-details">
                     <h5 th:text="${job.jobTitle}"></h5>
                     <p th:text="${job.companyName}"></p>
                     <div class="icons">
-          <span>
-            <i class="fas fa-money-bill-wave"></i>
-            <span th:text="${job.minSalary} + ' - ' + ${job.maxSalary} + ' triệu'"></span>
-          </span>
+            <span>
+                <i class="fas fa-money-bill-wave"></i>
+                <span th:text="${job.minSalary} + ' - ' + ${job.maxSalary} + ' triệu'"></span>
+            </span>
                       <span>
-            <i class="fas fa-map-marker-alt"></i>
-            <span th:text="${job.city}"></span>
-          </span>
+                <i class="fas fa-map-marker-alt"></i>
+                <span th:text="${job.city}"></span>
+            </span>
                     </div>
                   </div>
-
-                  <!-- Heart icon with job ID for unfollow -->
-<!--                  <div class="favorite toggle-follow-job" th:data-jobId="${job.id}">-->
-<!--                    <i class="far fa-heart"></i>-->
-<!--                  </div>-->
+                  <!-- Nút xóa saved job -->
+                  <form th:action="@{/user-saved/delete}" method="post">
+                    <input type="hidden" name="jobPostId" th:value="${job.jobPostId}" />
+                    <button type="submit" class="btn btn-danger">Xóa</button>
+                  </form>
                 </div>
+
               </div>
             </div>
 
-              <!-- Phân trang -->
-              <nav class="pagination-nav" th:if="${totalPages > 1}">
-                <ul class="pagination justify-content-center">
-                  <li class="page-item previous-item" th:classappend="${currentPage == 1 ? 'disabled' : ''}">
-                    <a class="page-link"
-                       th:href="@{/job-posts/Listing(pageNo=${currentPage - 1}, jobTitle=${selectedJobTitle}, statusEnum=${selectedStatus})}">
-                      <i class="fas fa-chevron-left me-2"></i>Trước
-                    </a>
-                  </li>
+            <!-- Phân trang -->
+            <nav class="pagination-nav" th:if="${totalPages > 1}">
+              <ul class="pagination justify-content-center">
+                <li class="page-item previous-item" th:classappend="${currentPage == 0 ? 'disabled' : ''}">
+                  <a class="page-link"
+                     th:href="@{/user-saved(page=${currentPage - 1}, size=10)}">
+                    <i class="fas fa-chevron-left me-2"></i>Trước
+                  </a>
+                </li>
 
-                  <li class="page-item" th:if="${currentPage > 2}">
-                    <a class="page-link"
-                       th:href="@{/job-posts/Listing(pageNo=${1}, jobTitle=${selectedJobTitle}, statusEnum=${selectedStatus})}">1</a>
-                  </li>
+                <li class="page-item"
+                    th:each="pageNumber : ${#numbers.sequence(0, totalPages - 1)}"
+                    th:classappend="${pageNumber == currentPage ? 'active' : ''}"
+                    th:if="${pageNumber >= 0 && pageNumber < totalPages}">
+                  <a class="page-link"
+                     th:href="@{/user-saved(page=${pageNumber}, size=10)}"
+                     th:text="${pageNumber + 1}">
+                  </a>
+                </li>
 
-                  <li class="page-item disabled" th:if="${currentPage > 3}">
-                    <span class="page-link">...</span>
-                  </li>
+                <li class="page-item next-item" th:classappend="${currentPage == totalPages - 1 ? 'disabled' : ''}">
+                  <a class="page-link"
+                     th:href="@{/user-saved(page=${currentPage + 1}, size=10)}">
+                    Tiếp<i class="fas fa-chevron-right ms-2"></i>
+                  </a>
+                </li>
+              </ul>
+            </nav>
 
-                  <li class="page-item"
-                      th:each="pageNumber : ${#numbers.sequence(currentPage - 1, currentPage + 1)}"
-                      th:classappend="${pageNumber == currentPage ? 'active' : ''}"
-                      th:if="${pageNumber > 0 && pageNumber <= totalPages}">
-                    <a class="page-link"
-                       th:href="@{/job-posts/Listing(pageNo=${pageNumber}, jobTitle=${selectedJobTitle}, statusEnum=${selectedStatus})}"
-                       th:text="${pageNumber}">
-                    </a>
-                  </li>
-
-                  <li class="page-item disabled" th:if="${currentPage < totalPages - 2}">
-                    <span class="page-link">...</span>
-                  </li>
-
-                  <li class="page-item" th:if="${currentPage < totalPages - 1}">
-                    <a class="page-link"
-                       th:href="@{/job-posts/Listing(pageNo=${totalPages}, jobTitle=${selectedJobTitle}, statusEnum=${selectedStatus})}"
-                       th:text="${totalPages}">
-                    </a>
-                  </li>
-
-                  <li class="page-item next-item" th:classappend="${currentPage == totalPages ? 'disabled' : ''}">
-                    <a class="page-link"
-                       th:href="@{/job-posts/Listing(pageNo=${currentPage + 1}, jobTitle=${selectedJobTitle}, statusEnum=${selectedStatus})}">
-                      Tiếp<i class="fas fa-chevron-right ms-2"></i>
-                    </a>
-                  </li>
-                </ul>
-              </nav>
-            </div>
+          </div>
         </main>
 
 
-        <footer class="footer">
-          <div class="container-fluid">
-            <div class="row text-muted">
-              <div class="col-6 text-start">
-                <p class="mb-0">
-                  <a
-                    class="text-muted"
-                    href="https://adminkit.io/"
-                    target="_blank"
-                    ><strong>AdminKit</strong></a
-                  >
-                  -
-                  <a
-                    class="text-muted"
-                    href="https://adminkit.io/"
-                    target="_blank"
-                    ><strong>Bootstrap Admin Template</strong></a
-                  >
-                  &copy;
-                </p>
-              </div>
-              <div class="col-6 text-end">
-                <ul class="list-inline">
-                  <li class="list-inline-item">
-                    <a
-                      class="text-muted"
-                      href="https://adminkit.io/"
-                      target="_blank"
-                      >Support</a
-                    >
-                  </li>
-                  <li class="list-inline-item">
-                    <a
-                      class="text-muted"
-                      href="https://adminkit.io/"
-                      target="_blank"
-                      >Help Center</a
-                    >
-                  </li>
-                  <li class="list-inline-item">
-                    <a
-                      class="text-muted"
-                      href="https://adminkit.io/"
-                      target="_blank"
-                      >Privacy</a
-                    >
-                  </li>
-                  <li class="list-inline-item">
-                    <a
-                      class="text-muted"
-                      href="https://adminkit.io/"
-                      target="_blank"
-                      >Terms</a
-                    >
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </footer>
       </div>
     </div>
 
     <script src="js/app.js"></script>
     <script src="https://unpkg.com/feather-icons"></script>
-    <script>
-      document.addEventListener("DOMContentLoaded", function() {
-        var favoriteButtons = document.querySelectorAll(".favorite.toggle-follow-job");
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    // Kiểm tra xem có thông tin người dùng trong localStorage không
+    const userInfo = localStorage.getItem('userInfo');
 
-        favoriteButtons.forEach(function(favoriteButton) {
-          favoriteButton.addEventListener("click", function() {
-            var jobPostId = this.getAttribute("data-job-id");
-            var heartIcon = this.querySelector('i');
+    if (userInfo) {
+      // Nếu có, chuyển đổi chuỗi JSON thành đối tượng
+      const user = JSON.parse(userInfo);
 
-            fetch('/follow/toggle-follow-job/' + jobPostId, {
-              method: 'POST',
-            })
-                    .then(response => {
-                      if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                      }
-                      return response.json();
-                    })
-                    .then(data => {
-                      // Toggle heart icon classes
-                      if (heartIcon.classList.contains('far')) {
-                        heartIcon.classList.remove('far');
-                        heartIcon.classList.add('fas');
-                      } else {
-                        heartIcon.classList.remove('fas');
-                        heartIcon.classList.add('far');
-                      }
-
-                      alert(data.message);
-                    })
-                    .catch(error => {
-                      console.error('Error:', error);
-                      alert('Có lỗi xảy ra: ' + error.message);
-                    });
-          });
-        });
-      });
-
-    </script>
+      // Hiển thị thông tin người dùng
+      document.getElementById('username').textContent = user.userInfo.fullName;
+      document.getElementById('userInfo').style.display = 'flex';
+    } else {
+      // Nếu không có thông tin người dùng (không nên xảy ra vì phải đăng nhập mới vào được)
+      console.log('No user info found');
+    }
+  });
+</script>
   </body>
 </html>
