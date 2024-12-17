@@ -8,7 +8,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Date;
 
 @Data
 public class ProfileDTO implements Serializable {

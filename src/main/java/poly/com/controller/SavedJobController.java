@@ -43,6 +43,8 @@ public class SavedJobController {
         return "User/V3/saved_jobs";
     }
 
+
+
     @PostMapping("/delete")
     public String deleteSavedJob(
             @RequestParam("jobPostId") Long jobPostId,

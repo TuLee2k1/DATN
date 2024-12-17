@@ -30,7 +30,6 @@ public interface FollowRepository extends JpaRepository<Follow, Long> {
     Optional<Follow> findByCompanyIdAndUserId(Long companyId, Long userId);
 
     Page<Follow> findByUserId(Long userId, Pageable pageable);
-    void deleteByJobPostIdAndUserId(Long jobPostId, Long userId);
 
     Optional<Follow> findByUserIdAndCompanyId (Long userId, Long companyId);
 
