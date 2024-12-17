@@ -110,6 +110,7 @@ public class HomeController {
             @RequestParam(required = false) Exp exp,
             @RequestParam(required = false) WorkType workType,
             @RequestParam(required = false) JobLevel jobLevel,
+            @RequestParam(required = false) String salaryRange,
             @RequestParam(required = false) Integer page, // Tham số trang hiện tại
             @RequestParam(defaultValue = "10") Integer size, // Kích thước trang
             Model model) {
@@ -137,7 +138,7 @@ public class HomeController {
         List<JobListActiveResponse> jobListActiveResponses = convertToJobListActiveResponse(jobPosts);
 
         // Bước 2: Lọc theo searchTerm, jobType và location
-        List<JobListActiveResponse> filteredJobList = filterJobListings(jobListActiveResponses, searchTerm, jobType, location, jobCategory,exp,workType,jobLevel);
+        List<JobListActiveResponse> filteredJobList = filterJobListings(jobListActiveResponses, searchTerm, jobType, location, jobCategory,exp,workType,jobLevel,salaryRange);
 
         System.out.println("Filtered: " + filteredJobList.size());
 
@@ -170,6 +171,7 @@ public class HomeController {
         model.addAttribute("selectedJobCategoryId", jobCategory); // Đảm bảo giá trị này được gửi
         model.addAttribute("location", location);
         model.addAttribute("Exp", exp);// Đảm bảo giá trị này được gửi
+        model.addAttribute("salaryRange", salaryRange);// Đảm bảo giá trị này được gửi
 
         return "user/Search"; // Tên của template Thymeleaf
     }
@@ -186,6 +188,7 @@ public class HomeController {
             @RequestParam(required = false) Exp exp,
             @RequestParam(required = false) WorkType workType,
             @RequestParam(required = false) JobLevel jobLevel,
+            @RequestParam(required = false) String salaryRange,
             @RequestParam(required = false) Integer page, // Tham số trang hiện tại
             @RequestParam(defaultValue = "10") Integer size, // Kích thước trang
             @RequestParam(required = false) String sortBy, // Tham số sắp xếp
@@ -216,6 +219,7 @@ public class HomeController {
         model.addAttribute("Exp", exp);// Đảm bảo giá trị này được gửi
         model.addAttribute("jobLevel", jobLevel);// Đảm bảo giá trị này được gửi
         model.addAttribute("WorkType", workType);
+        model.addAttribute("salaryRange", salaryRange);
 
         // Lấy tất cả các công việc với trạng thái cụ thể
         List<JobPost> jobPosts = jobPostService.getJobPostsByStatus(statusEnum);
@@ -224,7 +228,7 @@ public class HomeController {
         List<JobListActiveResponse> jobListActiveResponses = convertToJobListActiveResponse(jobPosts);
 
         // Bước 2: Lọc theo searchTerm, jobType và location
-        List<JobListActiveResponse> filteredJobList = filterJobListings(jobListActiveResponses, searchTerm, jobType, location, jobCategory, exp, workType, jobLevel);
+        List<JobListActiveResponse> filteredJobList = filterJobListings(jobListActiveResponses, searchTerm, jobType, location, jobCategory, exp, workType, jobLevel,salaryRange);
 
         System.out.println("Trước khi sắp xếp:");
         filteredJobList.forEach(job -> System.out.println(job.getCreateDate()));
@@ -334,7 +338,8 @@ public class HomeController {
                                                           Long jobCategory,
                                                           Exp exp,
                                                           WorkType workType,
-                                                          JobLevel jobLevel) {
+                                                          JobLevel jobLevel,
+                                                          String salaryRange) {
         if (searchTerm != null && !searchTerm.isEmpty()) {
             jobListActiveResponses = jobPostService.filterBySearchTerm(jobListActiveResponses, searchTerm);
         }
@@ -355,6 +360,18 @@ public class HomeController {
         }
         if (jobLevel!= null) {
             jobListActiveResponses = jobPostService.filterByJobLevel(jobListActiveResponses, jobLevel);
+        }
+        // Lọc theo salaryRange
+        // Lọc theo salaryRange
+        if (salaryRange != null && !salaryRange.isEmpty()) {
+            String[] range = salaryRange.split("-");
+
+            // Loại bỏ ký tự không cần thiết và chuyển đổi thành số
+            int minSalary = Integer.parseInt(range[0].replaceAll("[^0-9]", "").trim()) * 1000000; // Chuyển đổi triệu thành đơn vị
+            int maxSalary = range.length > 1 ? Integer.parseInt(range[1].replaceAll("[^0-9]", "").trim()) * 1000000 : Integer.MAX_VALUE; // Nếu không có giá trị max, đặt là vô hạn
+
+            // Sử dụng phương thức filterBySalary
+            jobListActiveResponses = jobPostService.filterBySalary(jobListActiveResponses, minSalary, maxSalary);
         }
         return jobListActiveResponses;
     }

@@ -120,7 +120,17 @@
 
         <div class="d-flex">
             <div class="card flex-fill">
-
+                <div class="card-header">
+                    <div class="filter-bar mb-3 gap-2">
+                        <form method="get" th:action="@{/admin/companies}" class="d-flex gap-2">
+                            <!-- Input tìm kiếm theo email của tài khoản -->
+                            <input type="text" name="name" placeholder="Tìm kiếm theo tên của công ty!"
+                                   th:value="${searchKeyword}" class="form-control form-control-sm">
+                            <!-- Nút Tìm kiếm -->
+                            <button type="submit" class="btn btn-primary btn-sm"><i class="align-middle" data-feather="search"></i></button>
+                        </form>
+                    </div>
+                </div>
 
 
                 <table class="table table-hover my-0">

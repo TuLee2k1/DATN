@@ -365,7 +365,7 @@
         </div>
     </div>
 
-    <div  class="bg-white p-4 rounded-b-lg shadow-md">
+    <div id="filterHigh"  class="bg-white p-4 rounded-b-lg shadow-md">
         <div class="flex items-center space-x-2">
             <button class="flex items-center space-x-1 text-orange-500">
                 <i class="fas fa-bolt"></i>
@@ -382,8 +382,15 @@
                 </select>
             </div>
             <div class="relative">
-                <select class="pl-4 pr-8 py-2 rounded-md focus:outline-none">
-                    <option>Tất cả mức lương</option>
+                <select name="salaryRange" class="pl-4 pr-8 py-2 rounded-md focus:outline-none">
+                    <option value="0">Tất cả mức lương</option>
+                    <option>1-5 triệu</option>
+                    <option>5-10 triệu</option>
+                    <option>10-15 triệu</option>
+                    <option>15-20 triệu</option>
+                    <option>20-25 triệu</option>
+                    <option>30 triệu trở lên</option>
+
                 </select>
             </div>
             <div class="relative">
@@ -449,7 +456,7 @@
                     <div class="job-listing-logo">
                         <img th:src="${job?.companyLogoUrl != null && !#strings.isEmpty(job.companyLogoUrl)
 ? '/uploads/logocompany/' + job.companyLogoUrl
-: '/Admin/images/person_3.jpg'}" class="img-fluid">
+: '/img/avatars/user.jpg'}" class="img-fluid">
                     </div>
 
                     <div class="job-listing-about d-sm-flex custom-width w-100 justify-content-between mx-4">
@@ -546,46 +553,61 @@
     // Gọi hàm khi trang được tải
     window.onload = setSortOption;
 
-    document.getElementById('filter').addEventListener('click', function(event) {
-        event.preventDefault();
-        const filterOptions = document.getElementById('filter-options');
-        // Kiểm tra xem khối tùy chọn lọc có đang hiển thị hay không
-        if (filterOptions.classList.contains('hidden')) {
-            // Nếu đang ẩn, hiển thị nó
-            filterOptions.classList.remove('hidden');
-        } else {
-            // Nếu đang hiển thị, ẩn nó
-            filterOptions.classList.add('hidden');
-        }
+        document.addEventListener("DOMContentLoaded", function() {
+        // Lấy các phần tử cần thiết
+        const filterOptions = document.getElementById("filterHigh");
+        const closeButton = document.getElementById("close");
+        const filterButton = document.getElementById("filter");
+
+        // Ẩn phần tử khi trang được tải
+        // filterOptions.style.display = "none"; // Ẩn mặc định
+
+        // Xử lý sự kiện click cho nút "Lọc nâng cao"
+        filterButton.addEventListener("click", function(event) {
+        event.preventDefault(); // Ngăn chặn hành động mặc định của nút
+        // Chuyển đổi hiển thị của phần tử
+        if (filterOptions.style.display === "none") {
+        filterOptions.style.display = "block"; // Hiện phần tử
+    } else {
+        filterOptions.style.display = "none"; // Ẩn phần tử
+    }
     });
 
-    document.getElementById('close').addEventListener('click', function(event) {
-        event.preventDefault();
-        const filterOptions = document.getElementById('filter-options');
-        // Kiểm tra xem khối tùy chọn lọc có đang hiển thị hay không
-        if (filterOptions.classList.contains('hidden')) {
-            // Nếu đang ẩn, hiển thị nó
-            filterOptions.classList.remove('hidden');
-        } else {
-            // Nếu đang hiển thị, ẩn nó
-            filterOptions.classList.add('hidden');
-        }
+        // Xử lý sự kiện click cho nút "Đóng"
+        closeButton.addEventListener("click", function(event) {
+        event.preventDefault(); // Ngăn chặn hành động mặc định của nút
+        filterOptions.style.display = "none"; // Ẩn phần tử
+    });
     });
 
-    document.getElementById('reset').addEventListener('click', function(event) {
-        event.preventDefault(); // Ngăn chặn hành động mặc định của nút nếu cần
+//
+// document.getElementById('close').addEventListener('click', function(event) {
+// event.preventDefault();
+// const filterOptions = document.getElementById('filter-options');
+// // Kiểm tra xem khối tùy chọn lọc có đang hiển thị hay không
+// if (filterOptions.classList.contains('hidden')) {
+// // Nếu đang ẩn, hiển thị nó
+// filterOptions.classList.remove('hidden');
+// } else {
+// // Nếu đang hiển thị, ẩn nó
+// filterOptions.classList.add('hidden');
+// }
+// });
 
-        // Lấy tất cả các select trong filter-options
-        const selects = document.querySelectorAll('#filter-options select');
+document.getElementById('reset').addEventListener('click', function(event) {
+event.preventDefault(); // Ngăn chặn hành động mặc định của nút nếu cần
 
-        // Đặt lại giá trị của từng select về giá trị mặc định
-        selects.forEach(select => {
-            select.selectedIndex = 0; // Đặt lại về tùy chọn đầu tiên
-        });
-    });
+// Lấy tất cả các select trong filter-options
+const selects = document.querySelectorAll('#filter-options select');
 
-    document.addEventListener('DOMContentLoaded', () => {
-        console.log('DOM fully loaded and parsed'); // Thông báo khi DOM đã được tải xong
+// Đặt lại giá trị của từng select về giá trị mặc định
+selects.forEach(select => {
+select.selectedIndex = 0; // Đặt lại về tùy chọn đầu tiên
+});
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+console.log('DOM fully loaded and parsed'); // Thông báo khi DOM đã được tải xong
         const username = document.getElementById('username1');
         const dropdownMenu = document.getElementById('dropdownMenu1');
 

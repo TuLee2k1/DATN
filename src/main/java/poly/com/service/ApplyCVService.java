@@ -4,8 +4,10 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import poly.com.Enum.StatusEnum;
 import poly.com.util.AuthenticationUtil;
 import poly.com.dto.request.ApplyCVRequest;
+import poly.com.exception.FileStorageException;
 import poly.com.model.JobPost;
 import poly.com.model.JobProfile;
 import poly.com.repository.JobPostRepository;
@@ -22,43 +24,49 @@ public class ApplyCVService {
 
 
     @Transactional
-    public JobProfile submitCv(MultipartFile multipartFile ,ApplyCVRequest request, Long jobPostId) {
-        var jobPost = jobPostRepository.findById(jobPostId)
-                .orElseThrow(() -> new RuntimeException("Job post not found"));
-        System.out.println("hello: "+jobPost.getAppliedCount());
+    public JobProfile submitCv(MultipartFile multipartFile, ApplyCVRequest request, Long jobPostId) {
+        // 1. Lấy thông tin tin tuyển dụng
+        JobPost jobPost = jobPostRepository.findById(jobPostId)
+         .orElseThrow(() -> new RuntimeException("Job post not found with ID: " + jobPostId));
+        System.out.println("Job Post Applied Count: " + jobPost.getAppliedCount());
+
+        // 2. Lấy thông tin người dùng hiện tại
         var user = authenticationUtil.getCurrentUser();
 
-
-        // Lưu file CV
-        String cvFileUrl = fileStorageService.storeImageProfileFile(multipartFile);
-        System.out.println("CV File Url: " + cvFileUrl);
-
-        // Chuyển đổi DTO sang Entity
-        JobProfile cvSubmission = JobProfile.builder()
-                .fullName(request.getName())
-                .email(request.getEmail())
-                .phoneNumber(request.getPhone())
-                .fileCV(cvFileUrl)
-                .jobPost(jobPost)
-                .user(user)
-                .build();
-        // Lưu vào database
-        System.out.println("CV Submission: " + cvSubmission.getFileCV());
-        System.out.println("CV Submission: " + cvSubmission.getEmail());
-        System.out.println("CV Submission: " + cvSubmission.getJobPost());
-        System.out.println("CV Submission: " + cvSubmission.getPhoneNumber());
+        // 3. Lưu file CV
+        String cvFileName;
         try {
-            JobProfile savedSubmission = jobProfileRepository.save(cvSubmission);
-            System.out.println("Saved submission: " + savedSubmission.getEmail());
-            jobPost.setAppliedCount(jobPost.getAppliedCount() + 1);
-            var savedJobPost = jobPostRepository.save(jobPost);
-            System.out.println("Saved job post: " + savedJobPost.getAppliedCount());
-            return savedSubmission;
-        } catch (Exception e) {
-            System.err.println("Error saving CV Submission: " + e.getMessage());
-            e.printStackTrace(); // In ra stack trace để giúp bạn xác định vấn đề
+            cvFileName = fileStorageService.storeFile(multipartFile);
+            System.out.println("CV File uploaded successfully: " + cvFileName);
+        } catch (FileStorageException ex) {
+            throw new RuntimeException("Failed to upload CV file.", ex);
         }
 
-        return cvSubmission;
+        // 4. Chuyển đổi DTO sang Entity và lưu vào database
+        JobProfile jobProfile = JobProfile.builder()
+         .fullName(request.getName())
+         .email(request.getEmail())
+         .phoneNumber(request.getPhone())
+         .fileCV(cvFileName) // Đường dẫn file CV
+         .jobPost(jobPost)
+         .status(StatusEnum.PENDING)
+         .user(user)
+         .build();
+
+        try {
+            // Lưu hồ sơ ứng tuyển
+            JobProfile savedProfile = jobProfileRepository.save(jobProfile);
+
+            // Tăng appliedCount và lưu lại JobPost
+            jobPost.setAppliedCount(jobPost.getAppliedCount() + 1);
+            jobPostRepository.save(jobPost);
+
+            System.out.println("Saved CV Submission for: " + savedProfile.getEmail());
+            return savedProfile;
+
+        } catch (Exception e) {
+            System.err.println("Error saving CV Submission: " + e.getMessage());
+            throw new RuntimeException("Error saving CV submission, please try again.", e);
+        }
     }
 }

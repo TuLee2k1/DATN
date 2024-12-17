@@ -32,64 +32,64 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-         .csrf(AbstractHttpConfigurer::disable)
-         // Cấu hình SecurityContext
-         .securityContext(security -> security
-          .securityContextRepository(securityContextRepository())
-          .requireExplicitSave(false)
-         )
-         .authorizeHttpRequests(auth -> auth
-          .requestMatchers(
-           "/auth/**",
-           "/login/**",
-           "/logout",
-           "/v3/**",
-           "**",
-              "/js/**",
-           "/swagger-ui/**"
-          ).permitAll()
-                 .requestMatchers("/admin/**").hasRole("ADMIN")
-          .requestMatchers("/Company/**").hasRole("COMPANY")
-          .anyRequest().authenticated()
+                .csrf(AbstractHttpConfigurer::disable)
+                // Cấu hình SecurityContext
+                .securityContext(security -> security
+                        .securityContextRepository(securityContextRepository())
+                        .requireExplicitSave(false)
+                )
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(
+                                "/auth/**",
+                                "/login/**",
+                                "/logout",
+                                "/v3/**",
+                                "**",
+                                "/js/**",
+                                "/swagger-ui/**"
+                        ).permitAll()
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/Company/**").hasRole("COMPANY")
+                        .anyRequest().authenticated()
 
 
-         )
-         // Cấu hình Session
-         .sessionManagement(session -> session
-          .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
-          .maximumSessions(1)
-          .maxSessionsPreventsLogin(false)
-          .expiredUrl("/login?expired")
-          .and()
-          .sessionFixation().migrateSession()
-          .enableSessionUrlRewriting(false)
-          .invalidSessionUrl("/login")
-         )
-         // Cấu hình Form Login
-         .formLogin(form -> form
-          .loginProcessingUrl("/authenticate")
-          .loginPage("/login")
-          .defaultSuccessUrl("/dashboard", true)
-          .failureUrl("/login?error=true")
-          .permitAll()
-         )
-         // OAuth2 Login
-         .oauth2Login(oauth2 -> oauth2
-          .defaultSuccessUrl("/loginSuccess", true)
-          .failureUrl("/loginFailure")
-         )
-         // Cấu hình Logout
-         .logout(logout -> logout
-          .logoutUrl("/logout")
-          .logoutSuccessUrl("/login")
-          .invalidateHttpSession(true)
-          .deleteCookies("JSESSIONID")
-          .clearAuthentication(true)
-          .addLogoutHandler((request, response, authentication) -> {
-              SecurityContextHolder.clearContext();
-          })
-         )
-         .authenticationProvider(authenticationProvider);
+                )
+                // Cấu hình Session
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+                        .maximumSessions(1)
+                        .maxSessionsPreventsLogin(false)
+                        .expiredUrl("/login?expired")
+                        .and()
+                        .sessionFixation().migrateSession()
+                        .enableSessionUrlRewriting(false)
+                        .invalidSessionUrl("/login")
+                )
+                // Cấu hình Form Login
+                .formLogin(form -> form
+                        .loginProcessingUrl("/authenticate")
+                        .loginPage("/login")
+                        .defaultSuccessUrl("/dashboard", true)
+                        .failureUrl("/login?error=true")
+                        .permitAll()
+                )
+                // OAuth2 Login
+                .oauth2Login(oauth2 -> oauth2
+                        .defaultSuccessUrl("/loginSuccess", true)
+                        .failureUrl("/loginFailure")
+                )
+                // Cấu hình Logout
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/login")
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID")
+                        .clearAuthentication(true)
+                        .addLogoutHandler((request, response, authentication) -> {
+                            SecurityContextHolder.clearContext();
+                        })
+                )
+                .authenticationProvider(authenticationProvider);
 
         return http.build();
     }

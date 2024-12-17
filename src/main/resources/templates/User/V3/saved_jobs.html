@@ -61,6 +61,33 @@
 
     </style>
 
+
+
+    <style>
+      .job-card {
+        display: flex;
+        align-items: center;
+        border: 1px solid #ddd;
+        margin-bottom: 15px;
+        padding: 15px;
+        border-radius: 8px;
+      }
+      .job-card img {
+        margin-right: 20px;
+        border-radius: 8px;
+      }
+      .job-details {
+        flex-grow: 1;
+      }
+      .icons {
+        display: flex;
+        gap: 15px;
+        margin-top: 10px;
+        color: #666;
+      }
+
+    </style>
+
     <style>
       .pagination-nav {
         display: flex;
@@ -102,62 +129,63 @@
   <body>
     <div class="wrapper">
       <!-- sidebar -->
-        <nav id="sidebar" class="sidebar js-sidebar">
-          <div class="sidebar-content js-simplebar">
-            <a class="sidebar-brand" href="http://localhost:8080">
-              <img
-                      alt="Logo"
-                      class="rounded-circle me-3"
-                      height="50"
-                      id="logo"
-                      src="/img/icons/logo2.jpg"
-                      width="50"
-              />
-              <span class="align-middle">Dream Jobs</span>
-            </a>
 
-            <ul class="sidebar-nav">
-              <li class="sidebar-header">Pages</li>
+      <nav id="sidebar" class="sidebar js-sidebar">
+        <div class="sidebar-content js-simplebar">
+          <a class="sidebar-brand" href="http://localhost:8080">
+            <img
+                    alt="Logo"
+                    class="rounded-circle me-3"
+                    height="50"
+                    id="logo"
+                    src="/img/icons/logo2.jpg"
+                    width="50"
+            />
+            <span class="align-middle">Dream Jobs</span>
+          </a>
 
-              <li class="sidebar-item ">
-                <a class="sidebar-link" href="/users/dashboard">
-                  <i class="align-middle" data-feather="sliders"></i>
-                  <span class="align-middle">Dashboard</span>
-                </a>
-              </li>
+          <ul class="sidebar-nav">
+            <li class="sidebar-header">Pages</li>
 
-              <li class="sidebar-item">
-                <a class="sidebar-link" href="/user-profile">
-                  <i class="align-middle" data-feather="user"></i>
-                  <span class="align-middle">Thông tin cá nhân</span>
-                </a>
-              </li>
+            <li class="sidebar-item ">
+              <a class="sidebar-link" href="/users/dashboard">
+                <i class="align-middle" data-feather="sliders"></i>
+                <span class="align-middle">Dashboard</span>
+              </a>
+            </li>
 
-              <li class="sidebar-item">
-                <a class="sidebar-link" href="/user-resume">
-                  <i class="align-middle" data-feather="clipboard"></i>
-                  <span class="align-middle">Hồ sơ ứng tuyển</span>
-                </a>
-              </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="/user-profile">
+                <i class="align-middle" data-feather="user"></i>
+                <span class="align-middle">Thông tin cá nhân</span>
+              </a>
+            </li>
 
-              <li class="sidebar-item">
-                <a class="sidebar-link" href="/user-applied">
-                  <i class="align-middle" data-feather="check-square"></i>
-                  <span class="align-middle">Danh sách đơn ứng tuyển</span>
-                </a>
-              </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="/user-resume">
+                <i class="align-middle" data-feather="clipboard"></i>
+                <span class="align-middle">Hồ sơ ứng tuyển</span>
+              </a>
+            </li>
 
-              <li class="sidebar-item">
-                <a class="sidebar-link" href="/user-saved">
-                  <i class="align-middle" data-feather="bookmark"></i>
-                  <span class="align-middle">Bài viết đã lưu</span>
-                </a>
-              </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="/user-applied">
+                <i class="align-middle" data-feather="check-square"></i>
+                <span class="align-middle">Danh sách đơn ứng tuyển</span>
+              </a>
+            </li>
+
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="/user-saved">
+                <i class="align-middle" data-feather="bookmark"></i>
+                <span class="align-middle">Bài viết đã lưu</span>
+              </a>
+            </li>
 
 
-            </ul>
-          </div>
-        </nav>
+          </ul>
+        </div>
+      </nav>
 
       <div class="main">
         <!-- nav head -->
@@ -388,7 +416,7 @@
 
 
         <main class="content">
-          
+
           <div class="container mt-4">
             <h4>Việc làm đã lưu</h4>
 
@@ -462,66 +490,6 @@
         </main>
 
 
-        <footer class="footer">
-          <div class="container-fluid">
-            <div class="row text-muted">
-              <div class="col-6 text-start">
-                <p class="mb-0">
-                  <a
-                    class="text-muted"
-                    href="https://adminkit.io/"
-                    target="_blank"
-                    ><strong>AdminKit</strong></a
-                  >
-                  -
-                  <a
-                    class="text-muted"
-                    href="https://adminkit.io/"
-                    target="_blank"
-                    ><strong>Bootstrap Admin Template</strong></a
-                  >
-                  &copy;
-                </p>
-              </div>
-              <div class="col-6 text-end">
-                <ul class="list-inline">
-                  <li class="list-inline-item">
-                    <a
-                      class="text-muted"
-                      href="https://adminkit.io/"
-                      target="_blank"
-                      >Support</a
-                    >
-                  </li>
-                  <li class="list-inline-item">
-                    <a
-                      class="text-muted"
-                      href="https://adminkit.io/"
-                      target="_blank"
-                      >Help Center</a
-                    >
-                  </li>
-                  <li class="list-inline-item">
-                    <a
-                      class="text-muted"
-                      href="https://adminkit.io/"
-                      target="_blank"
-                      >Privacy</a
-                    >
-                  </li>
-                  <li class="list-inline-item">
-                    <a
-                      class="text-muted"
-                      href="https://adminkit.io/"
-                      target="_blank"
-                      >Terms</a
-                    >
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </footer>
       </div>
     </div>
 

@@ -26,21 +26,19 @@ import poly.com.dto.response.JobPost.JobListActiveResponse;
 import poly.com.dto.response.JobPost.JobListingResponse;
 import poly.com.dto.response.JobPost.JobPostResponse;
 import poly.com.dto.response.PageResponse;
+import poly.com.model.Follow;
 import poly.com.model.JobProfile;
+import poly.com.model.User;
+import poly.com.repository.FollowRepository;
 import poly.com.repository.JobPostRepository;
-import poly.com.service.ApplyCVService;
-import poly.com.service.JobCategoryService;
-import poly.com.service.JobPostService;
-import poly.com.service.SubCategoryService;
+import poly.com.service.*;
+import poly.com.util.AuthenticationUtil;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
@@ -58,6 +56,8 @@ public class JobPostController2 {
     private static String UPLOAD_DIR = System.getProperty("user.dir") + "/uploads/fileCV";
     private final JobPostRepository jobPostRepository;
     private final ApplyCVService applyCVService;
+    private final AuthenticationUtil authenticationUtil;
+    private final FollowRepository followRepository;
 
     // Phương thức hỗ trợ để chuẩn bị model cho form
     private void prepareModelForForm(Model model, AuthenticationResponse user) {
@@ -167,28 +167,50 @@ public class JobPostController2 {
             pageNo = 1;
         }
 
-
+        // Lấy chi tiết công việc theo ID
         JobPostRequest jobPost = jobPostService.getJobPost(id);
+       Long jobPostId = jobPost.getId();
 
-        Date DateNow = new Date();
+        Date currentDate = new Date();
 
-        // Lấy danh sách công việc
+        // Lấy danh sách công việc theo trạng thái
         Page<JobListActiveResponse> jobListings = jobPostService.getJobListingsByStatus(status, pageNo, pageSize);
         model.addAttribute("jobListings", jobListings);
         model.addAttribute("currentPage", pageNo);
         model.addAttribute("totalPages", jobListings.getTotalPages());
-        model.addAttribute("currentDate", DateNow);
+        model.addAttribute("currentDate", currentDate);
         model.addAttribute("status", status);
 
         // Tạo DTO để bind dữ liệu
         ApplyCVRequest applicationForm = new ApplyCVRequest();
         model.addAttribute("applicationForm", applicationForm);
         model.addAttribute("jobPost", jobPost);
-        System.out.println("Id JOB: "+jobPost.getId());
+        System.out.println("Id JOB: " + jobPost.getId());
 
+        // Lấy người dùng hiện tại
+        User currentUser = authenticationUtil.getCurrentUser();
 
+        if (currentUser == null) {
+            // Nếu người dùng chưa đăng nhập, bạn có thể xử lý thêm như trả về lỗi hoặc chuyển hướng
+            model.addAttribute("followStatus", "not_logged_in"); // Thêm trạng thái chưa đăng nhập
+            return "redirect:/auth/login?error=not_logged_in";
+        } else {
+            // Kiểm tra xem người dùng đã theo dõi công việc này chưa
+            System.out.println("User ID: " + currentUser.getId());
+            System.out.println("JobPostID: "+jobPostId);
+            Optional<Follow> existingFollow = followRepository.findByUserIdAndJobPostId(currentUser.getId(), jobPostId);
+            System.out.println(" present: "+existingFollow.isPresent());
+            if (existingFollow.isPresent()) {
+                model.addAttribute("followStatus", "followed"); // Người dùng đã theo dõi
+            } else {
+                model.addAttribute("followStatus", "not_followed"); // Người dùng chưa theo dõi
+            }
+        }
+
+        // Trả về view
         return "fragments/job-single";
     }
+
 
     // Xử lý submit form
 
@@ -347,5 +369,26 @@ public class JobPostController2 {
         }
         return "redirect:/job-posts/Listing";
     }
+
+//    @GetMapping("/check-follow-status/{jobPostId}")
+//    public ResponseEntity<Map<String, String>> checkFollowStatus(@PathVariable Long jobPostId) {
+//        User currentUser = authenticationUtil.getCurrentUser();
+//        if (currentUser == null) {
+//            Map<String, String> response = new HashMap<>();
+//            response.put("error", "Vui lòng đăng nhập để kiểm tra trạng thái.");
+//            return ResponseEntity.status(401).body(response);
+//        }
+//
+//        Optional<Follow> existingFollow = followRepository.findByUserIdAndJobPostId(currentUser.getId(), jobPostId);
+//        Map<String, String> response = new HashMap<>();
+//
+//        if (existingFollow.isPresent()) {
+//            response.put("status", "followed");
+//        } else {
+//            response.put("status", "not_followed");
+//        }
+//        return ResponseEntity.ok(response);
+//    }
+
 
 }

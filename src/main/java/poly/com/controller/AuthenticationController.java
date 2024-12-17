@@ -185,12 +185,13 @@ public class AuthenticationController {
 
     @PostMapping("/change-password")
     public String changePassword(@RequestBody @Valid UserChangepasswordDTO request) {
-            authenticationService.changePassword(request);
-           return "user/home";
+        authenticationService.changePassword(request);
+        return "user/home";
     }
 
     @PostMapping("/forgot-password")
     public ResponseEntity<String> forgotPassword(@RequestParam @Valid String email) throws MessagingException {
+        System.out.println(email);
         authenticationService.forgotPassword(email);
         System.out.println("Forgot password email: " + email);
         return ResponseEntity.ok("Password reset link sent to " + email);

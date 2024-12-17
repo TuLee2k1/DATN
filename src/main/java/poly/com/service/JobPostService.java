@@ -389,7 +389,8 @@ public class JobPostService {
                     jobCategoryId,
                     jobPost.getExp(),
                     jobPost.getJobLevel(),
-                    jobPost.getMaxSalary()
+                    jobPost.getMaxSalary(),
+                    jobPost.getMinSalary()
 
             );
         });
@@ -549,6 +550,17 @@ public class JobPostService {
                     JobLevel jobjobLevel = job.getJobLevel();
                     System.out.println("Job Level: " + jobjobLevel); // In ra tên thành phố
                     return jobjobLevel != null && jobjobLevel.equals(jobLevel);
+                })
+                .collect(Collectors.toList());
+    }
+
+    public List<JobListActiveResponse> filterBySalary(List<JobListActiveResponse> jobListings, int minSalary, int maxSalary) {
+        System.out.println("Filtering by salary range: " + minSalary + " - " + maxSalary);
+        return jobListings.stream()
+                .filter(job -> {
+                    Float jobSalary = job.getMaxSalary(); // Giả sử bạn có phương thức getSalary() trong JobListActiveResponse
+                    System.out.println("Job Salary: " + jobSalary); // In ra mức lương của công việc
+                    return jobSalary >= minSalary && jobSalary <= maxSalary; // Kiểm tra mức lương
                 })
                 .collect(Collectors.toList());
     }

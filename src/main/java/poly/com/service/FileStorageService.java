@@ -11,6 +11,7 @@ import poly.com.exception.FileNotFoundException;
 import poly.com.exception.FileStorageException;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -21,6 +22,7 @@ import java.util.UUID;
 public class FileStorageService {
     private final Path fileCompanyImageStorageLocation;
     private final Path fileProfileImageStorageLocation;
+    private final Path fileStorageLocation;
 
     public FileStorageService(FileStorageProperties fileStorageProperties) {
         this.fileCompanyImageStorageLocation = Paths.get(fileStorageProperties.getUploadCompanyImageDir())
@@ -28,10 +30,13 @@ public class FileStorageService {
 
         this.fileProfileImageStorageLocation = Paths.get(fileStorageProperties.getUploadProfileImageDir())
                 .toAbsolutePath().normalize();
+        
+                this.fileStorageLocation = Paths.get(fileStorageProperties.getUploadDir()).toAbsolutePath().normalize();
 
         try {
             Files.createDirectories(fileCompanyImageStorageLocation);
             Files.createDirectories(fileProfileImageStorageLocation);
+            Files.createDirectories(fileStorageLocation);
 
         }catch (Exception ex){
             throw new FileStorageException("Cound not create the directory where "+
@@ -51,7 +56,7 @@ public class FileStorageService {
 
         try {
             if (fileName.contains("..")){
-               throw new FileStorageException("Sorry! Filename contains invalid path sequence " + fileName);
+                throw new FileStorageException("Sorry! Filename contains invalid path sequence " + fileName);
 
             }
 
@@ -61,6 +66,18 @@ public class FileStorageService {
             return fileName;
         }catch (Exception ex){
             throw new FileStorageException("Cound not store file " + fileName + ".Please try again!",ex);
+        }
+    }
+
+    public String storeFile(MultipartFile file) {
+        String fileName = UUID.randomUUID().toString() + "_" + StringUtils.cleanPath(file.getOriginalFilename());
+
+        try {
+            Path targetLocation = this.fileStorageLocation.resolve(fileName);
+            Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
+            return fileName;
+        } catch (IOException ex) {
+            throw new FileStorageException("Could not store file: " + fileName, ex);
         }
     }
 
@@ -115,6 +132,22 @@ public class FileStorageService {
             throw new FileNotFoundException("File not found " + fileName + ".Please try again!",ex);
         }
     }
+
+    public Resource loadFileAsResource(String fileName) {
+        try {
+            Path filePath = this.fileStorageLocation.resolve(fileName).normalize();
+            Resource resource = new UrlResource(filePath.toUri());
+
+            if (resource.exists()) {
+                return resource;
+            } else {
+                throw new RuntimeException("File not found: " + fileName);
+            }
+        } catch (MalformedURLException ex) {
+            throw new RuntimeException("File not found: " + fileName, ex);
+        }
+    }
+
 
     public void deleteCompanyImageFile(String fileName) {
         deleteFile(fileCompanyImageStorageLocation, fileName);

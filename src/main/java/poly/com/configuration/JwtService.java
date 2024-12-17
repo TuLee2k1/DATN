@@ -39,11 +39,11 @@ public class JwtService {
 
     private Claims extractAllClaims(String token) {
         return Jwts
-        .parserBuilder()
-        .setSigningKey(getSigningKey())
-        .build()
-        .parseClaimsJws(token)
-        .getBody();
+                .parserBuilder()
+                .setSigningKey(getSigningKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
     }
 
     public String generateToken(UserDetails userDetails) {
@@ -62,18 +62,18 @@ public class JwtService {
 
     private String buildToken(Map<String, Object> extraClaims, UserDetails userDetails, Long jwtExpiration) {
         var authorities = userDetails.getAuthorities()
-        .stream()
-        .map(GrantedAuthority::getAuthority)
-        .toList();
+                .stream()
+                .map(GrantedAuthority::getAuthority)
+                .toList();
         return Jwts
                 .builder()
                 .setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())
-        .setIssuedAt(new Date(System.currentTimeMillis()))
-        .setExpiration(new Date(System.currentTimeMillis() + jwtExpiration))
-        .claim("authorities", authorities)
-        .signWith(getSigningKey())
-        .compact();
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + jwtExpiration))
+                .claim("authorities", authorities)
+                .signWith(getSigningKey())
+                .compact();
     }
 
     public boolean isTokenValid(String token,UserDetails userDetails) {
