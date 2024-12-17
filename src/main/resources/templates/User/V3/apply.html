@@ -587,23 +587,16 @@
             <h4>Việc làm gợi ý</h4>
           </div>
           <div class="row">
-            <div class="col-md-6" th:each="job, iterStat : ${suggestedJobs}" th:if="${iterStat.index < 4}">
-            <div class="card job-card">
-              <h5 th:text="${job.jobTitle}">Nhân Viên R&D</h5>
-              <div class="favorite toggle-follow-job"
-                   th:attr="data-job-id=${job.id}">
-                <i class="far fa-heart"></i>
-              </div>
+            <div class="col-md-6" th:each="job : ${suggestedJobs}">
+              <div class="card job-card">
+                <h5 th:text="${job.jobTitle}">Nhân Viên R&D</h5>
+                <div class="favorite toggle-follow-job" th:attr="data-job-id=${job.id}">
+                  <i class="far fa-heart"></i>
+                </div>
                 <div class="d-flex align-items-center mb-2">
-                  <img th:src="${job.logo}"
-                       alt="Company Logo"
-                       class="me-2"
-                       width="50"
-                       height="30" />
+                  <img th:src="${job.logo}" alt="Company Logo" class="me-2" width="50" height="30" />
                   <div>
-                    <div class="company" th:text="${job.companyName}">
-                      Công Ty TNHH Thực Phẩm Và Nước Giải Khát Á Châu
-                    </div>
+                    <div class="company" th:text="${job.companyName}">Công Ty TNHH XYZ</div>
                     <div class="salary">
                       <i class="fas fa-dollar-sign"></i>
                       <span th:text="${job.minSalary} + ' - ' + ${job.maxSalary} + ' triệu'">10 - 15 triệu</span>
@@ -617,6 +610,7 @@
               </div>
             </div>
           </div>
+
           <div th:if="${suggestedJobs == null or suggestedJobs.size() == 0}" class="no-jobs">
             <p>Không có việc làm được đề xuất.</p>
           </div>
