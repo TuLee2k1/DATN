@@ -19,6 +19,10 @@ import java.util.Optional;
 
 public interface JobPostRepository extends JpaRepository<JobPost, Long> {
 
+
+  List<JobPost> findByStatusEnum(StatusEnum statusEnum); // Lọc bài đăng theo trạng thái cho admin
+
+
   @Query("select c from JobPost c where c.jobTitle like concat(?1, '%')")
   List<JobPost> findByJobTitleStartsWith(String jobTitle, Pageable pageable);
 
@@ -43,7 +47,7 @@ public interface JobPostRepository extends JpaRepository<JobPost, Long> {
   Page<JobPost> findAll(Pageable pageable);
 
   @Query("SELECT new poly.com.dto.request.JobPost.JobPostTitleResponse(c.id, c.jobTitle) FROM JobPost c WHERE c.company = :company")
-  List<JobPostTitleResponse> getJobPostTitleByCompany(@Param("company") Company company);
+  List<JobPostTitleResponse>  getJobPostTitleByCompany(@Param("company") Company company);
 
   @Query("SELECT COUNT(j) FROM JobPost j")
   Long countAllJobPosts();
@@ -60,14 +64,29 @@ public interface JobPostRepository extends JpaRepository<JobPost, Long> {
 
 
 
+
+  @Query("SELECT jp FROM JobPost jp WHERE (:statusEnum IS NULL OR jp.statusEnum = :statusEnum) " +
+          "AND (:jobTitle IS NULL OR jp.jobTitle LIKE %:jobTitle%)")
+  Page<JobPost> findByAdmin(Pageable pageable, @Param("statusEnum") StatusEnum statusEnum, @Param("jobTitle") String jobTitle);
+
+
+
   // Phương thức tìm kiếm theo trạng thái
   Page<JobPost> findByStatusEnum(StatusEnum statusEnum, Pageable pageable);
+
 
 
   @Modifying
   @Transactional
   @Query("DELETE FROM JobPost WHERE id = ?1 AND statusEnum IN (poly.com.Enum.StatusEnum.PENDING, poly.com.Enum.StatusEnum.REJECTED)")
   void deleteJobPostByStatusEnum(Long id);
+
+  // Kiểm tra xem có bài đăng nào sử dụng subCategoryId không
+  boolean existsBySubCategoryId(Long subCategoryId);
+
+  // Kiểm tra xem có bài đăng nào sử dụng jobCategoryId không
+  boolean existsByJobCategoryId(Long jobCategoryId);
+
 
 
 }

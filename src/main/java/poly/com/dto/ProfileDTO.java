@@ -1,9 +1,9 @@
 package poly.com.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.Serializable;
@@ -29,7 +29,7 @@ public class ProfileDTO implements Serializable {
     @NotEmpty(message = "sex is require!")
     private String sex;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate dateOfBirth;
 
     private String logo;

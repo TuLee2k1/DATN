@@ -18,10 +18,6 @@
   <link rel="shortcut icon" href="img/icons/icon-48x48.png" />
 
   <link rel="canonical" href="https://demo-basic.adminkit.io/" />
-  <!-- Thêm CSS của Select2 -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css">
 
   <title>Tạo tin tuyển dụng</title>
 
@@ -42,7 +38,7 @@
     }
 
     .custom-container {
-      max-width: 100%; /* Chiều rộng gần bằng 100% nhưng vẫn giữ viền */
+      max-width: 90%; /* Chiều rộng gần bằng 100% nhưng vẫn giữ viền */
       margin: 0 auto; /* Căn giữa */
     }
     .form-label {
@@ -101,6 +97,7 @@
       padding: 10px;
       min-height: 100px;
     }
+
   </style>
 </head>
 
@@ -109,7 +106,7 @@
   <!-- sidebar -->
   <nav id="sidebar" class="sidebar js-sidebar">
     <div class="sidebar-content js-simplebar">
-      <a class="sidebar-brand" href="http://localhost:8080">
+      <a class="sidebar-brand" href="Taikhoannhatuyendung.html">
         <span class="align-middle">Dream job</span>
       </a>
 
@@ -120,13 +117,13 @@
           </div>
         </li>
         <li class="sidebar-item">
-          <a class="sidebar-link" th:href="@{/job-posts/create}">
+          <a class="sidebar-link" href="Taotintuyendung">
             <i class="align-middle" data-feather="plus-square"></i>
             <span>Tạo tin tuyển dụng</span>
           </a>
         </li>
         <li class="sidebar-item">
-          <a class="sidebar-link" id="danhsachtindang" th:href="@{/job-posts/Listing}">
+          <a class="sidebar-link" id="danhsachtindang">
             <i class="align-middle" data-feather="file-text"></i>
             <span>Quản lý tin đăng</span>
           </a>
@@ -138,35 +135,87 @@
           </div>
         </li>
         <li class="sidebar-item">
-          <a class="sidebar-link" th:href="@{/Company/ApplicationProfile}">
+          <a class="sidebar-link" href="Hosoungtuyen.html">
             <i class="align-middle" data-feather="file"></i>
             <span>Hồ sơ ứng tuyển</span>
           </a>
         </li>
 
         <li class="sidebar-item">
-          <a class="sidebar-link" th:href="@{/company/search-profiles}">
+          <a class="sidebar-link" href="Timungvienmoi.html">
             <i class="align-middle" data-feather="search"></i>
             <span>Tìm ứng viên mới</span>
           </a>
         </li>
 
+        <li class="sidebar-header">
+          <div class="d-flex align-items-center">
+            <span>Quản lý dịch vụ</span>
+          </div>
+        </li>
         <li class="sidebar-item">
-          <a class="sidebar-link" th:href="@{/company/saved-profile}" >
+          <a class="sidebar-link" href="danhsachdonhang.html">
             <i class="align-middle" data-feather="shopping-bag"></i>
-            <span>Hồ sơ đã lưu</span>
+            <span>Danh sách đơn hàng</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a class="sidebar-link" href="hosodaluu.html">
+            <i class="align-middle" data-feather="package"></i>
+            <span>Lịch sử đơn hàng</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a class="sidebar-link" href="thongtinthanhtoan.html">
+            <i class="align-middle" data-feather="credit-card"></i>
+            <span>Thông tin thanh toán</span>
           </a>
         </li>
 
+        <li class="sidebar-header">
+          <div class="d-flex align-items-center">
+            <span>Tài khoản và thương hiệu</span>
+          </div>
+        </li>
         <li class="sidebar-item">
-          <a class="sidebar-link" th:href="@{/company-account}">
+          <a class="sidebar-link" href="#">
             <i class="align-middle" data-feather="user"></i>
             <span>Tài khoản nhà tuyển dụng</span>
           </a>
         </li>
+        <li class="sidebar-item">
+          <a class="sidebar-link" href="#">
+            <i class="align-middle" data-feather="award"></i>
+            <span>Quảng bá thương hiệu</span>
+          </a>
+        </li>
+
+        <li class="sidebar-header">
+          <div class="d-flex align-items-center">
+            <span>Hướng dẫn và thông báo</span>
+          </div>
+        </li>
+        <li class="sidebar-item">
+          <a class="sidebar-link" href="#">
+            <i class="align-middle" data-feather="help-circle"></i>
+            <span>Hướng dẫn sử dụng</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a class="sidebar-link" href="#">
+            <i class="align-middle" data-feather="bell"></i>
+            <span>Thông báo mới</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a class="sidebar-link" href="#">
+            <i class="align-middle" data-feather="life-buoy"></i>
+            <span>Hỗ trợ</span>
+          </a>
+        </li>
 
         <li class="sidebar-item mt-4">
-          <a th:href="@{http://localhost:8080/}"  class="btn btn-primary w-100">
+          <a href="#" class="btn btn-primary w-100">
             <span>Cổng người tìm việc</span>
             <span class="ms-2">Chuyển</span>
           </a>
@@ -361,111 +410,104 @@
               <i class="align-middle" data-feather="settings"></i>
             </a>
 
-            <a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#" data-bs-toggle="dropdown">
-              <img th:src="${company?.logo != null && !#strings.isEmpty(company.logo)
-											? '/uploads/logocompany/' + company.getLogo()
-											: '/Admin/images/person_3.jpg'}"
-                    class="rounded-circle"       alt="Logo" width="50" height="50" style="width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center; font-size: 30px;" >
-
-              <span class="text-dark fw-bold"
-                    th:text="${#authentication.principal.companyDetails != null ? #authentication.principal.companyDetails.name : 'N/A'}">Charles Hall</span>
+            <a
+                    class="nav-link dropdown-toggle d-none d-sm-inline-block"
+                    href="#"
+                    data-bs-toggle="dropdown">
+              <img
+                      src="img/avatars/avatar.jpg"
+                      class="avatar img-fluid rounded me-1"
+                      alt="Charles Hall" />
+              <span class="text-dark">Charles Hall</span>
             </a>
             <div class="dropdown-menu dropdown-menu-end">
-              <a class="dropdown-item" th:href="@{/company-account}"><i
-                      class="align-middle me-1" data-feather="user"></i> Profile</a>
+              <a class="dropdown-item" href="Taikhoannhatuyendung.html"><i
+                      class="align-middle me-1" data-feather="user"></i>
+                Profile</a>
+              <a class="dropdown-item" href="#"><i class="align-middle me-1"
+                                                   data-feather="pie-chart"></i>
+                Analytics</a>
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item" th:href="@{/logout}">Log out</a>
+              <a class="dropdown-item" href="index.html"><i
+                      class="align-middle me-1" data-feather="settings"></i>
+                Settings & Privacy</a>
+              <a class="dropdown-item" href="#"><i
+                      class="align-middle me-1"
+                      data-feather="help-circle"></i>
+                Help Center</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="#">Log out</a>
             </div>
           </li>
         </ul>
       </div>
     </nav>
-    <div class="container mt-5">
 
-        <div class="container custom-container mt-1">
+    <form th:action="@{${jobPostRequest.id != null ?   '/job-posts/' + jobPostRequest.id + '/update' :   '/job-posts/create'}}"
+          method="post"
+          th:object="${jobPostRequest}">
 
-        <form th:action="@{${jobPostRequest.id != null ? '/job-posts/' + jobPostRequest.id + '/update' : '/job-posts/create'}}"
-              method="post"
-              th:object="${jobPostRequest}" >
 
-          <input type="hidden" th:field="*{id}" />
+      <!-- Thêm hidden input để đảm bảo ID được truyền -->
 
-          <h4 class="mb-4">Thông tin cơ bản</h4>
+      <div class="container custom-container mt-1">
 
-          <div class="mb-3">
-            <label for="jobTitle" class="form-label">Tiêu đề tin tuyển dụng <i class="fa fa-question-circle"></i></label>
-            <input type="text" class="form-control form-control-lg" id="jobTitle" th:field="*{jobTitle}" placeholder="Vị trí hiển thị đang tuyển" required>
-            <p class="invalid-feedback" th:if="${#fields.hasErrors('jobTitle')}" th:errors="*{jobTitle}">
-              Tiêu đề công việc không được để trống
-            </p>
+        <h4 class="mb-4">Thông tin cơ bản</h4>
+
+
+        <input type="hidden" th:field="*{id}" />
+        <div class="mb-3">
+          <label for="jobTitle" class="form-label">Tiêu đề tin tuyển dụng <i class="fa fa-question-circle"></i></label>
+          <input type="text" class="form-control" id="jobTitle" th:field="*{jobTitle}" placeholder="Vị trí hiển thị đang tuyển" required>
+          <div class="invalid-feedback" th:if="${#fields.hasErrors('jobTitle')}" th:errors="*{jobTitle}">
+            Tiêu đề công việc không được để trống
           </div>
-
-          <div class="row mb-3">
-            <div class="col-md-6">
-              <label for="jobCategoryId" class="form-label">
-                Ngành nghề
-                <i class="fa fa-question-circle" data-bs-toggle="tooltip" title="Chọn ngành nghề phù hợp với bạn"></i>
-              </label>
-              <select class="form-select form-select-lg" id="jobCategoryId" th:field="*{jobCategoryId}" required>
-                <option value="">Chọn ngành nghề</option>
-                <option th:each="category : ${jobCategories}"
-                        th:value="${category.id}"
-                        th:text="${category.categoryName}"></option>
-              </select>
-              <div class="invalid-feedback" th:if="${#fields.hasErrors('jobCategoryId')}" th:errors="*{jobCategoryId}">
-                Vui lòng chọn ngành nghề
-              </div>
-            </div>
-
-            <div class="col-md-6">
-              <label for="exp" class="form-label">Kinh nghiệm <i class="fa fa-question-circle"></i></label>
-              <select class="form-select form-select-lg" id="exp" th:field="*{exp}" required>
-                <option value="">Chọn kinh nghiệm</option>
-                <option th:each="experience : ${T(poly.com.Enum.Exp).values()}"
-                        th:value="${experience}"
-                        th:text="${experience.getName()}">
-                </option>
-              </select>
-              <div class="invalid-feedback" th:if="${#fields.hasErrors('exp')}" th:errors="*{exp}">
-                Vui lòng chọn kinh nghiệm
-              </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label for="jobCategoryId" class="form-label">Ngành nghề <i class="fa fa-question-circle"></i></label>
+            <select class="form-select" id="jobCategoryId" th:field="*{jobCategoryId}" required>
+              <option value="">Chọn ngành nghề</option>
+              <option th:each="category : ${jobCategories}"
+                      th:value="${category.id}"
+                      th:text="${category.categoryName}">
+              </option>
+            </select>
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('jobCategoryId')}" th:errors="*{jobCategoryId}">
+              Vui lòng chọn ngành nghề
             </div>
           </div>
 
-          <div class="row mb-3">
-            <div class="col-md-6">
-              <label for="subCategoryIds" class="form-label">Chuyên ngành <i class="fa fa-question-circle"></i></label>
-              <select class="form-select form-select-lg" id="subCategoryIds" th:field="*{subCategoryIds}" required>
-                <option value="">Chọn chuyên ngành</option>
-                <option th:each="subCategory : ${subCategories}"
-                        th:value="${subCategory.id}"
-                        th:text="${subCategory.subCategoryName}">
-                        th:selected="${jobPostRequest.subCategoryIds.contains(subCategory.id)}">
-                </option>
-              </select>
-              <div class="invalid-feedback" th:if="${#fields.hasErrors('subCategoryIds')}" th:errors="*{subCategoryIds}">
-                Vui lòng chọn chuyên ngành
-              </div>
+          <div class="col-md-6">
+            <label for="exp" class="form-label">Kinh nghiệm <i class="fa fa-question-circle"></i></label>
+            <select class="form-select" id="exp" th:field="*{exp}" required>
+              <option value="">Chọn kinh nghiệm</option>
+              <option th:each="experience : ${T(poly.com.Enum.Exp).values()}"
+                      th:value="${experience}"
+                      th:text="${experience.getName()}">
+              </option>
+            </select>
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('exp')}" th:errors="*{exp}">
+              Vui lòng chọn kinh nghiệm
+            </div>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label for="subCategoryIds" class="form-label">Chuyên ngành <i class="fa fa-question-circle"></i></label>
+            <select class="form-select" id="subCategoryIds" th:field="*{subCategoryIds}" required>
+              <option value="">Chọn chuyên ngành</option>
+              <option th:each="subCategory : ${subCategories}"
+                      th:value="${subCategory.id}"
+                      th:text="${subCategory.subCategoryName}">
+              </option>
+            </select>
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('subCategoryIds')}" th:errors="*{subCategoryIds}">
+              Vui lòng chọn chuyên ngành
             </div>
           </div>
 
-          <div class="row mb-3">
-            <div class="col-md-6">
-              <label for="quantity" class="form-label">Số lượng tuyển <i class="fa fa-question-circle"></i></label>
-              <input type="number" class="form-control form-control-lg" id="quantity" th:field="*{quantity}" min="1" placeholder="Chỉ nhập số, VD: 10" required>
-              <div class="invalid-feedback" th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}">
-                Số lượng phải lớn hơn 0
-              </div>
-            </div>
-
-            <div class="col-md-6">
-              <label for="endDate" class="form-label">Hạn nộp hồ sơ <i class="fa fa-question-circle"></i></label>
-              <input type="date" class="form-control form-control-lg" id="endDate" th:field="*{endDate}" required>
-              <div class="invalid-feedback" th:if="${#fields.hasErrors('endDate')}" th:errors="*{endDate}">
-                Ngày kết thúc không được để trống
-              </div>
-            </div>
-          </div>
 
           <div class="bordered-box mb-3">
             <h5>Địa chỉ</h5>
@@ -476,7 +518,7 @@
                   <i class="fa fa-question-circle" data-bs-toggle="tooltip" title="Chọn tỉnh/thành phố"></i>
                 </label>
                 <select class="form-select form-select-lg" id="city" th:field="*{city}"
-                        th:data-selected="${jobPostRequest.city}"  required>
+                        th:data-selected="${jobPostRequest.city}" required>
                   <option value="">Chọn Tỉnh hoặc Thành phố</option>
                 </select>
                 <div class="invalid-feedback" th:if="${#fields.hasErrors('city')}" th:errors="*{city}">
@@ -490,107 +532,160 @@
                   <i class="fa fa-question-circle" data-bs-toggle="tooltip" title="Chọn quận/huyện"></i>
                 </label>
                 <select class="form-select form-select-lg" id="district" th:field="*{district}"
-                        th:data-selected="${jobPostRequest.district}"  required>
+                        th:data-selected="${jobPostRequest.district}" required>
                   <option value="">Chọn Quận hoặc Huyện</option>
                 </select>
                 <div class="invalid-feedback" th:if="${#fields.hasErrors('district')}" th:errors="*{district}">
                   Quận/Huyện không được để trống
                 </div>
               </div>
-            </div>
 
-            <div class="mb-3">
-              <label for="address" class="form-label">Số nhà, tên đường <i class="fa fa-question-circle"></i></label>
-              <input type="text" class="form-control form-control-lg" id="address" th:field="*{address}" placeholder="VD: 23 Trần Cao Vân, phường Đa Kao" required>
-              <div class="invalid-feedback" th:if="${#fields.hasErrors('address')}" th:errors="*{address}">
-                Địa chỉ chi tiết không được để trống
-              </div>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label for="quantity" class="form-label">Số lượng tuyển <i class="fa fa-question-circle"></i></label>
+            <input type="number" class="form-control" id="quantity" th:field="*{quantity}" min="1" placeholder="Chỉ nhập số, VD: 10" required>
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}">
+              Số lượng phải lớn hơn 0
+
             </div>
           </div>
 
-          <h4 class="mb-4">Yêu cầu chung</h4>
+          <div class="col-md-6">
+            <label for="endDate" class="form-label">Hạn nộp hồ sơ <i class="fa fa-question-circle"></i></label>
+            <input type="date" class="form-control" id="endDate" th:field="*{endDate}" required>
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('endDate')}" th:errors="*{endDate}">
+              Ngày kết thúc không được để trống
+            </div>
+          </div>
+        </div>
+
+<!--         <div class="bordered-box mb-3">
+          <h5>Địa chỉ</h5>
           <div class="row mb-3">
             <div class="col-md-6">
-              <label for="workType" class="form-label">Hình thức làm việc <i class="fa fa-question-circle"></i></label>
-              <select class="form-select form-select-lg" id="workType" th:field="*{workType}" required>
-                <option value="">Chọn hình thức làm việc</option>
-                <option th:each="type : ${T(poly.com.Enum.WorkType).values()}"
-                        th:value="${type}"
-                        th:text="${type.getName()}">
-                </option>
+              <label for="city" class="form-label">Tỉnh / Thành phố <i class="fa fa-question-circle"></i></label>
+              <select class="form-select" id="city" th:field="*{city}" required>
+                <option value="">Chọn Tỉnh hoặc Thành phố</option>
+                <option value="Hà Nội">Hà Nội</option>
+                <option value="Hồ Chí Minh">Hồ Chí Minh</option>
+                <option value="Đà Nẵng">Đà Nẵng</option>
+                <option value="Hải Phòng">Hải Phòng</option>
+                <option value="Cần Thơ">Cần Thơ</option>
               </select>
-              <div class="invalid-feedback" th:if="${#fields.hasErrors('workType')}" th:errors="*{workType}">
-                Vui lòng chọn hình thức làm việc
+              <div class="invalid-feedback" th:if="${#fields.hasErrors('city')}" th:errors="*{city}">
+                Vui lòng chọn thành phố
               </div>
             </div>
 
             <div class="col-md-6">
-              <label for="jobLevel" class="form-label">Cấp bậc <i class="fa fa-question-circle"></i></label>
-              <select class="form-select form-select-lg" id="jobLevel" th:field="*{jobLevel}" required>
-                <option value="">Chọn cấp bậc</option>
-                <option th:each="level : ${T(poly.com.Enum.JobLevel).values()}"
-                        th:value="${level}"
-                        th:text="${level.getName()}">
-                </option>
-              </select>
-              <div class="invalid-feedback" th:if="${#fields.hasErrors('jobLevel')}" th:errors="*{jobLevel}">
-                Vui lòng chọn cấp bậc công việc
+              <label for="district" class="form-label">Quận / Huyện <i class="fa fa-question-circle"></i></label>
+              <input type="text" class="form-control" id="district" th:field="*{district}" placeholder="VD: Quận 1" required>
+              <div class="invalid-feedback" th:if="${#fields.hasErrors('district')}" th:errors="*{district}">
+                Quận/Huyện không được để trống
               </div>
             </div>
-          </div>
-
-          <div class="row mb-3">
-            <div class="col-md-6">
-              <label for="minSalary" class="form-label">Lương tối thiểu <i class="fa fa-question-circle"></i></label>
-              <input type="number" class="form-control form-control-lg" id="minSalary" th:field="*{minSalary}" min="0" step="0.1" placeholder="0" required>
-              <div class="invalid-feedback" th:if="${#fields.hasErrors('minSalary')}" th:errors="*{minSalary}">
-                Lương tối thiểu phải lớn hơn hoặc bằng 0
-              </div>
-            </div>
-
-            <div class="col-md-6">
-              <label for="maxSalary" class="form-label">Lương tối đa <i class="fa fa-question-circle"></i></label>
-              <input type="number" class="form-control form-control-lg" id="maxSalary" th:field="*{maxSalary}" min="0" step="0.1" placeholder="0" required>
-              <div class="invalid-feedback" th:if="${#fields.hasErrors('maxSalary')}" th:errors="*{maxSalary}">
-                Lương tối đa phải lớn hơn hoặc bằng 0
-              </div>
-            </div>
-          </div>
-
-          <h4 class="mb-4">Công việc chi tiết</h4>
-          <div class="mb-3">
-            <label for="jobDescription" class="form-label">Mô tả công việc</label>
-            <textarea class="form-control form-control-lg" id="jobDescription" th:field="*{jobDescription}" rows="5" placeholder="Nhập mô tả công việc..." required></textarea>
-            <div class="invalid-feedback" th:if="${#fields.hasErrors('jobDescription')}" th:errors="*{jobDescription}">
-              Mô tả công việc không được để trống
-            </div>
-          </div>
+          </div> -->
 
           <div class="mb-3">
-            <label for="jobRequire" class="form-label">Yêu cầu công việc</label>
-            <textarea class="form-control form-control-lg" id="jobRequire" th:field="*{jobRequire}" rows="5" placeholder="Nhập yêu cầu công việc..." required></textarea>
-            <div class="invalid-feedback" th:if="${#fields.hasErrors('jobRequire')}" th:errors="*{jobRequire}">
-              Yêu cầu công việc không được để trống
+            <label for="address" class="form-label">Số nhà, tên đường <i class="fa fa-question-circle"></i></label>
+            <input type="text" class="form-control" id="address" th:field="*{address}" placeholder="VD: 23 Trần Cao Vân, phường Đa Kao" required>
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('address')}" th:errors="*{address}">
+              Địa chỉ chi tiết không được để trống
+            </div>
+          </div>
+        </div>
+
+        <h4 class="mb-4">Yêu cầu chung</h4>
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label for="workType" class="form-label">Hình thức làm việc <i class="fa fa-question-circle"></i></label>
+            <select class="form-select" id="workType" th:field="*{workType}" required>
+              <option value="">Chọn hình thức làm việc</option>
+              <option th:each="type : ${T(poly.com.Enum.WorkType).values()}"
+                      th:value="${type}"
+                      th:text="${type.getName()}">
+              </option>
+            </select>
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('workType')}" th:errors="*{workType}">
+              Vui lòng chọn hình thức làm việc
             </div>
           </div>
 
-          <div class="mb-3">
-            <label for="jobBenefit" class="form-label">Quyền lợi</label>
-            <textarea class="form-control form-control-lg" id="jobBenefit" th:field="*{jobBenefit}" rows="5" placeholder="Nhập quyền lợi công việc..." required></textarea>
-            <div class="invalid-feedback" th:if="${#fields.hasErrors('jobBenefit')}" th:errors="*{jobBenefit}">
-              Quyền lợi không được để trống
+          <div class="col-md-6">
+            <label for="jobLevel" class="form-label">Cấp bậc <i class="fa fa-question-circle"></i></label>
+            <select class="form-select" id="jobLevel" th:field="*{jobLevel}" required>
+              <option value="">Chọn cấp bậc</option>
+              <option th:each="level : ${T(poly.com.Enum.JobLevel).values()}"
+                      th:value="${level}"
+                      th:text="${level.getName()}">
+
+              </option>
+            </select>
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('jobLevel')}" th:errors="*{jobLevel}">
+              Vui lòng chọn cấp bậc công việc
+            </div>
+          </div>
+        </div>
+
+
+
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label for="minSalary" class="form-label">Lương tối thiểu <i class="fa fa-question-circle"></i></label>
+            <input type="number" class="form-control" id="minSalary" th:field="*{minSalary}" min="0" step="0.1" placeholder="0" required>
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('minSalary')}" th:errors="*{minSalary}">
+              Lương tối thiểu phải lớn hơn hoặc bằng 0
             </div>
           </div>
 
-          <div class="d-flex justify-content-between">
-            <button type="button" class="btn btn-secondary btn-lg">Xem trước</button>
-            <button type="submit" class="btn btn-primary btn-lg">
-              <span th:text="${jobPostRequest.id != null ? 'Cập Nhật' : 'Tạo Mới'}"></span>
-            </button>
+          <div class="col-md-6">
+            <label for="maxSalary" class="form-label">Lương tối đa <i class="fa fa-question-circle"></i></label>
+            <input type="number" class="form-control" id="maxSalary" th:field="*{maxSalary}" min="0" step="0.1" placeholder="0" required>
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('maxSalary')}" th:errors="*{maxSalary}">
+              Lương tối đa phải lớn hơn hoặc bằng 0
+            </div>
           </div>
-        </form>
+        </div>
+
+        <h4 class="mb-4">Công việc chi tiết</h4>
+        <div class="mb-3">
+          <label for="jobDescription" class="form-label">Mô tả công việc</label>
+          <textarea class="form-control" id="jobDescription" th:field="*{jobDescription}" rows="5" placeholder="Nhập mô tả công việc..." required></textarea>
+          <div class="invalid-feedback" th:if="${#fields.hasErrors('jobDescription')}" th:errors="*{jobDescription}">
+            Mô tả công việc không được để trống
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="jobRequire" class="form-label">Yêu cầu công việc</label>
+          <textarea class="form-control" id="jobRequire" th:field="*{jobRequire}" rows="5" placeholder="Nhập yêu cầu công việc..." required></textarea>
+          <div class="invalid-feedback" th:if="${#fields.hasErrors('jobRequire')}" th:errors="*{jobRequire}">
+            Yêu cầu công việc không được để trống
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="jobBenefit" class="form-label">Quyền lợi</label>
+          <textarea class="form-control" id="jobBenefit" th:field="*{jobBenefit}" rows="5" placeholder="Nhập quyền lợi công việc..." required></textarea>
+          <div class="invalid-feedback" th:if="${#fields.hasErrors('jobBenefit')}" th:errors="*{jobBenefit}">
+            Quyền lợi không được để trống
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-between">
+          <button type="button" class="btn btn-secondary">Xem trước</button>
+          <button type="submit" class="btn btn-secondary">
+            <span th:text="${jobPostRequest.id != null ? 'Cập Nhật' : 'Tạo Mới'}"></span>
+          </button>
+        </div>
       </div>
-    </div>
+    </form>
+
+
+
+
   </div>
 </div>
 <script>
@@ -611,27 +706,10 @@
             });
   }
 
-  document.addEventListener('DOMContentLoaded', function() {
-    var jobCategorySelect = document.getElementById('jobCategoryId');
-
-    // Kiểm tra xem Choices có tồn tại không
-    if (window.Choices) {
-      var choicesInstance = new Choices(jobCategorySelect, {
-        searchEnabled: true,
-        searchPlaceholderValue: 'Tìm kiếm ngành nghề',
-        noResultsText: 'Không tìm thấy ngành nghề',
-        itemSelectText: 'Nhấn để chọn',
-        searchFields: ['label'],
-        shouldSort: true,
-        placeholder: true,
-        placeholderValue: 'Chọn ngành nghề'
-      });
-    }
-  });
-
-    document.getElementById("danhsachtindang").addEventListener("click", function() {
+  document.getElementById("danhsachtindang").addEventListener("click", function() {
     window.location.href = '/job-posts/Listing';
   });
+
 
   // Hàm format tên tỉnh/thành phố
   function formatProvinceName(name) {
@@ -654,62 +732,47 @@
     const selectedDistrict = districtSelect.getAttribute('data-selected');
     let locationData = [];
 
-    const cityChoices = new Choices(citySelect, {
-      searchEnabled: true, // Bật tìm kiếm
-      searchPlaceholderValue: 'Tìm kiếm tỉnh/thành phố',
-      itemSelectText: 'Nhấn để chọn',
-      shouldSort: true,  // Không sắp xếp lại danh sách
-      placeholder: true,
-      noResultsText: 'Không tìm thấy',
-    });
-
-    const districtChoices = new Choices(districtSelect, {
-      searchEnabled: true,
-      searchPlaceholderValue: 'Tìm kiếm tỉnh/thành phố',
-      shouldSort: true,
-      itemSelectText: 'Nhấn để chọn',
-      placeholder: true,
-      noResultsText: 'Không tìm thấy',
-    });
-
-
     // Fetch dữ liệu từ file JSON
     fetch('/dataApi.json')
             .then(response => response.json())
             .then(data => {
               locationData = data;
 
-              // Điền dữ liệu Tỉnh/Thành phố vào Choices.js
-              const cityOptions = locationData.map(province => ({
-                value: province.name,
-                label: formatProvinceName(province.name),
-                selected: province.name === selectedCity,
-              }));
-              cityChoices.setChoices(cityOptions, 'value', 'label', true);
+              // Điền dữ liệu Tỉnh/Thành phố
+              locationData.forEach(province => {
+                const option = document.createElement('option');
+                option.value = province.name;
+                option.textContent = formatProvinceName(province.name); // Format tên tỉnh/thành phố
+                if (province.name === selectedCity) {
+                  option.selected = true;
+                }
+                citySelect.appendChild(option);
+              });
 
               // Điền dữ liệu Quận/Huyện nếu có tỉnh đã chọn
               if (selectedCity) {
                 updateDistricts(selectedCity, selectedDistrict);
               }
 
-              // Lắng nghe sự kiện chọn Tỉnh/Thành phố
+              // Khi chọn Tỉnh/Thành phố
               citySelect.addEventListener('change', function () {
                 updateDistricts(this.value);
               });
 
               function updateDistricts(cityName, selectedDistrict = null) {
                 const province = locationData.find(p => p.name === cityName);
-                const districtOptions = province && province.districts
-                        ? province.districts.map(district => ({
-                          value: district.name,
-                          label: formatDistrictName(district.name),
-                          selected: district.name === selectedDistrict,
-                        }))
-                        : [];
-
-                // Xóa dữ liệu cũ và cập nhật dữ liệu mới cho district
-                districtChoices.clearChoices();
-                districtChoices.setChoices(districtOptions, 'value', 'label', true);
+                districtSelect.innerHTML = '<option value="">Chọn Quận hoặc Huyện</option>';
+                if (province && province.districts) {
+                  province.districts.forEach(district => {
+                    const option = document.createElement('option');
+                    option.value = district.name;
+                    option.textContent = formatDistrictName(district.name); // Format tên quận/huyện
+                    if (district.name === selectedDistrict) {
+                      option.selected = true;
+                    }
+                    districtSelect.appendChild(option);
+                  });
+                }
               }
             })
             .catch(error => {
@@ -717,53 +780,12 @@
             });
   });
 
-  document.addEventListener('DOMContentLoaded', function () {
-    const jobCategorySelect = document.getElementById('jobCategoryId');
-    const subCategorySelect = document.getElementById('subCategoryIds');
 
-    // Lấy các giá trị đã chọn cho subCategoryIds khi form đã có dữ liệu
-    const selectedSubCategories = Array.from(subCategorySelect.selectedOptions).map(option => option.value);
 
-    // Lắng nghe sự kiện thay đổi ngành nghề
-    jobCategorySelect.addEventListener('change', function () {
-      const jobCategoryId = this.value;
-
-      if (jobCategoryId) {
-        // Gửi yêu cầu AJAX để lấy danh sách subCategories dựa trên jobCategoryId
-        fetch(`/job-posts/subcategories/${jobCategoryId}`)
-                .then(response => response.json())
-                .then(subCategories => {
-                  // Xóa các option cũ
-                  subCategorySelect.innerHTML = '<option value="">Chọn chuyên ngành</option>';
-
-                  // Thêm các option mới vào
-                  subCategories.forEach(subCategory => {
-                    const option = document.createElement('option');
-                    option.value = subCategory.id;
-                    option.textContent = subCategory.subCategoryName;
-                    option.selected = selectedSubCategories.includes(subCategory.id.toString()); // Đánh dấu các chuyên ngành đã chọn
-                    subCategorySelect.appendChild(option);
-                  });
-                })
-                .catch(error => {
-                  console.error('Lỗi khi tải danh sách chuyên ngành:', error);
-                });
-      } else {
-        // Nếu không có ngành nghề được chọn, xóa tất cả chuyên ngành
-        subCategorySelect.innerHTML = '<option value="">Chọn chuyên ngành</option>';
-      }
-    });
-
-    // Triển khai sự kiện thay đổi khi đã có giá trị trong jobCategoryId
-    if (jobCategorySelect.value) {
-      jobCategorySelect.dispatchEvent(new Event('change'));
-    }
-  });
 
 
 </script>
 <!--<script th:src="@{../js/app.js}"></script>-->
 <script src="/js/app.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
 </body>
 </html>

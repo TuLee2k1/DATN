@@ -55,4 +55,11 @@ public interface JobProfileRepository extends JpaRepository<JobProfile, Long> {
 
     // Lọc theo công ty
     List<JobProfile> findByJobPost_Company(Company company);
+
+    List<JobProfile> findByUser_Id(Long userId);
+
+
+    @Query("SELECT COUNT(jp) FROM JobProfile jp WHERE jp.user.id = :userId")
+    Long countByUserId(@Param("userId") Long userId);
+
 }

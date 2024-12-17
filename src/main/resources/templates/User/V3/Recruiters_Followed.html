@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta
+      name="description"
+      content="Responsive Admin &amp; Dashboard Template based on Bootstrap 5"
+    />
+    <meta name="author" content="AdminKit" />
+    <meta
+      name="keywords"
+      content="adminkit, bootstrap, bootstrap 5, admin, dashboard, template, responsive, css, sass, html, theme, front-end, ui kit, web"
+    />
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link rel="shortcut icon" href="/img/icons/icon-48x48.png" />
+
+    <link rel="canonical" href="https://demo-basic.adminkit.io/" />
+
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+      rel="stylesheet"
+    />
+    <title>Resume</title>
+
+    <link href="/css/app.css" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/css/index.css" />
+    <link rel="stylesheet" href="/css/user.css" />
+  </head>
+
+  <body>
+    <div class="wrapper">
+      <!-- sidebar -->
+      <nav id="sidebar" class="sidebar js-sidebar">
+        <div class="sidebar-content js-simplebar">
+          <a class="sidebar-brand" href="index.html">
+            <img
+              alt="Logo"
+              class="rounded-circle me-3"
+              height="50"
+              id="logo"
+              src="/img/icons/logo2.jpg"
+              width="50"
+            />
+            <span class="align-middle">Dreamers</span>
+          </a>
+
+          <ul class="sidebar-nav">
+            <li class="sidebar-header">Pages</li>
+
+            <li class="sidebar-item active">
+              <a class="sidebar-link" href="/User/V3/dashboard.html">
+                <i class="align-middle" data-feather="sliders"></i>
+                <span class="align-middle">Dashboard</span>
+              </a>
+            </li>
+
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="/User/V3/profile.html">
+                <i class="align-middle" data-feather="user"></i>
+                <span class="align-middle">Profile</span>
+              </a>
+            </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="/User/V3/resume_.html">
+                <i class="align-middle" data-feather="clipboard"></i>
+                <span class="align-middle">Resume</span>
+              </a>
+            </li>
+
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="/User/V3/calender.html">
+                <i class="align-middle" data-feather="calendar"></i>
+                <span class="align-middle">Calender</span>
+              </a>
+            </li>
+
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="/User/V3/apply.html">
+                <i class="align-middle" data-feather="check-square"></i>
+                <span class="align-middle">Applied job</span>
+              </a>
+            </li>
+
+            <li class="sidebar-item">
+              <a
+                class="sidebar-link"
+                href="/User/V3/EmployersViewPage.html"
+              >
+                <i class="align-middle" data-feather="users"></i>
+                <span class="align-middle">Recruiter follow</span>
+              </a>
+            </li>
+
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="/User/V3/saved_jobs.html">
+                <i class="align-middle" data-feather="bookmark"></i>
+                <span class="align-middle">Bookmarks</span>
+              </a>
+            </li>
+
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="#">
+                <i class="align-middle" data-feather="message-square"></i>
+                <span class="align-middle">Messages</span>
+              </a>
+            </li>
+
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="/User/V3/Notification.html">
+                <i class="align-middle" data-feather="bell"></i>
+                <span class="align-middle">Notifications</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+      <div class="main">
+        <!-- nav head -->
+        <nav class="navbar navbar-expand navbar-light navbar-bg">
+          <a class="sidebar-toggle js-sidebar-toggle">
+            <i class="hamburger align-self-center"></i>
+          </a>
+
+          <div class="navbar-collapse collapse">
+            <ul class="navbar-nav navbar-align">
+              <li class="nav-item dropdown">
+                <a
+                  class="nav-icon dropdown-toggle"
+                  href="#"
+                  id="alertsDropdown"
+                  data-bs-toggle="dropdown"
+                >
+                  <div class="position-relative">
+                    <i class="align-middle" data-feather="bell"></i>
+                    <span class="indicator">4</span>
+                  </div>
+                </a>
+                <div
+                  class="dropdown-menu dropdown-menu-lg dropdown-menu-end py-0"
+                  aria-labelledby="alertsDropdown"
+                >
+                  <div class="dropdown-menu-header">4 New Notifications</div>
+                  <div class="list-group">
+                    <a href="#" class="list-group-item">
+                      <div class="row g-0 align-items-center">
+                        <div class="col-2">
+                          <i
+                            class="text-danger"
+                            data-feather="alert-circle"
+                          ></i>
+                        </div>
+                        <div class="col-10">
+                          <div class="text-dark">Update completed</div>
+                          <div class="text-muted small mt-1">
+                            Restart server 12 to complete the update.
+                          </div>
+                          <div class="text-muted small mt-1">30m ago</div>
+                        </div>
+                      </div>
+                    </a>
+                    <a href="#" class="list-group-item">
+                      <div class="row g-0 align-items-center">
+                        <div class="col-2">
+                          <i class="text-warning" data-feather="bell"></i>
+                        </div>
+                        <div class="col-10">
+                          <div class="text-dark">Lorem ipsum</div>
+                          <div class="text-muted small mt-1">
+                            Aliquam ex eros, imperdiet vulputate hendrerit et.
+                          </div>
+                          <div class="text-muted small mt-1">2h ago</div>
+                        </div>
+                      </div>
+                    </a>
+                    <a href="#" class="list-group-item">
+                      <div class="row g-0 align-items-center">
+                        <div class="col-2">
+                          <i class="text-primary" data-feather="home"></i>
+                        </div>
+                        <div class="col-10">
+                          <div class="text-dark">Login from 192.186.1.8</div>
+                          <div class="text-muted small mt-1">5h ago</div>
+                        </div>
+                      </div>
+                    </a>
+                    <a href="#" class="list-group-item">
+                      <div class="row g-0 align-items-center">
+                        <div class="col-2">
+                          <i class="text-success" data-feather="user-plus"></i>
+                        </div>
+                        <div class="col-10">
+                          <div class="text-dark">New connection</div>
+                          <div class="text-muted small mt-1">
+                            Christina accepted your request.
+                          </div>
+                          <div class="text-muted small mt-1">14h ago</div>
+                        </div>
+                      </div>
+                    </a>
+                  </div>
+                  <div class="dropdown-menu-footer">
+                    <a href="#" class="text-muted">Show all notifications</a>
+                  </div>
+                </div>
+              </li>
+              <li class="nav-item dropdown">
+                <a
+                  class="nav-icon dropdown-toggle"
+                  href="#"
+                  id="messagesDropdown"
+                  data-bs-toggle="dropdown"
+                >
+                  <div class="position-relative">
+                    <i class="align-middle" data-feather="message-square"></i>
+                  </div>
+                </a>
+                <div
+                  class="dropdown-menu dropdown-menu-lg dropdown-menu-end py-0"
+                  aria-labelledby="messagesDropdown"
+                >
+                  <div class="dropdown-menu-header">
+                    <div class="position-relative">4 New Messages</div>
+                  </div>
+
+                  <div class="list-group">
+                    <a href="#" class="list-group-item">
+                      <div class="row g-0 align-items-center">
+                        <div class="col-2">
+                          <img
+                            src="/img/avatars/avatar-5.jpg"
+                            class="avatar img-fluid rounded-circle"
+                            alt="Vanessa Tucker"
+                          />
+                        </div>
+                        <div class="col-10 ps-2">
+                          <div class="text-dark">Vanessa Tucker</div>
+                          <div class="text-muted small mt-1">
+                            Nam pretium turpis et arcu. Duis arcu tortor.
+                          </div>
+                          <div class="text-muted small mt-1">15m ago</div>
+                        </div>
+                      </div>
+                    </a>
+                    <a href="#" class="list-group-item">
+                      <div class="row g-0 align-items-center">
+                        <div class="col-2">
+                          <img
+                            src="/img/avatars/avatar-2.jpg"
+                            class="avatar img-fluid rounded-circle"
+                            alt="William Harris"
+                          />
+                        </div>
+                        <div class="col-10 ps-2">
+                          <div class="text-dark">William Harris</div>
+                          <div class="text-muted small mt-1">
+                            Curabitur ligula sapien euismod vitae.
+                          </div>
+                          <div class="text-muted small mt-1">2h ago</div>
+                        </div>
+                      </div>
+                    </a>
+                    <a href="#" class="list-group-item">
+                      <div class="row g-0 align-items-center">
+                        <div class="col-2">
+                          <img
+                            src="/img/avatars/avatar-4.jpg"
+                            class="avatar img-fluid rounded-circle"
+                            alt="Christina Mason"
+                          />
+                        </div>
+                        <div class="col-10 ps-2">
+                          <div class="text-dark">Christina Mason</div>
+                          <div class="text-muted small mt-1">
+                            Pellentesque auctor neque nec urna.
+                          </div>
+                          <div class="text-muted small mt-1">4h ago</div>
+                        </div>
+                      </div>
+                    </a>
+                    <a href="#" class="list-group-item">
+                      <div class="row g-0 align-items-center">
+                        <div class="col-2">
+                          <img
+                            src="/img/avatars/avatar-3.jpg"
+                            class="avatar img-fluid rounded-circle"
+                            alt="Sharon Lessman"
+                          />
+                        </div>
+                        <div class="col-10 ps-2">
+                          <div class="text-dark">Sharon Lessman</div>
+                          <div class="text-muted small mt-1">
+                            Aenean tellus metus, bibendum sed, posuere ac,
+                            mattis non.
+                          </div>
+                          <div class="text-muted small mt-1">5h ago</div>
+                        </div>
+                      </div>
+                    </a>
+                  </div>
+                  <div class="dropdown-menu-footer">
+                    <a href="#" class="text-muted">Show all messages</a>
+                  </div>
+                </div>
+              </li>
+              <li class="nav-item dropdown">
+                <a
+                  class="nav-icon dropdown-toggle d-inline-block d-sm-none"
+                  href="#"
+                  data-bs-toggle="dropdown"
+                >
+                  <i class="align-middle" data-feather="settings"></i>
+                </a>
+
+                <a
+                  class="nav-link dropdown-toggle d-none d-sm-inline-block"
+                  href="#"
+                  data-bs-toggle="dropdown"
+                >
+                  <img
+                    src="/img/avatars/avatar-5.jpg"
+                    class="avatar img-fluid rounded me-1"
+                    alt="Charles Hall"
+                  />
+                  <span class="text-dark">Charles Hall</span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-end">
+                  <a class="dropdown-item" href="/User/V3/profile.html"
+                    ><i class="align-middle me-1" data-feather="user"></i>
+                    Profile</a
+                  >
+
+                  <a class="dropdown-item" href="#"
+                    ><i class="align-middle me-1" data-feather="key"></i> Forgot
+                    password</a
+                  >
+                  <a class="dropdown-item" href="#"
+                    ><i
+                      class="align-middle me-1"
+                      data-feather="alert-octagon"
+                    ></i>
+                    Change password</a
+                  >
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" href="index.html"
+                    ><i class="align-middle me-1" data-feather="settings"></i>
+                    Settings & Privacy</a
+                  >
+                  <a
+                    class="dropdown-item"
+                    href="/User/V3/User_Manual.html"
+                    ><i
+                      class="align-middle me-1"
+                      data-feather="help-circle"
+                    ></i>
+                    Help Center</a
+                  >
+                  <div class="dropdown-divider"></div>
+                  <a
+                    class="dropdown-item"
+                    href="/User/V3/login&register.html"
+                    ><i class="align-middle me-1" data-feather="log-out"></i>Log
+                    out</a
+                  >
+                </div>
+              </li>
+            </ul>
+          </div>
+        </nav>
+
+        <main class="content">
+          <div class="container mt-4">
+            <h4>Nhà tuyển dụng bạn theo dõi</h4>
+
+            <div class="card job-section">
+              <div class="card following-employers">
+                <!-- Các nhà tuyển dụng được theo dõi sẽ được thêm vào đây -->
+              </div>
+              <div class="empty-state">
+                <img
+                  alt="Illustration of houses and trees"
+                  height="150"
+                  src="/img/photos/Tips for Building a More Alzheimer’s-resistant Brain.jpg"
+                  width="300"
+                />
+                <p>Chưa có nhà tuyển dụng nào bạn theo dõi</p>
+              </div>
+            </div>
+            <section class="job">
+              <div class="header">
+                <img
+                  src="https://storage.googleapis.com/a1aa/image/aKnHVcZ1JybDHlLPAmfxLsJdfeJZUAffFW8B2fiYRdTJGP17E.jpg"
+                  alt="Light bulb icon"
+                  width="30"
+                  height="30"
+                />
+                <h4>Nhà tuyển dụng nổi bật</h4>
+              </div>
+              <div class="row">
+                <div class="col-md-4 mb-4">
+                  <div class="card">
+                    <img
+                      alt="Aerial view of a dense forest"
+                      class="card-img-top"
+                      height="200"
+                      src="https://storage.googleapis.com/a1aa/image/ZMm1W1TSAhbnON8sglqpwBP6AxhFUsGF4t5EuyKjKYUlue3JA.jpg"
+                      width="600"
+                    />
+                    <div class="card-body">
+                      <img
+                        alt="Logo of Tâm Anh Hospital"
+                        class="rounded-circle mb-3"
+                        height="100"
+                        src="https://storage.googleapis.com/a1aa/image/ipXcmbbwKibiGls9Fi3eAHrokwBZu3MI0ZfsMmq7e5bp01fOB.jpg"
+                        width="100"
+                      />
+                      <h6 class="card-title">
+                        Công Ty Cổ Phần Bệnh Viện Đa Khoa Tâm Anh
+                      </h6>
+                      <p class="card-text">
+                        <i class="fas fa-map-marker-alt icon"></i> TP.HCM
+                        <br />
+                        <i class="fas fa-info-circle icon"></i> Chưa cập nhật
+                      </p>
+                      <button class="btn btn-follow">
+                        <i class="fas fa-user-plus"></i> Theo dõi • 457
+                      </button>
+                      <button class="btn btn-share">
+                        <i class="fas fa-share-alt"></i> Chia sẻ
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                  <div class="card">
+                    <img
+                      alt="Interior of a modern office with plants and seating area"
+                      class="card-img-top"
+                      height="200"
+                      src="https://storage.googleapis.com/a1aa/image/wLjJlzU3bo6VCxjobE2zjfIHVe9ZShWPi5Zyf2mQXXPy01fOB.jpg"
+                      width="600"
+                    />
+                    <div class="card-body">
+                      <img
+                        alt="Logo of Home Credit"
+                        class="rounded-circle mb-3"
+                        height="100"
+                        src="https://storage.googleapis.com/a1aa/image/3oUW9L0eC537DSDrN3jAXgW4BGTENHByf0SIDfkiaouv01fOB.jpg"
+                        width="100"
+                      />
+                      <h6 class="card-title">Công Ty Tài Chính Credit...</h6>
+                      <p class="card-text">
+                        <i class="fas fa-map-marker-alt icon"></i> TP.HCM
+                        <br />
+                        <i class="fas fa-globe icon"></i>
+                        <a href="https://homecredit.vn/" target="_blank"
+                          >https://homecredit.vn/</a
+                        >
+                      </p>
+                      <button class="btn btn-follow">
+                        <i class="fas fa-user-plus"></i> Theo dõi • 1090
+                      </button>
+                      <button class="btn btn-share">
+                        <i class="fas fa-share-alt"></i> Chia sẻ
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                  <div class="card">
+                    <img
+                      alt="Logo of Altius Link with a sky background"
+                      class="card-img-top"
+                      height="200"
+                      src="https://storage.googleapis.com/a1aa/image/RW7X57brQZ5kENAgeM8Mf0bA1CKwKekMfVB0USpA4PyPprfdC.jpg"
+                      width="600"
+                    />
+                    <div class="card-body">
+                      <img
+                        alt="Logo of Altius Link Vietnam"
+                        class="rounded-circle mb-3"
+                        height="100"
+                        src="https://storage.googleapis.com/a1aa/image/M74dAjfVmenic09n3bi4errky2c7oVeIGzwdoPNU94bhprfdC.jpg"
+                        width="100"
+                      />
+                      <h6 class="card-title">
+                        Công Ty Cổ Phần Altius Link Việt Nam
+                      </h6>
+                      <p class="card-text">
+                        <i class="fas fa-map-marker-alt icon"></i> Hà Nội
+                        <br />
+                        <i class="fas fa-globe icon"></i>
+                        <a href="https://altius-link.vn/vi/" target="_blank"
+                          >https://altius-link.vn/vi/</a
+                        >
+                      </p>
+                      <button class="btn btn-follow">
+                        <i class="fas fa-user-plus"></i> Theo dõi • 134
+                      </button>
+                      <button class="btn btn-share">
+                        <i class="fas fa-share-alt"></i> Chia sẻ
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+          <script>
+            // Lựa chọn tất cả các nút "Theo dõi"
+            const followButtons = document.querySelectorAll(".btn-follow");
+
+            // Thêm sự kiện click cho từng nút
+            followButtons.forEach((button) => {
+              button.addEventListener("click", function () {
+                // Tìm thông tin của công ty từ card cha
+                const cardBody = this.parentElement;
+                const logo = cardBody.querySelector(".rounded-circle").src; // Lấy src của logo
+                const companyName =
+                  cardBody.querySelector(".card-title").innerText; // Lấy tên công ty
+                const location = cardBody
+                  .querySelector(".card-text")
+                  .querySelector(".fas.fa-map-marker-alt")
+                  .nextSibling.nodeValue; // Lấy địa chỉ
+                // Tạo phần tử mới để chứa thông tin nhà tuyển dụng
+                const newEmployer = document.createElement("div");
+                newEmployer.classList.add("following-employer");
+                newEmployer.innerHTML = `
+                  <img src="${logo}" alt="${companyName}" height="50" width="50" />
+                  <span>${companyName} - ${location}</span>
+              <button class="btn btn-remove" style="margin-left: auto;">
+                <i class="fas fa-user-minus"></i>
+              </button>
+                `;
+
+                // Thêm vào khu vực theo dõi
+                document
+                  .querySelector(".following-employers")
+                  .appendChild(newEmployer);
+
+                // Ẩn thông báo "Chưa có nhà tuyển dụng nào bạn theo dõi" nếu có ít nhất một nhà tuyển dụng
+                const emptyState = document.querySelector(".empty-state");
+                if (emptyState) {
+                  emptyState.style.display = "none"; // Ẩn thông báo này đi
+                }
+                newEmployer
+                  .querySelector(".btn-remove")
+                  .addEventListener("click", function () {
+                    newEmployer.remove(); // Xóa phần tử theo dõi
+                    if (
+                      document.querySelector(".following-employer") === null
+                    ) {
+                      emptyState.style.display = "block"; // Khôi phục thông báo nếu không còn nhà tuyển dụng nào
+                    }
+                  });
+              });
+            });
+          </script>
+        </main>
+
+        <footer class="footer">
+          <div class="container-fluid">
+            <div class="row text-muted">
+              <div class="col-6 text-start">
+                <p class="mb-0">
+                  <a
+                    class="text-muted"
+                    href="https://adminkit.io/"
+                    target="_blank"
+                    ><strong>Dreamer Job</strong></a
+                  >
+                  -
+                  <a
+                    class="text-muted"
+                    href="https://adminkit.io/"
+                    target="_blank"
+                    ><strong>Home Page</strong></a
+                  >
+                  &copy;
+                </p>
+              </div>
+              <div class="col-6 text-end">
+                <ul class="list-inline">
+                  <li class="list-inline-item">
+                    <a
+                      class="text-muted"
+                      href="https://adminkit.io/"
+                      target="_blank"
+                      >Support</a
+                    >
+                  </li>
+                  <li class="list-inline-item">
+                    <a
+                      class="text-muted"
+                      href="https://adminkit.io/"
+                      target="_blank"
+                      >Help Center</a
+                    >
+                  </li>
+                  <li class="list-inline-item">
+                    <a
+                      class="text-muted"
+                      href="https://adminkit.io/"
+                      target="_blank"
+                      >Privacy</a
+                    >
+                  </li>
+                  <li class="list-inline-item">
+                    <a
+                      class="text-muted"
+                      href="https://adminkit.io/"
+                      target="_blank"
+                      >Terms</a
+                    >
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </footer>
+      </div>
+    </div>
+
+    <script src="/js/app.js"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+
+    <script>
+      feather.replace();
+    </script>
+  </body>
+</html>

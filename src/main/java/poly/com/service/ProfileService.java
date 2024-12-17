@@ -10,10 +10,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import poly.com.Enum.EducationLevel;
 import poly.com.Enum.WorkType;
 import poly.com.Util.AuthenticationUtil;
 import poly.com.dto.ProfileDTO;
+import poly.com.dto.request.profileRequest;
 import poly.com.dto.response.PageResponse;
 import poly.com.dto.response.ProfileSearchResult;
 import poly.com.exception.ProfileException;
@@ -55,6 +57,33 @@ public class ProfileService {
         return profileRepository.save(entity);
     }
 
+    public Profile saveProfile(profileRequest request, Long userId) {
+        Optional<Profile> existingProfile = profileRepository.findById(userId);
+        Profile profile;
+
+        if (existingProfile.isPresent()) {
+            profile = existingProfile.get();
+        } else {
+            profile = new Profile();
+        }
+
+        // Cập nhật thông tin từ request
+        profile.setName(request.getName());
+        profile.setEmail(request.getEmail());
+        profile.setPhone(request.getPhone());
+        profile.setAddress(request.getAddress());
+        profile.setSex(request.getSex());
+        profile.setDateOfBirth(request.getDateOfBirth());
+
+        // Xử lý file logo nếu có
+        if (request.getLogoFile() != null && !request.getLogoFile().isEmpty()) {
+            String fileName = fileStorageService.storeImageProfileFile(request.getLogoFile());
+            profile.setLogo(fileName);
+        }
+
+        return profileRepository.save(profile);
+    }
+
     /**
      * Cập nhật thông tin profile theo ID
      */
@@ -86,6 +115,11 @@ public class ProfileService {
      */
     public List<Profile> findAll() {
         return profileRepository.findAll();
+    }
+
+    public Page<Profile> getAllByAdmin(Integer pageNo) {
+        Pageable pageable = PageRequest.of(pageNo - 1, 5);
+        return profileRepository.findAll(pageable);
     }
 
     /**
@@ -135,6 +169,7 @@ public class ProfileService {
 
 
 
+
     /**
      * Tìm kiếm các hồ sơ với các tham số tìm kiếm và phân trang.
      * @param name Tên người dùng
@@ -152,6 +187,7 @@ public class ProfileService {
 //
 //        return new PageResponse<>(results);
 //    }
+
 
     public PageResponse<ProfileSearchResult> searchProfiles(String name, String desiredLocation, WorkType workType,
                                                             EducationLevel degree, Integer pageNo) {
