@@ -261,6 +261,30 @@
             }
         }
     </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // document.getElementById('userInfo').classList.add('d-none');
+            // Kiểm tra xem có thông tin người dùng trong localStorage không
+            const userInfo = localStorage.getItem('userInfo');
+            // const defaultAvatar = 'Admin/images/person_1';
+            if (userInfo) {
+                // Nếu có, chuyển đổi chuỗi JSON thành đối tượng
+                const user = JSON.parse(userInfo);
+
+                // Hiển thị thông tin người dùng
+                // Kiểm tra avatar và gán giá trị
+                // const avatarSrc = user.avatar ? user.avatar : defaultAvatar;
+                // document.getElementById('userAvatar').src = avatarSrc;
+                document.getElementById('username').textContent = user.userInfo.fullName; // Giả sử username là thuộc tính trong user
+                console.log(user.userInfo.fullName);
+
+            }
+        });
+
+
+
+    </script>
+
 
 </head>
 
@@ -322,6 +346,14 @@
                     </a>
                 </li>
 
+                <!-- Nút đăng xuất -->
+                <li class="sidebar-items" style="position: absolute; bottom: 0; width: 100%;">
+                    <a id="logoutBtn" class="sidebar-link" href="javascript:void(0)">
+                        <i class="align-middle" data-feather="log-out"></i>
+                        <span class="align-middle">Đăng xuất</span>
+                    </a>
+                </li>
+
 
             </ul>
         </div>
@@ -339,109 +371,21 @@
 
             <div class="navbar-collapse collapse">
                 <ul class="navbar-nav navbar-align">
-                    <li class="nav-item dropdown">
-                        <a class="nav-icon dropdown-toggle" href="#" id="alertsDropdown" data-bs-toggle="dropdown">
-                            <div class="position-relative">
-                                <i class="align-middle" data-feather="bell"></i>
-                                <span class="indicator">4</span>
-                            </div>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end py-0"
-                             aria-labelledby="alertsDropdown">
-                            <div class="dropdown-menu-header">
-                                4 New Notifications
-                            </div>
-                            <div class="list-group">
-                                <a href="#" class="list-group-item">
-                                    <div class="row g-0 align-items-center">
-                                        <div class="col-2">
-                                            <i class="text-danger" data-feather="alert-circle"></i>
-                                        </div>
-                                        <div class="col-10">
-                                            <div class="text-dark">Update completed</div>
-                                            <div class="text-muted small mt-1">Restart server 12 to complete the
-                                                update.</div>
-                                            <div class="text-muted small mt-1">30m ago</div>
-                                        </div>
-                                    </div>
-                                </a>
-                                <a href="#" class="list-group-item">
-                                    <div class="row g-0 align-items-center">
-                                        <div class="col-2">
-                                            <i class="text-warning" data-feather="bell"></i>
-                                        </div>
-                                        <div class="col-10">
-                                            <div class="text-dark">Lorem ipsum</div>
-                                            <div class="text-muted small mt-1">Aliquam ex eros, imperdiet vulputate
-                                                hendrerit et.</div>
-                                            <div class="text-muted small mt-1">2h ago</div>
-                                        </div>
-                                    </div>
-                                </a>
-                                <a href="#" class="list-group-item">
-                                    <div class="row g-0 align-items-center">
-                                        <div class="col-2">
-                                            <i class="text-primary" data-feather="home"></i>
-                                        </div>
-                                        <div class="col-10">
-                                            <div class="text-dark">Login from 192.186.1.8</div>
-                                            <div class="text-muted small mt-1">5h ago</div>
-                                        </div>
-                                    </div>
-                                </a>
-                                <a href="#" class="list-group-item">
-                                    <div class="row g-0 align-items-center">
-                                        <div class="col-2">
-                                            <i class="text-success" data-feather="user-plus"></i>
-                                        </div>
-                                        <div class="col-10">
-                                            <div class="text-dark">New connection</div>
-                                            <div class="text-muted small mt-1">Christina accepted your request.
-                                            </div>
-                                            <div class="text-muted small mt-1">14h ago</div>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="dropdown-menu-footer">
-                                <a href="#" class="text-muted">Show all notifications</a>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-icon dropdown-toggle" href="#" id="messagesDropdown"
-                           data-bs-toggle="dropdown">
-                            <div class="position-relative">
-                                <i class="align-middle" data-feather="message-square"></i>
-                            </div>
-                        </a>
 
-                    </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-icon dropdown-toggle d-inline-block d-sm-none" href="#"
-                           data-bs-toggle="dropdown">
-                            <i class="align-middle" data-feather="settings"></i>
-                        </a>
+                        <a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#" data-bs-toggle="dropdown">
+                            <img src="/img/avatars/avatar-2.jpg" class="avatar img-fluid rounded me-1" alt="User Avatar" />
+                            <span id="username" class="cursor-pointer truncate" style="max-width: 100px;">Lê</span>
 
-                        <a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#"
-                           data-bs-toggle="dropdown">
-                            <img src="/static/img/avatars/thface.jpg" class="avatar img-fluid rounded me-1"
-                                 alt="Charles Hall" /> <span class="text-dark">Charles Hall</span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-end">
-                            <a class="dropdown-item" th:href="@{/admin/profile.html}" onclick="navigate('profile')"><i
-                                    class="align-middle me-1" data-feather="user"></i> Profile</a>
-                            <a class="dropdown-item" href="#"><i class="align-middle me-1"
-                                                                 data-feather="pie-chart"></i> Analytics</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="index.html"><i class="align-middle me-1"
-                                                                          data-feather="settings"></i> Settings & Privacy</a>
-                            <a class="dropdown-item" href="#"><i class="align-middle me-1"
-                                                                 data-feather="help-circle"></i> Help Center</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">Log out</a>
+                            <a class="dropdown-item" th:href="@{/admin/profiles}" onclick="navigate('profile')">
+                                <i class="align-middle me-1" data-feather="user"></i> Profile
+                            </a>
+
                         </div>
                     </li>
+
                 </ul>
             </div>
         </nav>
@@ -486,6 +430,20 @@
 <!-- <script src="/static/Admin/admin.js"></script> -->
 
 <script>
+    document.getElementById('logoutBtn').addEventListener('click', function () {
+        // Xóa thông tin người dùng khỏi localStorage
+        localStorage.removeItem('userInfo');
+
+        console.log("User logged out.");
+
+        // Điều hướng về trang chủ sau khi đăng xuất
+        window.location.href = "http://localhost:8080";  // Đổi địa chỉ này theo yêu cầu của bạn
+    });
+
+</script>
+
+
+<script>
     const chatbotToggler = document.querySelector(".chatbot-toggler");
     const closeBtn = document.querySelector(".close-btn");
     const chatbox = document.querySelector(".chatbox");
@@ -496,7 +454,7 @@
     const inputInitHeight = chatInput.scrollHeight;
 
     // API configuration
-    const API_KEY = "..."; // Thay API Key vào đây
+    const API_KEY = "..."; // Thay API Key AIzaSyCknX7UK5kzs6rqHmOZJQr4Gv_KRN9TgMQ vào đây
     const API_URL = `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-pro:generateContent?key=${API_KEY}`;
 
     const createChatLi = (message, className) => {

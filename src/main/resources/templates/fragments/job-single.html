@@ -2,25 +2,34 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
   <head>
-    <title>Dream Job &mdash; Website Template by Colorlib</title>
+    <title>DreamJob &mdash; Website Tuyển dụng</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="shortcut icon" href="/Admin/images/logo-icon.png">
 
-<!--    &lt;!&ndash; Thêm CSS của Bootstrap &ndash;&gt;-->
-<!--    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">-->
+    <!-- Noty -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.js"></script>
+
 
     <!-- Thêm JS của Bootstrap -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 
     <link rel="stylesheet" href="/css/custom-bs.css">
-    <link rel="stylesheet" href="/css/jquery.fancybox.min.css">
-    <link rel="stylesheet" href="/css/bootstrap-select.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/css/bootstrap-select.min.css">
+
     <link rel="stylesheet" href="/fonts/icomoon/style.css">
     <link rel="stylesheet" href="/fonts/line-icons/style.css">
-    <link rel="stylesheet" href="/css/owl.carousel.min.css">
-    <link rel="stylesheet" href="/css/animate.min.css">
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+
+    <script src="https://cdn.tailwindcss.com">
+    </script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
     <!-- MAIN CSS -->
     <link rel="stylesheet" href="/css/style.css">
     <style>
@@ -33,6 +42,95 @@
       }
       .modal-backdrop {
         display: none !important; /* Ẩn backdrop để kiểm tra */
+      }
+
+      .relative {
+        position: relative; /* Đặt vị trí cho phần tử cha */
+      }
+
+      #userInfo {
+        display: none;
+        align-items: center; /* Căn giữa các phần tử trong userInfo */
+        margin-left: auto; /* Đẩy toàn bộ userInfo sang bên phải */
+      }
+      #userInfo1 {
+        display: none;
+
+      }
+
+      #userInfo2 {
+        display: none;
+
+      }
+
+      #username {
+        display: inline-block; /* Để có thể áp dụng max-width */
+        max-width: 60px; /* Chiều rộng tối đa của tên người dùng */
+        overflow: hidden; /* Ẩn nội dung vượt quá */
+        white-space: nowrap; /* Ngăn chặn xuống dòng */
+      }
+
+      #dropdownMenu {
+        display: none; /* Ẩn danh sách thả xuống mặc định */
+        z-index: 1000; /* Đảm bảo danh sách thả xuống nằm trên các phần tử khác */
+        min-width: 150px; /* Đặt chiều rộng tối thiểu cho menu */
+        top: 100%; /* Đặt vị trí của menu ngay phía dưới tên người dùng */
+        right: 0; /* Căn phải menu với tên người dùng */
+        margin-top: 0px; /* Khoảng cách giữa tên người dùng và menu */
+        background-color: white; /* Màu nền của menu */
+        border: 1px solid #ccc; /* Đường viền cho menu */
+        border-radius: 4px; /* Bo góc cho menu */
+      }
+
+      a {
+        text-decoration: none; /* Xóa gạch chân cho liên kết */
+        color: black; /* Màu chữ cho liên kết */
+      }
+
+      .hidden {
+        display: none;
+      }
+
+      #userInfo:hover #dropdownMenu {
+        display: block; /* Hiện dropdown menu khi hover vào userInfo */
+      }
+
+
+      #userInfo #dropdownMenu a{
+        text-decoration: none;
+      }
+
+      #tuyendung:hover{
+        opacity: 0.5;
+      }
+      /* css mesage*/
+      /*thông báo*/
+      .custom-alert {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 1050;
+        width: auto;
+        max-width: 300px;
+        padding: 10px 20px;
+        margin: 0;
+        border-radius: 5px;
+        font-size: 16px;
+      }
+
+      .alert-success {
+        background-color: #28a745; /* Màu xanh cho thông báo thành công */
+        color: white;
+      }
+
+      .alert-warning {
+        background-color: #ffc107; /* Màu vàng cho thông báo lỗi */
+        color: black;
+      }
+
+      .custom-alert span {
+        display: inline-block;
+        width: 100%;
       }
 
     </style>
@@ -51,17 +149,114 @@
           // Kiểm tra avatar và gán giá trị
           // const avatarSrc = user.avatar ? user.avatar : defaultAvatar;
           // document.getElementById('userAvatar').src = avatarSrc;
-          document.getElementById('username').textContent = user.userInfo.fullName; // Giả sử username là thuộc tính trong user
+          document.getElementById('username1').textContent = user.userInfo.fullName;
+          document.getElementById('username').textContent = user.userInfo.fullName;// Giả sử username là thuộc tính trong user
           console.log(user.userInfo.fullName);
           document.getElementById('authButtons').style.display = 'none';
-          document.getElementById('userInfo').style.display = 'flex'; // Hoặc 'block' tùy thuộc vào layout
+          // document.getElementById('loginBtn1').style.display = 'none';
+          // document.getElementById('signupBtn1').style.display = 'none';
+          document.getElementById('userInfo').style.display = 'flex';
+          // document.getElementById('username1').style.display = 'flex'; // Hoặc 'block' tùy thuộc vào layout
         } else {
           // Nếu không có thông tin người dùng, đảm bảo rằng các nút vẫn hiển thị
-          document.getElementById('authButtons').style.display = 'flex';
-          document.getElementById('userInfo').style.display = 'none'; // Hoặc 'block' tùy thuộc vào layout
+          document.getElementById('authButtons').style.display = 'block';
+          // document.getElementById('loginBtn1').style.display = 'block';
+          // document.getElementById('signupBtn1').style.display = 'block';
+          document.getElementById('userInfo').style.display = 'none';
+          // document.getElementById('userInfo1').style.display = 'none';
+          // document.getElementById('userInfo2').style.display = 'none';// Hoặc 'block' tùy thuộc vào layout
         }
       });
-      </script>
+
+      // Hàm để kiểm tra kích thước cửa sổ
+      function checkWindowSize() {
+        const userInfo1 = document.getElementById('userInfo1');
+        const userInfo2 = document.getElementById('userInfo2');
+        const userInfo = document.getElementById('userInfo'); // Nếu bạn vẫn cần kiểm tra userInfo
+        const userlogin = localStorage.getItem('userInfo');
+        const btnSignup = document.getElementById('signupBtn1');
+        const btnLogin = document.getElementById('loginBtn1');
+        if(userlogin) {
+          if (window.innerWidth < 768) { // Ngưỡng cho thiết bị di động
+            userInfo1.style.display = 'block'; // Hiện userInfo1
+            userInfo2.style.display = 'block'; // Hiện userInfo2
+            userInfo.style.display = 'none'; // Ẩn userInfo
+            btnSignup.style.display = 'none';
+            btnLogin.style.display = 'none'
+          } else {
+            userInfo1.style.display = 'none'; // Ẩn userInfo1
+            userInfo2.style.display = 'none'; // Ẩn userInfo2
+            userInfo.style.display = 'flex'; // Hiện userInfo
+          }
+        }
+      }
+
+      // Kiểm tra kích thước cửa sổ khi tải trang
+      window.onload = checkWindowSize;
+
+      // Kiểm tra kích thước cửa sổ khi thay đổi kích thước
+      window.onresize = checkWindowSize;
+
+      function checkActivity() {
+        let data;
+        try {
+          data = JSON.parse(localStorage.getItem('userInfo'));
+        } catch (error) {
+          console.error("Error parsing userInfo from localStorage:", error);
+          return; // Dừng hàm nếu có lỗi
+        }
+
+        if (data) {
+          const currentTime = Date.now();
+          const inactivityTime = currentTime - data.lastActive;
+
+          // Nếu không hoạt động quá 5 phút (300000 ms), xóa thông tin người dùng
+          if (inactivityTime > 300000) {
+            localStorage.removeItem('userInfo');
+            console.log("User  info removed due to inactivity.");
+          } else {
+            // Cập nhật thời gian hoạt động
+            data.lastActive = currentTime;
+            localStorage.setItem('userInfo', JSON.stringify(data));
+          }
+        }
+      }
+
+      // Lắng nghe các sự kiện để cập nhật thời gian hoạt động
+      window.addEventListener('mousemove', checkActivity);
+      window.addEventListener('keydown', checkActivity);
+      window.addEventListener('scroll', checkActivity);
+      window.addEventListener('click', checkActivity);
+
+      // Kiểm tra định kỳ mỗi phút (60000 ms)
+      setInterval(checkActivity, 60000);
+
+      // Giả sử bạn đã có hàm setUser Info và checkActivity như đã nêu ở trên
+
+    </script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+        var successAlert = document.querySelector('.alert-success');
+        var errorAlert = document.querySelector('.alert-warning');
+
+        // Nếu có thông báo thành công
+        if (successAlert) {
+          setTimeout(function() {
+            successAlert.style.display = 'none'; // Ẩn thông báo sau 3 giây
+          }, 3000);
+        }
+
+        // Nếu có thông báo lỗi
+        if (errorAlert) {
+          setTimeout(function() {
+            errorAlert.style.display = 'none'; // Ẩn thông báo sau 3 giây
+          }, 3000);
+        }
+      });
+    </script>
+
+
 
   </head>
   <body id="top">
@@ -81,6 +276,7 @@
 
     <!-- NAVBAR -->
     <header class="site-navbar mt-3">
+
       <div class="container-fluid">
         <div class="row align-items-center">
           <div class="site-logo col-6"><a href="http://localhost:8080">Dream Job</a></div>
@@ -88,18 +284,32 @@
           <nav class="mx-auto site-navigation">
             <ul class="site-menu js-clone-nav d-none d-xl-block ml-0 pl-0">
               <li><a href="http://localhost:8080" class="nav-link active">Trang Chủ</a></li>
-              <li><a href="about.html">Về Chúng Tôi</a></li>
-              <li class="has-children">
-                <a href="job-listings.html">Công Việc
-                  <span class="fas fa-caret-down"></span>
-                </a>
+              <li id="about"><a>Về Chúng Tôi</a></li>
+              <li id="contact"><a>Liên Hệ</a></li>
+              <li id="signupBtn1" class="d-lg-none"><a><span class="mr-2 icon-add"></span>Đăng Kí</a></li>
+              <li id="loginBtn1" class="d-lg-none"><a><span class="mr-2 icon-lock_outline">Đăng Nhập</a></li>
+              <li class="has-children" id="userInfo2" >
 
-                <ul class="dropdown">
-                  <li><a href="job-single.html">Danh Sách Công Việc</a></li>
-                  <li><a href="post-job.html">Bài đăng công việc</a></li>
+                <a id="username1" class="text-lg font-semibold flex items-center">
+                  <img src="/img/avatars/avatar-2.jpg" alt="User  Image" class="w-8 h-8 rounded-full mr-2" style="width: 32px; height: 32px;"> <!-- Hình ảnh người dùng -->
+                  Lê
+                </a>
+                <!-- Dropdown menu -->
+                <ul id="dropdownMenu1" class="dropdown">
+                  <li> <a href=""  id="dashboard1">Tài khoản</a></li>
+                  <li> <a href=""  id="logoutBtn1">Đăng xuất</a></li>
                 </ul>
               </li>
-              <li><a href="contact.html">Liên Hệ</a></li>
+              <li id="userInfo1">
+
+                <a id="tuyendung1" class="text-lg font-semibold">
+                  <div class="text-xs">DÀNH CHO</div>
+                  <!--                                    <i class="fas fa-briefcase text-blue-400"></i>-->
+                  <p class="text-lg font-semibold">Nhà Tuyển Dụng</p>
+                  <div class="text-xs">Đăng tin miễn phí</div>
+                </a>
+
+              </li>
             </ul>
           </nav>
           
@@ -113,19 +323,13 @@
               </button>
             </div>
 
-            <div id="userInfo" class="flex items-center p-4" style="display: flex; position: relative;">
-              <!-- Notification Bell -->
-              <!--                            <div class="relative">-->
-              <!--                                <i class="fas fa-bell text-white text-xl"></i>-->
-              <!--                                <button class="absolute top-0 right-0 bg-red-600 text-white text-xs rounded-full px-1">1</button>-->
-              <!--                            </div>-->
-              <!-- User Icon -->
-              <div class="ml-4">
-                <div class="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                  <i class="fas fa-user text-purple-800"></i>
-                </div>
+            <div id="userInfo" class="flex items-center p-4">
+              <div id="avt" class="ml-4">
+                <img src="/img/avatars/avatar-2.jpg" class="w-8 h-8 bg-white rounded-full flex items-center justify-center">
+
               </div>
-              <div class="ml-2 text-white flex items-center relative">
+
+              <div id="name" class="ml-2 text-white flex items-center relative">
                 <span id="username" class="cursor-pointer truncate" style="max-width: 100px;">Lê</span>
                 <i class="fas fa-caret-down ml-1"></i>
 
@@ -136,12 +340,13 @@
                   <a href="#" class="block px-4 py-2 hover:bg-gray-200" id="logoutBtn">Đăng xuất</a>
                 </div>
               </div>
+
               <!-- Divider -->
               <div class="ml-4 border-l border-white h-6"></div>
               <!-- Employer Section -->
-              <div class="ml-4 text-white flex items-center">
+              <div id="tuyendung" class="ml-4 text-white flex items-center">
                 <i class="fas fa-briefcase text-blue-400"></i>
-                <div id="tuyendung" class="ml-2">
+                <div  class="ml-2">
                   <div class="text-xs">DÀNH CHO</div>
                   <div class="text-lg font-semibold">Nhà Tuyển Dụng</div>
                   <div class="text-xs">Đăng tin miễn phí</div>
@@ -157,14 +362,23 @@
     </header>
 
     <!-- HOME -->
+  <!-- Thông báo thành công -->
+  <div th:if="${message}" class="alert alert-success custom-alert" role="alert">
+    <span th:text="${message}"></span>
+  </div>
+
+  <!-- Thông báo lỗi -->
+  <div th:if="${followStatus}=='not_logged_in'" class="alert alert-warning custom-alert" role="alert">
+    <span th:text="Vui lòng đăng nhập!"></span>
+  </div>
     <section class="section-hero overlay inner-page bg-image" style="background-image: url('/Admin/images/hero_1.jpg');" id="home-section">
       <div class="container">
         <div class="row">
           <div class="col-md-7">
             <h2 th:text="${jobPost.getJobTitle()}" class="text-white font-weight-bold">Tên công việc</h2>
             <div class="custom-breadcrumbs">
-              <a href="#">Home</a> <span class="mx-2 slash">/</span>
-              <a href="#">Job</a> <span class="mx-2 slash">/</span>
+              <a href="http://localhost:8080">Trang chủ</a> <span class="mx-2 slash">/</span>
+<!--              <a href="#">Việc làm</a> <span class="mx-2 slash">/</span>-->
               <span class="text-white"><strong th:text="${jobPost.getJobTitle()}">Product Designer</strong></span>
             </div>
           </div>
@@ -193,11 +407,17 @@
           </div>
           <div class="col-lg-4">
             <div class="row">
-              <div class="col-6">
-                <a href="#" class="btn btn-block btn-light btn-md"><span class="icon-heart-o mr-2 text-danger"></span>Save Job</a>
+              <div th:if="${jobPost.getEndDate().after(currentDate)}" id="toggleFollowBtn" class="col-6">
+                <a   class="btn btn-block btn-light btn-md">
+                  <span class="icon-heart-o mr-2 text-danger"></span>
+                  <span  id="followText" th:text="${followStatus == 'followed' ? 'Đã lưu' : 'Lưu'}"></span>
+
+                </a>
               </div>
+
               <div class="col-6">
-                <a th:href="@{/job-posts/detail/{id}(id=${jobPost.getId()})}" class="btn btn-block btn-primary btn-md" data-bs-toggle="modal" data-bs-target="#jobApplicationModal">Apply Now</a>
+                <a th:if="${jobPost.getEndDate().before(currentDate)}" href="#" class="btn btn-block btn-light btn-md"><span class="icon-times mr-2 text-danger" onclick="popup()"></span>Đã hết hạn</a>
+                <a th:if="${jobPost.getEndDate().after(currentDate)}" th:href="@{/job-posts/detail/{id}(id=${jobPost.getId()})}" class="btn btn-block btn-primary btn-md" onclick="checkUserLogin()"  data-bs-toggle="modal" data-bs-target="#jobApplicationModal">Nộp Hồ Sơ</a>
               </div>
             </div>
           </div>
@@ -226,10 +446,13 @@
                   </div>
                   <p class="text-center text-muted">File .doc, .docx, .pdf dung lượng &lt;= 5 MB</p>
 
-                  <form th:action="@{/job-application/{jobPostId}(jobPostId=${jobPost.id})}"
-                        method="post"
+                  <form
+                          id="applicationForm"
+                          method="post"
                         enctype="multipart/form-data"
                         th:object="${applicationForm}">
+
+                    <div id="jobPost" data-job-post-id="${jobPost.id}"></div>
 
                     <!-- Hiển thị lỗi chung -->
                     <div th:if="${#fields.hasErrors('*')}" class="alert alert-danger">
@@ -237,6 +460,7 @@
                         <li th:each="err : ${#fields.errors('*')}" th:text="${err}">Lỗi nhập liệu</li>
                       </ul>
                     </div>
+
 
                     <!-- Trường Họ và Tên -->
                     <div class="form-group">
@@ -294,7 +518,7 @@
                       <p class="file-name" id="fileName">Chưa có tệp nào được chọn</p>
                     </div>
 
-                    <button type="submit" class="submit-btn">Nộp hồ sơ</button>
+                    <button type="submit" class="submit-btn btn btn-block btn-primary btn-md">Nộp hồ sơ</button>
                   </form>
                 </div>
               </div>
@@ -307,82 +531,78 @@
           <div class="col-lg-8">
             <div class="mb-5">
               <figure class="mb-5"><img src="/Admin/images/job_single_img_1.jpg" alt="Image" class="img-fluid rounded"></figure>
-              <h3 class="h5 d-flex align-items-center mb-4 text-primary"><span class="icon-align-left mr-3"></span>Job Description</h3>
-              <span class="icon-check_circle mr-2 text-muted"></span>
-              <span th:text="${jobPost.getJobDescription()}" >Velit unde aliquam et voluptas reiciendis non sapiente labore, deleniti asperiores blanditiis nihil quia officiis dolor vero iste dolore vel molestiae saepe. Id nisi, consequuntur sunt impedit quidem, vitae mollitia!</span>
-
-            </div>
-            <div class="mb-5">
-              <h3 class="h5 d-flex align-items-center mb-4 text-primary"><span class="icon-rocket mr-3"></span>Responsibilities</h3>
-              <ul class="list-unstyled m-0 p-0">
-                <li class="d-flex align-items-start mb-2"><span class="icon-check_circle mr-2 text-muted"></span><span>Necessitatibus quibusdam facilis</span></li>
-                <li class="d-flex align-items-start mb-2"><span class="icon-check_circle mr-2 text-muted"></span><span>Velit unde aliquam et voluptas reiciendis n Velit unde aliquam et voluptas reiciendis non sapiente labore</span></li>
-                <li class="d-flex align-items-start mb-2"><span class="icon-check_circle mr-2 text-muted"></span><span>Commodi quae ipsum quas est itaque</span></li>
-                <li class="d-flex align-items-start mb-2"><span class="icon-check_circle mr-2 text-muted"></span><span>Lorem ipsum dolor sit amet, consectetur adipisicing elit</span></li>
-                <li class="d-flex align-items-start mb-2"><span class="icon-check_circle mr-2 text-muted"></span><span>Deleniti asperiores blanditiis nihil quia officiis dolor</span></li>
-              </ul>
+              <h3 class="h5 d-flex align-items-center mb-4 text-primary"><span class="icon-align-left mr-3"></span>Mô tả công việc</h3>
+              <span id="jobDescription" th:text="${jobPost.getJobDescription()}"></span>
             </div>
 
+<!--            </div>-->
+<!--            <div class="mb-5">-->
+<!--              <h3 class="h5 d-flex align-items-center mb-4 text-primary"><span class="icon-rocket mr-3"></span>Responsibilities</h3>-->
+<!--              <ul class="list-unstyled m-0 p-0">-->
+<!--                <li class="d-flex align-items-start mb-2"><span class="icon-check_circle mr-2 text-muted"></span><span>Necessitatibus quibusdam facilis</span></li>-->
+<!--                <li class="d-flex align-items-start mb-2"><span class="icon-check_circle mr-2 text-muted"></span><span>Velit unde aliquam et voluptas reiciendis n Velit unde aliquam et voluptas reiciendis non sapiente labore</span></li>-->
+<!--                <li class="d-flex align-items-start mb-2"><span class="icon-check_circle mr-2 text-muted"></span><span>Commodi quae ipsum quas est itaque</span></li>-->
+<!--                <li class="d-flex align-items-start mb-2"><span class="icon-check_circle mr-2 text-muted"></span><span>Lorem ipsum dolor sit amet, consectetur adipisicing elit</span></li>-->
+<!--                <li class="d-flex align-items-start mb-2"><span class="icon-check_circle mr-2 text-muted"></span><span>Deleniti asperiores blanditiis nihil quia officiis dolor</span></li>-->
+<!--              </ul>-->
+<!--            </div>-->
+
             <div class="mb-5">
-              <h3 class="h5 d-flex align-items-center mb-4 text-primary"><span class="icon-book mr-3"></span>Education + Experience</h3>
+              <h3 class="h5 d-flex align-items-center mb-4 text-primary"><span class="icon-book mr-3"></span>Yêu cầu</h3>
               <ul class="list-unstyled m-0 p-0">
                 <li class="d-flex align-items-start mb-2"><span class="icon-check_circle mr-2 text-muted"></span><span th:text="${jobPost.getExp()}">Necessitatibus quibusdam facilis</span></li>
-                <li class="d-flex align-items-start mb-2"><span class="icon-check_circle mr-2 text-muted"></span><span th:text="${jobPost.getJobRequire()}">Velit unde aliquam et voluptas reiciendis non sapiente labore</span></li>
-                <li class="d-flex align-items-start mb-2"><span class="icon-check_circle mr-2 text-muted"></span><span>Commodi quae ipsum quas est itaque</span></li>
-                <li class="d-flex align-items-start mb-2"><span class="icon-check_circle mr-2 text-muted"></span><span>Lorem ipsum dolor sit amet, consectetur adipisicing elit</span></li>
-                <li class="d-flex align-items-start mb-2"><span class="icon-check_circle mr-2 text-muted"></span><span>Deleniti asperiores blanditiis nihil quia officiis dolor</span></li>
+
               </ul>
+              <span id="jobRequire" th:text="${jobPost.getJobRequire()}"></span>
             </div>
 
             <div class="mb-5">
-              <h3 class="h5 d-flex align-items-center mb-4 text-primary" ><span class="icon-turned_in mr-3"></span>Other Benifits</h3>
-              <ul class="list-unstyled m-0 p-0">
-                <li class="d-flex align-items-start mb-2"><span class="icon-check_circle mr-2 text-muted"></span><span th:text="${jobPost.getJobBenefit()}">Necessitatibus quibusdam facilis</span></li>
-                <li class="d-flex align-items-start mb-2"><span class="icon-check_circle mr-2 text-muted"></span><span>Velit unde aliquam et voluptas reiciendis non sapiente labore</span></li>
-                <li class="d-flex align-items-start mb-2"><span class="icon-check_circle mr-2 text-muted"></span><span>Commodi quae ipsum quas est itaque</span></li>
-                <li class="d-flex align-items-start mb-2"><span class="icon-check_circle mr-2 text-muted"></span><span>Lorem ipsum dolor sit amet, consectetur adipisicing elit</span></li>
-                <li class="d-flex align-items-start mb-2"><span class="icon-check_circle mr-2 text-muted"></span><span>Deleniti asperiores blanditiis nihil quia officiis dolor</span></li>
-              </ul>
+              <h3 class="h5 d-flex align-items-center mb-4 text-primary" ><span class="icon-turned_in mr-3"></span>Quyền lợi</h3>
+              <span id="jobBenefit" th:text="${jobPost.getJobBenefit()}"></span>
             </div>
 
             <div class="row mb-5">
-              <div class="col-6">
-                <a href="#" class="btn btn-block btn-light btn-md"><span class="icon-heart-o mr-2 text-danger"></span>Save Job</a>
+              <div th:if="${jobPost.getEndDate().after(currentDate)}" id="toggleFollowBtn1" class="col-6">
+                <a   class="btn btn-block btn-light btn-md">
+                  <span class="icon-heart-o mr-2 text-danger"></span>
+                  <span  id="followText1" th:text="${followStatus == 'followed' ? 'Đã lưu' : 'Lưu'}"></span>
+
+                </a>
               </div>
               <div class="col-6">
-                <a th:href="@{/job-posts/detail/{id}(id=${jobPost.getId()})}" class="btn btn-block btn-primary btn-md" data-bs-toggle="modal" data-bs-target="#jobApplicationModal" >Apply Now</a>
+                <a th:if="${jobPost.getEndDate().before(currentDate)}" href="#" class="btn btn-block btn-light btn-md"><span class="icon-times mr-2 text-danger" onclick="popup()"></span>Đã hết hạn</a>
+                <a th:if="${jobPost.getEndDate().after(currentDate)}" th:href="@{/job-posts/detail/{id}(id=${jobPost.getId()})}" class="btn btn-block btn-primary btn-md" onclick="checkUserLogin()" data-bs-toggle="modal" data-bs-target="#jobApplicationModal" >Nộp Hồ Sơ</a>
               </div>
             </div>
 
           </div>
           <div class="col-lg-4">
             <div class="bg-light p-3 border rounded mb-4">
-              <h3 class="text-primary  mt-3 h5 pl-3 mb-3 ">Job Summary</h3>
+              <h3 class="text-primary  mt-3 h5 pl-3 mb-3 ">Tóm Tắt Công Việc</h3>
               <ul class="list-unstyled pl-3 mb-0">
-                <li class="mb-2"><strong class="text-black">Published on:</strong> April 14, 2019</li>
+                <li class="mb-2"><strong class="text-black">Ngày Đăng:</strong> <span th:text="${jobPost.getCreateDate()}"></span></li>
                 <li class="mb-2">
-                  <strong class="text-black">Vacancy:</strong>
+                  <strong class="text-black">Tuyển Số Lượng:</strong>
                   <span th:text="${jobPost.getQuantity()}"></span>
                 </li>
                 <li class="mb-2">
-                  <strong class="text-black">Employment Status:</strong>
+                  <strong class="text-black">Hình Thức Làm Việc:</strong>
                   <span th:text="${jobPost.workType}">Full-time</span>
                 </li>
                 <li class="mb-2">
-                  <strong class="text-black">Experience:</strong>
+                  <strong class="text-black">Kinh Nghiệm:</strong>
                   <span th:text="${jobPost.getExp()}">2 to 3 year(s)</span>
                 </li>
                 <li class="mb-2">
-                  <strong class="text-black">Job Location:</strong>
+                  <strong class="text-black">Địa Điểm:</strong>
                   <span th:text="${jobPost.getCity()}">New York City</span>
                 </li>
                 <li class="mb-2">
-                  <strong class="text-black">Salary:</strong>
+                  <strong class="text-black">Mức Lương:</strong>
                   <span th:text="${jobPost.getMinSalary() + ' - ' + jobPost.getMaxSalary()}">$60k - $100k</span>
                 </li>
-                <li class="mb-2"><strong class="text-black">Gender:</strong> Any</li>
                 <li class="mb-2">
-                  <strong class="text-black">Application Deadline:</strong>
+                  <strong class="text-black">Hạn Nộp:</strong>
                   <span th:text="${jobPost.getEndDate()}">April 28, 2019</span>
                 </li>
               </ul>
@@ -408,7 +628,7 @@
 
         <div class="row mb-5 justify-content-center">
           <div class="col-md-7 text-center">
-            <h2 class="section-title mb-2">22,392 Related Jobs</h2>
+            <h2 class="section-title mb-2" th:text="${jobListings.getTotalElements()} + ' Việc Làm Gợi Ý'">22,392 Related Jobs</h2>
           </div>
         </div>
 
@@ -416,9 +636,9 @@
           <li class="job-listing d-block d-sm-flex pb-3 pb-sm-0 align-items-center">
             <a th:href="@{/job-posts/detail/{id}(id=${job.id})}" ></a>
             <div class="job-listing-logo">
-              <img th:src="${job.companyLogoUrl != null ? job.companyLogoUrl : '/Admin/images/job_logo_5.jpg'}"
-                   alt="Logo của công ty"
-                   class="img-fluid">
+              <img th:src="${job?.companyLogoUrl != null && !#strings.isEmpty(job.companyLogoUrl)
+? '/uploads/logocompany/' + job.companyLogoUrl
+: '/Admin/images/person_3.jpg'}" class="img-fluid">
             </div>
 
             <div class="job-listing-about d-sm-flex custom-width w-100 justify-content-between mx-4">
@@ -430,10 +650,10 @@
                 <span class="icon-room"></span> <span th:text="${job.getCity()}">Vị trí</span>
               </div>
               <div class="job-listing-meta">
-                          <span th:with="status=${job.workType}"
+                          <span th:with="status=${job.workType.name()}"
                                 th:class="${'badge ' +
                      (status == 'PART_TIME' ? 'bg-success' :
-                      status == 'FUL_TIME' ? 'bg-warning' : 'bg-danger')}"
+                      status == 'FULL_TIME' ? 'bg-info' : 'bg-danger')}"
                                 th:text="${status}">
     </span>
               </div>
@@ -443,18 +663,24 @@
 
         <div class="row pagination-wrap">
           <div class="col-md-6 text-center text-md-left mb-4 mb-md-0">
-            <span>Showing 1-7 Of 22,392 Jobs</span>
+            <span th:text="'Hiển thị 1-' + ${totalPages} +' của ' + ${jobListings.getTotalElements()} + ' Việc làm'">Showing 1-7 Of 43,167 Jobs</span>
           </div>
           <div class="col-md-6 text-center text-md-right">
             <div class="custom-pagination ml-auto">
-              <a href="#" class="prev">Prev</a>
+              <a th:href="${currentPage == 1} ? '#' : @{/job-posts/detail/{id}(id=${jobPost.id},status='ACTIVE', pageNo=${i}, pageSize=5)}"
+                 class="prev"
+                 th:classappend="${currentPage == 1} ? 'disabled'">Prev</a>
               <div class="d-inline-block">
-              <a href="#" class="active">1</a>
-              <a href="#">2</a>
-              <a href="#">3</a>
-              <a href="#">4</a>
+                <span th:each="i : ${#numbers.sequence(1, totalPages)}">
+                    <a th:href="@{/job-posts/detail/{id}(id=${jobPost.id},status='ACTIVE', pageNo=${i}, pageSize=5)}"
+                       th:classappend="${i == currentPage} ? 'active'">
+                        <span th:text="${i}"></span>
+                    </a>
+                </span>
               </div>
-              <a href="#" class="next">Next</a>
+              <a th:href="${currentPage == totalPages} ? '#' : @{/job-posts/detail/{id}(id=${jobPost.id},status='ACTIVE', pageNo=${i}, pageSize=5)}"
+                 class="next"
+                 th:classappend="${currentPage == totalPages} ? 'disabled'">Next</a>
             </div>
           </div>
         </div>
@@ -505,7 +731,6 @@
         <div class="row">
           <div class="col-md-6 align-self-center text-center text-md-left mb-5 mb-md-0">
             <h2 class="text-white">Get The Mobile Apps</h2>
-            <p class="mb-5 lead text-white">Lorem ipsum dolor sit amet consectetur adipisicing elit tempora adipisci impedit.</p>
             <p class="mb-0">
               <a href="#" class="btn btn-dark btn-md px-4 border-width-2"><span class="icon-apple mr-3"></span>App Store</a>
               <a href="#" class="btn btn-dark btn-md px-4 border-width-2"><span class="icon-android mr-3"></span>Play Store</a>
@@ -569,7 +794,7 @@
           <div class="col-12">
             <p class="copyright"><small>
               <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-            Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="icon-heart text-danger" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank" >Colorlib</a>
+            Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved <i class="icon-heart text-danger" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank" >DreamJob</a>
             <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></small></p>
           </div>
         </div>
@@ -579,22 +804,123 @@
   </div>
 
     <!-- SCRIPTS -->
-    <script src="/js/jquery.min.js"></script>
-    <script src="/js/bootstrap.bundle.min.js"></script>
-    <script src="/js/isotope.pkgd.min.js"></script>
-    <script src="/js/stickyfill.min.js"></script>
-    <script src="/js/jquery.fancybox.min.js"></script>
-    <script src="/js/jquery.easing.1.3.js"></script>
-    
-    <script src="/js/jquery.waypoints.min.js"></script>
-    <script src="/js/jquery.animateNumber.min.js"></script>
-    <script src="/js/owl.carousel.min.js"></script>
-    
-    <script src="/js/bootstrap-select.min.js"></script>
-    
-    <script src="/js/custom.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+
+<!-- Bootstrap Bundle -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
+<!-- Isotope -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js"></script>
+
+<!-- Stickyfill -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stickyfill/2.1.0/stickyfill.min.js"></script>
+
+<!-- Fancybox -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+
+<!-- jQuery Easing -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+
+<!-- jQuery Waypoints -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.min.js"></script>
+
+<!-- jQuery Animate Number -->
+<script
+        src="https://cdnjs.cloudflare.com/ajax/libs/jquery-animateNumber/0.0.14/jquery.animateNumber.min.js"></script>
+
+<!-- Owl Carousel -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+
+<!-- Bootstrap Select -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/js/bootstrap-select.min.js"></script>
+
+
+<script src="/js/custom.js"></script>
+<!-- Thêm SweetAlert CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+
+<!-- Thêm SweetAlert JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
 
 <script>
+  $(document).ready(function() {
+    $('#applicationForm').on('submit', function(event) {
+      event.preventDefault(); // Ngăn chặn hành vi mặc định của form
+
+      const path = window.location.pathname;
+      const segments = path.split('/');
+      const jobPostId = segments[segments.length - 1];
+
+      $.ajax({
+        url: '/job-posts/detail/' + jobPostId, // Sử dụng jobPostId đã được định nghĩa
+        type: 'POST',
+        data: new FormData(this),
+        contentType: false,
+        processData: false,
+        success: function(response) {
+          // Kiểm tra xem response có phải là một đối tượng hợp lệ không
+          if (response && response.successMessage) {
+            swal("Thành công!", response.successMessage, "success").then(() => {
+              window.location.reload(); // Làm mới trang
+            });
+          } else {
+            // Xử lý trường hợp không có successMessage
+            swal("Có lỗi xảy ra!", "Đã xảy ra lỗi không xác định.", "error");
+          }
+        },
+        error: function(xhr) {
+          try {
+            const response = JSON.parse(xhr.responseText);
+            if (response.errorMessage) {
+              swal("Có lỗi xảy ra!", "Vui lòng nhập đúng thông tin!", "error");
+            } else {
+              swal("Có lỗi xảy ra!", "Vui lòng upload file CV", "error");
+            }
+          } catch (e) {
+            swal("Có lỗi xảy ra!", "Đã xảy ra lỗi không xác định.", "error");
+          }
+        }
+      });
+    });
+  });
+
+//   document.getElementById('favorite').addEventListener('click', function () {
+// console.log("hello")
+//       const path = window.location.pathname;
+//       const segments = path.split('/');
+//       const jobPostId = segments[segments.length - 1];
+//       console.log(jobPostId);
+//
+//       $.ajax({
+//         url: '/follow/toggle-follow-job/' + jobPostId, // Sử dụng jobPostId đã được định nghĩa
+//         type: 'POST',
+//         contentType: false,
+//         processData: false,
+//         success: function(response) {
+//           // Kiểm tra xem response có phải là một đối tượng hợp lệ không
+//           if (response && response.successMessage) {
+//             swal("Thành công!", response.successMessage, "success").then(() => {
+//               window.location.reload(); // Làm mới trang
+//             });
+//           } else {
+//             // Xử lý trường hợp không có successMessage
+//             swal("Có lỗi xảy ra!", "Đã xảy ra lỗi không xác định.", "error");
+//           }
+//         },
+//         error: function(xhr) {
+//           try {
+//             const response = JSON.parse(xhr.responseText);
+//             if (response.errorMessage) {
+//               swal("Có lỗi xảy ra!", response.errorMessage, "error");
+//             } else {
+//               swal("Có lỗi xảy ra!", "Đã xảy ra lỗi không xác định.", "error");
+//             }
+//           } catch (e) {
+//             swal("Có lỗi xảy ra!", "Đã xảy ra lỗi không xác định.", "error");
+//           }
+//         }
+//       });
+
   function updateFileName() {
     const fileInput = document.getElementById('fileInput');
     const fileName = document.getElementById('fileName');
@@ -605,6 +931,307 @@
     }
   }
 </script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    console.log('DOM fully loaded and parsed'); // Thông báo khi DOM đã được tải xong
+    const username = document.getElementById('username1');
+    const dropdownMenu = document.getElementById('dropdownMenu1');
+
+    username.addEventListener('click', (event) => {
+      event.stopPropagation(); // Ngăn chặn sự kiện click lan truyền
+      dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block'; // Chuyển đổi trạng thái hiển thị
+    });
+
+    document.addEventListener('click', () => {
+      dropdownMenu.style.display = 'none'; // Ẩn menu khi nhấp ra ngoài
+    });
+  });
+
+  // Thêm sự kiện cho nút đăng xuất
+  document.getElementById('logoutBtn').addEventListener('click', function () {
+    // Xóa thông tin người dùng khỏi localStorage
+    localStorage.removeItem('userInfo');
+    if(localStorage.getItem('userInfo')){
+      // Cập nhật giao diện người dùng
+      document.getElementById('authButtons').style.display = 'none';
+      document.getElementById('userInfo1').style.display = 'none';
+      document.getElementById('userInfo2').style.display = 'none';
+      document.getElementById('userInfo').style.display = 'flex';
+    }else {
+      document.getElementById('authButtons').style.display = 'none';
+      document.getElementById('userInfo').style.display = 'none';
+      console.log("User  logged out.");
+      window.location.href = "http://localhost:8080";
+    }
+  });
+
+  document.getElementById('dashboard').addEventListener('click', function () {
+    window.location.href = "auth/user/dashboard";
+  });
+
+
+  // Thêm sự kiện cho nút đăng xuất
+  document.getElementById('tuyendung').addEventListener('click', function () {
+    const getUserInfo = localStorage.getItem("userInfo")
+    if (getUserInfo) {
+      const userInfo = JSON.parse(getUserInfo);
+      const userRole = userInfo.userInfo.roles;
+      console.log(userRole);
+      console.log(userInfo);
+
+      if (userRole[0] === "ROLE_COMPANY" || userRole[0] === "ROLE_ADMIN") {
+
+        window.location.href = '/job-posts/create';
+      } else {
+        // Xóa thông tin người dùng khỏi localStorage
+        localStorage.removeItem('userInfo');
+        // Cập nhật giao diện người dùng
+        document.getElementById('loginBtn1').style.display = 'block';
+        document.getElementById('signupBtn1').style.display = 'block';
+        // document.getElementById('username1').style.display = 'none';
+        document.getElementById('userInfo').style.display = 'none';
+        console.log("User  logged out.");
+        window.location.href = '/auth/login';
+      }
+    }
+
+  });
+</script>
+
+<script>
+  document.getElementById('loginBtn').addEventListener('click', function () {
+    // Chuyển hướng đến trang đăng nhập
+    window.location.href = '/auth/login';
+  });
+
+  document.getElementById('signupBtn').addEventListener('click', function () {
+    // Chuyển hướng đến trang đăng ký
+    window.location.href = '/auth/register/user';
+  });
+  document.getElementById('Luu').addEventListener('click', function () {
+    const path = window.location.pathname;
+      const segments = path.split('/');
+      const jobPostId = segments[segments.length - 1];
+    console.log("ID" + jobPostId)
+    // Chuyển hướng đến trang đăng ký
+    window.location.href = '/follow/toggle-follow-job/' + jobPostId;
+  });
+  document.getElementById('about').addEventListener('click', function () {
+    window.location.href = "about";
+  });
+  document.getElementById('contact').addEventListener('click', function () {
+    window.location.href = "contact";
+  });
+
+</script>
+<script>
+  document.getElementById("toggleFollowBtn").addEventListener("click", function(event) {
+    event.preventDefault();  // Ngừng hành vi mặc định (chuyển trang khi click vào link)
+    const path = window.location.pathname;
+    const segments = path.split('/');
+    const jobPostId = segments[segments.length - 1];
+    console.log(jobPostId);
+
+    // Gửi yêu cầu POST bằng fetch
+    fetch(`/follow/toggle-follow-job/${jobPostId}`, {
+      method: 'POST', // Phương thức POST
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+            .then(response => response.json())  // Chuyển phản hồi sang JSON
+            .then(data => {
+              if (data.message === "Follow") {
+                // Cập nhật trạng thái "Lưu" thành "Đã lưu"
+                document.getElementById("toggleFollowBtn").innerHTML = '<a   class="btn btn-block btn-light btn-md"><span class="icon-heart-o mr-2 text-danger"></span>Đã lưu</a>';
+                swal("Thành công!", "Lưu thành công!", "success");
+                setTimeout(function() {
+                  window.location.reload();
+                }, 1000); // Trì hoãn 3000ms (3 giây) trước khi tải lại trang
+
+              } else if (data.message === "Unfollow") {
+                // Cập nhật trạng thái "Đã lưu" thành "Lưu"
+                document.getElementById("toggleFollowBtn").innerHTML = '<a   class="btn btn-block btn-light btn-md"><span class="icon-heart-o mr-2 text-danger"></span>Lưu</a>';
+                swal("Thành công!", "Bỏ Lưu thành công!", "success");
+                setTimeout(function() {
+                  window.location.reload();
+                }, 1000); // Trì hoãn 3000ms (3 giây) trước khi tải lại trang
+
+              } else if (data.error) {
+                swal("Có lỗi xảy ra!", data.error, "error");
+              }
+            })
+            .catch(error => {
+              // Xử lý lỗi khi có vấn đề với việc gửi yêu cầu
+              console.error("Lỗi: ", error);
+              swal("Có lỗi xảy ra!", "Vui lòng thử lại sau", "error");
+            });
+  });
+
+  document.getElementById("toggleFollowBtn1").addEventListener("click", function(event) {
+    event.preventDefault();  // Ngừng hành vi mặc định (chuyển trang khi click vào link)
+    const path = window.location.pathname;
+    const segments = path.split('/');
+    const jobPostId = segments[segments.length - 1];
+    console.log(jobPostId);
+
+    // Gửi yêu cầu POST bằng fetch
+    fetch(`/follow/toggle-follow-job/${jobPostId}`, {
+      method: 'POST', // Phương thức POST
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+            .then(response => response.json())  // Chuyển phản hồi sang JSON
+            .then(data => {
+              if (data.message === "Follow") {
+                // Cập nhật trạng thái "Lưu" thành "Đã lưu"
+                document.getElementById("toggleFollowBtn1").innerHTML = '<a   class="btn btn-block btn-light btn-md"><span class="icon-heart-o mr-2 text-danger"></span>Đã lưu</a>';
+                swal("Thành công!", "Lưu thành công!", "success");
+                setTimeout(function() {
+                  window.location.reload();
+                }, 1000); // Trì hoãn 3000ms (3 giây) trước khi tải lại trang
+
+              } else if (data.message === "Unfollow") {
+                // Cập nhật trạng thái "Đã lưu" thành "Lưu"
+                document.getElementById("toggleFollowBtn1").innerHTML = '<a   class="btn btn-block btn-light btn-md"><span class="icon-heart-o mr-2 text-danger"></span>Lưu</a>';
+                swal("Thành công!", "Bỏ Lưu thành công!", "success");
+                setTimeout(function() {
+                  window.location.reload();
+                }, 1000); // Trì hoãn 3000ms (3 giây) trước khi tải lại trang
+
+              } else if (data.error) {
+                swal("Có lỗi xảy ra!", data.error, "error");
+              }
+            })
+            .catch(error => {
+              // Xử lý lỗi khi có vấn đề với việc gửi yêu cầu
+              console.error("Lỗi: ", error);
+              swal("Có lỗi xảy ra!", "Vui lòng thử lại sau", "error");
+            });
+  });
+
+</script>
+
+<script>
+  function checkUserLogin() {
+    // Kiểm tra xem có thông tin người dùng trong local storage không
+    const user = localStorage.getItem('userInfo'); // Thay 'user' bằng key mà bạn đã lưu thông tin người dùng
+
+    if (!user) {
+      // Nếu không có người dùng, hiển thị thông báo và chuyển hướng đến trang đăng nhập
+      swal("Bạn cần đăng nhập để nộp hồ sơ!", "Chuyển đến trang đăng nhập?", "error");
+      window.location.href = '/auth/login'; // Thay đổi đường dẫn đến trang đăng nhập của bạn
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", function() {
+    var jobDescriptionElement = document.getElementById("jobDescription");
+    var jobDescription = jobDescriptionElement.innerHTML;
+
+    // Thay thế ký tự xuống dòng và thêm biểu tượng
+    var formattedDescription = jobDescription
+            .split('\n')
+            .map(function(line) {
+              return line.trim() ? "<span class='icon-check_circle mr-2 text-muted'></span> " + line.trim() : "";
+            })
+            .join('<br/>');
+
+    // Cập nhật nội dung của phần tử
+    jobDescriptionElement.innerHTML = formattedDescription;
+  });
+
+  document.addEventListener("DOMContentLoaded", function() {
+    var jobRequireElement = document.getElementById("jobRequire");
+    var jobRequire = jobRequireElement.innerHTML;
+
+    // Thay thế ký tự xuống dòng và thêm biểu tượng
+    var formattedRequire = jobRequire
+            .split('\n')
+            .map(function(line) {
+              return line.trim() ? "<span class='icon-check_circle mr-2 text-muted'></span> " + line.trim() : "";
+            })
+            .join('<br/>');
+
+    // Cập nhật nội dung của phần tử
+    jobRequireElement.innerHTML = formattedRequire;
+  });
+
+  document.addEventListener("DOMContentLoaded", function() {
+    var jobBenefitElement = document.getElementById("jobBenefit");
+    var jobBenefit = jobBenefitElement.innerHTML;
+
+    // Thay thế ký tự xuống dòng và thêm biểu tượng
+    var formattedBenefit = jobBenefit
+            .split('\n')
+            .map(function(line) {
+              return line.trim() ? "<span class='icon-check_circle mr-2 text-muted'></span> " + line.trim() : "";
+            })
+            .join('<br/>');
+
+    // Cập nhật nội dung của phần tử
+    jobBenefitElement.innerHTML = formattedBenefit;
+  });
+</script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+  // Lấy giá trị trạng thái follow từ model
+  const followStatus = '${followStatus}';
+
+  // Nếu người dùng đã theo dõi, thay đổi nội dung nút
+  if (followStatus === 'followed') {
+    document.getElementById('heartIcon').classList.remove('text-muted');
+    document.getElementById('heartIcon').classList.add('text-danger');
+    document.getElementById('followText').innerText = 'Đã lưu';
+    document.getElementById('followText1').innerText = 'Đã lưu';
+  } else if (followStatus === 'not_followed') {
+    document.getElementById('heartIcon').classList.remove('text-danger');
+    document.getElementById('heartIcon').classList.add('text-muted');
+    document.getElementById('followText').innerText = 'Lưu';
+    document.getElementById('followText1').innerText = 'Lưu';
+  }
+  });
+
+  function popup(){
+    swal("Đã hết hạn!", "Đã hết hạn nộp hồ sơ!", "error");
+  }
+</script>
+
+<!--  <script>-->
+<!--    document.addEventListener("DOMContentLoaded", function() {-->
+<!--      // Lấy jobPostId từ URL (hoặc từ bất kỳ nguồn nào bạn cần)-->
+<!--      const path = window.location.pathname;-->
+<!--      const segments = path.split('/');-->
+<!--      const jobPostId = segments[segments.length - 1];-->
+
+<!--      // Gửi yêu cầu GET để kiểm tra trạng thái theo dõi-->
+<!--      fetch(`/follow/check-follow-status/${jobPostId}`, {-->
+<!--        method: 'GET', // Phương thức GET-->
+<!--        headers: {-->
+<!--          'Content-Type': 'application/json',-->
+<!--        }-->
+<!--      })-->
+<!--              .then(response => response.json())-->
+<!--              .then(data => {-->
+<!--                if (data.status === "followed") {-->
+<!--                  // Nếu đã theo dõi, cập nhật nút thành "Đã lưu"-->
+<!--                  document.getElementById("toggleFollowBtn").innerHTML =-->
+<!--                          '<a   class="btn btn-block btn-light btn-md"><span class="icon-heart-o mr-2 text-danger"></span>Đã lưu</a>';-->
+<!--                } else {-->
+<!--                  // Nếu chưa theo dõi, cập nhật nút thành "Lưu"-->
+<!--                  document.getElementById("toggleFollowBtn").innerHTML =-->
+<!--                          '<a   class="btn btn-block btn-light btn-md"><span class="icon-heart-o mr-2 text-danger"></span>Lưu</a>';-->
+<!--                }-->
+<!--              })-->
+<!--              .catch(error => {-->
+<!--                console.error("Lỗi khi kiểm tra trạng thái theo dõi:", error);-->
+<!--              });-->
+<!--    });-->
+
+<!--  </script>-->
+
 
   </body>
 </html>

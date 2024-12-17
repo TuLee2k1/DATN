@@ -1,5 +1,6 @@
 package poly.com.repository;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -26,5 +27,9 @@ public interface CompanyRepository extends JpaRepository<Company, Long> {
 
 
     Optional<Company> findByUser_Id(Long userId);
+    // dung cho vai tro admin
+
+    @Query("SELECT c FROM Company c WHERE (:name IS NULL OR c.name LIKE %:name%)")
+    Page<Company> findAll(@Param("name") String name, Pageable pageable);
 
 }

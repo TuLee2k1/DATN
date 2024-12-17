@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta
+      name="description"
+      content="Responsive Admin &amp; Dashboard Template based on Bootstrap 5"
+    />
+    <meta name="author" content="AdminKit" />
+    <meta
+      name="keywords"
+      content="adminkit, bootstrap, bootstrap 5, admin, dashboard, template, responsive, css, sass, html, theme, front-end, ui kit, web"
+    />
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link rel="shortcut icon" href="/img/icons/icon-48x48.png" />
+
+    <link rel="canonical" href="https://demo-basic.adminkit.io/" />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+      rel="stylesheet"
+    />
+
+    <title>Home Page</title>
+
+    <link href="/css/app.css" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/css/index.css" />
+    <link rel="stylesheet" href="/css/user.css" />
+  </head>
+
+  <body>
+    <div class="wrapper">
+      <!-- sidebar -->
+      <nav id="sidebar" class="sidebar js-sidebar">
+        <div class="sidebar-content js-simplebar">
+          <a class="sidebar-brand" href="index.html">
+            <img
+              alt="Logo"
+              class="rounded-circle me-3"
+              height="50"
+              id="logo"
+              src="/img/icons/logo2.jpg"
+              width="50"
+            />
+            <span class="align-middle">Dreamers</span>
+          </a>
+
+          <ul class="sidebar-nav">
+            <li class="sidebar-header">Pages</li>
+
+            <li class="sidebar-item active">
+              <a class="sidebar-link" href="/User/V3/dashboard.html">
+                <i class="align-middle" data-feather="sliders"></i>
+                <span class="align-middle">Dashboard</span>
+              </a>
+            </li>
+
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="/User/V3/profile.html">
+                <i class="align-middle" data-feather="user"></i>
+                <span class="align-middle">Profile</span>
+              </a>
+            </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="/User/V3/resume_.html">
+                <i class="align-middle" data-feather="clipboard"></i>
+                <span class="align-middle">Resume</span>
+              </a>
+            </li>
+
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="/User/V3/calender.html">
+                <i class="align-middle" data-feather="calendar"></i>
+                <span class="align-middle">Calender</span>
+              </a>
+            </li>
+
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="/User/V3/apply.html">
+                <i class="align-middle" data-feather="check-square"></i>
+                <span class="align-middle">Applied job</span>
+              </a>
+            </li>
+
+            <li class="sidebar-item">
+              <a
+                class="sidebar-link"
+                href="/User/V3/EmployersViewPage.html"
+              >
+                <i class="align-middle" data-feather="users"></i>
+                <span class="align-middle">Recruiter follow</span>
+              </a>
+            </li>
+
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="/User/V3/saved_jobs.html">
+                <i class="align-middle" data-feather="bookmark"></i>
+                <span class="align-middle">Bookmarks</span>
+              </a>
+            </li>
+
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="#">
+                <i class="align-middle" data-feather="message-square"></i>
+                <span class="align-middle">Messages</span>
+              </a>
+            </li>
+
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="/User/V3/Notification.html">
+                <i class="align-middle" data-feather="bell"></i>
+                <span class="align-middle">Notifications</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+
+      <div class="main">
+        <!-- nav head -->
+        <nav class="navbar navbar-expand navbar-light navbar-bg">
+          <a class="sidebar-toggle js-sidebar-toggle">
+            <i class="hamburger align-self-center"></i>
+          </a>
+
+          <div class="navbar-collapse collapse">
+            <ul class="navbar-nav navbar-align">
+              <li class="nav-item dropdown">
+                <a
+                  class="nav-icon dropdown-toggle"
+                  href="#"
+                  id="alertsDropdown"
+                  data-bs-toggle="dropdown"
+                >
+                  <div class="position-relative">
+                    <i class="align-middle" data-feather="bell"></i>
+                    <span class="indicator">4</span>
+                  </div>
+                </a>
+                <div
+                  class="dropdown-menu dropdown-menu-lg dropdown-menu-end py-0"
+                  aria-labelledby="alertsDropdown"
+                >
+                  <div class="dropdown-menu-header">4 New Notifications</div>
+                  <div class="list-group">
+                    <a href="#" class="list-group-item">
+                      <div class="row g-0 align-items-center">
+                        <div class="col-2">
+                          <i
+                            class="text-danger"
+                            data-feather="alert-circle"
+                          ></i>
+                        </div>
+                        <div class="col-10">
+                          <div class="text-dark">Update completed</div>
+                          <div class="text-muted small mt-1">
+                            Restart server 12 to complete the update.
+                          </div>
+                          <div class="text-muted small mt-1">30m ago</div>
+                        </div>
+                      </div>
+                    </a>
+                    <a href="#" class="list-group-item">
+                      <div class="row g-0 align-items-center">
+                        <div class="col-2">
+                          <i class="text-warning" data-feather="bell"></i>
+                        </div>
+                        <div class="col-10">
+                          <div class="text-dark">Lorem ipsum</div>
+                          <div class="text-muted small mt-1">
+                            Aliquam ex eros, imperdiet vulputate hendrerit et.
+                          </div>
+                          <div class="text-muted small mt-1">2h ago</div>
+                        </div>
+                      </div>
+                    </a>
+                    <a href="#" class="list-group-item">
+                      <div class="row g-0 align-items-center">
+                        <div class="col-2">
+                          <i class="text-primary" data-feather="home"></i>
+                        </div>
+                        <div class="col-10">
+                          <div class="text-dark">Login from 192.186.1.8</div>
+                          <div class="text-muted small mt-1">5h ago</div>
+                        </div>
+                      </div>
+                    </a>
+                    <a href="#" class="list-group-item">
+                      <div class="row g-0 align-items-center">
+                        <div class="col-2">
+                          <i class="text-success" data-feather="user-plus"></i>
+                        </div>
+                        <div class="col-10">
+                          <div class="text-dark">New connection</div>
+                          <div class="text-muted small mt-1">
+                            Christina accepted your request.
+                          </div>
+                          <div class="text-muted small mt-1">14h ago</div>
+                        </div>
+                      </div>
+                    </a>
+                  </div>
+                  <div class="dropdown-menu-footer">
+                    <a href="#" class="text-muted">Show all notifications</a>
+                  </div>
+                </div>
+              </li>
+              <li class="nav-item dropdown">
+                <a
+                  class="nav-icon dropdown-toggle"
+                  href="#"
+                  id="messagesDropdown"
+                  data-bs-toggle="dropdown"
+                >
+                  <div class="position-relative">
+                    <i class="align-middle" data-feather="message-square"></i>
+                  </div>
+                </a>
+                <div
+                  class="dropdown-menu dropdown-menu-lg dropdown-menu-end py-0"
+                  aria-labelledby="messagesDropdown"
+                >
+                  <div class="dropdown-menu-header">
+                    <div class="position-relative">4 New Messages</div>
+                  </div>
+
+                  <div class="list-group">
+                    <a href="#" class="list-group-item">
+                      <div class="row g-0 align-items-center">
+                        <div class="col-2">
+                          <img
+                            src="/img/avatars/avatar-5.jpg"
+                            class="avatar img-fluid rounded-circle"
+                            alt="Vanessa Tucker"
+                          />
+                        </div>
+                        <div class="col-10 ps-2">
+                          <div class="text-dark">Vanessa Tucker</div>
+                          <div class="text-muted small mt-1">
+                            Nam pretium turpis et arcu. Duis arcu tortor.
+                          </div>
+                          <div class="text-muted small mt-1">15m ago</div>
+                        </div>
+                      </div>
+                    </a>
+                    <a href="#" class="list-group-item">
+                      <div class="row g-0 align-items-center">
+                        <div class="col-2">
+                          <img
+                            src="/img/avatars/avatar-2.jpg"
+                            class="avatar img-fluid rounded-circle"
+                            alt="William Harris"
+                          />
+                        </div>
+                        <div class="col-10 ps-2">
+                          <div class="text-dark">William Harris</div>
+                          <div class="text-muted small mt-1">
+                            Curabitur ligula sapien euismod vitae.
+                          </div>
+                          <div class="text-muted small mt-1">2h ago</div>
+                        </div>
+                      </div>
+                    </a>
+                    <a href="#" class="list-group-item">
+                      <div class="row g-0 align-items-center">
+                        <div class="col-2">
+                          <img
+                            src="/img/avatars/avatar-4.jpg"
+                            class="avatar img-fluid rounded-circle"
+                            alt="Christina Mason"
+                          />
+                        </div>
+                        <div class="col-10 ps-2">
+                          <div class="text-dark">Christina Mason</div>
+                          <div class="text-muted small mt-1">
+                            Pellentesque auctor neque nec urna.
+                          </div>
+                          <div class="text-muted small mt-1">4h ago</div>
+                        </div>
+                      </div>
+                    </a>
+                    <a href="#" class="list-group-item">
+                      <div class="row g-0 align-items-center">
+                        <div class="col-2">
+                          <img
+                            src="/img/avatars/avatar-3.jpg"
+                            class="avatar img-fluid rounded-circle"
+                            alt="Sharon Lessman"
+                          />
+                        </div>
+                        <div class="col-10 ps-2">
+                          <div class="text-dark">Sharon Lessman</div>
+                          <div class="text-muted small mt-1">
+                            Aenean tellus metus, bibendum sed, posuere ac,
+                            mattis non.
+                          </div>
+                          <div class="text-muted small mt-1">5h ago</div>
+                        </div>
+                      </div>
+                    </a>
+                  </div>
+                  <div class="dropdown-menu-footer">
+                    <a href="#" class="text-muted">Show all messages</a>
+                  </div>
+                </div>
+              </li>
+              <li class="nav-item dropdown">
+                <a
+                  class="nav-icon dropdown-toggle d-inline-block d-sm-none"
+                  href="#"
+                  data-bs-toggle="dropdown"
+                >
+                  <i class="align-middle" data-feather="settings"></i>
+                </a>
+
+                <a
+                  class="nav-link dropdown-toggle d-none d-sm-inline-block"
+                  href="#"
+                  data-bs-toggle="dropdown"
+                >
+                  <img
+                    src="/img/avatars/avatar-5.jpg"
+                    class="avatar img-fluid rounded me-1"
+                    alt="Charles Hall"
+                  />
+                  <span class="text-dark">Charles Hall</span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-end">
+                  <a class="dropdown-item" href="/static/User/V3/profile.html"
+                    ><i class="align-middle me-1" data-feather="user"></i>
+                    Profile</a
+                  >
+
+                  <a class="dropdown-item" href="#"
+                    ><i class="align-middle me-1" data-feather="key"></i> Forgot
+                    password</a
+                  >
+                  <a class="dropdown-item" href="#"
+                    ><i
+                      class="align-middle me-1"
+                      data-feather="alert-octagon"
+                    ></i>
+                    Change password</a
+                  >
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" href="index.html"
+                    ><i class="align-middle me-1" data-feather="settings"></i>
+                    Settings & Privacy</a
+                  >
+                  <a
+                    class="dropdown-item"
+                    href="/User/V3/User_Manual.html"
+                    ><i
+                      class="align-middle me-1"
+                      data-feather="help-circle"
+                    ></i>
+                    Help Center</a
+                  >
+                  <div class="dropdown-divider"></div>
+                  <a
+                    class="dropdown-item"
+                    href="/User/V3/login&register.html"
+                    ><i class="align-middle me-1" data-feather="log-out"></i>Log
+                    out</a
+                  >
+                </div>
+              </li>
+            </ul>
+          </div>
+        </nav>
+        <main class="content">
+          <div class="container mt-4">
+            <h4>Lịch phỏng vấn</h4>
+            <div class="card job-section">
+              <ul class="nav nav-tabs">
+                <li class="nav-item">
+                  <a
+                    class="nav-link active"
+                    href="#"
+                    onclick="showEvents('tab-1')"
+                  >
+                    <small>2024 May 25th</small>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#" onclick="showEvents('tab-2')">
+                    <small>2024 June 20th</small>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#" onclick="showEvents('tab-3')">
+                    <small>2024 September 15th</small>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#" onclick="showEvents('tab-4')">
+                    <small>2024 November 8th</small>
+                  </a>
+                </li>
+              </ul>
+              <div class="event-card mt-4" id="tab-1">
+                <div class="row">
+                  <div class="col-md-2 text-center">
+                    <img
+                      alt="Speaker image"
+                      class="rounded-circle"
+                      height="100"
+                      src="https://storage.googleapis.com/a1aa/image/M74dAjfVmenic09n3bi4errky2c7oVeIGzwdoPNU94bhprfdC.jpg"
+                      width="100"
+                    />
+                  </div>
+                  <div class="col-md-10">
+                    <div class="event-time">08:00 - 10:00 A.M</div>
+                    <div class="event-title">VNG</div>
+                    <div class="event-description">
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                      sed do eiusmod tempor incididunt ut labore et dolore magna
+                      aliqua...
+                    </div>
+                    <div class="event-speaker-title">Developer</div>
+                    <a class="event-speaker" href="#">More Detail...</a>
+                  </div>
+                </div>
+              </div>
+              <div class="event-card" id="tab-2">
+                <div class="row">
+                  <div class="col-md-2 text-center">
+                    <img
+                      alt="Speaker image"
+                      class="rounded-circle"
+                      height="100"
+                      src="https://storage.googleapis.com/a1aa/image/wLjJlzU3bo6VCxjobE2zjfIHVe9ZShWPi5Zyf2mQXXPy01fOB.jpg"
+                      width="100"
+                    />
+                  </div>
+                  <div class="col-md-10">
+                    <div class="event-time">08:00 - 10:00</div>
+                    <div class="event-title">VNG</div>
+                    <div class="event-description">
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                      sed do eiusmod tempor incididunt ut labore et dolore magna
+                      aliqua...
+                    </div>
+                    <div class="event-speaker-title">Developer</div>
+                    <a class="event-speaker" href="#">More Detail...</a>
+                  </div>
+                </div>
+              </div>
+              <div class="event-card" id="tab-3" style="display: none">
+                <div class="row">
+                  <div class="col-md-2 text-center">
+                    <img
+                      alt="Speaker image"
+                      class="rounded-circle"
+                      height="100"
+                      src="https://storage.googleapis.com/a1aa/image/3oUW9L0eC537DSDrN3jAXgW4BGTENHByf0SIDfkiaouv01fOB.jpg"
+                      width="100"
+                    />
+                  </div>
+                  <div class="col-md-10">
+                    <div class="event-time">08:00 - 10:00</div>
+                    <div class="event-title">VNG</div>
+                    <div class="event-description">
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                      sed do eiusmod tempor incididunt ut labore et dolore magna
+                      aliqua...
+                    </div>
+                    <div class="event-speaker-title">Developer</div>
+                    <a class="event-speaker" href="#">More Detail...</a>
+                  </div>
+                </div>
+              </div>
+              <div class="event-card" id="tab-4" style="display: none">
+                <div class="row">
+                  <div class="col-md-2 text-center">
+                    <img
+                      alt="Speaker image"
+                      class="rounded-circle"
+                      height="100"
+                      src="https://storage.googleapis.com/a1aa/image/M74dAjfVmenic09n3bi4errky2c7oVeIGzwdoPNU94bhprfdC.jpg"
+                      width="100"
+                    />
+                  </div>
+                  <div class="col-md-10">
+                    <div class="event-time">08:00 - 10:00</div>
+                    <div class="event-title">VNG</div>
+                    <div class="event-description">
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                      sed do eiusmod tempor incididunt ut labore et dolore magna
+                      aliqua...
+                    </div>
+                    <div class="event-speaker-title">Developer</div>
+                    <a class="event-speaker" href="#">More Detail...</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <section class="job">
+              <div class="header">
+                <img
+                  src="https://storage.googleapis.com/a1aa/image/aKnHVcZ1JybDHlLPAmfxLsJdfeJZUAffFW8B2fiYRdTJGP17E.jpg"
+                  alt="Light bulb icon"
+                  width="30"
+                  height="30"
+                />
+                <h2>Việc làm gợi ý</h2>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="card job-card">
+                    <h5>Nhân Viên R&D</h5>
+                    <div class="favorite" onclick="toggleFavorite(this)">
+                      <i class="far fa-heart"></i>
+                    </div>
+                    <div class="d-flex align-items-center mb-2">
+                      <img
+                        src="https://storage.googleapis.com/a1aa/image/3XKlsQ8PJ6pCFNK3gARJL8ZYPpFoYWKFUTIWy4jUsv1GP17E.jpg"
+                        alt="Wana logo"
+                        class="me-2"
+                        width="50"
+                        height="30"
+                      />
+                      <div>
+                        <div class="company">
+                          Công Ty TNHH Thực Phẩm Và Nước Giải Khát Á Châu
+                        </div>
+                        <div class="salary">
+                          <i class="fas fa-dollar-sign"></i> 10 - 15 triệu
+                        </div>
+                        <div class="location">
+                          <i class="fas fa-map-marker-alt"></i> Bình Dương
+                        </div>
+                      </div>
+                    </div>
+                    <div class="card-footer remaining-days text-end">
+                      <i class="fas fa-clock"></i> Còn 3 ngày
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="card job-card">
+                    <h5>Nhân Viên QC Ngành Giấy</h5>
+                    <div class="favorite" onclick="toggleFavorite(this)">
+                      <i class="far fa-heart"></i>
+                    </div>
+                    <div class="d-flex align-items-center mb-2">
+                      <img
+                        src="https://storage.googleapis.com/a1aa/image/FmLUkyz70B5fHSkt9C4sH7EcFNmndhkVcAm3it3ExhwLeUvTA.jpg"
+                        alt="Cheng Loong logo"
+                        class="me-2"
+                        width="50"
+                        height="30"
+                      />
+                      <div>
+                        <div class="company">
+                          Công Ty TNHH Cheng Loong Bình Dương Paper
+                        </div>
+                        <div class="salary">
+                          <i class="fas fa-dollar-sign"></i> 10 - 12 triệu
+                        </div>
+                        <div class="location">
+                          <i class="fas fa-map-marker-alt"></i> Bình Dương
+                        </div>
+                      </div>
+                    </div>
+                    <div class="card-footer remaining-days text-end">
+                      <i class="fas fa-clock"></i> Còn 4 ngày
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="card job-card">
+                    <h5>Kỹ Sư Cơ Khí</h5>
+                    <div class="favorite" onclick="toggleFavorite(this)">
+                      <i class="far fa-heart"></i>
+                    </div>
+                    <div class="d-flex align-items-center mb-2">
+                      <img
+                        src="https://storage.googleapis.com/a1aa/image/FmLUkyz70B5fHSkt9C4sH7EcFNmndhkVcAm3it3ExhwLeUvTA.jpg"
+                        alt="Cheng Loong logo"
+                        class="me-2"
+                        width="50"
+                        height="30"
+                      />
+                      <div>
+                        <div class="company">
+                          Công Ty TNHH Cheng Loong Bình Dương Paper
+                        </div>
+                        <div class="salary">
+                          <i class="fas fa-dollar-sign"></i> 10 - 13 triệu
+                        </div>
+                        <div class="location">
+                          <i class="fas fa-map-marker-alt"></i> Bình Dương
+                        </div>
+                      </div>
+                    </div>
+                    <div class="card-footer remaining-days text-end">
+                      <i class="fas fa-clock"></i> Còn 10 ngày
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="card job-card">
+                    <h5>Nhân Viên Văn Phòng (Tốt Nghiệp Cơ Khí)</h5>
+                    <div class="favorite" onclick="toggleFavorite(this)">
+                      <i class="far fa-heart"></i>
+                    </div>
+                    <div class="d-flex align-items-center mb-2">
+                      <img
+                        src="https://storage.googleapis.com/a1aa/image/FmLUkyz70B5fHSkt9C4sH7EcFNmndhkVcAm3it3ExhwLeUvTA.jpg"
+                        alt="Cheng Loong logo"
+                        class="me-2"
+                        width="50"
+                        height="30"
+                      />
+                      <div>
+                        <div class="company">
+                          Công Ty TNHH Cheng Loong Bình Dương Paper
+                        </div>
+                        <div class="salary">
+                          <i class="fas fa-dollar-sign"></i> 9.5 - 15 triệu
+                        </div>
+                        <div class="location">
+                          <i class="fas fa-map-marker-alt"></i> Bình Dương
+                        </div>
+                      </div>
+                    </div>
+                    <div class="card-footer remaining-days text-end">
+                      <i class="fas fa-clock"></i> Còn 20 ngày
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+        </main>
+
+        <footer class="footer">
+          <div class="container-fluid">
+            <div class="row text-muted">
+              <div class="col-6 text-start">
+                <p class="mb-0">
+                  <a
+                    class="text-muted"
+                    href="https://adminkit.io/"
+                    target="_blank"
+                    ><strong>AdminKit</strong></a
+                  >
+                  -
+                  <a
+                    class="text-muted"
+                    href="https://adminkit.io/"
+                    target="_blank"
+                    ><strong>Bootstrap Admin Template</strong></a
+                  >
+                  &copy;
+                </p>
+              </div>
+              <div class="col-6 text-end">
+                <ul class="list-inline">
+                  <li class="list-inline-item">
+                    <a
+                      class="text-muted"
+                      href="https://adminkit.io/"
+                      target="_blank"
+                      >Support</a
+                    >
+                  </li>
+                  <li class="list-inline-item">
+                    <a
+                      class="text-muted"
+                      href="https://adminkit.io/"
+                      target="_blank"
+                      >Help Center</a
+                    >
+                  </li>
+                  <li class="list-inline-item">
+                    <a
+                      class="text-muted"
+                      href="https://adminkit.io/"
+                      target="_blank"
+                      >Privacy</a
+                    >
+                  </li>
+                  <li class="list-inline-item">
+                    <a
+                      class="text-muted"
+                      href="https://adminkit.io/"
+                      target="_blank"
+                      >Terms</a
+                    >
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </footer>
+      </div>
+    </div>
+    <script>
+      function toggleFavorite(element) {
+        element.classList.toggle("active");
+        const icon = element.querySelector("i");
+        if (element.classList.contains("active")) {
+          icon.classList.remove("far");
+          icon.classList.add("fas");
+        } else {
+          icon.classList.remove("fas");
+          icon.classList.add("far");
+        }
+      }
+      function showEvents(tab) {
+        // Tắt tất cả các sự kiện
+        const tabs = document.querySelectorAll(".event-card");
+        tabs.forEach(function (element) {
+          element.style.display = "none";
+        });
+
+        // Hiện thị sự kiện tương ứng với ngày đã chọn
+        document.getElementById(tab).style.display = "block";
+
+        // Cập nhật trạng thái các tab
+        const navLinks = document.querySelectorAll(".nav-link");
+        navLinks.forEach(function (link) {
+          link.classList.remove("active");
+        });
+        event.target.classList.add("active");
+      }
+    </script>
+    <script src="js/app.js"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script>
+      feather.replace();
+    </script>
+  </body>
+</html>

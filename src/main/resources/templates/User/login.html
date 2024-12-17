@@ -22,12 +22,52 @@
             integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
             crossorigin="anonymous"
     ></script>
+    <!-- Thêm SweetAlert CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+
+    <!-- Thêm SweetAlert JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
     <link
             rel="stylesheet"
             type="text/css"
             href="/css/login&register.css"
     />
     <title>Modern Login Page</title>
+    <style>
+        .popup {
+            display: none; /* Ẩn popup theo mặc định */
+            position: fixed;
+            z-index: 3000 ;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Nền mờ */
+        }
+
+        .popup-content {
+            background-color: #fff;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 300px; /* Chiều rộng của popup */
+            text-align: center;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
 </head>
 
 <body>
@@ -54,17 +94,10 @@
 
             <button type="submit">Sign Up</button>
         </form>
-        <span class="or-divider text-center">Or use your email for register</span>
-
-        <div class="social-icons">
-            <a href="" class="icon"><img src="/img/photos/google.png" alt="" />Sign in with Google</a>
-            <a href="" class="icon"><img src="/img/photos/facebook.png" alt="" />Sign in with Facebook</a>
-        </div>
-        </form>
     </div>
     <div class="form-container sign-in">
         <form onsubmit="logIn(event)">
-            <h1 class="text-center">Sign In</h1>
+            <h1 class="text-center">Đăng nhập</h1>
             <label for="email">Email:</label>
             <input type="email" id="email" name="email" required />
 
@@ -76,14 +109,22 @@
                     <small> I agree to </small> <a href="">terms &amp; policy </a>
                 </label>
             </div>
-            <button type="submit">Sign In</button>
-            <span class="text-center">Or use your email for register</span>
+            <a href="#" id="forgotPasswordLink">Quên mật khẩu?</a>
 
-            <div class="social-icons">
-                <a href="" class="icon"><img src="/img/photos/google.png" alt="" />Login with Google</a>
-                <a href="" class="icon"><img src="/img/photos/facebook.png" alt="" />Login with Facebook</a>
-            </div>
+
+            <button type="submit">Đăng nhập</button>
+
         </form>
+    </div>
+    <!-- Popup -->
+    <div id="forgotPasswordPopup" class="popup">
+        <div class="popup-content">
+            <span class="close" id="closePopup">&times;</span>
+            <h2>Quên mật khẩu</h2>
+            <p>Nhập địa chỉ email của bạn để nhận liên kết đặt lại mật khẩu:</p>
+            <input name="email" type="email" id="emailInput" placeholder="Nhập email của bạn" required>
+            <button id="sendEmailBtn">Gửi</button>
+        </div>
     </div>
     <div class="toggle-container">
         <div class="toggle">
@@ -98,7 +139,7 @@
                     <p>Enter your personal details to use all of site features</p>
                 </div>
 
-                <button class="hidden" id="login">Sign In</button>
+                <button class="hidden" id="login">Đăng nhập</button>
             </div>
 
             <div class="toggle-panel toggle-right">
@@ -113,7 +154,7 @@
                         Bạn chưa có tài khoản? nhấn bên dưới để đăng kí ngay.
                     </p>
                 </div>
-                <button class="hidden" id="register">Sign Up</button>
+                <button class="hidden" id="register">Đăng kí</button>
             </div>
         </div>
     </div>
@@ -148,12 +189,12 @@
                 localStorage.setItem('userInfo', JSON.stringify(data));
 
                 if (userInfo.roles.includes("ROLE_ADMIN")) {
-                    window.location.href = "/auth/admin/dashboard";
+                    window.location.href = "http://localhost:8080/admin/thongke";
                 } else if (userInfo.roles.includes("ROLE_USER")) {
                     window.location.href = "http://localhost:8080";
 
-                } else if (userInfo.roles.includes("ROLE_COMPANY")) {
-                    window.location.href = "/company-account";
+                } else if (userInfo.roles.indexOf("ROLE_COMPANY")!== -1) {
+                    window.location.href = "/job-posts/create";
                 } else {
                     window.location.href = "/auth/default/dashboard";
                 }
@@ -173,6 +214,56 @@
         // Chuyển hướng đến trang đăng ký
         window.location.href = 'register/user'; // Thay đổi '/register' thành URL của trang đăng ký của bạn
     });
+
+    document.getElementById('forgotPasswordLink').addEventListener('click', function (event) {
+        event.preventDefault(); // Ngăn chặn hành vi mặc định của liên kết
+        document.getElementById('forgotPasswordPopup').style.display = 'block'; // Hiển thị popup
+    });
+
+    document.getElementById('closePopup').addEventListener('click', function () {
+        document.getElementById('forgotPasswordPopup').style.display = 'none'; // Ẩn popup
+    });
+
+    document.getElementById('sendEmailBtn').addEventListener('click', function () {
+        const email = document.getElementById('emailInput').value;
+        if (email) {
+            // Gửi email (có thể gọi API hoặc thực hiện hành động khác)
+            // Gọi API để gửi yêu cầu đặt lại mật khẩu
+            fetch('/auth/forgot-password', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams({
+                    email: email
+                })
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Có lỗi xảy ra khi gửi yêu cầu.');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    swal("Thành công!", "Đặt lại mật khẩu thành công!", "success");
+                    document.getElementById('forgotPasswordPopup').style.display = 'none'; // Ẩn popup
+                })
+                .catch(error => {
+                    swal("Xảy ra lỗi!", "Không tìm thấy Email!", "error");
+                });
+            document.getElementById('forgotPasswordPopup').style.display = 'none'; // Ẩn popup sau khi gửi
+        } else {
+            swal("Nhập Email!", "Vui lòng nhập email!", "error");
+        }
+    });
+
+    // Đóng popup khi nhấn ra ngoài popup
+    window.onclick = function(event) {
+        const popup = document.getElementById('forgotPasswordPopup');
+        if (event.target === popup) {
+            popup.style.display = 'none';
+        }
+    };
 </script>
 <script
         src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"

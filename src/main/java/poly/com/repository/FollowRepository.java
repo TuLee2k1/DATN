@@ -29,7 +29,8 @@ public interface FollowRepository extends JpaRepository<Follow, Long> {
 
     Optional<Follow> findByCompanyIdAndUserId(Long companyId, Long userId);
 
-
+    Page<Follow> findByUserId(Long userId, Pageable pageable);
+    void deleteByJobPostIdAndUserId(Long jobPostId, Long userId);
 
     Optional<Follow> findByUserIdAndCompanyId (Long userId, Long companyId);
 
@@ -40,8 +41,7 @@ public interface FollowRepository extends JpaRepository<Follow, Long> {
             c.name,
             jp.minSalary,
             jp.maxSalary,
-            jp.city,
-            jp.endDate
+            jp.city
         )
         FROM Follow f
         JOIN JobPost jp ON f.jobPostId = jp.id
@@ -68,5 +68,6 @@ public interface FollowRepository extends JpaRepository<Follow, Long> {
 
     @Query("SELECT COUNT(f) FROM Follow f WHERE f.userId = :userId")
     Long countBookmarksByUserId(@Param("userId") Long userId);
+
 
 }

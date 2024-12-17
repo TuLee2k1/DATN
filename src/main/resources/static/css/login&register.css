@@ -42,7 +42,7 @@
   margin: 15px 0 10px;
 }
 .container button {
-  background-color: #1e1e63;
+  background-color: #4caf68;
   color: #fff;
   font-size: 12px;
   padding: 10px 45px;
@@ -99,7 +99,7 @@
   left: 0;
   width: 50%;
   z-index: 2;
-  margin-top: -150px;
+  margin-top: -100px;
 }
 .container.active .sign-in {
   transform: translateX(100%);
@@ -109,7 +109,7 @@
   width: 50%;
   opacity: 0;
   z-index: 1;
-  margin-top: -150px;
+  margin-top: -100px;
 }
 .agree {
   color: #333;
@@ -167,9 +167,9 @@
   border-radius: 0 150px 100px 0;
 }
 .toggle {
-  background-color: #1e1e63;
+  background-color: #4caf68;
   height: 100%;
-  background: linear-gradient(to right, #1e1e63, #1e1e63);
+  background: linear-gradient(to right, #4caf68, #4caf68);
   color: #fff;
   position: relative;
   left: -100%;

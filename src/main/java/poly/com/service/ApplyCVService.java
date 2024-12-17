@@ -5,7 +5,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import poly.com.Enum.StatusEnum;
-import poly.com.Util.AuthenticationUtil;
+
+import poly.com.util.AuthenticationUtil;
+
 import poly.com.dto.request.ApplyCVRequest;
 import poly.com.exception.FileStorageException;
 import poly.com.model.JobPost;
@@ -52,6 +54,23 @@ public class ApplyCVService {
          .status(StatusEnum.PENDING)
          .user(user)
          .build();
+
+
+        // Chuyển đổi DTO sang Entity
+        JobProfile cvSubmission = JobProfile.builder()
+                .fullName(request.getName())
+                .email(request.getEmail())
+                .phoneNumber(request.getPhone())
+                .fileCV(cvFileUrl)
+                .jobPost(jobPost)
+                .user(user)
+                .status(StatusEnum.PENDING)
+                .build();
+        // Lưu vào database
+        System.out.println("CV Submission: " + cvSubmission.getFileCV());
+        System.out.println("CV Submission: " + cvSubmission.getEmail());
+        System.out.println("CV Submission: " + cvSubmission.getJobPost());
+        System.out.println("CV Submission: " + cvSubmission.getPhoneNumber());
 
         try {
             // Lưu hồ sơ ứng tuyển

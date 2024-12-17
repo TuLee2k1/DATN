@@ -2,8 +2,11 @@ package poly.com.dto.response.JobPost;
 
 import lombok.Getter;
 import lombok.Setter;
+import poly.com.Enum.Exp;
+import poly.com.Enum.JobLevel;
 import poly.com.Enum.StatusEnum;
 import poly.com.Enum.WorkType;
+import poly.com.model.JobCategory;
 import poly.com.model.JobPostStatus;
 
 import java.util.Date;
@@ -22,8 +25,12 @@ public class JobListActiveResponse {
     private WorkType workType;
     private JobPostStatus status;
     private String City;
+    private Long jobCategoryId;
+    private Exp exp;
+    private JobLevel jobLevel;
+    private Float maxSalary;
 
-    public JobListActiveResponse(Long id, String jobTitle, Date createDate, Date endDate, Integer appliedCount, StatusEnum statusEnum, Long companyId, String companyLogoUrl, String companyName, WorkType workType, JobPostStatus status, String city) {
+    public JobListActiveResponse(Long id, String jobTitle, Date createDate, Date endDate, Integer appliedCount, StatusEnum statusEnum, Long companyId, String companyLogoUrl, String companyName, WorkType workType, JobPostStatus status, String city, Long jobCategoryId, Exp exp, JobLevel jobLevel, Float maxSalary) {
         this.id = id;
         this.jobTitle = jobTitle;
         this.createDate = createDate;
@@ -36,6 +43,14 @@ public class JobListActiveResponse {
         this.workType = workType;
         this.status = status;
         City = city;
+        this.jobCategoryId = jobCategoryId;
+        this.exp = exp;
+        this.jobLevel = jobLevel;
+        this.maxSalary = maxSalary;
+    }
+
+    public JobListActiveResponse() {
+
     }
 
 

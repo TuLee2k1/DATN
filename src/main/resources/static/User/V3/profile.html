@@ -26,6 +26,8 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
       rel="stylesheet"
     />
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
     <title>Resume</title>
 
     <link href="/css/app.css" rel="stylesheet" />
@@ -381,36 +383,20 @@
           <div class="container mt-1">
             <h4 class="mb-4">Thông tin cá nhân</h4>
             <form id="profileForm" onsubmit="return validateForm()">
-              <div class="mb-3">
-                <label class="form-label">Ảnh đại diện</label>
-                <div class="d-flex align-items-center">
-                  <img
-                    alt="Placeholder image for profile picture"
-                    class="rounded-circle me-3"
-                    height="100"
-                    id="profileImage"
-                    src="/static/img/avatars/avatar-5.jpg"
-                    width="100"
-                  />
-                  <div
-                    class="upload-btn"
-                    onclick="document.getElementById('profileImageInput').click()"
-                  >
-                    Tải ảnh lên
-                  </div>
-                  <input
-                    accept="image/*"
-                    id="profileImageInput"
-                    onchange="loadImage(event)"
-                    style="display: none"
-                    type="file"
-                  />
+              <h5 class="h6 fw-bold mb-3">Ảnh đại diện</h5>
+              <div class="mb-3 text-center">
+                <div
+                        class="position-relative d-inline-block rounded-full border border-secondary"
+                        style="width: 8rem; height: 8rem; overflow: hidden;"
+                        onclick="document.getElementById('avatar').click()">
+                  <img src="default-avatar.png" alt="Ảnh đại diện"
+                       class="w-100 h-100 object-cover" id="avatarPreview">
                 </div>
-                <small class="form-text text-muted"
-                  >Định dạng .JPG, .JPEG, .PNG dung lượng thấp hơn 300 KB với
-                  kích thước tối thiểu 50x50 px</small
-                >
+                <input type="file" id="avatar" accept="image/*" class="d-none"
+                       onchange="previewAvatar(event)">
               </div>
+              <p class="text-center text-secondary small">Nhấn vào ảnh để thay đổi
+                (Kích cỡ ảnh khuyến dùng từ 1000x1000px trở lên)</p>
               <div class="row">
                 <div class="col-md-6 mb-3">
                   <label class="form-label" for="fullName">Họ và tên</label>
@@ -423,7 +409,7 @@
                   <div class="error" id="fullNameError"></div>
                 </div>
                 <div class="col-md-6 mb-3">
-                  <label class="form-label" for="dob">Ngày sinh</label>
+                  <label class="form-label" for="dateOfBirth">Ngày sinh</label>
                   <input
                     class="form-control"
                     id="dateOfBirth"
@@ -541,8 +527,10 @@
       </div>
     </div>
 
-    <script src="/static/js/app.js"></script>
+    <script src="/js/app.js"></script>
     <script src="https://unpkg.com/feather-icons"></script>
+    <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
       feather.replace();
     </script>

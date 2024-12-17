@@ -41,6 +41,67 @@
             margin-bottom: 15px;
             /* Khoảng cách giữa các mục */
         }
+
+        /* Bố cục tổng thể */
+        .pagination-nav {
+            display: flex;
+            justify-content: flex-end; /* Căn về góc phải */
+            padding: 10px;
+            margin-top: 20px;
+        }
+
+        .pagination {
+            list-style: none;
+            display: flex;
+            gap: 5px;
+            padding: 0;
+            margin: 0;
+        }
+
+        /* Định dạng từng mục phân trang */
+        .page-item {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 5px 10px;
+            text-align: center;
+            font-size: 14px; /* Kích thước nhỏ hơn */
+            background-color: white;
+            color: gray;
+        }
+
+        .page-item a {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        /* Hover màu xám */
+        .page-item:hover {
+            background-color: #f0f0f0;
+            color: gray;
+            cursor: pointer;
+        }
+
+        /* Mục đang được chọn */
+        .page-item.active {
+            background-color: #ddd; /* Màu xám */
+            color: gray;
+            pointer-events: none;
+            font-weight: bold;
+        }
+
+        /* Mục bị vô hiệu hóa */
+        .page-item.disabled {
+            color: #ccc;
+            pointer-events: none;
+            border-color: #eee;
+        }
+
+        /* Ẩn đường viền khi hover trên mục bị vô hiệu hóa */
+        .page-item.disabled:hover {
+            background-color: white;
+            cursor: not-allowed;
+        }
     </style>
 
 </head>
@@ -52,62 +113,25 @@
 <!-- PHẦN CONTENT -->
 <main class="content" layout:fragment="content">
     <h1 class="h3 mb-3"><strong>Candidate</strong></h1>
-    <!-- Form nhập -->
-    <!--            <div class="row mt-4">-->
-    <!--                <div class="col-12 col-lg-12 col-xxl-12">-->
-    <!--                    <div class="card flex-fill">-->
-    <!--                        <div class="card-header">-->
-    <!--                            <h5 class="card-title mb-0">Add New Candidate</h5>-->
-    <!--                        </div>-->
-    <!--                        <div class="card-body">-->
-    <!--                            <form>-->
-    <!--                                <div class="mb-3">-->
-    <!--                                    <label for="candidateName" class="form-label">Name</label>-->
-    <!--                                    <input type="text" class="form-control" id="candidateName" placeholder="Enter Candidate Name" required>-->
-    <!--                                </div>-->
-    <!--                                <div class="mb-3">-->
-    <!--                                    <label for="candidatePhone" class="form-label">Phone</label>-->
-    <!--                                    <input type="text" class="form-control" id="candidatePhone" placeholder="Enter Phone Number" required>-->
-    <!--                                </div>-->
-    <!--                                <div class="mb-3">-->
-    <!--                                    <label for="candidateAddress" class="form-label">Address</label>-->
-    <!--                                    <input type="text" class="form-control" id="candidateAddress" placeholder="Enter Address" required>-->
-    <!--                                </div>-->
-    <!--                                <div class="mb-3">-->
-    <!--                                    <label for="candidateSex" class="form-label">Sex</label>-->
-    <!--                                    <select class="form-select" id="candidateSex" required>-->
-    <!--                                        <option value="">Select Sex</option>-->
-    <!--                                        <option value="Male">Male</option>-->
-    <!--                                        <option value="Female">Female</option>-->
-    <!--                                        <option value="Other">Other</option>-->
-    <!--                                    </select>-->
-    <!--                                </div>-->
-    <!--                                <div class="mb-3">-->
-    <!--                                    <label for="candidateDob" class="form-label">Date of Birth</label>-->
-    <!--                                    <input type="date" class="form-control" id="candidateDob" required>-->
-    <!--                                </div>-->
-    <!--                                <div class="mb-3">-->
-    <!--                                    <label for="candidateImage" class="form-label">Upload Image</label>-->
-    <!--                                    <input type="file" class="form-control" id="candidateImage">-->
-    <!--                                </div>-->
-    <!--                                <button type="submit" class="btn btn-primary">Submit</button>-->
-    <!--                            </form>-->
-    <!--                        </div>-->
-    <!--                    </div>-->
-    <!--                </div>-->
-    <!--            </div>-->
 
-
-
-    <!-- Table -->
     <div class="row">
 
         <div class="col-12 col-lg-12 col-xxl-12 ">
             <div class="card flex-fill">
                 <div class="card-header">
+                    <div class="filter-bar mb-3 gap-2">
 
-                    <h5 class="card-title mb-0">Candidate</h5>
+
+                        <form method="get" th:action="@{/admin/candidates}" class="d-flex gap-2">
+                            <!-- Input Tìm kiếm theo tên ứng viên -->
+                            <input type="text" name="name" placeholder="Tìm kiếm theo tên ứng viên"
+                                   th:value="${searchKeyword}" class="form-control form-control-sm">
+                            <!-- Nút Tìm kiếm -->
+                            <button type="submit" class="btn btn-primary btn-sm"><i class="align-middle" data-feather="search"></i></button>
+                        </form>
+                    </div>
                 </div>
+
                 <table class="table table-hover my-0">
                     <thead>
                     <tr>
@@ -118,7 +142,7 @@
                         <th>Địa chỉ</th>
                         <th>Giới tính</th>
                         <th>Ngày sinh</th>
-                        <th>Actions</th> <!-- Thêm cột mới cho các nút -->
+
 
                     </tr>
                     </thead>
@@ -131,26 +155,65 @@
                         <td th:text="${candidate.address}"></td>
                         <td th:text="${candidate.sex}"></td>
                         <td th:text="${candidate.dateOfBirth}"></td>
-                        <td>
-                            <a th:href="@{'/admin/candidates/delete/' + ${candidate.id}}"
-                               class="btn btn-outline-danger btn-sm rounded-circle"
-                               style="width: 40px; height: 40px;"
-                               onclick="return confirm('Bạn có chắc chắn muốn xóa công ty này?');">
-                                <i class="align-middle" data-feather="lock"></i>
-                            </a>
-                        </td>
-                        <td>
-                            <a th:href="@{' ' + ${candidate.id}}"
-                               class="btn btn-outline-warning btn-sm rounded-circle"
-                               style="width: 40px; height: 40px;">
-                                <i class="align-middle" data-feather="eye"></i>
-                            </a>
-                        </td>
+
                     </tr>
 
 
                     </tbody>
                 </table>
+
+                <nav class="pagination-nav" th:if="${totalPages > 1}">
+                    <ul class="pagination">
+
+
+                        <li class="page-item previous-item" th:classappend="${currentPage == 1 ? 'disabled' : ''}">
+                            <a class="page-link" th:href="@{/admin/candidates(pageNo=${currentPage - 1})}">
+                                Previous
+                            </a>
+                        </li>
+
+
+                        <li class="page-item" th:if="${currentPage > 2}">
+                            <a class="page-link" th:href="@{/admin/candidates(pageNo=${1})}">1</a>
+                        </li>
+
+
+                        <li class="page-item disabled" th:if="${currentPage > 3}">
+                            <span class="page-link">...</span>
+                        </li>
+
+
+                        <li class="page-item" th:each="pageNumber : ${#numbers.sequence(currentPage - 1, currentPage + 1)}"
+                            th:classappend="${pageNumber == currentPage ? 'active' : ''}"
+                            th:if="${pageNumber > 0 && pageNumber <= totalPages}">
+
+                            <a class="page-link" th:href="@{/admin/candidates(pageNo=${pageNumber})}"
+                               th:text="${pageNumber}">
+                            </a>
+                        </li>
+
+
+
+                        <li class="page-item disabled" th:if="${currentPage < totalPages - 2}">
+                            <span class="page-link">...</span>
+                        </li>
+
+
+                        <li class="page-item" th:if="${currentPage < totalPages - 1}">
+                            <a class="page-link" th:href="@{/admin/candidates(pageNo=${totalPages})}"
+                               th:text="${totalPages}">
+                            </a>
+                        </li>
+
+
+                        <li class="page-item next-item" th:classappend="${currentPage == totalPages ? 'disabled' : ''}">
+                            <a class="page-link" th:href="@{/admin/candidates(pageNo=${currentPage + 1})}">
+                                Next
+                            </a>
+
+                        </li>
+                    </ul>
+                </nav>
             </div>
 
         </div>

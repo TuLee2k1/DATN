@@ -16,5 +16,4 @@ public class JobPostFollowResponse {
     private float minSalary;         // Lương tối thiểu
     private float maxSalary;         // Lương tối đa
     private String city;             // Thành phố
-    private Date endDate;            // Ngày hết hạn
 }

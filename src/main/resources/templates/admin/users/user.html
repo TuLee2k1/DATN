@@ -42,7 +42,116 @@
             margin-bottom: 15px;
             /* Khoảng cách giữa các mục */
         }
+        .custom-alert {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1050;
+            width: auto;
+            max-width: 300px;
+            padding: 10px 20px;
+            margin: 0;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .alert-success {
+            background-color: #28a745; /* Màu xanh cho thông báo thành công */
+            color: white;
+        }
+
+        .alert-warning {
+            background-color: #ffc107; /* Màu vàng cho thông báo lỗi */
+            color: black;
+        }
+
+        .custom-alert span {
+            display: inline-block;
+            width: 100%;
+        }
+
+        /* Bố cục tổng thể */
+        .pagination-nav {
+            display: flex;
+            justify-content: flex-end; /* Căn về góc phải */
+            padding: 10px;
+            margin-top: 20px;
+        }
+
+        .pagination {
+            list-style: none;
+            display: flex;
+            gap: 5px;
+            padding: 0;
+            margin: 0;
+        }
+
+        /* Định dạng từng mục phân trang */
+        .page-item {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 5px 10px;
+            text-align: center;
+            font-size: 14px; /* Kích thước nhỏ hơn */
+            background-color: white;
+            color: gray;
+        }
+
+        .page-item a {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        /* Hover màu xám */
+        .page-item:hover {
+            background-color: #f0f0f0;
+            color: gray;
+            cursor: pointer;
+        }
+
+        /* Mục đang được chọn */
+        .page-item.active {
+            background-color: #ddd; /* Màu xám */
+            color: gray;
+            pointer-events: none;
+            font-weight: bold;
+        }
+
+        /* Mục bị vô hiệu hóa */
+        .page-item.disabled {
+            color: #ccc;
+            pointer-events: none;
+            border-color: #eee;
+        }
+
+        /* Ẩn đường viền khi hover trên mục bị vô hiệu hóa */
+        .page-item.disabled:hover {
+            background-color: white;
+            cursor: not-allowed;
+        }
     </style>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var successAlert = document.querySelector('.alert-success');
+            var errorAlert = document.querySelector('.alert-warning');
+
+            // Nếu có thông báo thành công
+            if (successAlert) {
+                setTimeout(function() {
+                    successAlert.style.display = 'none'; // Ẩn thông báo sau 3 giây
+                }, 3000);
+            }
+
+            // Nếu có thông báo lỗi
+            if (errorAlert) {
+                setTimeout(function() {
+                    errorAlert.style.display = 'none'; // Ẩn thông báo sau 3 giây
+                }, 3000);
+            }
+        });
+    </script>
 
 </head>
 
@@ -52,16 +161,33 @@
 
 <!-- PHẦN CONTENT -->
 <main class="content" layout:fragment="content">
-    <h1 class="h3 mb-3"><strong>Candidate</strong></h1>
+    <h1 class="h3 mb-3"><strong>Quản lý tài khoản</strong></h1>
 
-    <!-- Table -->
+    <!-- Thông báo thành công -->
+    <div th:if="${message}" class="alert alert-success custom-alert" role="alert">
+        <span th:text="${message}"></span>
+    </div>
+
+    <!-- Thông báo lỗi -->
+    <div th:if="${error}" class="alert alert-warning custom-alert" role="alert">
+        <span th:text="${error}"></span>
+    </div>
+
+
+    <!-- Bảng quản lý tài khoản -->
     <div class="row">
-
         <div class="col-12 col-lg-12 col-xxl-12 ">
             <div class="card flex-fill">
                 <div class="card-header">
-
-                    <h5 class="card-title mb-0">Candidate</h5>
+                    <div class="filter-bar mb-3 gap-2">
+                        <form method="get" th:action="@{/admin/users}" class="d-flex gap-2">
+                            <!-- Input tìm kiếm theo email của tài khoản -->
+                            <input type="text" name="email" placeholder="Tìm kiếm theo email của tài khoản"
+                                   th:value="${searchKeyword}" class="form-control form-control-sm">
+                            <!-- Nút Tìm kiếm -->
+                            <button type="submit" class="btn btn-primary btn-sm"><i class="align-middle" data-feather="search"></i></button>
+                        </form>
+                    </div>
                 </div>
                 <table class="table table-hover my-0">
                     <thead>
@@ -72,9 +198,9 @@
                         <th>Email</th>
                         <th>Ngày tạo</th>
                         <th>Trạng thái</th>
+                        <th>Hoạt động</th>
                         <th>Vai trò</th>
-                        <th>Actions</th> <!-- Thêm cột mới cho các nút -->
-
+                        <th>Actions</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -84,39 +210,110 @@
                         <td th:text="${user.lastname}"></td>
                         <td th:text="${user.email}"></td>
                         <td th:text="${user.createdDate}"></td>
-
                         <td>
-                            <span th:if="${user.enabled}" class="text-success">Kích hoạt</span>
-                            <span th:if="${!user.enabled}" class="text-danger">Vô hiệu</span>
+                            <span th:if="${user.enabled}" class="text-success">Đã kích hoạt</span>
+                            <span th:if="${!user.enabled}" class="text-danger">Chưa kích hoạt</span>
                         </td>
                         <td>
+                            <!-- Trạng thái tài khoản -->
+                            <span th:if="${user.accountLocked}" class="text-danger">Đã khóa</span>
+                            <span th:if="${!user.accountLocked}" class="text-success">Đang hoạt động</span>
+                        </td>
+                        <td>
+                            <!-- Danh sách vai trò -->
                             <ul>
                                 <li th:each="role : ${user.roles}" th:text="${role.role}"></li>
                             </ul>
                         </td>
                         <td>
-                            <a
-                               class="btn btn-outline-danger btn-sm rounded-circle"
-                               style="width: 40px; height: 40px;"
-                               onclick="return confirm('Bạn có chắc chắn muốn xóa công ty này?');">
-                                <i class="align-middle" data-feather="lock"></i>
-                            </a>
+                            <!-- Nút khóa tài khoản -->
+                            <form th:if="${!user.accountLocked}" th:action="@{/admin/users/{id}/lock(id=${user.id})}"  method="post" style="display: inline;">
+                                <button type="submit"
+                                        class="btn btn-outline-danger btn-sm rounded-circle"
+                                        style="width: 40px; height: 40px;"
+
+                                        onclick="return confirm('Bạn có chắc chắn muốn khóa tài khoản này?');">
+                                    <i class="align-middle" data-feather="lock"></i>
+                                </button>
+                            </form>
+
+                            <form th:if="${user.accountLocked}" th:action="@{/admin/users/{id}/unlock(id=${user.id})}" method="post" style="display: inline;">
+                                <button type="submit"
+                                        class="btn btn-outline-success btn-sm rounded-circle"
+                                        style="width: 40px; height: 40px;"
+
+                                        onclick="return confirm('Bạn có chắc chắn muốn mở khóa tài khoản này?');">
+                                    <i class="align-middle" data-feather="unlock"></i>
+                                </button>
+                            </form>
+
                         </td>
-
                     </tr>
-
-
                     </tbody>
                 </table>
-            </div>
+                <nav class="pagination-nav" th:if="${totalPages > 1}">
+                    <ul class="pagination">
 
+
+                        <li class="page-item previous-item" th:classappend="${currentPage == 1 ? 'disabled' : ''}">
+                            <a class="page-link" th:href="@{/admin/users(pageNo=${currentPage - 1})}">
+                                Previous
+                            </a>
+                        </li>
+
+
+                        <li class="page-item" th:if="${currentPage > 2}">
+                            <a class="page-link" th:href="@{/admin/users(pageNo=${1})}">1</a>
+                        </li>
+
+
+                        <li class="page-item disabled" th:if="${currentPage > 3}">
+                            <span class="page-link">...</span>
+                        </li>
+
+
+                        <li class="page-item" th:each="pageNumber : ${#numbers.sequence(currentPage - 1, currentPage + 1)}"
+                            th:classappend="${pageNumber == currentPage ? 'active' : ''}"
+                            th:if="${pageNumber > 0 && pageNumber <= totalPages}">
+
+                            <a class="page-link" th:href="@{/admin/users(pageNo=${pageNumber})}"
+                               th:text="${pageNumber}">
+                            </a>
+                        </li>
+
+
+
+                        <li class="page-item disabled" th:if="${currentPage < totalPages - 2}">
+                            <span class="page-link">...</span>
+                        </li>
+
+
+                        <li class="page-item" th:if="${currentPage < totalPages - 1}">
+                            <a class="page-link" th:href="@{/admin/users(pageNo=${totalPages})}"
+                               th:text="${totalPages}">
+                            </a>
+                        </li>
+
+
+                        <li class="page-item next-item" th:classappend="${currentPage == totalPages ? 'disabled' : ''}">
+                            <a class="page-link" th:href="@{/admin/users(pageNo=${currentPage + 1})}">
+                                Next
+                            </a>
+
+                        </li>
+                    </ul>
+                </nav>
+            </div>
         </div>
     </div>
+
 </main>
 
 
 
 <script src="/js/app.js"></script>
+
+
 
 
 </body>

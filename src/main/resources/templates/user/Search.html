@@ -1,0 +1,669 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Bar</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="shortcut icon" href="/Admin/images/logo-icon.png">
+
+    <link rel="stylesheet" href="/css/custom-bs.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/css/bootstrap-select.min.css">
+
+    <link rel="stylesheet" href="/fonts/icomoon/style.css">
+    <link rel="stylesheet" href="/fonts/line-icons/style.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+
+    <script src="https://cdn.tailwindcss.com">
+    </script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+    <!-- MAIN CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+
+        .relative {
+            position: relative; /* Đặt vị trí cho phần tử cha */
+        }
+
+        #userInfo {
+            display: none;
+            align-items: center; /* Căn giữa các phần tử trong userInfo */
+            margin-left: auto; /* Đẩy toàn bộ userInfo sang bên phải */
+        }
+        #userInfo1 {
+            display: none;
+
+        }
+
+        #userInfo2 {
+            display: none;
+
+        }
+
+        #username {
+            display: inline-block; /* Để có thể áp dụng max-width */
+            max-width: 60px; /* Chiều rộng tối đa của tên người dùng */
+            overflow: hidden; /* Ẩn nội dung vượt quá */
+            white-space: nowrap; /* Ngăn chặn xuống dòng */
+        }
+
+        #dropdownMenu {
+            display: none; /* Ẩn danh sách thả xuống mặc định */
+            z-index: 1000; /* Đảm bảo danh sách thả xuống nằm trên các phần tử khác */
+            min-width: 150px; /* Đặt chiều rộng tối thiểu cho menu */
+            top: 100%; /* Đặt vị trí của menu ngay phía dưới tên người dùng */
+            right: 0; /* Căn phải menu với tên người dùng */
+            margin-top: 0px; /* Khoảng cách giữa tên người dùng và menu */
+            background-color: white; /* Màu nền của menu */
+            border: 1px solid #ccc; /* Đường viền cho menu */
+            border-radius: 4px; /* Bo góc cho menu */
+        }
+
+        a {
+            text-decoration: none; /* Xóa gạch chân cho liên kết */
+            color: black; /* Màu chữ cho liên kết */
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .disabled {
+            pointer-events: none; /* Ngăn không cho nhấn */
+            opacity: 0.5; /* Làm mờ nút */
+        }
+
+        #userInfo:hover #dropdownMenu {
+            display: block; /* Hiện dropdown menu khi hover vào userInfo */
+        }
+
+
+        #userInfo #dropdownMenu a{
+            text-decoration: none;
+        }
+
+        #tuyendung:hover{
+            opacity: 0.5;
+        }
+
+    </style>
+    <script>
+
+        document.addEventListener("DOMContentLoaded", function () {
+            // document.getElementById('userInfo').classList.add('d-none');
+            // Kiểm tra xem có thông tin người dùng trong localStorage không
+            const userInfo = localStorage.getItem('userInfo');
+            // const defaultAvatar = 'Admin/images/person_1';
+            if (userInfo) {
+                // Nếu có, chuyển đổi chuỗi JSON thành đối tượng
+                const user = JSON.parse(userInfo);
+
+                // Hiển thị thông tin người dùng
+                // Kiểm tra avatar và gán giá trị
+                // const avatarSrc = user.avatar ? user.avatar : defaultAvatar;
+                // document.getElementById('userAvatar').src = avatarSrc;
+                document.getElementById('username1').textContent = user.userInfo.fullName;
+                document.getElementById('username').textContent = user.userInfo.fullName;// Giả sử username là thuộc tính trong user
+                console.log(user.userInfo.fullName);
+                document.getElementById('authButtons').style.display = 'none';
+                // document.getElementById('loginBtn1').style.display = 'none';
+                // document.getElementById('signupBtn1').style.display = 'none';
+                document.getElementById('userInfo').style.display = 'flex';
+                // document.getElementById('username1').style.display = 'flex'; // Hoặc 'block' tùy thuộc vào layout
+            } else {
+                // Nếu không có thông tin người dùng, đảm bảo rằng các nút vẫn hiển thị
+                document.getElementById('authButtons').style.display = 'block';
+                // document.getElementById('loginBtn1').style.display = 'block';
+                // document.getElementById('signupBtn1').style.display = 'block';
+                document.getElementById('userInfo').style.display = 'none';
+                // document.getElementById('userInfo1').style.display = 'none';
+                // document.getElementById('userInfo2').style.display = 'none';// Hoặc 'block' tùy thuộc vào layout
+            }
+        });
+
+        // Hàm để kiểm tra kích thước cửa sổ
+        function checkWindowSize() {
+            const userInfo1 = document.getElementById('userInfo1');
+            const userInfo2 = document.getElementById('userInfo2');
+            const userInfo = document.getElementById('userInfo'); // Nếu bạn vẫn cần kiểm tra userInfo
+            const userlogin = localStorage.getItem('userInfo');
+            const btnSignup = document.getElementById('signupBtn1');
+            const btnLogin = document.getElementById('loginBtn1');
+            if(userlogin) {
+                if (window.innerWidth < 768) { // Ngưỡng cho thiết bị di động
+                    userInfo1.style.display = 'block'; // Hiện userInfo1
+                    userInfo2.style.display = 'block'; // Hiện userInfo2
+                    userInfo.style.display = 'none'; // Ẩn userInfo
+                    btnSignup.style.display = 'none';
+                    btnLogin.style.display = 'none'
+                } else {
+                    userInfo1.style.display = 'none'; // Ẩn userInfo1
+                    userInfo2.style.display = 'none'; // Ẩn userInfo2
+                    userInfo.style.display = 'flex'; // Hiện userInfo
+                }
+            }
+        }
+
+        // Kiểm tra kích thước cửa sổ khi tải trang
+        window.onload = checkWindowSize;
+
+        // Kiểm tra kích thước cửa sổ khi thay đổi kích thước
+        window.onresize = checkWindowSize;
+
+        function checkActivity() {
+            let data;
+            try {
+                data = JSON.parse(localStorage.getItem('userInfo'));
+            } catch (error) {
+                console.error("Error parsing userInfo from localStorage:", error);
+                return; // Dừng hàm nếu có lỗi
+            }
+
+            if (data) {
+                const currentTime = Date.now();
+                const inactivityTime = currentTime - data.lastActive;
+
+                // Nếu không hoạt động quá 5 phút (300000 ms), xóa thông tin người dùng
+                if (inactivityTime > 300000) {
+                    localStorage.removeItem('userInfo');
+                    console.log("User  info removed due to inactivity.");
+                } else {
+                    // Cập nhật thời gian hoạt động
+                    data.lastActive = currentTime;
+                    localStorage.setItem('userInfo', JSON.stringify(data));
+                }
+            }
+        }
+
+        // Lắng nghe các sự kiện để cập nhật thời gian hoạt động
+        window.addEventListener('mousemove', checkActivity);
+        window.addEventListener('keydown', checkActivity);
+        window.addEventListener('scroll', checkActivity);
+        window.addEventListener('click', checkActivity);
+
+        // Kiểm tra định kỳ mỗi phút (60000 ms)
+        setInterval(checkActivity, 60000);
+
+        // Giả sử bạn đã có hàm setUser Info và checkActivity như đã nêu ở trên
+
+
+    </script>
+
+
+</head>
+<body id="top">
+<div class="site-wrap">
+
+    <div class="site-mobile-menu site-navbar-target">
+        <div class="site-mobile-menu-header">
+            <div class="site-mobile-menu-close mt-3">
+                <span class="icon-close2 js-menu-toggle"></span>
+            </div>
+        </div>
+        <div class="site-mobile-menu-body"></div>
+    </div> <!-- .site-mobile-menu -->
+
+    <header class="site-navbar mt-3">
+        <div class="container-fluid">
+            <div class="row align-items-center">
+                <div class="site-logo col-6"><a href="http://localhost:8080">Dream Job</a></div>
+
+                <nav class="mx-auto site-navigation">
+                    <ul class="site-menu js-clone-nav d-none d-xl-block ml-0 pl-0">
+                        <li><a href="http://localhost:8080" class="nav-link active">Trang Chủ</a></li>
+                        <li id="about"><a>Về Chúng Tôi</a></li>
+
+                        <li id="contact"><a>Liên Hệ</a></li>
+                        <li id="signupBtn1" class="d-lg-none"><a><span class="mr-2 icon-add"></span>Đăng Kí</a></li>
+                        <li id="loginBtn1" class="d-lg-none"><a><span class="mr-2 icon-lock_outline">Đăng Nhập</a></li>
+                        <li class="has-children" id="userInfo2">
+
+                            <a id="username1" class="text-lg font-semibold">Lê</a>
+                            <!-- Dropdown menu -->
+                            <ul id="dropdownMenu1" class="dropdown">
+                                <li> <a href=""  id="dashboard1">Tài khoản</a></li>
+                                <li> <a href=""  id="logoutBtn1">Đăng xuất</a></li>
+                            </ul>
+                        </li>
+                        <li id="userInfo1">
+
+                            <a id="tuyendung1" class="text-lg font-semibold">
+                                <div class="text-xs">DÀNH CHO</div>
+                                <!--                                    <i class="fas fa-briefcase text-blue-400"></i>-->
+                                <p class="text-lg font-semibold">Nhà Tuyển Dụng</p>
+                                <div class="text-xs">Đăng tin miễn phí</div>
+                            </a>
+
+                        </li>
+                    </ul>
+                </nav>
+
+                <div class="right-cta-menu text-right d-flex align-items-center col-6">
+                    <div id="authButtons" class="ml-auto">
+                        <button id="signupBtn" class="btn btn-outline-white border-width-2 d-none d-lg-inline-block">
+                            <span class="mr-2 icon-add"></span>Đăng Ký
+                        </button>
+                        <button id="loginBtn" class="btn btn-primary border-width-2 d-none d-lg-inline-block">
+                            <span class="mr-2 icon-lock_outline"></span>Đăng Nhập
+                        </button>
+                    </div>
+
+<!--                    <div id="userInfo" class="flex items-center p-4" style="display: flex; position: relative;">-->
+<!--                        &lt;!&ndash; Notification Bell &ndash;&gt;-->
+<!--                        &lt;!&ndash;                            <div class="relative">&ndash;&gt;-->
+<!--                        &lt;!&ndash;                                <i class="fas fa-bell text-white text-xl"></i>&ndash;&gt;-->
+<!--                        &lt;!&ndash;                                <button class="absolute top-0 right-0 bg-red-600 text-white text-xs rounded-full px-1">1</button>&ndash;&gt;-->
+<!--                        &lt;!&ndash;                            </div>&ndash;&gt;-->
+<!--                        &lt;!&ndash; User Icon &ndash;&gt;-->
+<!--                        <div class="ml-4">-->
+<!--                            <div class="w-8 h-8 bg-white rounded-full flex items-center justify-center">-->
+<!--                                <i class="fas fa-user text-purple-800"></i>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div class="ml-2 text-white flex items-center relative">-->
+<!--                            <span id="username" class="cursor-pointer truncate" style="max-width: 100px;">Lê</span>-->
+<!--                            <i class="fas fa-caret-down ml-1"></i>-->
+
+<!--                            &lt;!&ndash; Dropdown menu &ndash;&gt;-->
+<!--                            <div id="dropdownMenu"-->
+<!--                                 class="absolute right-0 bg-white text-black shadow-lg mt-2 rounded hidden">-->
+<!--                                <a href="#" class="block px-4 py-2 hover:bg-gray-200" id="dashboard">Tài khoản</a>-->
+<!--                                <a href="#" class="block px-4 py-2 hover:bg-gray-200" id="logoutBtn">Đăng xuất</a>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        &lt;!&ndash; Divider &ndash;&gt;-->
+<!--                        <div class="ml-4 border-l border-white h-6"></div>-->
+<!--                        &lt;!&ndash; Employer Section &ndash;&gt;-->
+<!--                        <div class="ml-4 text-white flex items-center">-->
+<!--                            <i class="fas fa-briefcase text-blue-400"></i>-->
+<!--                            <div id="tuyendung" class="ml-2">-->
+<!--                                <div class="text-xs">DÀNH CHO</div>-->
+<!--                                <div class="text-lg font-semibold">Nhà Tuyển Dụng</div>-->
+<!--                                <div class="text-xs">Đăng tin miễn phí</div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+                    <div id="userInfo" class="flex items-center p-4">
+                        <div id="avt" class="ml-4">
+                            <img src="/img/avatars/avatar-2.jpg" class="w-8 h-8 bg-white rounded-full flex items-center justify-center">
+
+                        </div>
+
+                        <div id="name" class="ml-2 text-white flex items-center relative">
+                            <span id="username" class="cursor-pointer truncate" style="max-width: 100px;">Lê</span>
+                            <i class="fas fa-caret-down ml-1"></i>
+
+                            <!-- Dropdown menu -->
+                            <div id="dropdownMenu"
+                                 class="absolute right-0 bg-white text-black shadow-lg mt-2 rounded hidden">
+                                <a href="#" class="block px-4 py-2 hover:bg-gray-200" id="dashboard">Tài khoản</a>
+                                <a href="#" class="block px-4 py-2 hover:bg-gray-200" id="logoutBtn">Đăng xuất</a>
+                            </div>
+                        </div>
+
+                        <!-- Divider -->
+                        <div class="ml-4 border-l border-white h-6"></div>
+                        <!-- Employer Section -->
+                        <div id="tuyendung" class="ml-4 text-white flex items-center">
+                            <i class="fas fa-briefcase text-blue-400"></i>
+                            <div  class="ml-2">
+                                <div class="text-xs">DÀNH CHO</div>
+                                <div class="text-lg font-semibold">Nhà Tuyển Dụng</div>
+                                <div class="text-xs">Đăng tin miễn phí</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <a href="#" class="site-menu-toggle js-menu-toggle d-inline-block d-xl-none mt-lg-2 ml-3">
+                        <span class="icon-menu h3 m-0 p-0 mt-2"></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="section-hero overlay inner-page bg-image" style="background-image: url('/Admin/images/hero_1.jpg');" id="home-section">
+
+        <div class="container">
+            <form id="filter-options" method="post" class="search-jobs-form" th:action="@{/Tim-kiem}">
+            <div class="row align-items-center justify-content-center">
+                <div class="col-md-12">
+
+    <div  class="bg-washed-green-800 p-4 rounded-t-lg">
+        <div class="flex items-center space-x-2">
+            <div class="relative flex-grow">
+                <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                <input type="text" name="searchTerm" id="searchTerm" placeholder="Công việc, công ty,..." class="pl-10 pr-4 py-2 w-full rounded-md focus:outline-none" th:value="${searchTerm}">
+            </div>
+            <div class="relative">
+                <select id="jobCategoryId" name="jobCategory" class="pl-4 pr-8 py-2 rounded-md focus:outline-none">
+                    <option value="">Tất cả ngành nghề</option>
+                    <option th:each="category : ${jobCategories}"
+                            th:value="${category.getId()}"
+                            th:text="${category.getCategoryName()}"
+                            th:selected="${category.getId() == selectedJobCategoryId}">
+                    </option>
+                </select>
+            </div>
+            <div class="relative">
+                <select id="location" name="location" class="pl-4 pr-8 py-2 rounded-md focus:outline-none">
+                    <option value="">Tất cả tỉnh thành</option>
+                    <option th:each="province : ${provinces}"
+                            th:value="${province}"
+                            th:text="${province}"
+                            th:selected="${province == location}"> <!-- Giữ lại giá trị đã chọn -->
+                    </option>
+                </select>
+            </div>
+            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md">Tìm kiếm</button>
+            <button id="filter" class="bg-purple-700 text-white px-4 py-2 rounded-md">Lọc nâng cao</button>
+        </div>
+    </div>
+
+    <div  class="bg-white p-4 rounded-b-lg shadow-md">
+        <div class="flex items-center space-x-2">
+            <button class="flex items-center space-x-1 text-orange-500">
+                <i class="fas fa-bolt"></i>
+                <span>Tuyển gấp</span>
+            </button>
+            <div class="relative">
+                <select id="exp" name= "exp" class="pl-4 pr-8 py-2 rounded-md focus:outline-none">
+                    <option value="">Tất cả kinh nghiệm</option>
+                    <option th:each="experience : ${T(poly.com.Enum.Exp).values()}"
+                            th:value="${experience}"
+                            th:text="${experience.getName()}"
+                            th:selected="${experience == Exp}">
+                    </option>
+                </select>
+            </div>
+            <div class="relative">
+                <select class="pl-4 pr-8 py-2 rounded-md focus:outline-none">
+                    <option>Tất cả mức lương</option>
+                </select>
+            </div>
+            <div class="relative">
+                <select id="jobLevel" name="jobLevel" class="pl-4 pr-8 py-2 rounded-md focus:outline-none">
+                    <option value="">Tất cả cấp bậc</option>
+                    <option th:each="level : ${T(poly.com.Enum.JobLevel).values()}"
+                            th:value="${level}"
+                            th:text="${level.getName()}"
+                            th:selected="${level == jobLevel}">
+
+                    </option>
+                </select>
+            </div>
+<!--            <div class="relative">-->
+<!--                <select class="pl-4 pr-8 py-2 rounded-md focus:outline-none">-->
+<!--                    <option>Tất cả trình độ</option>-->
+<!--                </select>-->
+<!--            </div>-->
+            <div class="relative">
+                <select id="workType" name="workType" class="pl-4 pr-8 py-2 rounded-md focus:outline-none">
+                    <option value="">Tất cả loại công việc</option>
+                    <option th:each="type : ${T(poly.com.Enum.WorkType).values()}"
+                            th:value="${type}"
+                            th:text="${type.getName()}"
+                            th:selected="${type == WorkType}">
+                    </option>
+                </select>
+            </div>
+<!--            <div class="relative">-->
+<!--                <select class="pl-4 pr-8 py-2 rounded-md focus:outline-none">-->
+<!--                    <option>Tất cả giới tính</option>-->
+<!--                </select>-->
+<!--            </div>-->
+            <button id="reset" class="text-blue-500">Xoá chọn</button>
+            <button id="close" class="text-gray-500">Đóng</button>
+        </div>
+    </div>
+        </div>
+            </div>
+            </form>
+        </div>
+
+        </section>
+
+    <div class="bg-gray-100 p-4">
+        <div class="max-w-4xl mx-auto">
+            <div class="flex justify-end mb-4">
+                <div class="relative">
+                    <select id="sortOptions" onchange="sortJobs()" class="block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                        <option value="relevance">Phù hợp nhất</option>
+                        <option value="newest">Mới nhất</option>
+                        <option value="highestSalary">Lương cao nhất</option>
+                    </select>
+                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                        <i class="fas fa-chevron-down">
+                        </i>
+                    </div>
+                </div>
+            </div>
+            <ul class="job-listings mb-5" th:each="job : ${jobListings}">
+                <li class="job-listing d-block d-sm-flex pb-3 pb-sm-0 align-items-center">
+                    <a th:href="@{/job-posts/detail/{id}(id=${job.id})}" class="w-100"></a>
+                    <div class="job-listing-logo">
+                        <img th:src="${job?.companyLogoUrl != null && !#strings.isEmpty(job.companyLogoUrl)
+? '/uploads/logocompany/' + job.companyLogoUrl
+: '/Admin/images/person_3.jpg'}" class="img-fluid">
+                    </div>
+
+                    <div class="job-listing-about d-sm-flex custom-width w-100 justify-content-between mx-4">
+                        <div class="job-listing-position custom-width w-50 mb-3 mb-sm-0">
+                            <h2 th:text="${job.jobTitle}">Tên công việc</h2>
+                            <strong th:text="${job.companyName}">Tên công ty</strong>
+                        </div>
+                        <div class="job-listing-location mb-3 mb-sm-0 custom-width w-25">
+                            <span class="icon-room"></span> <span th:text="${job.getCity()}">Vị trí</span>
+                        </div>
+                        <div class="job-listing-meta">
+                <span th:with="status=${job.workType.name()}"
+                      th:class="${'badge ' +
+                      (status == 'PART_TIME' ? 'bg-success' :
+                       status == 'FULL_TIME' ? 'bg-info' : 'bg-danger')}"
+                      th:text="${status}"></span>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+
+            <div class="row pagination-wrap">
+                <div class="col-md-6 text-center text-md-right">
+                    <div class="custom-pagination ml-auto">
+                        <a th:href="${currentPage == 1} ? '#' : @{/Tim-kiem(status='ACTIVE', page=1, size=10)}"
+                           class="prev"
+                           th:classappend="${currentPage == 1} ? 'disabled'">Prev</a>
+                        <div class="d-inline-block">
+                <span th:each="i : ${#numbers.sequence(1, totalPages)}">
+                    <a th:href="@{/Tim-kiem(status='ACTIVE', page=${i}, size=10)}"
+                       th:classappend="${i == currentPage} ? 'active'">
+                        <span th:text="${i}"></span>
+                    </a>
+                </span>
+                        </div>
+                        <a th:href="${currentPage == totalPages} ? '#' : @{/Tim-kiem(status='ACTIVE', page=${currentPage + 1}, size=10)}"
+                           class="next"
+                           th:classappend="${currentPage == totalPages} ? 'disabled'">Next</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+</div>
+
+<script>
+    function setFormValues() {
+        const urlParams = new URLSearchParams(window.location.search);
+
+        // Thiết lập giá trị cho input tìm kiếm
+        const searchTerm = urlParams.get('searchTerm') || '';
+        document.getElementById('searchTerm').value = searchTerm;
+
+        // Thiết lập giá trị cho dropdown ngành nghề
+        const jobCategoryId = urlParams.get('jobCategory') || '';
+        document.getElementById('jobCategoryId').value = jobCategoryId;
+
+        // Thiết lập giá trị cho dropdown địa điểm
+        const location = urlParams.get('location') || '';
+        document.getElementById('location').value = location;
+
+        // Thiết lập giá trị cho dropdown kinh nghiệm
+        const exp = urlParams.get('exp') || '';
+        document.getElementById('exp').value = exp;
+
+        // Thiết lập giá trị cho dropdown cấp bậc
+        const jobLevel = urlParams.get('jobLevel') || '';
+        document.getElementById('jobLevel').value = jobLevel;
+
+        // Thiết lập giá trị cho dropdown loại công việc
+        const workType = urlParams.get('workType') || '';
+        document.getElementById('workType').value = workType;
+    }
+
+    // Gọi hàm khi trang được tải
+    window.onload = setFormValues;
+
+    function sortJobs() {
+        const selectElement = document.getElementById('sortOptions');
+        const selectedValue = selectElement.value;
+
+        // Gọi hàm để tải lại danh sách công việc với tham số sắp xếp
+        window.location.href = `/Tim-kiem?sortBy=${selectedValue}`;
+    }
+
+    // Hàm để thiết lập giá trị cho dropdown từ URL
+    function setSortOption() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const sortBy = urlParams.get('sortBy') || 'relevance'; // Mặc định là 'relevance'
+        const selectElement = document.getElementById('sortOptions');
+        selectElement.value = sortBy; // Thiết lập giá trị cho dropdown
+    }
+
+    // Gọi hàm khi trang được tải
+    window.onload = setSortOption;
+
+    document.getElementById('filter').addEventListener('click', function(event) {
+        event.preventDefault();
+        const filterOptions = document.getElementById('filter-options');
+        // Kiểm tra xem khối tùy chọn lọc có đang hiển thị hay không
+        if (filterOptions.classList.contains('hidden')) {
+            // Nếu đang ẩn, hiển thị nó
+            filterOptions.classList.remove('hidden');
+        } else {
+            // Nếu đang hiển thị, ẩn nó
+            filterOptions.classList.add('hidden');
+        }
+    });
+
+    document.getElementById('close').addEventListener('click', function(event) {
+        event.preventDefault();
+        const filterOptions = document.getElementById('filter-options');
+        // Kiểm tra xem khối tùy chọn lọc có đang hiển thị hay không
+        if (filterOptions.classList.contains('hidden')) {
+            // Nếu đang ẩn, hiển thị nó
+            filterOptions.classList.remove('hidden');
+        } else {
+            // Nếu đang hiển thị, ẩn nó
+            filterOptions.classList.add('hidden');
+        }
+    });
+
+    document.getElementById('reset').addEventListener('click', function(event) {
+        event.preventDefault(); // Ngăn chặn hành động mặc định của nút nếu cần
+
+        // Lấy tất cả các select trong filter-options
+        const selects = document.querySelectorAll('#filter-options select');
+
+        // Đặt lại giá trị của từng select về giá trị mặc định
+        selects.forEach(select => {
+            select.selectedIndex = 0; // Đặt lại về tùy chọn đầu tiên
+        });
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+        console.log('DOM fully loaded and parsed'); // Thông báo khi DOM đã được tải xong
+        const username = document.getElementById('username1');
+        const dropdownMenu = document.getElementById('dropdownMenu1');
+
+        username.addEventListener('click', (event) => {
+            event.stopPropagation(); // Ngăn chặn sự kiện click lan truyền
+            dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block'; // Chuyển đổi trạng thái hiển thị
+        });
+
+        document.addEventListener('click', () => {
+            dropdownMenu.style.display = 'none'; // Ẩn menu khi nhấp ra ngoài
+        });
+    });
+
+    // Thêm sự kiện cho nút đăng xuất
+    document.getElementById('logoutBtn').addEventListener('click', function () {
+        // Xóa thông tin người dùng khỏi localStorage
+        localStorage.removeItem('userInfo');
+        if(localStorage.getItem('userInfo')){
+            // Cập nhật giao diện người dùng
+            document.getElementById('authButtons').style.display = 'none';
+            document.getElementById('userInfo1').style.display = 'none';
+            document.getElementById('userInfo2').style.display = 'none';
+            document.getElementById('userInfo').style.display = 'flex';
+        }else {
+            document.getElementById('authButtons').style.display = 'none';
+            document.getElementById('userInfo').style.display = 'none';
+            console.log("User  logged out.");
+            window.location.href = "http://localhost:8080";
+        }
+    });
+
+    // Thêm sự kiện cho nút đăng xuất
+    document.getElementById('tuyendung').addEventListener('click', function () {
+        const getUserInfo = localStorage.getItem("userInfo")
+        if (getUserInfo) {
+            const userInfo = JSON.parse(getUserInfo);
+            const userRole = userInfo.userInfo.roles;
+            console.log(userRole);
+            console.log(userInfo);
+
+            if (userRole[0] === "ROLE_COMPANY" || userRole[0] === "ROLE_ADMIN") {
+
+                window.location.href = '/job-posts/create';
+            } else {
+                // Xóa thông tin người dùng khỏi localStorage
+                localStorage.removeItem('userInfo');
+                // Cập nhật giao diện người dùng
+                document.getElementById('loginBtn1').style.display = 'block';
+                document.getElementById('signupBtn1').style.display = 'block';
+                document.getElementById('username1').style.display = 'none';
+                document.getElementById('userInfo').style.display = 'none';
+                console.log("User  logged out.");
+                window.location.href = '/auth/login';
+            }
+        }
+
+    });
+</script>
+
+<script>
+    document.getElementById('loginBtn').addEventListener('click', function () {
+        // Chuyển hướng đến trang đăng nhập
+        window.location.href = '/auth/login';
+    });
+
+    document.getElementById('signupBtn').addEventListener('click', function () {
+        // Chuyển hướng đến trang đăng ký
+        window.location.href = '/auth/register/user';
+    });
+    document.getElementById('about').addEventListener('click', function () {
+        window.location.href = "about";
+    });
+    document.getElementById('contact').addEventListener('click', function () {
+        window.location.href = "contact";
+    });
+
+</script>
+
+
+</body>
+</html>

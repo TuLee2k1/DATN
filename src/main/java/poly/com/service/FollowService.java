@@ -1,18 +1,32 @@
 package poly.com.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import poly.com.Util.AuthenticationUtil;
+import poly.com.dto.request.followsRequest;
+import poly.com.dto.response.SavedJobPostResponse;
+import poly.com.model.Company;
+import poly.com.model.JobPost;
+import poly.com.model.User;
+import poly.com.repository.CompanyRepository;
+import poly.com.repository.JobPostRepository;
+import poly.com.util.AuthenticationUtil;
 import poly.com.dto.response.Follow.CompanyFollowResponse;
 import poly.com.dto.response.Follow.JobPostFollowResponse;
 import poly.com.model.Follow;
 import poly.com.repository.FollowRepository;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -20,7 +34,14 @@ import java.util.Optional;
 public class FollowService {
 
     private final FollowRepository followRepository;
-    private final AuthenticationUtil authenticationUtil; // Use final and constructor injection
+
+    private final AuthenticationUtil authenticationUtil;
+
+    @Autowired
+    private CompanyRepository companyRepository;
+
+    @Autowired
+    private JobPostRepository jobPostRepository;
 
     public Follow toggleFollowCompany(Long companyId) {
         var user = authenticationUtil.getAuthenticatedUser();
@@ -44,11 +65,17 @@ public class FollowService {
         return followRepository.save(follow); // Trả về đối tượng mới tạo
     }
 
-    public Follow toggleFollowJobPost(Long jobPostId) {
-        var user = authenticationUtil.getAuthenticatedUser();
 
-        // Kiểm tra xem người dùng đã theo dõi bài đăng này chưa
-        Optional<Follow> existingFollow = followRepository.findByUserIdAndJobPostId(user.getId(), jobPostId);
+    public Follow toggleFollowJobPost(Long jobPostId) {
+        System.out.println("jobpost: "+jobPostId);
+        User currentUser = authenticationUtil.getCurrentUser();
+
+        System.out.println("ấy user"+currentUser.getId());
+
+        // Kiểm tra xem người dùng đã theo dõi bài tuyển dụng này chưa
+        Optional<Follow> existingFollow = followRepository.findByUserIdAndJobPostId(currentUser.getId(), jobPostId);
+
+        System.out.println(existingFollow);
 
         if (existingFollow.isPresent()) {
             // Nếu đã theo dõi, xóa mối quan hệ
@@ -58,15 +85,37 @@ public class FollowService {
 
         // Nếu chưa theo dõi, tạo mối quan hệ mới
         Follow follow = Follow.builder()
-         .userId(user.getId())
-         .jobPostId(jobPostId)
-         .followDate(new Date())
-         .build();
+                .userId(currentUser.getId())
+                .jobPostId(jobPostId)
+                .followDate(new Date())
+                .build();
 
         return followRepository.save(follow);
     }
 
+
+    public Page<JobPostFollowResponse> getSavedJobs(Pageable pageable) {
+        User currentUser = authenticationUtil.getCurrentUser();
+        if (currentUser == null) {
+            throw new RuntimeException("Người dùng chưa đăng nhập.");
+        }
+        Page<JobPostFollowResponse> savedJobs = followRepository.findUserFollowedJobPosts(currentUser.getId(), pageable);
+        return savedJobs != null ? savedJobs : Page.empty();
+    }
+    public void unfollowJobPost(Long jobPostId) {
+        // Lấy người dùng hiện tại
+        User currentUser = authenticationUtil.getCurrentUser();
+        if (currentUser == null) {
+            throw new RuntimeException("Người dùng chưa đăng nhập.");
+        }
+
+
+        // Xóa trạng thái theo dõi
+        followRepository.deleteByJobPostIdAndUserId(jobPostId, currentUser.getId());
+    }
+
     public Follow toggleFollowUser(Long userId) {
+
         var companyId = authenticationUtil.getAuthenticatedUser().getCompany().getId();
 
         // Check if the company is already following the user
@@ -127,8 +176,7 @@ public class FollowService {
      * @update:
      *
      * */
-    public Page<JobPostFollowResponse> findUserFollowedJobPosts(Pageable pageable) {
-        var userId = authenticationUtil.getAuthenticatedUser().getId();
+    public Page<JobPostFollowResponse> findUserFollowedJobPosts(Long userId, Pageable pageable) {
         return followRepository.findUserFollowedJobPosts(userId, pageable);
     }
 
@@ -151,3 +199,4 @@ public class FollowService {
     }
 
 }
+

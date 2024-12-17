@@ -28,57 +28,74 @@
             href="/css/login&register.css"
     />
     <title>Modern Login Page</title>
+
 </head>
 
 <body>
 <div class="container" id="container">
     <div class="form-container sign-up">
-        <form action="/auth/company" method="post">
-            <b>First Name</b>
-            <input type="text" name="firstname" placeholder="Enter your first name" required minlength="2" maxlength="50" />
-            <b>Last Name</b>
-            <input type="text" name="lastname" placeholder="Enter your last name" required minlength="2" maxlength="50" />
-            <b>Email</b>
-            <input type="email" name="email" placeholder="Enter your email" required />
-            <b>Password</b>
-            <input type="password" name="password" placeholder="Enter your password" required minlength="6" />
-            <b>Confirm Password</b>
-            <input type="password" name="isPassword" placeholder="Confirm your password" required minlength="6" maxlength="20" />
-            <b>Company Name</b>
-            <input type="text" name="companyName" placeholder="Enter your company name" required minlength="2" maxlength="50" />
-            <b>City</b>
-            <input type="text" name="city" placeholder="Enter your city" required minlength="2" maxlength="50" />
-            <b>District</b>
-            <input type="text" name="district" placeholder="Enter your district" required />
-            <b>CompanyPhone</b>
-            <input type="number" name="companyPhone" placeholder="Enter your Company Phone" required />
-            <div class="agree">
-                <input class="checkbox" type="checkbox" required />
-                <label for="">
-                    <small> I agree to </small> <a href="">terms &amp; policy </a>
-                </label>
+        <form id="registrationForm" action="/auth/company" method="post">
+            <!-- Phần thông tin đăng nhập -->
+            <div id="loginInfo">
+                <h1 style="text-align: center">Đăng Kí Nhà Tuyển Dụng</h1>
+                <br>
+                <h3>Thông Tin Tài Khoản</h3>
+                <b>First Name</b>
+                <input type="text" name="firstname" placeholder="Enter your first name" required minlength="2" maxlength="50" />
+
+                <b>Last Name</b>
+                <input type="text" name="lastname" placeholder="Enter your last name" required minlength="2" maxlength="50" />
+
+                <b>Email</b>
+                <input type="email" name="email" id="email" placeholder="Enter your email" required />
+
+                <b>Password</b>
+                <input type="password" name="password" placeholder="Enter your password" required minlength="6" />
+
+                <b>Confirm Password</b>
+                <input type="password" name="isPassword" placeholder="Confirm your password" required minlength="6" maxlength="20" />
+
+                <button type="button" onclick="showCompanyInfo()">Next</button>
             </div>
 
-            <button type="submit">Sign Up</button>
-            <a href="/auth/login">Đã có tài khoản? Đăng Nhập Ngay</a>
-        </form>
-        <span class="or-divider text-center">Or use your email for register</span>
+            <!-- Phần thông tin công ty -->
+            <div id="companyInfo" style="display: none;">
+                <h3>Thông Tin Công Ty</h3>
+                <b>Company Name</b>
+                <input type="text" name="companyName" placeholder="Enter your company name" required minlength="2" maxlength="50" />
 
-        <div class="social-icons">
-            <a href="" class="icon"><img src="/img/photos/google.png" alt="" />Sign in with Google</a>
-            <a href="" class="icon"><img src="/img/photos/facebook.png" alt="" />Sign in with Facebook</a>
-        </div>
+                <b>City</b>
+                <input type="text" name="city" placeholder="Enter your city" required minlength="2" maxlength="50" />
+
+                <b>District</b>
+                <input type="text" name="district" placeholder="Enter your district" required />
+
+                <b>Company Phone</b>
+                <input type="number" name="companyPhone" placeholder="Enter your Company Phone" required />
+
+                <div class="agree">
+                    <input class="checkbox" type="checkbox" required />
+                    <label for="">
+                        <small> I agree to </small> <a href="">terms &amp; policy </a>
+                    </label>
+                </div>
+
+                <button type="submit" id="signUpButton2" >Đăng kí</button>
+                <a href="/auth/login">Đã có tài khoản? Đăng Nhập Ngay</a>
+            </div>
         </form>
+
+
     </div>
     <div class="form-container sign-in">
-        <form action="/auth/user" method="post">
+        <form action="/auth/user" method="post" >
             <h1 class="text-center">Đăng kí người tìm việc</h1>
             <b>First Name</b>
             <input type="text" name="firstname" placeholder="Enter your first name" required minlength="2" maxlength="50" />
             <b>Last Name</b>
             <input type="text" name="lastname" placeholder="Enter your last name" required minlength="2" maxlength="50" />
             <b>Email</b>
-            <input type="email" name="email" placeholder="Enter your email" required />
+            <input type="email" name="email" id="email1" placeholder="Enter your email" required />
             <b>Password</b>
             <input type="password" name="password" placeholder="Enter your password" required minlength="6" />
             <b>Confirm Password</b>
@@ -86,28 +103,12 @@
             <div class="agree">
                 <input class="checkbox" type="checkbox" required />
                 <label for="">
-                    <small> I agree to </small> <a href="">terms &amp; policy </a>
+                    <small> I agree to </small> <a href="">terms &amp;amp; policy </a>
                 </label>
             </div>
-<!--            <h1 class="text-center">Sign In</h1>-->
-<!--            <b>Email</b>-->
-<!--            <input type="email" name="email" placeholder="Enter your email" />-->
-<!--            <b>Password</b>-->
-<!--            <input type="password" name="password" placeholder="Enter your password" />-->
-<!--            <div class="agree">-->
-<!--                <input class="checkbox" type="checkbox" />-->
-<!--                <label for="">-->
-<!--                    <small> I agree to </small> <a href="">terms &amp; policy </a>-->
-<!--                </label>-->
-<!--            </div>-->
-            <button type="submit">Sign Up</button>
+            <button type="submit" id="signUpButton1" >Đăng kí</button>
             <a href="/auth/login">Đã có tài khoản? Đăng Nhập Ngay</a>
-            <span class="text-center">Or use your email for register</span>
 
-            <div class="social-icons">
-                <a href="" class="icon"><img src="/img/photos/google.png" alt="" />Login with Google</a>
-                <a href="" class="icon"><img src="/img/photos/facebook.png" alt="" />Login with Facebook</a>
-            </div>
         </form>
     </div>
     <div class="toggle-container">
@@ -191,5 +192,55 @@
         crossorigin="anonymous"
 ></script>
 <script src="/js/script.js"></script>
+<script>
+    document.getElementById('signUpButton1').addEventListener('click', function(event) {
+        addSession(); // Gọi hàm addSession
+        // Không cần ngăn chặn hành vi mặc định, form sẽ tự động gửi
+    });
+
+    document.getElementById('signUpButton2').addEventListener('click', function(event) {
+        addSession(); // Gọi hàm addSession
+        // Không cần ngăn chặn hành vi mặc định, form sẽ tự động gửi
+    });
+
+    function addSession(){
+        const email = document.getElementById('email').value;
+        const email1 = document.getElementById('email1').value;
+        console.log(email);
+        console.log(email1);
+        sessionStorage.setItem('userEmail', email);
+        sessionStorage.setItem('userEmail', email1);
+    }
+
+    function checkValidity() {
+        // Lấy tất cả các input trong phần thông tin đăng nhập
+        const inputs = document.querySelectorAll('#loginInfo input');
+        let isValid = true;
+
+        // Kiểm tra từng input
+        inputs.forEach(input => {
+            if (!input.checkValidity()) {
+                isValid = false;
+                input.reportValidity(); // Hiển thị thông báo lỗi cho trường không hợp lệ
+            }
+        });
+
+        return isValid;
+    }
+
+    function showCompanyInfo() {
+        const companyInfo = document.getElementById('companyInfo');
+
+        // Kiểm tra tính hợp lệ của các trường trong phần thông tin đăng nhập
+        if (checkValidity()) {
+            // Ẩn phần thông tin đăng nhập và hiển thị phần thông tin công ty
+            document.getElementById('loginInfo').style.display = 'none';
+            companyInfo.style.display = 'block';
+        } else {
+            // Nếu không hợp lệ, hiển thị thông báo lỗi
+            alert('Please fill in all required fields in the login information.');
+        }
+    }
+</script>
 </body>
 </html>

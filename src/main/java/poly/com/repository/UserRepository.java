@@ -17,4 +17,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("SELECT u FROM User u WHERE (:email IS NULL OR u.email LIKE %:email%)")
     Page<User> findByEmailContaining(@Param("email") String email, Pageable pageable);
+
 }

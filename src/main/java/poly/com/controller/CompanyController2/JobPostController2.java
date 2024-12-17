@@ -7,12 +7,14 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.data.domain.Page;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import poly.com.Enum.RoleType;
 import poly.com.Enum.StatusEnum;
@@ -24,10 +26,29 @@ import poly.com.dto.response.JobPost.JobListActiveResponse;
 import poly.com.dto.response.JobPost.JobListingResponse;
 import poly.com.dto.response.JobPost.JobPostResponse;
 import poly.com.dto.response.PageResponse;
+
 import poly.com.model.SubCategory;
 import poly.com.service.JobCategoryService;
 import poly.com.service.JobPostService;
 import poly.com.service.SubCategoryService;
+
+import poly.com.model.Follow;
+import poly.com.model.JobProfile;
+import poly.com.model.User;
+import poly.com.repository.FollowRepository;
+import poly.com.repository.JobPostRepository;
+import poly.com.service.*;
+import poly.com.util.AuthenticationUtil;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.*;
+import java.util.stream.Collectors;
+
+import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
+
 
 import java.util.List;
 
@@ -41,6 +62,11 @@ public class JobPostController2 {
     private final JobPostService jobPostService;
     private final JobCategoryService jobCategoryService;
     private final SubCategoryService subCategoryService;
+    private static String UPLOAD_DIR = System.getProperty("user.dir") + "/uploads/fileCV";
+    private final JobPostRepository jobPostRepository;
+    private final ApplyCVService applyCVService;
+    private final AuthenticationUtil authenticationUtil;
+    private final FollowRepository followRepository;
 
     // Phương thức hỗ trợ để chuẩn bị model cho form
     private void prepareModelForForm(Model model, AuthenticationResponse user) {
@@ -104,6 +130,7 @@ public class JobPostController2 {
             Model model,
             HttpSession session
     ) {
+        System.out.println("JobTitle:  " + request.getJobTitle());
         var ID = request.getId();
         System.out.println("Xem ID nhận biết Create hay Update ID:  " + ID);
         AuthenticationResponse user = (AuthenticationResponse) session.getAttribute("user");
@@ -116,6 +143,7 @@ public class JobPostController2 {
             model.addAttribute("isEdit", id != null);
             prepareModelForForm(model, user);
             model.addAttribute("errorMessage", "Có lỗi xảy ra: " + bindingResult.getAllErrors());
+            System.out.println(bindingResult.getAllErrors());
             model.addAttribute("jobPostRequest", request);
             return "Company/Taotintuyendung";
         }
@@ -145,22 +173,140 @@ public class JobPostController2 {
 
     // Chi tiết bài đăng
     @GetMapping("/detail/{id}")
-    public String showJobPostDetail(@PathVariable Long id, Model model) {
+    public String showJobPostDetail(@PathVariable Long id, Model model,
+                                    @RequestParam(defaultValue = "ACTIVE") String status,
+                                    @RequestParam(required = false) Integer pageNo, // Không có giá trị mặc định
+                                    @RequestParam(defaultValue = "5") Integer pageSize) {
+        // Nếu pageNo không được truyền từ frontend, gán giá trị mặc định là 1
+        if (pageNo == null) {
+            pageNo = 1;
+        }
+
+        // Lấy chi tiết công việc theo ID
         JobPostRequest jobPost = jobPostService.getJobPost(id);
+       Long jobPostId = jobPost.getId();
 
+        Date currentDate = new Date();
 
-        // Lấy danh sách công việc
-        Page<JobListActiveResponse> jobListings = jobPostService.getJobListingsByStatus("ACTIVE", 1, 10);
+        // Lấy danh sách công việc theo trạng thái
+        Page<JobListActiveResponse> jobListings = jobPostService.getJobListingsByStatus(status, pageNo, pageSize);
         model.addAttribute("jobListings", jobListings);
-        model.addAttribute("currentPage", 1);
+        model.addAttribute("currentPage", pageNo);
         model.addAttribute("totalPages", jobListings.getTotalPages());
+        model.addAttribute("currentDate", currentDate);
+        model.addAttribute("status", status);
 
         // Tạo DTO để bind dữ liệu
         ApplyCVRequest applicationForm = new ApplyCVRequest();
         model.addAttribute("applicationForm", applicationForm);
         model.addAttribute("jobPost", jobPost);
+        System.out.println("Id JOB: " + jobPost.getId());
 
+        // Lấy người dùng hiện tại
+        User currentUser = authenticationUtil.getCurrentUser();
+
+        if (currentUser == null) {
+            // Nếu người dùng chưa đăng nhập, bạn có thể xử lý thêm như trả về lỗi hoặc chuyển hướng
+            model.addAttribute("followStatus", "not_logged_in"); // Thêm trạng thái chưa đăng nhập
+            return "redirect:/auth/login?error=not_logged_in";
+        } else {
+            // Kiểm tra xem người dùng đã theo dõi công việc này chưa
+            System.out.println("User ID: " + currentUser.getId());
+            System.out.println("JobPostID: "+jobPostId);
+            Optional<Follow> existingFollow = followRepository.findByUserIdAndJobPostId(currentUser.getId(), jobPostId);
+            System.out.println(" present: "+existingFollow.isPresent());
+            if (existingFollow.isPresent()) {
+                model.addAttribute("followStatus", "followed"); // Người dùng đã theo dõi
+            } else {
+                model.addAttribute("followStatus", "not_followed"); // Người dùng chưa theo dõi
+            }
+        }
+
+        // Trả về view
         return "fragments/job-single";
+    }
+
+
+    // Xử lý submit form
+
+    @PostMapping("/detail/{jobPostId}")
+    public ResponseEntity<Map<String, String>> submitApplication(
+            @PathVariable Long jobPostId,
+            @Valid @ModelAttribute("applicationForm") ApplyCVRequest applicationForm,
+            BindingResult bindingResult, Model model
+    ) throws IOException {
+        Map<String, String> response = new HashMap<>();
+
+        JobPostRequest jobPost = jobPostService.getJobPost(jobPostId);
+        model.addAttribute("jobPost", jobPost);
+        // Kiểm tra validation
+        if (bindingResult.hasErrors()) {
+            // Nếu có lỗi, quay lại form
+            System.out.println(bindingResult.getAllErrors());
+            String errorMessage = bindingResult.getAllErrors().stream()
+                    .map(Object::toString)
+                    .collect(Collectors.joining(", "));
+            response.put("errorMessage", "Vui lòng kiểm tra lại thông tin: " + errorMessage);
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        String fileName = applicationForm.getResume().getOriginalFilename();
+        Path filePath = Paths.get(UPLOAD_DIR, fileName);
+        Files.write(filePath, applicationForm.getResume().getBytes());
+
+
+        // Kiểm tra file
+        MultipartFile resume = applicationForm.getResume();
+        if (resume == null || resume.isEmpty()) {
+            bindingResult.rejectValue("resume", "error.resume", "Vui lòng chọn file CV");
+            response.put("errorMessage", "Vui lòng chọn file CV.");
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        // Kiểm tra kích thước file (5MB)
+        if (resume.getSize() > 5 * 1024 * 1024) {
+            bindingResult.rejectValue("resume", "error.resume", "Kích thước file không được vượt quá 5MB");
+            response.put("errorMessage", "Kích thước file không được vượt quá 5MB.");
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        // Kiểm tra định dạng file
+        String originalFilename = resume.getOriginalFilename();
+        String fileExtension = originalFilename.substring(originalFilename.lastIndexOf(".") + 1).toLowerCase();
+        String[] allowedExtensions = {"pdf", "doc", "docx"};
+
+        boolean isValidExtension = false;
+        for (String ext : allowedExtensions) {
+            if (fileExtension.equals(ext)) {
+                isValidExtension = true;
+                break;
+            }
+        }
+
+        if (!isValidExtension) {
+            bindingResult.rejectValue("resume", "error.resume", "Chỉ chấp nhận file PDF, DOC, DOCX");
+            response.put("errorMessage", "Chỉ chấp nhận file PDF, DOC, DOCX.");
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        try {
+            System.out.println("Id Job: "+jobPostId);
+            model.addAttribute("jobPostId",jobPostId);
+            System.out.println("Thông tin: "+ applicationForm.getName());
+            System.out.println("Thông tin resume: "+ resume);
+            // Gọi service để lưu CV
+            JobProfile savedProfile = applyCVService.submitCv(resume, applicationForm, jobPostId);
+            System.out.println("thông tin save "+savedProfile);
+            System.out.println("Id Job progile: "+savedProfile.getId());
+            // Thông báo thành công
+            response.put("successMessage","Ứng tuyển thành công");
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            // Xử lý lỗi
+            model.addAttribute("errorMessage", "Có lỗi xảy ra: " + e.getMessage());
+            response.put("errorMessage", "Có lỗi xảy ra: " + e.getMessage());
+            return ResponseEntity.badRequest().body(response);
+        }
     }
 
     // Danh sách bài đăng
@@ -238,5 +384,26 @@ public class JobPostController2 {
         }
         return "redirect:/job-posts/Listing";
     }
+
+//    @GetMapping("/check-follow-status/{jobPostId}")
+//    public ResponseEntity<Map<String, String>> checkFollowStatus(@PathVariable Long jobPostId) {
+//        User currentUser = authenticationUtil.getCurrentUser();
+//        if (currentUser == null) {
+//            Map<String, String> response = new HashMap<>();
+//            response.put("error", "Vui lòng đăng nhập để kiểm tra trạng thái.");
+//            return ResponseEntity.status(401).body(response);
+//        }
+//
+//        Optional<Follow> existingFollow = followRepository.findByUserIdAndJobPostId(currentUser.getId(), jobPostId);
+//        Map<String, String> response = new HashMap<>();
+//
+//        if (existingFollow.isPresent()) {
+//            response.put("status", "followed");
+//        } else {
+//            response.put("status", "not_followed");
+//        }
+//        return ResponseEntity.ok(response);
+//    }
+
 
 }

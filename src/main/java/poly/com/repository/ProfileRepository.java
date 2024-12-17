@@ -50,6 +50,11 @@ public interface ProfileRepository extends JpaRepository<Profile, Long> {
                                                             @Param("degree") EducationLevel degree,
                                                             Pageable pageable);
 
+    //Page<Profile> findAll(Pageable pageable);
+    @Query("SELECT p FROM Profile p WHERE p.name LIKE %:name%")
+    Page<Profile> findAll(@Param("name") String name, Pageable pageable);
+
+
     @Query("SELECT new poly.com.dto.response.ProfileSearchResult(" +
      "p.user_id.id, " +
      "p.name, " +
@@ -75,5 +80,6 @@ public interface ProfileRepository extends JpaRepository<Profile, Long> {
      "JOIN Company c ON f.companyId = c.id " +
      "WHERE p.user_id.id = :userId")
     List<Object[]> searchProfileWithAllFields(@Param("userId") Long userId);
+
 
 }

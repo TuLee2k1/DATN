@@ -60,10 +60,13 @@ public class AuthenticationService {
         validateEmailAndPasswordUser(request.getEmail(), request.getPassword(), request.getIsPassword());
 
         User user = createUser(request.getFirstname(), request.getLastname(), request.getEmail(), request.getPassword(), RoleType.ROLE_USER);
+
+
         var profile = Profile.builder()
-         .user_id(user)
-         .build();
+                .user_id(user)
+                .build();
         userRepository.save(user);
+
         profileRepository.save(profile);
         sendValidationEmail(user);
 
@@ -83,10 +86,6 @@ public class AuthenticationService {
         User user = createUser(request.getFirstname(), request.getLastname(), request.getEmail(), request.getPassword(), RoleType.ROLE_COMPANY);
         User savedUser = userRepository.save(user);
 
-        Profile profile = Profile.builder()
-         .user_id(savedUser)
-         .build();
-        profileRepository.save(profile);
 
         Company company = Company.builder()
          .name(request.getCompanyName())
@@ -254,7 +253,7 @@ public class AuthenticationService {
 //            return "/JobPost/create";
             return "/company-account";
         } else if (roles.contains(RoleType.ROLE_ADMIN)) {
-            return "/admin/dashboard";
+            return "/admin/thongke";
         } else if (roles.contains(RoleType.ROLE_USER)) {
             return "/auth/user/dashboard";
         }
@@ -472,7 +471,7 @@ public class AuthenticationService {
         }
     }
 
-    //để lấy hiển thị tất cả thông tin user
+    //để lấy hiển thị tất cả thông tin user dùng cho admin
     public List<User> findAllUsers() {
         return userRepository.findAll();
     }
