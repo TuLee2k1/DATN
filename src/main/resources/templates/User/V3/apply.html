@@ -35,56 +35,9 @@
   />
   <link rel="stylesheet" href="/css/index.css" />
   <link rel="stylesheet" href="/css/user.css" />
-  <style>
-    .custom-alert {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      z-index: 1050;
-      width: auto;
-      max-width: 300px;
-      padding: 10px 20px;
-      margin: 0;
-      border-radius: 5px;
-      font-size: 16px;
-      transition: 0.3s;
-    }
-
-    .alert-success {
-      background-color: #28a745; /* Màu xanh cho thông báo thành công */
-      color: white;
-    }
-
-    .alert-warning {
-      background-color: #ffc107; /* Màu vàng cho thông báo lỗi */
-      color: black;
-    }
-
-    .custom-alert span {
-      display: inline-block;
-      width: 100%;
-    }
-  </style>
   <script>
 
-    document.addEventListener("DOMContentLoaded", function() {
-      var successAlert = document.querySelector('.alert-success');
-      var errorAlert = document.querySelector('.alert-warning');
 
-      // Nếu có thông báo thành công
-      if (successAlert) {
-        setTimeout(function() {
-          successAlert.style.display = 'none'; // Ẩn thông báo sau 3 giây
-        }, 3000);
-      }
-
-      // Nếu có thông báo lỗi
-      if (errorAlert) {
-        setTimeout(function() {
-          errorAlert.style.display = 'none'; // Ẩn thông báo sau 3 giây
-        }, 3000);
-      }
-    });
   </script>
 </head>
 
@@ -102,7 +55,7 @@
                 src="/img/icons/logo2.jpg"
                 width="50"
         />
-        <span class="align-middle">Dreamers</span>
+        <span class="align-middle">Dream Jobs</span>
       </a>
 
       <ul class="sidebar-nav">
@@ -132,7 +85,7 @@
         <li class="sidebar-item">
           <a class="sidebar-link" href="/user-applied">
             <i class="align-middle" data-feather="check-square"></i>
-            <span class="align-middle">Danh sách bài đăng</span>
+            <span class="align-middle">Danh sách đơn ứng tuyển</span>
           </a>
         </li>
 
@@ -143,19 +96,6 @@
           </a>
         </li>
 
-        <li class="sidebar-item">
-          <a class="sidebar-link" href="#">
-            <i class="align-middle" data-feather="message-square"></i>
-            <span class="align-middle">Tin nhắn</span>
-          </a>
-        </li>
-
-        <li class="sidebar-item">
-          <a class="sidebar-link" href="#">
-            <i class="align-middle" data-feather="bell"></i>
-            <span class="align-middle">Thông báo</span>
-          </a>
-        </li>
       </ul>
     </div>
   </nav>
@@ -347,8 +287,8 @@
                 <a href="#" class="text-muted">Show all messages</a>
               </div>
             </div>
-          </li>
           <li class="nav-item dropdown">
+            <!-- Icon chỉ hiện trên màn hình nhỏ -->
             <a
                     class="nav-icon dropdown-toggle d-inline-block d-sm-none"
                     href="#"
@@ -357,56 +297,28 @@
               <i class="align-middle" data-feather="settings"></i>
             </a>
 
+            <!-- Avatar và tên người dùng hiện trên màn hình lớn -->
             <a
+                    id="userInfo"
                     class="nav-link dropdown-toggle d-none d-sm-inline-block"
                     href="#"
                     data-bs-toggle="dropdown"
             >
-              <img
-                      src="/img/avatars/avatar-5.jpg"
-                      class="avatar img-fluid rounded me-1"
-                      alt="Charles Hall"
-              />
-              <span class="text-dark">Charles Hall</span>
-            </a>
-            <div class="dropdown-menu dropdown-menu-end">
-              <a class="dropdown-item" href="/static/User/V3/profile.html"
-              ><i class="align-middle me-1" data-feather="user"></i>
-                Profile</a
-              >
 
-              <a class="dropdown-item" href="#"
-              ><i class="align-middle me-1" data-feather="key"></i> Forgot
-                password</a
-              >
-              <a class="dropdown-item" href="#"
-              ><i
-                      class="align-middle me-1"
-                      data-feather="alert-octagon"
-              ></i>
-                Change password</a
-              >
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="index.html"
-              ><i class="align-middle me-1" data-feather="settings"></i>
-                Settings & Privacy</a
-              >
-              <a
-                      class="dropdown-item"
-                      href="/User/V3/User_Manual.html"
-              ><i
-                      class="align-middle me-1"
-                      data-feather="help-circle"
-              ></i>
-                Help Center</a
-              >
-              <div class="dropdown-divider"></div>
-              <a
-                      class="dropdown-item"
-                      href="/User/V3/login&register.html"
-              ><i class="align-middle me-1" data-feather="log-out"></i>Log
-                out</a
-              >
+              <span id="username" class="text-dark">User Name</span>
+            </a>
+
+            <!-- Danh sách dropdown -->
+            <div class="dropdown-menu dropdown-menu-end">
+              <a class="dropdown-item" href="user-profile">
+                <i class="align-middle me-1" data-feather="user"></i> Profile
+              </a>
+              <a class="dropdown-item" href="#">
+                <i class="align-middle me-1" data-feather="key"></i> Forgot password
+              </a>
+              <a class="dropdown-item" href="/user/change-password">
+                <i class="align-middle me-1" data-feather="alert-octagon"></i> Change password
+              </a>
             </div>
           </li>
         </ul>
@@ -417,58 +329,11 @@
       <div class="container mt-4">
         <div class="row">
           <div class="col-md-8">
-            <div class="search-bar p-3">
-              <div class="row">
-                <div class="col-md-4">
-                  <input
-                          class="form-control"
-                          placeholder="Search by Job title,..."
-                          type="text"
-                  />
-                </div>
-                <div class="col-md-4">
-                  <input
-                          class="form-control"
-                          placeholder="Anywhere"
-                          type="text"
-                  />
-                </div>
-                <div class="col-md-4">
-                  <button class="btn btn-light w-100">
-                    <i class="fas fa-filter"> </i>
-                    Filter
-                  </button>
-                </div>
-              </div>
-            </div>
 
-            <div
-                    class="card-header d-flex justify-content-between align-items-center mb-3"
-            >
+            <div class="card-header d-flex justify-content-between align-items-center mb-3">
               <h4 class="mt-4">Các bài đã ứng tuyển</h4>
 
-              <div>
-                <span class="filter-label">Bộ lọc:</span>
-                <div class="dropdown d-inline-block">
-                  <button
-                          class="btn btn-outline-dark dropdown-toggle"
-                          type="button"
-                          id="dropdownMenuButton"
-                          data-bs-toggle="dropdown"
-                          aria-expanded="false"
-                  >
-                    Rejected
-                  </button>
-                  <ul
-                          class="dropdown-menu"
-                          aria-labelledby="dropdownMenuButton"
-                  >
-                    <li><a class="dropdown-item" href="#">Rejected</a></li>
-                    <li><a class="dropdown-item" href="#">Accepted</a></li>
-                    <li><a class="dropdown-item" href="#">Pending</a></li>
-                  </ul>
-                </div>
-              </div>
+
             </div>
             <div th:if="${appliedJobs != null and appliedJobs.size() > 0}" class="mt-3">
               <div th:each="job : ${appliedJobs}" class="job-card-apply">
@@ -484,10 +349,10 @@
                     <a class="text-primary" href="#"> Partime </a>
                   </p>
                   <p th:text="${job.companyName}">FACEBOOK, INC. WESTERN CITY, UK</p>
-                  <p class="salary" th:text="'$' + ${job.minSalary} + ' - $' + ${job.maxSalary} + ' Per month'">$1000 - $1200 Per month</p>
+                  <p class="salary" th:text="'$' + ${job.minSalary} + ' - $' + ${job.maxSalary} + ' triệu 1 tháng'">$1000 - $1200</p>
                 </div>
                 <div>
-                  <span th:classappend="${job.status == 'Rejected' ? 'badge bg-danger' : 'badge bg-warning'}" class="badge status" th:text="${job.status}">Status</span>
+                  <span th:classappend="${job.status == 'Rejected' ? 'badge bg-danger' : 'badge bg-warning'}" class="badge status  status-in-process" th:text="${job.status}">Status</span>
                 </div>
               </div>
             </div>
@@ -590,6 +455,9 @@
             <div class="col-md-6" th:each="job : ${suggestedJobs}">
               <div class="card job-card">
                 <h5 th:text="${job.jobTitle}">Nhân Viên R&D</h5>
+<!--                <div class="favorite toggle-follow-job" onclick="toggleFavorite(this)" th:attr="data-job-id=${job.id}">-->
+<!--                  <i class="far fa-heart"></i>-->
+<!--                </div>-->
                 <div class="favorite toggle-follow-job" th:attr="data-job-id=${job.id}">
                   <i class="far fa-heart"></i>
                 </div>
@@ -599,7 +467,7 @@
                     <div class="company" th:text="${job.companyName}">Công Ty TNHH XYZ</div>
                     <div class="salary">
                       <i class="fas fa-dollar-sign"></i>
-                      <span th:text="${job.minSalary} + ' - ' + ${job.maxSalary} + ' triệu'">10 - 15 triệu</span>
+                      <span th:text="${job.minSalary} + ' - ' + ${job.maxSalary} + ' triệu 1 tháng'">10 - 15 triệu</span>
                     </div>
                     <div class="location">
                       <i class="fas fa-map-marker-alt"></i>
@@ -682,10 +550,8 @@
 </div>
 
 <script src="/js/app.js"></script>
+<script src="/js/apply.js"></script>
 <script src="https://unpkg.com/feather-icons"></script>
-
-
-
 <script>
   document.addEventListener("DOMContentLoaded", function() {
     var favoriteButtons = document.querySelectorAll(".favorite.toggle-follow-job");
@@ -714,7 +580,7 @@
                     heartIcon.classList.add('far');
                   }
 
-                  alert(data.message);
+
                 })
                 .catch(error => {
                   console.error('Error:', error);
@@ -724,7 +590,23 @@
     });
   });
 
+  document.addEventListener("DOMContentLoaded", function () {
+    // Kiểm tra xem có thông tin người dùng trong localStorage không
+    const userInfo = localStorage.getItem('userInfo');
 
+    if (userInfo) {
+      // Nếu có, chuyển đổi chuỗi JSON thành đối tượng
+      const user = JSON.parse(userInfo);
+
+      // Hiển thị thông tin người dùng
+      document.getElementById('username').textContent = user.userInfo.fullName;
+      document.getElementById('userInfo').style.display = 'flex';
+    } else {
+      // Nếu không có thông tin người dùng (không nên xảy ra vì phải đăng nhập mới vào được)
+      console.log('No user info found');
+    }
+  });
+</script>
   // function toggleFavoriteJob(element) {
   //   const jobId = element.getAttribute('data-job-id');
   //   const heartIcon = element.querySelector('i');
@@ -754,6 +636,5 @@
   //             element.style.pointerEvents = 'auto';
   //           });
   // }
-</script>
 </body>
 </html>
