@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -14,6 +15,8 @@ import poly.com.dto.request.profileRequest;
 import poly.com.dto.response.Auth.AuthenticationResponse;
 import poly.com.model.Profile;
 import poly.com.service.ProfileService;
+
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/user-profile")
@@ -83,4 +86,5 @@ public class ProfileController {
             return "redirect:/user-profile";
         }
     }
+
 }

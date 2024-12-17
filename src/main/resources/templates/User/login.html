@@ -181,11 +181,14 @@
 
             if (response.ok) {
                 const userInfo = await response.json(); // Nhận dữ liệu JSON từ server
+                console.log(userInfo); // Kiểm tra cấu trúc của userInfo
+
+                // Giả sử bạn có một hàm để lấy profile dựa trên userId
+
                 const data = {
                     userInfo,
-                    lastActive: Date.now()
-                }
-                console.log('User  Info:', data); // Ghi lại thông tin người dùng vào console
+                    lastActive: Date.now(),
+                };
                 localStorage.setItem('userInfo', JSON.stringify(data));
 
                 if (userInfo.roles.includes("ROLE_ADMIN")) {
@@ -227,9 +230,7 @@
     document.getElementById('sendEmailBtn').addEventListener('click', function () {
         const email = document.getElementById('emailInput').value;
         if (email) {
-            // Gửi email (có thể gọi API hoặc thực hiện hành động khác)
-            // Gọi API để gửi yêu cầu đặt lại mật khẩu
-            fetch('/auth/forgot-password', {
+            fetch('/auth/forgot-password', { // Đảm bảo đường dẫn đúng
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
@@ -240,20 +241,19 @@
             })
                 .then(response => {
                     if (!response.ok) {
-                        throw new Error('Có lỗi xảy ra khi gửi yêu cầu.');
-                    }
-                    return response.json();
+                        swal("Có lỗi xảy ra!", "Vui lòng kiểm tra lại thông tin và thử lại.", "error");
+                    }else
+                    swal("Thành công!", "Đã đặt lại mật khẩu thành công.", "success");
                 })
                 .then(data => {
-                    swal("Thành công!", "Đặt lại mật khẩu thành công!", "success");
+
                     document.getElementById('forgotPasswordPopup').style.display = 'none'; // Ẩn popup
                 })
                 .catch(error => {
-                    swal("Xảy ra lỗi!", "Không tìm thấy Email!", "error");
+                    alert(error.message); // Hiển thị thông báo lỗi
                 });
-            document.getElementById('forgotPasswordPopup').style.display = 'none'; // Ẩn popup sau khi gửi
         } else {
-            swal("Nhập Email!", "Vui lòng nhập email!", "error");
+            swal("Xảy ra lỗi!", "Vui lòng nhập Email!", "error");
         }
     });
 

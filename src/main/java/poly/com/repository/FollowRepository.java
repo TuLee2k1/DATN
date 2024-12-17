@@ -36,6 +36,7 @@ public interface FollowRepository extends JpaRepository<Follow, Long> {
 
     @Query("""
         SELECT new poly.com.dto.response.Follow.JobPostFollowResponse(
+            jp.id,
             c.logo,
             jp.jobTitle,
             c.name,
