@@ -284,18 +284,8 @@
           <nav class="mx-auto site-navigation">
             <ul class="site-menu js-clone-nav d-none d-xl-block ml-0 pl-0">
               <li><a href="http://localhost:8080" class="nav-link active">Trang Chủ</a></li>
-              <li><a href="about.html">Về Chúng Tôi</a></li>
-              <li class="has-children">
-                <a href="job-listings.html">Công Việc
-                  <span class="fas fa-caret-down"></span>
-                </a>
-
-                <ul class="dropdown">
-                  <li><a href="job-single.html">Danh Sách Công Việc</a></li>
-                  <li><a href="post-job.html">Bài đăng công việc</a></li>
-                </ul>
-              </li>
-              <li><a href="contact.html">Liên Hệ</a></li>
+              <li id="about"><a>Về Chúng Tôi</a></li>
+              <li id="contact"><a>Liên Hệ</a></li>
               <li id="signupBtn1" class="d-lg-none"><a><span class="mr-2 icon-add"></span>Đăng Kí</a></li>
               <li id="loginBtn1" class="d-lg-none"><a><span class="mr-2 icon-lock_outline">Đăng Nhập</a></li>
               <li class="has-children" id="userInfo2" >
@@ -1026,6 +1016,12 @@
     console.log("ID" + jobPostId)
     // Chuyển hướng đến trang đăng ký
     window.location.href = '/follow/toggle-follow-job/' + jobPostId;
+  });
+  document.getElementById('about').addEventListener('click', function () {
+    window.location.href = "about";
+  });
+  document.getElementById('contact').addEventListener('click', function () {
+    window.location.href = "contact";
   });
 
 </script>
