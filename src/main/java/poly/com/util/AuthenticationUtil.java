@@ -43,7 +43,7 @@ public class AuthenticationUtil {
     public User getCurrentUser() {
         String userEmail = getAuthentication().getName();
         return userRepository.findByEmail(userEmail)
-         .orElseThrow(() -> new UserNotFoundException("Không tìm thấy thông tin người dùng"));
+         .orElse(null);
     }
 
 }

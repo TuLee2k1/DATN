@@ -193,6 +193,7 @@ public class JobPostController2 {
         if (currentUser == null) {
             // Nếu người dùng chưa đăng nhập, bạn có thể xử lý thêm như trả về lỗi hoặc chuyển hướng
             model.addAttribute("followStatus", "not_logged_in"); // Thêm trạng thái chưa đăng nhập
+            return "redirect:/auth/login?error=not_logged_in";
         } else {
             // Kiểm tra xem người dùng đã theo dõi công việc này chưa
             System.out.println("User ID: " + currentUser.getId());

@@ -378,8 +378,8 @@
   </div>
 
   <!-- Thông báo lỗi -->
-  <div th:if="${error}" class="alert alert-warning custom-alert" role="alert">
-    <span th:text="${error}"></span>
+  <div th:if="${followStatus}=='not_logged_in'" class="alert alert-warning custom-alert" role="alert">
+    <span th:text="Vui lòng đăng nhập!"></span>
   </div>
     <section class="section-hero overlay inner-page bg-image" style="background-image: url('/Admin/images/hero_1.jpg');" id="home-section">
       <div class="container">
@@ -417,16 +417,16 @@
           </div>
           <div class="col-lg-4">
             <div class="row">
-              <div id="toggleFollowBtn" class="col-6">
+              <div th:if="${jobPost.getEndDate().after(currentDate)}" id="toggleFollowBtn" class="col-6">
                 <a   class="btn btn-block btn-light btn-md">
                   <span class="icon-heart-o mr-2 text-danger"></span>
-                  <span id="followText" th:text="${followStatus == 'followed' ? 'Đã lưu' : 'Lưu'}"></span>
+                  <span  id="followText" th:text="${followStatus == 'followed' ? 'Đã lưu' : 'Lưu'}"></span>
 
                 </a>
               </div>
 
               <div class="col-6">
-                <a th:if="${jobPost.getEndDate().before(currentDate)}" href="#" class="btn btn-block btn-light btn-md"><span class="icon-times mr-2 text-danger"></span>Đã hết hạn</a>
+                <a th:if="${jobPost.getEndDate().before(currentDate)}" href="#" class="btn btn-block btn-light btn-md"><span class="icon-times mr-2 text-danger" onclick="popup()"></span>Đã hết hạn</a>
                 <a th:if="${jobPost.getEndDate().after(currentDate)}" th:href="@{/job-posts/detail/{id}(id=${jobPost.getId()})}" class="btn btn-block btn-primary btn-md" onclick="checkUserLogin()"  data-bs-toggle="modal" data-bs-target="#jobApplicationModal">Nộp Hồ Sơ</a>
               </div>
             </div>
@@ -572,11 +572,15 @@
             </div>
 
             <div class="row mb-5">
-              <div id="favorite" class="col-6">
-                <a class="btn btn-block btn-light btn-md"><span class="icon-heart-o mr-2 text-danger"></span>Lưu</a>
+              <div th:if="${jobPost.getEndDate().after(currentDate)}" id="toggleFollowBtn1" class="col-6">
+                <a   class="btn btn-block btn-light btn-md">
+                  <span class="icon-heart-o mr-2 text-danger"></span>
+                  <span  id="followText1" th:text="${followStatus == 'followed' ? 'Đã lưu' : 'Lưu'}"></span>
+
+                </a>
               </div>
               <div class="col-6">
-                <a th:if="${jobPost.getEndDate().before(currentDate)}" href="#" class="btn btn-block btn-light btn-md"><span class="icon-times mr-2 text-danger"></span>Đã hết hạn</a>
+                <a th:if="${jobPost.getEndDate().before(currentDate)}" href="#" class="btn btn-block btn-light btn-md"><span class="icon-times mr-2 text-danger" onclick="popup()"></span>Đã hết hạn</a>
                 <a th:if="${jobPost.getEndDate().after(currentDate)}" th:href="@{/job-posts/detail/{id}(id=${jobPost.getId()})}" class="btn btn-block btn-primary btn-md" onclick="checkUserLogin()" data-bs-toggle="modal" data-bs-target="#jobApplicationModal" >Nộp Hồ Sơ</a>
               </div>
             </div>
@@ -1046,10 +1050,61 @@
                 // Cập nhật trạng thái "Lưu" thành "Đã lưu"
                 document.getElementById("toggleFollowBtn").innerHTML = '<a   class="btn btn-block btn-light btn-md"><span class="icon-heart-o mr-2 text-danger"></span>Đã lưu</a>';
                 swal("Thành công!", "Lưu thành công!", "success");
+                setTimeout(function() {
+                  window.location.reload();
+                }, 1000); // Trì hoãn 3000ms (3 giây) trước khi tải lại trang
+
               } else if (data.message === "Unfollow") {
                 // Cập nhật trạng thái "Đã lưu" thành "Lưu"
                 document.getElementById("toggleFollowBtn").innerHTML = '<a   class="btn btn-block btn-light btn-md"><span class="icon-heart-o mr-2 text-danger"></span>Lưu</a>';
                 swal("Thành công!", "Bỏ Lưu thành công!", "success");
+                setTimeout(function() {
+                  window.location.reload();
+                }, 1000); // Trì hoãn 3000ms (3 giây) trước khi tải lại trang
+
+              } else if (data.error) {
+                swal("Có lỗi xảy ra!", data.error, "error");
+              }
+            })
+            .catch(error => {
+              // Xử lý lỗi khi có vấn đề với việc gửi yêu cầu
+              console.error("Lỗi: ", error);
+              swal("Có lỗi xảy ra!", "Vui lòng thử lại sau", "error");
+            });
+  });
+
+  document.getElementById("toggleFollowBtn1").addEventListener("click", function(event) {
+    event.preventDefault();  // Ngừng hành vi mặc định (chuyển trang khi click vào link)
+    const path = window.location.pathname;
+    const segments = path.split('/');
+    const jobPostId = segments[segments.length - 1];
+    console.log(jobPostId);
+
+    // Gửi yêu cầu POST bằng fetch
+    fetch(`/follow/toggle-follow-job/${jobPostId}`, {
+      method: 'POST', // Phương thức POST
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+            .then(response => response.json())  // Chuyển phản hồi sang JSON
+            .then(data => {
+              if (data.message === "Follow") {
+                // Cập nhật trạng thái "Lưu" thành "Đã lưu"
+                document.getElementById("toggleFollowBtn1").innerHTML = '<a   class="btn btn-block btn-light btn-md"><span class="icon-heart-o mr-2 text-danger"></span>Đã lưu</a>';
+                swal("Thành công!", "Lưu thành công!", "success");
+                setTimeout(function() {
+                  window.location.reload();
+                }, 1000); // Trì hoãn 3000ms (3 giây) trước khi tải lại trang
+
+              } else if (data.message === "Unfollow") {
+                // Cập nhật trạng thái "Đã lưu" thành "Lưu"
+                document.getElementById("toggleFollowBtn1").innerHTML = '<a   class="btn btn-block btn-light btn-md"><span class="icon-heart-o mr-2 text-danger"></span>Lưu</a>';
+                swal("Thành công!", "Bỏ Lưu thành công!", "success");
+                setTimeout(function() {
+                  window.location.reload();
+                }, 1000); // Trì hoãn 3000ms (3 giây) trước khi tải lại trang
+
               } else if (data.error) {
                 swal("Có lỗi xảy ra!", data.error, "error");
               }
@@ -1134,12 +1189,18 @@
     document.getElementById('heartIcon').classList.remove('text-muted');
     document.getElementById('heartIcon').classList.add('text-danger');
     document.getElementById('followText').innerText = 'Đã lưu';
+    document.getElementById('followText1').innerText = 'Đã lưu';
   } else if (followStatus === 'not_followed') {
     document.getElementById('heartIcon').classList.remove('text-danger');
     document.getElementById('heartIcon').classList.add('text-muted');
     document.getElementById('followText').innerText = 'Lưu';
+    document.getElementById('followText1').innerText = 'Lưu';
   }
   });
+
+  function popup(){
+    swal("Đã hết hạn!", "Đã hết hạn nộp hồ sơ!", "error");
+  }
 </script>
 
 <!--  <script>-->
@@ -1174,6 +1235,7 @@
 <!--    });-->
 
 <!--  </script>-->
+
 
   </body>
 </html>
