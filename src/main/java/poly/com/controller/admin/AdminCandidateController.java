@@ -32,14 +32,15 @@ public class AdminCandidateController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping
-    public String listAll(ModelMap model,@RequestParam(defaultValue = "1") Integer pageNo){
+    public String listAll(ModelMap model,@RequestParam(defaultValue = "1") Integer pageNo,@RequestParam(defaultValue = "") String name){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        Page<Profile> candidate = profileService.getAllByAdmin(pageNo);
+        Page<Profile> candidate = profileService.getAllByAdmin(name,pageNo);
         model.addAttribute("candidates", candidate);
 
         model.addAttribute("currentPage", pageNo);
         model.addAttribute("totalPages", candidate.getTotalPages());
+        model.addAttribute("searchKeyword", name);
         return "admin/candidates/candidate";
     }
 

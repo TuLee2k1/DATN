@@ -64,11 +64,11 @@ public class resumeController {
             // Lưu resume
             resumeService.saveOrUpdateResume(resumeRequest, user.getId());
 
-            redirectAttributes.addFlashAttribute("successMessage", "Cập nhật resume thành công!");
+            redirectAttributes.addFlashAttribute("successMessage", "Cập nhật hồ sơ thành công!");
             return "redirect:/user-resume";
         } catch (Exception e) {
             log.error("Lỗi khi cập nhật resume: ", e);
-            redirectAttributes.addFlashAttribute("errorMessage", "Cập nhật resume thất bại: " + e.getMessage());
+            redirectAttributes.addFlashAttribute("errorMessage", "Cập nhật hồ sơ thất bại: " + e.getMessage());
             return "redirect:/user-resume";
         }
     }

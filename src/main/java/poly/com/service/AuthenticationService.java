@@ -61,6 +61,7 @@ public class AuthenticationService {
 
         User user = createUser(request.getFirstname(), request.getLastname(), request.getEmail(), request.getPassword(), RoleType.ROLE_USER);
 
+
         var profile = Profile.builder()
                 .user_id(user)
                 .build();

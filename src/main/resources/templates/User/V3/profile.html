@@ -37,6 +37,57 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="/css/index.css" />
+    <style>
+      .custom-alert {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 1050;
+        width: auto;
+        max-width: 300px;
+        padding: 10px 20px;
+        margin: 0;
+        border-radius: 5px;
+        font-size: 16px;
+        transition: 0.3s;
+      }
+
+      .alert-success {
+        background-color: #28a745; /* Màu xanh cho thông báo thành công */
+        color: white;
+      }
+
+      .alert-warning {
+        background-color: #ffc107; /* Màu vàng cho thông báo lỗi */
+        color: black;
+      }
+
+      .custom-alert span {
+        display: inline-block;
+        width: 100%;
+      }
+    </style>
+    <script>
+
+      document.addEventListener("DOMContentLoaded", function() {
+        var successAlert = document.querySelector('.alert-success');
+        var errorAlert = document.querySelector('.alert-warning');
+
+        // Nếu có thông báo thành công
+        if (successAlert) {
+          setTimeout(function() {
+            successAlert.style.display = 'none'; // Ẩn thông báo sau 3 giây
+          }, 3000);
+        }
+
+        // Nếu có thông báo lỗi
+        if (errorAlert) {
+          setTimeout(function() {
+            errorAlert.style.display = 'none'; // Ẩn thông báo sau 3 giây
+          }, 3000);
+        }
+      });
+    </script>
   </head>
 
   <body>
@@ -44,14 +95,14 @@
       <!-- sidebar -->
       <nav id="sidebar" class="sidebar js-sidebar">
         <div class="sidebar-content js-simplebar">
-          <a class="sidebar-brand" href="index.html">
+          <a class="sidebar-brand" href="http://localhost:8080">
             <img
-              alt="Logo"
-              class="rounded-circle me-3"
-              height="50"
-              id="logo"
-              src="/img/icons/logo2.jpg"
-              width="50"
+                    alt="Logo"
+                    class="rounded-circle me-3"
+                    height="50"
+                    id="logo"
+                    src="/img/icons/logo2.jpg"
+                    width="50"
             />
             <span class="align-middle">Dreamers</span>
           </a>
@@ -59,68 +110,52 @@
           <ul class="sidebar-nav">
             <li class="sidebar-header">Pages</li>
 
-            <li class="sidebar-item active">
-              <a class="sidebar-link" href="/User/V3/dashboard.html">
+            <li class="sidebar-item ">
+              <a class="sidebar-link" href="/users/dashboard">
                 <i class="align-middle" data-feather="sliders"></i>
                 <span class="align-middle">Dashboard</span>
               </a>
             </li>
 
             <li class="sidebar-item">
-              <a class="sidebar-link" href="/User/V3/profile.html">
+              <a class="sidebar-link" href="/user-profile">
                 <i class="align-middle" data-feather="user"></i>
-                <span class="align-middle">Profile</span>
+                <span class="align-middle">Thông tin cá nhân</span>
               </a>
             </li>
+
             <li class="sidebar-item">
-              <a class="sidebar-link" href="/User/V3/resume_.html">
+              <a class="sidebar-link" href="/user-resume">
                 <i class="align-middle" data-feather="clipboard"></i>
-                <span class="align-middle">Resume</span>
+                <span class="align-middle">Hồ sơ ứng tuyển</span>
               </a>
             </li>
 
             <li class="sidebar-item">
-              <a class="sidebar-link" href="/User/V3/calender.html">
-                <i class="align-middle" data-feather="calendar"></i>
-                <span class="align-middle">Calender</span>
-              </a>
-            </li>
-
-            <li class="sidebar-item">
-              <a class="sidebar-link" href="/User/V3/apply.html">
+              <a class="sidebar-link" href="/user-applied">
                 <i class="align-middle" data-feather="check-square"></i>
-                <span class="align-middle">Applied job</span>
+                <span class="align-middle">Danh sách bài đăng</span>
               </a>
             </li>
 
             <li class="sidebar-item">
-              <a
-                class="sidebar-link"
-                href="/User/V3/EmployersViewPage.html"
-              >
-                <i class="align-middle" data-feather="users"></i>
-                <span class="align-middle">Recruiter follow</span>
-              </a>
-            </li>
-
-            <li class="sidebar-item">
-              <a class="sidebar-link" href="/User/V3/saved_jobs.html">
+              <a class="sidebar-link" href="#">
                 <i class="align-middle" data-feather="bookmark"></i>
-                <span class="align-middle">Bookmarks</span>
+                <span class="align-middle">Bài viết đã lưu</span>
               </a>
             </li>
 
             <li class="sidebar-item">
               <a class="sidebar-link" href="#">
                 <i class="align-middle" data-feather="message-square"></i>
-                <span class="align-middle">Messages</span>
+                <span class="align-middle">Tin nhắn</span>
               </a>
             </li>
 
             <li class="sidebar-item">
-              <a class="sidebar-link" href="/User/V3/Notification.html">
+              <a class="sidebar-link" href="#">
                 <i class="align-middle" data-feather="bell"></i>
-                <span class="align-middle">Notifications</span>
+                <span class="align-middle">Thông báo</span>
               </a>
             </li>
           </ul>
@@ -381,9 +416,18 @@
         </nav>
 
         <main class="content">
+          <!-- Thông báo thành công -->
+          <div th:if="${successMessage}" class="alert alert-success custom-alert" role="alert">
+            <span th:text="${successMessage}"></span>
+          </div>
+
+          <!-- Thông báo lỗi -->
+          <div th:if="${errorMessage}" class="alert alert-warning custom-alert" role="alert">
+            <span th:text="${errorMessage}"></span>
+          </div>
           <div class="container mt-1">
             <h4 class="mb-4">Thông tin cá nhân</h4>
-            <form th:action="@{/user-profile/update}" th:object="${profile}" method="post" enctype="multipart/form-data" id="profileForm" onsubmit="return validateForm()">
+            <form th:action="@{/user-profile/update}" th:object="${profile}" method="post" enctype="multipart/form-data" id="profileForm">
               <h5 class="h6 fw-bold mb-3">Ảnh đại diện</h5>
               <div class="mb-3 text-center">
                 <div class="position-relative d-inline-block rounded-full border border-secondary"
@@ -533,11 +577,66 @@
         reader.readAsDataURL(input.files[0]);
       }
 
+      function validateForm(event) {
+        let isValid = true;
 
-      function validateForm() {
-        // Thêm validation client-side nếu cần
-        return true;
+        // Lấy giá trị input
+        const fullName = document.getElementById('fullName').value.trim();
+        const dateOfBirth = document.getElementById('dateOfBirth').value.trim();
+        const email = document.getElementById('contactEmail').value.trim();
+        const phone = document.getElementById('phone').value.trim();
+        const address = document.getElementById('address').value.trim();
+        const sex = document.getElementById('sex').value.trim();
+
+        // Xóa thông báo lỗi trước đó
+        document.querySelectorAll('.error').forEach(el => el.innerText = '');
+        document.querySelectorAll('.is-invalid').forEach(el => el.classList.remove('is-invalid'));
+
+        // Kiểm tra họ và tên
+        if (fullName === '') {
+          document.getElementById('fullNameError').innerText = 'Họ và tên không được để trống.';
+          isValid = false;
+        }
+
+
+        // Kiểm tra email
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailPattern.test(email)) {
+          document.getElementById('contactEmail').classList.add('is-invalid');
+          document.getElementById('contactEmail').focus();
+          document.getElementById('contactEmail').nextElementSibling.innerText = 'Email không đúng định dạng.';
+          isValid = false;
+        }
+
+        // Kiểm tra số điện thoại
+        const phonePattern = /^[0-9]{10,11}$/; // Chấp nhận 10-11 chữ số
+        if (!phonePattern.test(phone)) {
+          document.getElementById('phoneError').innerText = 'Số điện thoại không hợp lệ (10-11 chữ số).';
+          isValid = false;
+        }
+
+        // Kiểm tra địa chỉ
+        if (address === '') {
+          document.getElementById('addressError').innerText = 'Địa chỉ không được để trống.';
+          isValid = false;
+        }
+
+
+        // Nếu form không hợp lệ, ngăn submit
+        if (!isValid) {
+          event.preventDefault(); // Ngăn form submit
+        }
       }
+
+      // Gắn sự kiện vào form
+      document.getElementById('profileForm').addEventListener('submit', validateForm);
+
+
+
+      // function validateForm() {
+      //   // Thêm validation client-side nếu cần
+      //   return true;
+      // }
     </script>
   </body>
 </html>
