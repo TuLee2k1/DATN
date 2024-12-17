@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import poly.com.Enum.StatusEnum;
 import poly.com.util.AuthenticationUtil;
 import poly.com.dto.request.ApplyCVRequest;
 import poly.com.model.JobPost;
@@ -41,6 +42,7 @@ public class ApplyCVService {
                 .fileCV(cvFileUrl)
                 .jobPost(jobPost)
                 .user(user)
+                .status(StatusEnum.PENDING)
                 .build();
         // Lưu vào database
         System.out.println("CV Submission: " + cvSubmission.getFileCV());

@@ -191,6 +191,7 @@ public class AuthenticationController {
 
     @PostMapping("/forgot-password")
     public ResponseEntity<String> forgotPassword(@RequestParam @Valid String email) throws MessagingException {
+        System.out.println(email);
         authenticationService.forgotPassword(email);
         System.out.println("Forgot password email: " + email);
         return ResponseEntity.ok("Password reset link sent to " + email);

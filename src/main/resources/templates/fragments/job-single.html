@@ -882,9 +882,9 @@
           try {
             const response = JSON.parse(xhr.responseText);
             if (response.errorMessage) {
-              swal("Có lỗi xảy ra!", response.errorMessage, "error");
+              swal("Có lỗi xảy ra!", "Vui lòng nhập đúng thông tin!", "error");
             } else {
-              swal("Có lỗi xảy ra!", "Đã xảy ra lỗi không xác định.", "error");
+              swal("Có lỗi xảy ra!", "Vui lòng upload file CV", "error");
             }
           } catch (e) {
             swal("Có lỗi xảy ra!", "Đã xảy ra lỗi không xác định.", "error");
