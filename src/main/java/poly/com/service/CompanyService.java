@@ -82,10 +82,10 @@ public class CompanyService {
     }
 //
 //cho admin
-    public Page<Company> companyPage(Integer pageNo) {
+    public Page<Company> companyPage(String name,Integer pageNo) {
         Pageable pageable = PageRequest.of(pageNo - 1, 2);
 
-        return companyRepository.findAll(pageable);
+        return companyRepository.findAll(name,pageable);
     }
 
 

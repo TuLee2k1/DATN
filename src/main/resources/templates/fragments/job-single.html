@@ -103,6 +103,35 @@
       #tuyendung:hover{
         opacity: 0.5;
       }
+      /* css mesage*/
+      /*thông báo*/
+      .custom-alert {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 1050;
+        width: auto;
+        max-width: 300px;
+        padding: 10px 20px;
+        margin: 0;
+        border-radius: 5px;
+        font-size: 16px;
+      }
+
+      .alert-success {
+        background-color: #28a745; /* Màu xanh cho thông báo thành công */
+        color: white;
+      }
+
+      .alert-warning {
+        background-color: #ffc107; /* Màu vàng cho thông báo lỗi */
+        color: black;
+      }
+
+      .custom-alert span {
+        display: inline-block;
+        width: 100%;
+      }
 
     </style>
 
@@ -206,6 +235,29 @@
 
     </script>
 
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+        var successAlert = document.querySelector('.alert-success');
+        var errorAlert = document.querySelector('.alert-warning');
+
+        // Nếu có thông báo thành công
+        if (successAlert) {
+          setTimeout(function() {
+            successAlert.style.display = 'none'; // Ẩn thông báo sau 3 giây
+          }, 3000);
+        }
+
+        // Nếu có thông báo lỗi
+        if (errorAlert) {
+          setTimeout(function() {
+            errorAlert.style.display = 'none'; // Ẩn thông báo sau 3 giây
+          }, 3000);
+        }
+      });
+    </script>
+
+
+
   </head>
   <body id="top">
 
@@ -224,6 +276,7 @@
 
     <!-- NAVBAR -->
     <header class="site-navbar mt-3">
+
       <div class="container-fluid">
         <div class="row align-items-center">
           <div class="site-logo col-6"><a href="http://localhost:8080">Dream Job</a></div>
@@ -319,6 +372,15 @@
     </header>
 
     <!-- HOME -->
+  <!-- Thông báo thành công -->
+  <div th:if="${message}" class="alert alert-success custom-alert" role="alert">
+    <span th:text="${message}"></span>
+  </div>
+
+  <!-- Thông báo lỗi -->
+  <div th:if="${error}" class="alert alert-warning custom-alert" role="alert">
+    <span th:text="${error}"></span>
+  </div>
     <section class="section-hero overlay inner-page bg-image" style="background-image: url('/Admin/images/hero_1.jpg');" id="home-section">
       <div class="container">
         <div class="row">
@@ -355,9 +417,14 @@
           </div>
           <div class="col-lg-4">
             <div class="row">
-              <div class="col-6">
-                <a href="#" class="btn btn-block btn-light btn-md"><span class="icon-heart-o mr-2 text-danger"></span>Lưu</a>
+              <div id="toggleFollowBtn" class="col-6">
+                <a   class="btn btn-block btn-light btn-md">
+                  <span class="icon-heart-o mr-2 text-danger"></span>
+                  <span id="followText" th:text="${followStatus == 'followed' ? 'Đã lưu' : 'Lưu'}"></span>
+
+                </a>
               </div>
+
               <div class="col-6">
                 <a th:if="${jobPost.getEndDate().before(currentDate)}" href="#" class="btn btn-block btn-light btn-md"><span class="icon-times mr-2 text-danger"></span>Đã hết hạn</a>
                 <a th:if="${jobPost.getEndDate().after(currentDate)}" th:href="@{/job-posts/detail/{id}(id=${jobPost.getId()})}" class="btn btn-block btn-primary btn-md" onclick="checkUserLogin()"  data-bs-toggle="modal" data-bs-target="#jobApplicationModal">Nộp Hồ Sơ</a>
@@ -505,8 +572,8 @@
             </div>
 
             <div class="row mb-5">
-              <div class="col-6">
-                <a href="#" class="btn btn-block btn-light btn-md"><span class="icon-heart-o mr-2 text-danger"></span>Lưu</a>
+              <div id="favorite" class="col-6">
+                <a class="btn btn-block btn-light btn-md"><span class="icon-heart-o mr-2 text-danger"></span>Lưu</a>
               </div>
               <div class="col-6">
                 <a th:if="${jobPost.getEndDate().before(currentDate)}" href="#" class="btn btn-block btn-light btn-md"><span class="icon-times mr-2 text-danger"></span>Đã hết hạn</a>
@@ -823,6 +890,43 @@
     });
   });
 
+//   document.getElementById('favorite').addEventListener('click', function () {
+// console.log("hello")
+//       const path = window.location.pathname;
+//       const segments = path.split('/');
+//       const jobPostId = segments[segments.length - 1];
+//       console.log(jobPostId);
+//
+//       $.ajax({
+//         url: '/follow/toggle-follow-job/' + jobPostId, // Sử dụng jobPostId đã được định nghĩa
+//         type: 'POST',
+//         contentType: false,
+//         processData: false,
+//         success: function(response) {
+//           // Kiểm tra xem response có phải là một đối tượng hợp lệ không
+//           if (response && response.successMessage) {
+//             swal("Thành công!", response.successMessage, "success").then(() => {
+//               window.location.reload(); // Làm mới trang
+//             });
+//           } else {
+//             // Xử lý trường hợp không có successMessage
+//             swal("Có lỗi xảy ra!", "Đã xảy ra lỗi không xác định.", "error");
+//           }
+//         },
+//         error: function(xhr) {
+//           try {
+//             const response = JSON.parse(xhr.responseText);
+//             if (response.errorMessage) {
+//               swal("Có lỗi xảy ra!", response.errorMessage, "error");
+//             } else {
+//               swal("Có lỗi xảy ra!", "Đã xảy ra lỗi không xác định.", "error");
+//             }
+//           } catch (e) {
+//             swal("Có lỗi xảy ra!", "Đã xảy ra lỗi không xác định.", "error");
+//           }
+//         }
+//       });
+
   function updateFileName() {
     const fileInput = document.getElementById('fileInput');
     const fileName = document.getElementById('fileName');
@@ -911,7 +1015,51 @@
     // Chuyển hướng đến trang đăng ký
     window.location.href = '/auth/register/user';
   });
+  document.getElementById('Luu').addEventListener('click', function () {
+    const path = window.location.pathname;
+      const segments = path.split('/');
+      const jobPostId = segments[segments.length - 1];
+    console.log("ID" + jobPostId)
+    // Chuyển hướng đến trang đăng ký
+    window.location.href = '/follow/toggle-follow-job/' + jobPostId;
+  });
 
+</script>
+<script>
+  document.getElementById("toggleFollowBtn").addEventListener("click", function(event) {
+    event.preventDefault();  // Ngừng hành vi mặc định (chuyển trang khi click vào link)
+    const path = window.location.pathname;
+    const segments = path.split('/');
+    const jobPostId = segments[segments.length - 1];
+    console.log(jobPostId);
+
+    // Gửi yêu cầu POST bằng fetch
+    fetch(`/follow/toggle-follow-job/${jobPostId}`, {
+      method: 'POST', // Phương thức POST
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+            .then(response => response.json())  // Chuyển phản hồi sang JSON
+            .then(data => {
+              if (data.message === "Follow") {
+                // Cập nhật trạng thái "Lưu" thành "Đã lưu"
+                document.getElementById("toggleFollowBtn").innerHTML = '<a   class="btn btn-block btn-light btn-md"><span class="icon-heart-o mr-2 text-danger"></span>Đã lưu</a>';
+                swal("Thành công!", "Lưu thành công!", "success");
+              } else if (data.message === "Unfollow") {
+                // Cập nhật trạng thái "Đã lưu" thành "Lưu"
+                document.getElementById("toggleFollowBtn").innerHTML = '<a   class="btn btn-block btn-light btn-md"><span class="icon-heart-o mr-2 text-danger"></span>Lưu</a>';
+                swal("Thành công!", "Bỏ Lưu thành công!", "success");
+              } else if (data.error) {
+                swal("Có lỗi xảy ra!", data.error, "error");
+              }
+            })
+            .catch(error => {
+              // Xử lý lỗi khi có vấn đề với việc gửi yêu cầu
+              console.error("Lỗi: ", error);
+              swal("Có lỗi xảy ra!", "Vui lòng thử lại sau", "error");
+            });
+  });
 
 </script>
 
@@ -975,6 +1123,57 @@
     jobBenefitElement.innerHTML = formattedBenefit;
   });
 </script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+  // Lấy giá trị trạng thái follow từ model
+  const followStatus = '${followStatus}';
+
+  // Nếu người dùng đã theo dõi, thay đổi nội dung nút
+  if (followStatus === 'followed') {
+    document.getElementById('heartIcon').classList.remove('text-muted');
+    document.getElementById('heartIcon').classList.add('text-danger');
+    document.getElementById('followText').innerText = 'Đã lưu';
+  } else if (followStatus === 'not_followed') {
+    document.getElementById('heartIcon').classList.remove('text-danger');
+    document.getElementById('heartIcon').classList.add('text-muted');
+    document.getElementById('followText').innerText = 'Lưu';
+  }
+  });
+</script>
+
+<!--  <script>-->
+<!--    document.addEventListener("DOMContentLoaded", function() {-->
+<!--      // Lấy jobPostId từ URL (hoặc từ bất kỳ nguồn nào bạn cần)-->
+<!--      const path = window.location.pathname;-->
+<!--      const segments = path.split('/');-->
+<!--      const jobPostId = segments[segments.length - 1];-->
+
+<!--      // Gửi yêu cầu GET để kiểm tra trạng thái theo dõi-->
+<!--      fetch(`/follow/check-follow-status/${jobPostId}`, {-->
+<!--        method: 'GET', // Phương thức GET-->
+<!--        headers: {-->
+<!--          'Content-Type': 'application/json',-->
+<!--        }-->
+<!--      })-->
+<!--              .then(response => response.json())-->
+<!--              .then(data => {-->
+<!--                if (data.status === "followed") {-->
+<!--                  // Nếu đã theo dõi, cập nhật nút thành "Đã lưu"-->
+<!--                  document.getElementById("toggleFollowBtn").innerHTML =-->
+<!--                          '<a   class="btn btn-block btn-light btn-md"><span class="icon-heart-o mr-2 text-danger"></span>Đã lưu</a>';-->
+<!--                } else {-->
+<!--                  // Nếu chưa theo dõi, cập nhật nút thành "Lưu"-->
+<!--                  document.getElementById("toggleFollowBtn").innerHTML =-->
+<!--                          '<a   class="btn btn-block btn-light btn-md"><span class="icon-heart-o mr-2 text-danger"></span>Lưu</a>';-->
+<!--                }-->
+<!--              })-->
+<!--              .catch(error => {-->
+<!--                console.error("Lỗi khi kiểm tra trạng thái theo dõi:", error);-->
+<!--              });-->
+<!--    });-->
+
+<!--  </script>-->
 
   </body>
 </html>

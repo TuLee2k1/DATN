@@ -48,15 +48,16 @@ public class AdminCompanyController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping
-    public String listAll(@RequestParam(defaultValue = "1") Integer pageNo, Model model){
+    public String listAll(@RequestParam(defaultValue = "1") Integer pageNo,@RequestParam(required = false) String name, Model model){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        Page<Company> companies = companyService.companyPage(pageNo);
+        Page<Company> companies = companyService.companyPage(name,pageNo);
 
         model.addAttribute("companies", companies);
 
         model.addAttribute("currentPage", pageNo);
         model.addAttribute("totalPages", companies.getTotalPages());
+        model.addAttribute("searchKeyword", name); // Từ khóa tìm kiếm (email)
         return "admin/companies/company";
     }
     @PreAuthorize("hasRole('ROLE_ADMIN')")
