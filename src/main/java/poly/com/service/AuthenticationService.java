@@ -239,7 +239,6 @@ public class AuthenticationService {
                     .fullName(user.getFullName())
                     .roles(userRoles)
                     .redirectUrl(redirectUrl)
-                    .profile(user.getProfile())// Thêm URL chuyển hướng vào response
                     .build();
 
         } catch (Exception e) {

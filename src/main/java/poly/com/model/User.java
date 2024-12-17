@@ -137,7 +137,4 @@ public class User implements UserDetails, Principal {
         return firstname + " " + lastname;
     }
 
-    public Profile getProfile() {
-        return profiles != null && !profiles.isEmpty() ? profiles.get(0) : null;
-    }
 }
