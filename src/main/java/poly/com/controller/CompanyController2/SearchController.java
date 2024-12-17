@@ -106,7 +106,7 @@ public class SearchController {
 
 
     // Endpoint để theo dõi hoặc bỏ theo dõi một người dùng
-    @PreAuthorize("hasRole('ROLE_COMPANY')")
+
     @PostMapping("/toggle-follow/{userId}")
     @ResponseBody
     public ResponseEntity<?> toggleFollow(@PathVariable Long userId) {
@@ -120,6 +120,4 @@ public class SearchController {
              .body("Có lỗi xảy ra: " + e.getMessage());
         }
     }
-
-
 }

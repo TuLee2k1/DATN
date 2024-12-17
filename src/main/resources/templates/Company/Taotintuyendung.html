@@ -108,7 +108,7 @@
   <!-- sidebar -->
   <nav id="sidebar" class="sidebar js-sidebar">
     <div class="sidebar-content js-simplebar">
-      <a class="sidebar-brand" href="Taikhoannhatuyendung.html">
+      <a class="sidebar-brand" href="http://localhost:8080">
         <span class="align-middle">Dream job</span>
       </a>
 
@@ -119,13 +119,15 @@
           </div>
         </li>
         <li class="sidebar-item">
-          <a class="sidebar-link" href="Taotintuyendung">
+
+          <a class="sidebar-link" th:href="@{/job-posts/create}">
+
             <i class="align-middle" data-feather="plus-square"></i>
             <span>Tạo tin tuyển dụng</span>
           </a>
         </li>
         <li class="sidebar-item">
-          <a class="sidebar-link" id="danhsachtindang">
+          <a class="sidebar-link" id="danhsachtindang" th:href="@{/job-posts/Listing}">
             <i class="align-middle" data-feather="file-text"></i>
             <span>Quản lý tin đăng</span>
           </a>
@@ -137,87 +139,37 @@
           </div>
         </li>
         <li class="sidebar-item">
-          <a class="sidebar-link" href="Hosoungtuyen.html">
+          <a class="sidebar-link" th:href="@{/Company/ApplicationProfile}">
             <i class="align-middle" data-feather="file"></i>
             <span>Hồ sơ ứng tuyển</span>
           </a>
         </li>
 
         <li class="sidebar-item">
-          <a class="sidebar-link" href="Timungvienmoi.html">
+          <a class="sidebar-link" th:href="@{/company/search-profiles}">
             <i class="align-middle" data-feather="search"></i>
             <span>Tìm ứng viên mới</span>
           </a>
         </li>
 
-        <li class="sidebar-header">
-          <div class="d-flex align-items-center">
-            <span>Quản lý dịch vụ</span>
-          </div>
-        </li>
         <li class="sidebar-item">
-          <a class="sidebar-link" href="danhsachdonhang.html">
+          <a class="sidebar-link" th:href="@{/company/saved-profile}" >
             <i class="align-middle" data-feather="shopping-bag"></i>
-            <span>Danh sách đơn hàng</span>
-          </a>
-        </li>
-        <li class="sidebar-item">
-          <a class="sidebar-link" href="hosodaluu.html">
-            <i class="align-middle" data-feather="package"></i>
-            <span>Lịch sử đơn hàng</span>
-          </a>
-        </li>
-        <li class="sidebar-item">
-          <a class="sidebar-link" href="thongtinthanhtoan.html">
-            <i class="align-middle" data-feather="credit-card"></i>
-            <span>Thông tin thanh toán</span>
+            <span>Hồ sơ đã lưu</span>
           </a>
         </li>
 
-        <li class="sidebar-header">
-          <div class="d-flex align-items-center">
-            <span>Tài khoản và thương hiệu</span>
-          </div>
-        </li>
         <li class="sidebar-item">
-          <a class="sidebar-link" href="#">
+          <a class="sidebar-link" th:href="@{/company-account}">
             <i class="align-middle" data-feather="user"></i>
             <span>Tài khoản nhà tuyển dụng</span>
           </a>
         </li>
-        <li class="sidebar-item">
-          <a class="sidebar-link" href="#">
-            <i class="align-middle" data-feather="award"></i>
-            <span>Quảng bá thương hiệu</span>
-          </a>
-        </li>
-
-        <li class="sidebar-header">
-          <div class="d-flex align-items-center">
-            <span>Hướng dẫn và thông báo</span>
-          </div>
-        </li>
-        <li class="sidebar-item">
-          <a class="sidebar-link" href="#">
-            <i class="align-middle" data-feather="help-circle"></i>
-            <span>Hướng dẫn sử dụng</span>
-          </a>
-        </li>
-        <li class="sidebar-item">
-          <a class="sidebar-link" href="#">
-            <i class="align-middle" data-feather="bell"></i>
-            <span>Thông báo mới</span>
-          </a>
-        </li>
-        <li class="sidebar-item">
-          <a class="sidebar-link" href="#">
-            <i class="align-middle" data-feather="life-buoy"></i>
-            <span>Hỗ trợ</span>
-          </a>
-        </li>
 
         <li class="sidebar-item mt-4">
-          <a href="http://localhost:8080" class="btn btn-primary w-100">
+
+          <a th:href="@{http://localhost:8080/}"  class="btn btn-primary w-100">
+
             <span>Cổng người tìm việc</span>
             <span class="ms-2">Chuyển</span>
           </a>
@@ -412,33 +364,22 @@
               <i class="align-middle" data-feather="settings"></i>
             </a>
 
-            <a
-                    class="nav-link dropdown-toggle d-none d-sm-inline-block"
-                    href="#"
-                    data-bs-toggle="dropdown">
-              <img
-                      src="/img/avatars/avatar.jpg"
-                      class="avatar img-fluid rounded me-1"
-                      alt="Charles Hall" />
-              <span class="text-dark">Charles Hall</span>
+
+            <a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#" data-bs-toggle="dropdown">
+              <img th:src="${company?.logo != null && !#strings.isEmpty(company.logo)
+											? '/uploads/logocompany/' + company.getLogo()
+											: '/Admin/images/person_3.jpg'}"
+                    class="rounded-circle"       alt="Logo" width="50" height="50" style="width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center; font-size: 30px;" >
+
+              <span class="text-dark fw-bold"
+                    th:text="${#authentication.principal.companyDetails != null ? #authentication.principal.companyDetails.name : 'N/A'}">Charles Hall</span>
+
             </a>
             <div class="dropdown-menu dropdown-menu-end">
-              <a class="dropdown-item" href="Taikhoannhatuyendung.html"><i
-                      class="align-middle me-1" data-feather="user"></i>
-                Profile</a>
-              <a class="dropdown-item" href="#"><i class="align-middle me-1"
-                                                   data-feather="pie-chart"></i>
-                Analytics</a>
+              <a class="dropdown-item" th:href="@{/company-account}"><i
+                      class="align-middle me-1" data-feather="user"></i> Profile</a>
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="index.html"><i
-                      class="align-middle me-1" data-feather="settings"></i>
-                Settings & Privacy</a>
-              <a class="dropdown-item" href="#"><i
-                      class="align-middle me-1"
-                      data-feather="help-circle"></i>
-                Help Center</a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="#">Log out</a>
+              <a class="dropdown-item" th:href="@{/logout}">Log out</a>
             </div>
           </li>
         </ul>
@@ -456,6 +397,23 @@
 
         <h4 class="mb-4">Thông tin cơ bản</h4>
 
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="jobCategoryId" class="form-label">
+                Ngành nghề
+                <i class="fa fa-question-circle" data-bs-toggle="tooltip" title="Chọn ngành nghề phù hợp với bạn"></i>
+              </label>
+              <select class="form-select form-select-lg" id="jobCategoryId" th:field="*{jobCategoryId}" required>
+                <option value="">Chọn ngành nghề</option>
+                <option th:each="category : ${jobCategories}"
+                        th:value="${category.id}"
+                        th:text="${category.categoryName}"></option>
+              </select>
+              <div class="invalid-feedback" th:if="${#fields.hasErrors('jobCategoryId')}" th:errors="*{jobCategoryId}">
+                Vui lòng chọn ngành nghề
+              </div>
+            </div>
+
 
         <input type="hidden" th:field="*{id}" />
         <div class="mb-3">
@@ -463,6 +421,8 @@
           <input type="text" class="form-control" id="jobTitle" th:field="*{jobTitle}" placeholder="Vị trí hiển thị đang tuyển">
           <div id="error-jobTitle" class="text-danger" th:if="${#fields.hasErrors('jobTitle')}" th:errors="*{jobTitle}" style="display: block">
             Vui lòng nhập tiêu đề công việc!
+
+
 
           </div>
         </div>
@@ -521,7 +481,9 @@
                   <i class="fa fa-question-circle" data-bs-toggle="tooltip" title="Chọn tỉnh/thành phố"></i>
                 </label>
                 <select class="form-select form-select-lg" id="city" th:field="*{city}"
+
                         th:data-selected="${jobPostRequest.city}">
+
                   <option value="">Chọn Tỉnh hoặc Thành phố</option>
                 </select>
                 <div id="error-City" class="text-danger" th:if="${#fields.hasErrors('city')}" th:errors="*{city}">
@@ -535,7 +497,9 @@
                   <i class="fa fa-question-circle" data-bs-toggle="tooltip" title="Chọn quận/huyện"></i>
                 </label>
                 <select class="form-select form-select-lg" id="district" th:field="*{district}"
+
                         th:data-selected="${jobPostRequest.district}">
+
                   <option value="">Chọn Quận hoặc Huyện</option>
                 </select>
                 <div id="error-District" class="text-danger" th:if="${#fields.hasErrors('district')}" th:errors="*{district}">
@@ -975,6 +939,52 @@
               console.error('Lỗi tải dữ liệu:', error);
             });
   });
+
+
+  document.addEventListener('DOMContentLoaded', function () {
+    const jobCategorySelect = document.getElementById('jobCategoryId');
+    const subCategorySelect = document.getElementById('subCategoryIds');
+
+    // Lấy các giá trị đã chọn cho subCategoryIds khi form đã có dữ liệu
+    const selectedSubCategories = Array.from(subCategorySelect.selectedOptions).map(option => option.value);
+
+    // Lắng nghe sự kiện thay đổi ngành nghề
+    jobCategorySelect.addEventListener('change', function () {
+      const jobCategoryId = this.value;
+
+      if (jobCategoryId) {
+        // Gửi yêu cầu AJAX để lấy danh sách subCategories dựa trên jobCategoryId
+        fetch(`/job-posts/subcategories/${jobCategoryId}`)
+                .then(response => response.json())
+                .then(subCategories => {
+                  // Xóa các option cũ
+                  subCategorySelect.innerHTML = '<option value="">Chọn chuyên ngành</option>';
+
+                  // Thêm các option mới vào
+                  subCategories.forEach(subCategory => {
+                    const option = document.createElement('option');
+                    option.value = subCategory.id;
+                    option.textContent = subCategory.subCategoryName;
+                    option.selected = selectedSubCategories.includes(subCategory.id.toString()); // Đánh dấu các chuyên ngành đã chọn
+                    subCategorySelect.appendChild(option);
+                  });
+                })
+                .catch(error => {
+                  console.error('Lỗi khi tải danh sách chuyên ngành:', error);
+                });
+      } else {
+        // Nếu không có ngành nghề được chọn, xóa tất cả chuyên ngành
+        subCategorySelect.innerHTML = '<option value="">Chọn chuyên ngành</option>';
+      }
+    });
+
+    // Triển khai sự kiện thay đổi khi đã có giá trị trong jobCategoryId
+    if (jobCategorySelect.value) {
+      jobCategorySelect.dispatchEvent(new Event('change'));
+    }
+  });
+
+
 
 </script>
 <!--<script th:src="@{../js/app.js}"></script>-->

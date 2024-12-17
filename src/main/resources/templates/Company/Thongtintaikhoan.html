@@ -68,7 +68,7 @@
     <!-- sidebar -->
     <nav id="sidebar" class="sidebar js-sidebar">
         <div class="sidebar-content js-simplebar">
-            <a class="sidebar-brand" href="Taikhoannhatuyendung.html">
+            <a class="sidebar-brand" href="http://localhost:8080">
                 <span class="align-middle">Dream job</span>
             </a>
 
@@ -79,13 +79,13 @@
                     </div>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="Taotintuyendung.html">
+                    <a class="sidebar-link" th:href="@{/job-posts/create}">
                         <i class="align-middle" data-feather="plus-square"></i>
                         <span>Tạo tin tuyển dụng</span>
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="Danhsachtindang.html">
+                    <a class="sidebar-link" id="danhsachtindang" th:href="@{/job-posts/Listing}">
                         <i class="align-middle" data-feather="file-text"></i>
                         <span>Quản lý tin đăng</span>
                     </a>
@@ -97,86 +97,35 @@
                     </div>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="Hosoungtuyen.html">
+                    <a class="sidebar-link" th:href="@{/Company/ApplicationProfile}">
                         <i class="align-middle" data-feather="file"></i>
                         <span>Hồ sơ ứng tuyển</span>
                     </a>
                 </li>
+
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="Timungvienmoi.html">
+                    <a class="sidebar-link" th:href="@{/company/search-profiles}">
                         <i class="align-middle" data-feather="search"></i>
                         <span>Tìm ứng viên mới</span>
                     </a>
                 </li>
 
-                <li class="sidebar-header">
-                    <div class="d-flex align-items-center">
-                        <span>Quản lý dịch vụ</span>
-                    </div>
-                </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="danhsachdonhang.html">
+                    <a class="sidebar-link" th:href="@{/company/saved-profile}" >
                         <i class="align-middle" data-feather="shopping-bag"></i>
-                        <span>Danh sách đơn hàng</span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link" href="hosodaluu.html">
-                        <i class="align-middle" data-feather="package"></i>
-                        <span>Lịch sử đơn hàng</span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link" href="thongtinthanhtoan.html">
-                        <i class="align-middle" data-feather="credit-card"></i>
-                        <span>Thông tin thanh toán</span>
+                        <span>Hồ sơ đã lưu</span>
                     </a>
                 </li>
 
-                <li class="sidebar-header">
-                    <div class="d-flex align-items-center">
-                        <span>Tài khoản và thương hiệu</span>
-                    </div>
-                </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="#">
+                    <a class="sidebar-link" th:href="@{/company-account}">
                         <i class="align-middle" data-feather="user"></i>
                         <span>Tài khoản nhà tuyển dụng</span>
                     </a>
                 </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link" href="#">
-                        <i class="align-middle" data-feather="award"></i>
-                        <span>Quảng bá thương hiệu</span>
-                    </a>
-                </li>
-
-                <li class="sidebar-header">
-                    <div class="d-flex align-items-center">
-                        <span>Hướng dẫn và thông báo</span>
-                    </div>
-                </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link" href="#">
-                        <i class="align-middle" data-feather="help-circle"></i>
-                        <span>Hướng dẫn sử dụng</span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link" href="#">
-                        <i class="align-middle" data-feather="bell"></i>
-                        <span>Thông báo mới</span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link" href="#">
-                        <i class="align-middle" data-feather="life-buoy"></i>
-                        <span>Hỗ trợ</span>
-                    </a>
-                </li>
 
                 <li class="sidebar-item mt-4">
-                    <a href="#" class="btn btn-primary w-100">
+                    <a th:href="@{http://localhost:8080/}"  class="btn btn-primary w-100">
                         <span>Cổng người tìm việc</span>
                         <span class="ms-2">Chuyển</span>
                     </a>
@@ -347,23 +296,20 @@
                             <i class="align-middle" data-feather="settings"></i>
                         </a>
 
-                        <a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#"
-                           data-bs-toggle="dropdown">
-                            <img src="img/avatars/avatar.jpg" class="avatar img-fluid rounded me-1"
-                                 alt="Charles Hall" /> <span class="text-dark">Charles Hall</span>
+                        <a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#" data-bs-toggle="dropdown">
+                            <img th:src="${company?.logo != null && !#strings.isEmpty(company.logo)
+											? '/uploads/logocompany/' + company.getLogo()
+											: '/Admin/images/person_3.jpg'}"
+                                  class="rounded-circle"       alt="Logo" width="50" height="50" style="width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center; font-size: 30px;" >
+
+                            <span class="text-dark fw-bold"
+                                  th:text="${#authentication.principal.companyDetails != null ? #authentication.principal.companyDetails.name : 'N/A'}">Charles Hall</span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-end">
-                            <a class="dropdown-item" href="Taikhoannhatuyendung.html"><i
+                            <a class="dropdown-item" th:href="@{/company-account}"><i
                                     class="align-middle me-1" data-feather="user"></i> Profile</a>
-                            <a class="dropdown-item" href="#"><i class="align-middle me-1"
-                                                                 data-feather="pie-chart"></i> Analytics</a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="index.html"><i class="align-middle me-1"
-                                                                          data-feather="settings"></i> Settings & Privacy</a>
-                            <a class="dropdown-item" href="#"><i class="align-middle me-1"
-                                                                 data-feather="help-circle"></i> Help Center</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">Log out</a>
+                            <a class="dropdown-item" th:href="@{/logout}">Log out</a>
                         </div>
                     </li>
                 </ul>

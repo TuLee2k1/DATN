@@ -267,7 +267,8 @@ public class JobPostService {
      *
      * */
     public PageResponse<JobListingResponse> getJobListings(String jobTitle, StatusEnum statusEnum, Integer pageNo) {
-        Pageable pageable = PageRequest.of(pageNo - 1, 10);
+        Sort sort = Sort.by("createDate").descending();
+        Pageable pageable = PageRequest.of(pageNo - 1, 10, sort);
 
         // Retrieve the authenticated user
         User authenticatedUser = authenticationUtil.getAuthenticatedUser();

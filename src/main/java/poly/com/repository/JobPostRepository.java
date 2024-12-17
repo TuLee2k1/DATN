@@ -74,6 +74,8 @@ public interface JobPostRepository extends JpaRepository<JobPost, Long> {
   // Phương thức tìm kiếm theo trạng thái
   Page<JobPost> findByStatusEnum(StatusEnum statusEnum, Pageable pageable);
 
+  List<JobPost> findByStatusEnum(StatusEnum statusEnum);
+
 
 
   @Modifying

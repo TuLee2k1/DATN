@@ -26,6 +26,12 @@ import poly.com.dto.response.JobPost.JobListActiveResponse;
 import poly.com.dto.response.JobPost.JobListingResponse;
 import poly.com.dto.response.JobPost.JobPostResponse;
 import poly.com.dto.response.PageResponse;
+
+import poly.com.model.SubCategory;
+import poly.com.service.JobCategoryService;
+import poly.com.service.JobPostService;
+import poly.com.service.SubCategoryService;
+
 import poly.com.model.Follow;
 import poly.com.model.JobProfile;
 import poly.com.model.User;
@@ -42,6 +48,9 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
+
+
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -65,6 +74,12 @@ public class JobPostController2 {
         model.addAttribute("jobCategories", jobCategoryService.getAllJobCategories());
         model.addAttribute("subCategories", subCategoryService.getAllSubCategories());
 //            model.addAttribute("isEdit", false); // Thêm thuộc tính để xác định chế độ
+    }
+
+    @GetMapping("/subcategories/{jobCategoryId}")
+    public ResponseEntity<List<SubCategory>> getSubCategoriesByJobCategory(@PathVariable Long jobCategoryId) {
+        List<SubCategory> subCategories = subCategoryService.getSubCategoriesByJobCategoryId(jobCategoryId);
+        return ResponseEntity.ok(subCategories);
     }
 
     // Kiểm tra quyền truy cập

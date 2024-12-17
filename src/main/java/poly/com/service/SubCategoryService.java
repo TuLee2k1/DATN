@@ -25,6 +25,10 @@ public class SubCategoryService {
         return subCategoryRepository.findAll();
     }
 
+    public List<SubCategory> getSubCategoriesByJobCategoryId(Long jobCategoryId) {
+        return subCategoryRepository.findByJobCategoryId(jobCategoryId);
+
+
     public Page<SubCategory> getAllSubCategories(Integer pageNo2) {
         Pageable pageable = PageRequest.of(pageNo2 - 1, 3);
         return subCategoryRepository.findAll(pageable);
@@ -47,5 +51,6 @@ public class SubCategoryService {
     // Kiểm tra xem job_category_id có đang được sử dụng trong các sub_category không
     public boolean isJobCategoryUsedInSubCategory(Long jobCategoryId) {
         return subCategoryRepository.existsByJobCategoryId(jobCategoryId);
+
     }
 }

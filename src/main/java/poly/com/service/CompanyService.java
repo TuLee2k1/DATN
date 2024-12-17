@@ -119,6 +119,7 @@ public class CompanyService {
     }
 
 
+
     public Company saveProfile(@Valid accountRequest request, Long id) throws IllegalAccessException {
         // Lấy user hiện tại từ authentication
         var currentUser = authenticationUtil.getCurrentUser();
@@ -149,6 +150,7 @@ public class CompanyService {
         // Lưu và trả về profile
         return companyRepository.save(profile);
     }
+
 
 
     public Company save(@Valid CompanyRequest request) {

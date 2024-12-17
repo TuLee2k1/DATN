@@ -81,7 +81,7 @@ public class SecurityConfig {
          // Cấu hình Logout
          .logout(logout -> logout
           .logoutUrl("/logout")
-          .logoutSuccessUrl("/login")
+          .logoutSuccessUrl("/auth/login")
           .invalidateHttpSession(true)
           .deleteCookies("JSESSIONID")
           .clearAuthentication(true)

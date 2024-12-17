@@ -19,6 +19,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
          .excludePathPatterns("/auth/login", "/auth/authenticate", "/auth/register",
           "/css/**", "/js/**", "/images/**");
     }
+
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
 
@@ -26,5 +27,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .addResourceLocations("file:./uploads/logocompany/");
         registry.addResourceHandler("/uploads/logoprofile/**")
                 .addResourceLocations("file:./uploads/logoprofile/");
+        registry.addResourceHandler("/Company/ApplicationProfile/download/**")
+         .addResourceLocations("file:./uploads/fileCV/");
+
     }
 }

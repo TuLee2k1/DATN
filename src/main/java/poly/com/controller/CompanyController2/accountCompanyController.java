@@ -134,7 +134,9 @@ public class accountCompanyController {
             profileDto.setFileLogo(fileLogo);
         System.out.println("Hình Ảnh: "+profileDto.getFileLogo());
             // Lưu profile
+
             Company savedProfile = companyService.saveProfile(profileDto, user.getId());
+
 
             // Thêm thông báo thành công
             redirectAttributes.addFlashAttribute("successMessage", "Cập nhật thông tin thành công!");

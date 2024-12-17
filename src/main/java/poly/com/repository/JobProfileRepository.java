@@ -15,15 +15,18 @@ public interface JobProfileRepository extends JpaRepository<JobProfile, Long> {
     @Query("SELECT COUNT(jp) FROM JobProfile jp")
     Long countAllJobProfiles();
 
-    @Query("SELECT COUNT(jp.status) FROM JobProfile jp WHERE jp.status = :status")
-    public Long countByStatus(StatusEnum status);
+    @Query("SELECT COUNT(jp.status) FROM JobProfile jp WHERE jp.status = :status AND jp.jobPost.company = :company")
+    public Long countByStatus(StatusEnum status, Company company);
 
-    @Query("SELECT jp FROM JobProfile jp WHERE jp.jobPost.id = :jobPostId")
-    Page<JobProfile> findJobProfilesByJobPostId(@Param("jobPostId") Long jobPostId, Pageable pageable);
+   @Query("SELECT jp FROM JobProfile jp WHERE jp.jobPost.id = :jobPostId AND jp.jobPost.company = :company")
+    Page<JobProfile> findJobProfilesByJobPostId(@Param("jobPostId") Long jobPostId, @Param("company") Company company, Pageable pageable);
 
     // Đếm số lượng ứng viên cho một bài đăng
-    @Query("SELECT COUNT(jp) FROM JobProfile jp WHERE jp.jobPost.id = :jobPostId")
-    Long countByJobPostId(@Param("jobPostId") Long jobPostId);
+    @Query("SELECT COUNT(jp) FROM JobProfile jp WHERE jp.jobPost.id = :jobPostId AND jp.jobPost.company = :company")
+    Long countByJobPostIdAndCompany(@Param("jobPostId") Long jobPostId, @Param("company") Company company);
+
+ @Query("SELECT COUNT(jp) FROM JobProfile jp WHERE  jp.jobPost.company = :company")
+ Long countByCompany( @Param("company") Company company);
 
     List<JobProfile> findByJobPost_IdAndJobPost_Company(Long jobPostId, Company company);
 
@@ -39,7 +42,7 @@ public interface JobProfileRepository extends JpaRepository<JobProfile, Long> {
     Page<JobProfile> findByStatus(@Param("status") StatusEnum status, Pageable pageable
     );
 
-    Page<JobProfile> findByJobPostIdAndStatus(Long jobPostId, StatusEnum status, Pageable pageable);
+    Page<JobProfile> findByJobPostIdAndStatusAndJobPost_Company(Long jobPostId, StatusEnum status, Company company, Pageable pageable);
 
     // Lọc theo jobPostId và status
     List<JobProfile> findByJobPost_IdAndStatus(Long jobPostId, StatusEnum status);
@@ -54,7 +57,6 @@ public interface JobProfileRepository extends JpaRepository<JobProfile, Long> {
     List<JobProfile> findByJobPost_Company(Company company);
 
     List<JobProfile> findByUser_Id(Long userId);
-
 
     @Query("SELECT COUNT(jp) FROM JobProfile jp WHERE jp.user.id = :userId")
     Long countByUserId(@Param("userId") Long userId);
