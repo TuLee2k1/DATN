@@ -93,6 +93,14 @@ public class FollowService {
         return followRepository.save(follow);
     }
 
+    public void unfollowJobPost(Long userId, Long jobPostId) {
+        Optional<Follow> follow = followRepository.findByUserIdAndJobPostId(userId, jobPostId);
+        if (follow.isEmpty()) {
+            throw new RuntimeException("Follow relationship not found.");
+        }
+        followRepository.delete(follow.get());
+    }
+
 
     public Page<JobPostFollowResponse> getSavedJobs(Pageable pageable) {
         User currentUser = authenticationUtil.getCurrentUser();
@@ -101,17 +109,6 @@ public class FollowService {
         }
         Page<JobPostFollowResponse> savedJobs = followRepository.findUserFollowedJobPosts(currentUser.getId(), pageable);
         return savedJobs != null ? savedJobs : Page.empty();
-    }
-    public void unfollowJobPost(Long jobPostId) {
-        // Lấy người dùng hiện tại
-        User currentUser = authenticationUtil.getCurrentUser();
-        if (currentUser == null) {
-            throw new RuntimeException("Người dùng chưa đăng nhập.");
-        }
-
-
-        // Xóa trạng thái theo dõi
-        followRepository.deleteByJobPostIdAndUserId(jobPostId, currentUser.getId());
     }
 
     public Follow toggleFollowUser(Long userId) {
@@ -153,13 +150,13 @@ public class FollowService {
         followRepository.delete(follow.get());
     }
 
-    public void unfollowJobPost(Long userId, Long jobPostId) {
-        Optional<Follow> follow = followRepository.findByUserIdAndJobPostId(userId, jobPostId);
-        if (follow.isEmpty()) {
-            throw new RuntimeException("Follow relationship not found.");
-        }
-        followRepository.delete(follow.get());
-    }
+//    public void unfollowJobPost(Long userId, Long jobPostId) {
+//        Optional<Follow> follow = followRepository.findByUserIdAndJobPostId(userId, jobPostId);
+//        if (follow.isEmpty()) {
+//            throw new RuntimeException("Follow relationship not found.");
+//        }
+//        followRepository.delete(follow.get());
+//    }
 
     public void unfollowApplicant(Long companyId, Long userId) {
         Optional<Follow> follow = followRepository.findByCompanyIdAndUserId(companyId, userId);

@@ -10,6 +10,7 @@ import java.util.Date;
 @Setter
 @AllArgsConstructor
 public class JobPostFollowResponse {
+    private Long jobPostId;
     private String companyLogo;      // Logo công ty
     private String jobTitle;         // Tiêu đề công việc
     private String companyName;      // Tên công ty
