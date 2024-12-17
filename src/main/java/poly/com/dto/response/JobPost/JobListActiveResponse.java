@@ -28,8 +28,9 @@ public class JobListActiveResponse {
     private Long jobCategoryId;
     private Exp exp;
     private JobLevel jobLevel;
+    private Float maxSalary;
 
-    public JobListActiveResponse(Long id, String jobTitle, Date createDate, Date endDate, Integer appliedCount, StatusEnum statusEnum, Long companyId, String companyLogoUrl, String companyName, WorkType workType, JobPostStatus status, String city, Long jobCategoryId, Exp exp, JobLevel jobLevel) {
+    public JobListActiveResponse(Long id, String jobTitle, Date createDate, Date endDate, Integer appliedCount, StatusEnum statusEnum, Long companyId, String companyLogoUrl, String companyName, WorkType workType, JobPostStatus status, String city, Long jobCategoryId, Exp exp, JobLevel jobLevel, Float maxSalary) {
         this.id = id;
         this.jobTitle = jobTitle;
         this.createDate = createDate;
@@ -45,6 +46,7 @@ public class JobListActiveResponse {
         this.jobCategoryId = jobCategoryId;
         this.exp = exp;
         this.jobLevel = jobLevel;
+        this.maxSalary = maxSalary;
     }
 
     public JobListActiveResponse() {

@@ -336,34 +336,34 @@
     <section class="section-hero overlay inner-page bg-image" style="background-image: url('/Admin/images/hero_1.jpg');" id="home-section">
 
         <div class="container">
-            <form method="post" class="search-jobs-form" th:action="@{/Tim-kiem}">
+            <form id="filter-options" method="post" class="search-jobs-form" th:action="@{/Tim-kiem}">
             <div class="row align-items-center justify-content-center">
                 <div class="col-md-12">
 
-    <div class="bg-washed-green-800 p-4 rounded-t-lg">
+    <div  class="bg-washed-green-800 p-4 rounded-t-lg">
         <div class="flex items-center space-x-2">
             <div class="relative flex-grow">
                 <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-                <input type="text" name="searchTerm"  placeholder="Tất cả công việc" class="pl-10 pr-4 py-2 w-full rounded-md focus:outline-none">
+                <input type="text" name="searchTerm" id="searchTerm" placeholder="Công việc, công ty,..." class="pl-10 pr-4 py-2 w-full rounded-md focus:outline-none" th:value="${searchTerm}">
             </div>
             <div class="relative">
                 <select id="jobCategoryId" name="jobCategory" class="pl-4 pr-8 py-2 rounded-md focus:outline-none">
                     <option value="">Tất cả ngành nghề</option>
                     <option th:each="category : ${jobCategories}"
                             th:value="${category.getId()}"
-                            th:text="${category.getCategoryName()}">
+                            th:text="${category.getCategoryName()}"
+                            th:selected="${category.getId() == selectedJobCategoryId}">
                     </option>
                 </select>
             </div>
             <div class="relative">
-                <select name="location" class="pl-4 pr-8 py-2 rounded-md focus:outline-none">
+                <select id="location" name="location" class="pl-4 pr-8 py-2 rounded-md focus:outline-none">
                     <option value="">Tất cả tỉnh thành</option>
-                    <option value="49">49</option>
-                    <option value="Hà Nội">Hà Nội</option>
-                    <option value="Hồ Chí Minh">Hồ Chí Minh</option>
-                    <option value="Đà Nẵng">Đà Nẵng</option>
-                    <option value="Hải Phòng">Hải Phòng</option>
-                    <option value="Cần Thơ">Cần Thơ</option>
+                    <option th:each="province : ${provinces}"
+                            th:value="${province}"
+                            th:text="${province}"
+                            th:selected="${province == location}"> <!-- Giữ lại giá trị đã chọn -->
+                    </option>
                 </select>
             </div>
             <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md">Tìm kiếm</button>
@@ -371,7 +371,7 @@
         </div>
     </div>
 
-    <div id="filter-options" class="bg-white p-4 rounded-b-lg shadow-md">
+    <div  class="bg-white p-4 rounded-b-lg shadow-md">
         <div class="flex items-center space-x-2">
             <button class="flex items-center space-x-1 text-orange-500">
                 <i class="fas fa-bolt"></i>
@@ -382,7 +382,8 @@
                     <option value="">Tất cả kinh nghiệm</option>
                     <option th:each="experience : ${T(poly.com.Enum.Exp).values()}"
                             th:value="${experience}"
-                            th:text="${experience.getName()}">
+                            th:text="${experience.getName()}"
+                            th:selected="${experience == Exp}">
                     </option>
                 </select>
             </div>
@@ -396,7 +397,8 @@
                     <option value="">Tất cả cấp bậc</option>
                     <option th:each="level : ${T(poly.com.Enum.JobLevel).values()}"
                             th:value="${level}"
-                            th:text="${level.getName()}">
+                            th:text="${level.getName()}"
+                            th:selected="${level == jobLevel}">
 
                     </option>
                 </select>
@@ -411,7 +413,8 @@
                     <option value="">Tất cả loại công việc</option>
                     <option th:each="type : ${T(poly.com.Enum.WorkType).values()}"
                             th:value="${type}"
-                            th:text="${type.getName()}">
+                            th:text="${type.getName()}"
+                            th:selected="${type == WorkType}">
                     </option>
                 </select>
             </div>
@@ -435,16 +438,10 @@
         <div class="max-w-4xl mx-auto">
             <div class="flex justify-end mb-4">
                 <div class="relative">
-                    <select class="block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
-                        <option>
-                            Phù hợp nhất
-                        </option>
-                        <option>
-                            Mới nhất
-                        </option>
-                        <option>
-                            Lương cao nhất
-                        </option>
+                    <select id="sortOptions" onchange="sortJobs()" class="block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                        <option value="relevance">Phù hợp nhất</option>
+                        <option value="newest">Mới nhất</option>
+                        <option value="highestSalary">Lương cao nhất</option>
                     </select>
                     <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                         <i class="fas fa-chevron-down">
@@ -505,6 +502,56 @@
 </div>
 
 <script>
+    function setFormValues() {
+        const urlParams = new URLSearchParams(window.location.search);
+
+        // Thiết lập giá trị cho input tìm kiếm
+        const searchTerm = urlParams.get('searchTerm') || '';
+        document.getElementById('searchTerm').value = searchTerm;
+
+        // Thiết lập giá trị cho dropdown ngành nghề
+        const jobCategoryId = urlParams.get('jobCategory') || '';
+        document.getElementById('jobCategoryId').value = jobCategoryId;
+
+        // Thiết lập giá trị cho dropdown địa điểm
+        const location = urlParams.get('location') || '';
+        document.getElementById('location').value = location;
+
+        // Thiết lập giá trị cho dropdown kinh nghiệm
+        const exp = urlParams.get('exp') || '';
+        document.getElementById('exp').value = exp;
+
+        // Thiết lập giá trị cho dropdown cấp bậc
+        const jobLevel = urlParams.get('jobLevel') || '';
+        document.getElementById('jobLevel').value = jobLevel;
+
+        // Thiết lập giá trị cho dropdown loại công việc
+        const workType = urlParams.get('workType') || '';
+        document.getElementById('workType').value = workType;
+    }
+
+    // Gọi hàm khi trang được tải
+    window.onload = setFormValues;
+
+    function sortJobs() {
+        const selectElement = document.getElementById('sortOptions');
+        const selectedValue = selectElement.value;
+
+        // Gọi hàm để tải lại danh sách công việc với tham số sắp xếp
+        window.location.href = `/Tim-kiem?sortBy=${selectedValue}`;
+    }
+
+    // Hàm để thiết lập giá trị cho dropdown từ URL
+    function setSortOption() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const sortBy = urlParams.get('sortBy') || 'relevance'; // Mặc định là 'relevance'
+        const selectElement = document.getElementById('sortOptions');
+        selectElement.value = sortBy; // Thiết lập giá trị cho dropdown
+    }
+
+    // Gọi hàm khi trang được tải
+    window.onload = setSortOption;
+
     document.getElementById('filter').addEventListener('click', function(event) {
         event.preventDefault();
         const filterOptions = document.getElementById('filter-options');

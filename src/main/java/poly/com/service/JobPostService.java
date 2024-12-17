@@ -388,7 +388,8 @@ public class JobPostService {
                     jobPost.getCity(),
                     jobCategoryId,
                     jobPost.getExp(),
-                    jobPost.getJobLevel()
+                    jobPost.getJobLevel(),
+                    jobPost.getMaxSalary()
 
             );
         });
@@ -478,7 +479,8 @@ public class JobPostService {
 
     public List<JobListActiveResponse> filterBySearchTerm(List<JobListActiveResponse> jobListings, String searchTerm) {
         return jobListings.stream()
-                .filter(job -> job.getJobTitle().toLowerCase().contains(searchTerm.toLowerCase()))
+                .filter(job -> (job.getJobTitle() != null && job.getJobTitle().toLowerCase().contains(searchTerm.toLowerCase())) ||
+                        (job.getCompanyName() != null && job.getCompanyName().toLowerCase().contains(searchTerm.toLowerCase())))
                 .collect(Collectors.toList());
     }
 

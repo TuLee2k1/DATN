@@ -31,6 +31,8 @@ import poly.com.service.JobPostService;
 import poly.com.service.SubCategoryService;
 import poly.com.service.ThongkeService;
 
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Map;
 
 import java.util.List;
@@ -161,9 +163,18 @@ public class HomeController {
         model.addAttribute("totalElements", totalElements);
         model.addAttribute("currentPage", page); // Trang hiện tại
         model.addAttribute("totalPages", totalPages); // Tổng số trang
+        model.addAttribute("provinces", getAllProvinces());
+        System.out.println(getAllProvinces().size());
+        // Thêm các giá trị vào model để giữ lại trong view
+        model.addAttribute("searchTerm", searchTerm);
+        model.addAttribute("selectedJobCategoryId", jobCategory); // Đảm bảo giá trị này được gửi
+        model.addAttribute("location", location);
+        model.addAttribute("Exp", exp);// Đảm bảo giá trị này được gửi
 
         return "user/Search"; // Tên của template Thymeleaf
     }
+
+
 
     @GetMapping("/Tim-kiem")
     public String getJobListingsPage(
@@ -177,14 +188,15 @@ public class HomeController {
             @RequestParam(required = false) JobLevel jobLevel,
             @RequestParam(required = false) Integer page, // Tham số trang hiện tại
             @RequestParam(defaultValue = "10") Integer size, // Kích thước trang
+            @RequestParam(required = false) String sortBy, // Tham số sắp xếp
             Model model) {
 
-        // Nếu pageNo không được truyền từ frontend, gán giá trị mặc định là 1
+        System.out.println("Provinces: " + getAllProvinces().size());
+
+        // Nếu page không được truyền từ frontend, gán giá trị mặc định là 1
         if (page == null) {
             page = 1;
         }
-
-        System.out.println("JobType: " + jobType);
 
         // Chuyển đổi từ String sang StatusEnum
         StatusEnum statusEnum;
@@ -195,6 +207,16 @@ public class HomeController {
             return "user/Search"; // Trả về trang tìm kiếm với thông báo lỗi
         }
 
+        model.addAttribute("provinces", getAllProvinces());
+        System.out.println(getAllProvinces().size());
+        // Thêm các giá trị vào model để giữ lại trong view
+        model.addAttribute("searchTerm", searchTerm);
+        model.addAttribute("selectedJobCategoryId", jobCategory); // Đảm bảo giá trị này được gửi
+        model.addAttribute("location", location);
+        model.addAttribute("Exp", exp);// Đảm bảo giá trị này được gửi
+        model.addAttribute("jobLevel", jobLevel);// Đảm bảo giá trị này được gửi
+        model.addAttribute("WorkType", workType);
+
         // Lấy tất cả các công việc với trạng thái cụ thể
         List<JobPost> jobPosts = jobPostService.getJobPostsByStatus(statusEnum);
 
@@ -202,9 +224,38 @@ public class HomeController {
         List<JobListActiveResponse> jobListActiveResponses = convertToJobListActiveResponse(jobPosts);
 
         // Bước 2: Lọc theo searchTerm, jobType và location
-        List<JobListActiveResponse> filteredJobList = filterJobListings(jobListActiveResponses, searchTerm, jobType, location, jobCategory,exp,workType,jobLevel);
+        List<JobListActiveResponse> filteredJobList = filterJobListings(jobListActiveResponses, searchTerm, jobType, location, jobCategory, exp, workType, jobLevel);
 
-        System.out.println("Filtered: " + filteredJobList.size());
+        System.out.println("Trước khi sắp xếp:");
+        filteredJobList.forEach(job -> System.out.println(job.getCreateDate()));
+        // Bước 3: Sắp xếp danh sách công việc dựa trên sortBy
+        if (sortBy != null) {
+            switch (sortBy) {
+                case "newest":
+                    // Sắp xếp theo ngày đăng (newest)
+                    filteredJobList.sort((job1, job2) -> {
+                        if (job1.getCreateDate() == null && job2.getCreateDate() == null) return 0;
+                        if (job1.getCreateDate() == null) return 1; // Đưa job1 xuống cuối
+                        if (job2.getCreateDate() == null) return -1; // Đưa job2 xuống cuối
+                        return job1.getCreateDate().compareTo(job2.getCreateDate());
+                    });
+                    System.out.println("Sau khi sắp xếp:");
+                    filteredJobList.forEach(job -> System.out.println(job.getCreateDate()));
+                    break;
+                case "highestSalary":
+                    filteredJobList.sort((job1, job2) -> {
+                        if (job1.getMaxSalary() == null && job2.getMaxSalary() == null) return 0;
+                        if (job1.getMaxSalary() == null) return 1; // Đưa job1 xuống cuối
+                        if (job2.getMaxSalary() == null) return -1; // Đưa job2 xuống cuối
+                        return job1.getMaxSalary().compareTo(job2.getMaxSalary());
+                    });
+                    break;
+                case "relevance":
+                default:
+                    // Giữ nguyên thứ tự hiện tại hoặc sắp xếp theo cách khác nếu cần
+                    break;
+            }
+        }
 
         // Tính toán chỉ số bắt đầu và kết thúc cho phân trang
         int totalElements = filteredJobList.size();
@@ -218,8 +269,6 @@ public class HomeController {
         JobPostRequest jobPostRequest = new JobPostRequest(); // Tạo đối tượng mới để tạo bài đăng
 
         model.addAttribute("jobPostRequest", jobPostRequest);
-        System.out.println("JobPost: " + jobPostRequest);
-
         model.addAttribute("jobCategories", jobCategoryService.getAllJobCategories());
         model.addAttribute("subCategories", subCategoryService.getAllSubCategories());
 
@@ -229,7 +278,29 @@ public class HomeController {
         model.addAttribute("currentPage", page); // Trang hiện tại
         model.addAttribute("totalPages", totalPages); // Tổng số trang
 
+
+
+
         return "user/Search"; // Tên của template Thymeleaf
+    }
+
+    public List<String> getAllProvinces() {
+        List<String> provinces = Arrays.asList(
+                "Hà Nội", "Hồ Chí Minh", "Đà Nẵng", "Hải Phòng", "Cần Thơ",
+                "An Giang", "Bà Rịa - Vũng Tàu", "Bắc Giang", "Bắc Kạn", "Bến Tre",
+                "Bình Định", "Bình Dương", "Bình Phước", "Cà Mau", "Đắk Lắk",
+                "Đắk Nông", "Điện Biên", "Đồng Nai", "Đồng Tháp", "Gia Lai",
+                "Hà Giang", "Hà Nam", "Hà Tĩnh", "Hải Dương", "Hậu Giang",
+                "Hòa Bình", "Hưng Yên", "Khánh Hòa", "Kiên Giang", "Kon Tum",
+                "Lai Châu", "Lạng Sơn", "Lào Cai", "Long An", "Nam Định",
+                "Nghệ An", "Ninh Bình", "Ninh Thuận", "Phú Thọ", "Phú Yên",
+                "Quảng Bình", "Quảng Nam", "Quảng Ngãi", "Quảng Ninh", "Quảng Trị",
+                "Sóc Trăng", "Sơn La", "Tây Ninh", "Thái Bình", "Thái Nguyên",
+                "Thanh Hóa", "Thừa Thiên - Huế", "Tiền Giang", "Trà Vinh", "Tuyên Quang",
+                "Vĩnh Long", "Vĩnh Phúc", "Yên Bái"
+        );
+        System.out.println("Number of provinces: " + provinces.size()); // In ra số lượng tỉnh thành
+        return provinces;
     }
 
     // Phương thức chuyển đổi từ JobPost sang JobListActiveResponse
@@ -247,6 +318,8 @@ public class HomeController {
                     response.setExp(jobPost.getExp());
                     response.setWorkType(jobPost.getWorkType());
                     response.setJobLevel(jobPost.getJobLevel());
+                    response.setCreateDate(jobPost.getCreateDate());
+                    response.setMaxSalary(jobPost.getMaxSalary());
                     // Thiết lập các thuộc tính khác nếu cần
                     return response;
                 })
