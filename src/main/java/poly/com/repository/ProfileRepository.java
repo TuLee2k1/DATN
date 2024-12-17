@@ -1,12 +1,15 @@
 package poly.com.repository;
 
+import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import poly.com.Enum.EducationLevel;
 import poly.com.Enum.WorkType;
+import poly.com.dto.request.ProfileDetailsDTO;
 import poly.com.dto.response.ProfileSearchResult;
 import poly.com.model.Company;
 import poly.com.model.JobCategory;
@@ -81,5 +84,10 @@ public interface ProfileRepository extends JpaRepository<Profile, Long> {
      "WHERE p.user_id.id = :userId")
     List<Object[]> searchProfileWithAllFields(@Param("userId") Long userId);
 
+    @Query("SELECT new poly.com.dto.request.ProfileDetailsDTO(e, s, p) FROM Experience e " +
+     "JOIN e.profile p " +
+     "JOIN School s ON s.profile_id.id = p.id " +
+     "WHERE p.id = :profileId")
+    List<ProfileDetailsDTO> findProfileDetailsByProfileId(@Param("profileId") Long profileId);
 
 }

@@ -87,10 +87,8 @@ public class ApplicationProfileController {
     }
         Long totalProfiles = jobProfileService.countTotalProfilesByJobPost(jobPostId);
         Long pendingProfiles = jobProfileService.countProfilesByJobPostAndStatus(jobPostId, StatusEnum.PENDING);
-        Long verifiedProfiles = jobProfileService.countProfilesByJobPostAndStatus(jobPostId, StatusEnum.VERIFIED);
         Long rejectedProfiles = jobProfileService.countProfilesByJobPostAndStatus(jobPostId, StatusEnum.REJECTED);
         Long activeProfiles = jobProfileService.countProfilesByJobPostAndStatus(jobPostId, StatusEnum.ACTIVE);
-        Long inactiveProfiles = jobProfileService.countProfilesByJobPostAndStatus(jobPostId, StatusEnum.INACTIVE);
         Long deletedProfiles = jobProfileService.countProfilesByJobPostAndStatus(jobPostId, StatusEnum.DELETED);
 
 
@@ -102,10 +100,12 @@ public class ApplicationProfileController {
     // Thêm số lượng hồ sơ theo trạng thái vào model
         model.addAttribute("totalProfiles", totalProfiles);
         model.addAttribute("pendingProfiles", pendingProfiles);
+
         model.addAttribute("verifiedProfiles", verifiedProfiles);
         model.addAttribute("rejectedProfiles", rejectedProfiles);
         model.addAttribute("activeProfiles", activeProfiles);
         model.addAttribute("inactiveProfiles", inactiveProfiles);
+
         model.addAttribute("deletedProfiles", deletedProfiles);
 
     return "Company/Hosoungtuyen";
@@ -195,6 +195,25 @@ public class ApplicationProfileController {
              .body(resource);
         } catch (FileNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
+
+    @GetMapping("/updateStatus/{id}")
+    public String updateStatus(@PathVariable("id") Long id,
+                               @RequestParam("status") StatusEnum status,
+                               Model model) {
+        try {
+            // Gọi Service để cập nhật trạng thái
+            jobProfileService.updateStatus(id, status);
+
+            // Thông báo cập nhật thành công
+            model.addAttribute("message", "Trạng thái đã được cập nhật thành công!");
+            return "redirect:/Company/ApplicationProfile";
+        } catch (Exception e) {
+            // Thông báo cập nhật thất bại
+            model.addAttribute("error", "Cập nhật trạng thái thất bại!");
+            return "redirect:/Company/ApplicationProfile";
         }
     }
 

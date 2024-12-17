@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="shortcut icon" href="img/icons/icon-48x48.png" />
+    <!--    <link th:href="@{../Company/css/danhsach.css}" rel="stylesheet"/>-->
+    <link rel="stylesheet" href="/Company/css/danhsach.css">
+    <link rel="canonical" href="https://demo-basic.adminkit.io/" />
+    <title>Hồ sơ chi tiết</title>
+
+    <!--	<link th:href="@{../css/app.css}"  rel="stylesheet">-->
+    <link rel="stylesheet" href="/css/app.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+
+        }
+
+        .card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #007bff;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .info-label {
+            font-weight: 700;
+            color: #495057;
+            font-size: 1.1rem;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .info-content {
+            font-size: 1.2rem;
+            color: #212529;
+            background-color: #f1f3f5;
+            border-radius: 5px;
+            padding: 8px 12px;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+            word-wrap: break-word;
+        }
+
+        .info-content p {
+            margin: 0;
+            padding: 0;
+        }
+
+        .info-content a {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .info-content a:hover {
+            text-decoration: underline;
+        }
+
+        .card-body h5 {
+            font-size: 1.4rem;
+            font-weight: bold;
+        }
+
+        .card-body .row {
+            margin-bottom: 20px;
+        }
+
+        .card-body .row .col-md-6 {
+            margin-bottom: 15px;
+        }
+
+        .card-body .row .col-md-6:last-child {
+            margin-bottom: 0;
+        }
+
+
+    </style>
+</head>
+
+<body>
+<div class="wrapper">
+
+    <!-- sidebar -->
+    <nav id="sidebar" class="sidebar js-sidebar">
+        <div class="sidebar-content js-simplebar">
+            <a class="sidebar-brand" href="http://localhost:8080">
+                <span class="align-middle">Dream job</span>
+            </a>
+
+            <ul class="sidebar-nav">
+                <li class="sidebar-header">
+                    <div class="d-flex align-items-center">
+                        <span>Quản lý đăng tuyển</span>
+                    </div>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" th:href="@{/job-posts/create}">
+                        <i class="align-middle" data-feather="plus-square"></i>
+                        <span>Tạo tin tuyển dụng</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" id="danhsachtindang" th:href="@{/job-posts/Listing}">
+                        <i class="align-middle" data-feather="file-text"></i>
+                        <span>Quản lý tin đăng</span>
+                    </a>
+                </li>
+
+                <li class="sidebar-header">
+                    <div class="d-flex align-items-center">
+                        <span>Quản lý ứng viên</span>
+                    </div>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" th:href="@{/Company/ApplicationProfile}">
+                        <i class="align-middle" data-feather="file"></i>
+                        <span>Hồ sơ ứng tuyển</span>
+                    </a>
+                </li>
+
+                <li class="sidebar-item">
+                    <a class="sidebar-link" th:href="@{/company/search-profiles}">
+                        <i class="align-middle" data-feather="search"></i>
+                        <span>Tìm ứng viên mới</span>
+                    </a>
+                </li>
+
+                <li class="sidebar-item">
+                    <a class="sidebar-link" th:href="@{/company/saved-profile}" >
+                        <i class="align-middle" data-feather="shopping-bag"></i>
+                        <span>Hồ sơ đã lưu</span>
+                    </a>
+                </li>
+
+                <li class="sidebar-item">
+                    <a class="sidebar-link" th:href="@{/company-account}">
+                        <i class="align-middle" data-feather="user"></i>
+                        <span>Tài khoản nhà tuyển dụng</span>
+                    </a>
+                </li>
+
+                <li class="sidebar-item mt-4">
+                    <a th:href="@{http://localhost:8080/}"  class="btn btn-primary w-100">
+                        <span>Cổng người tìm việc</span>
+                        <span class="ms-2">Chuyển</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="main">
+        <!-- nav head -->
+        <nav class="navbar navbar-expand navbar-light navbar-bg">
+            <a class="sidebar-toggle js-sidebar-toggle">
+                <i class="hamburger align-self-center"></i>
+            </a>
+
+            <div class="navbar-collapse collapse">
+                <ul class="navbar-nav navbar-align">
+                    <li class="nav-item dropdown">
+                        <a
+                                class="nav-icon dropdown-toggle"
+                                href="#"
+                                id="alertsDropdown"
+                                data-bs-toggle="dropdown">
+                            <div class="position-relative">
+                                <i class="align-middle" data-feather="bell"></i>
+                                <span class="indicator">4</span>
+                            </div>
+                        </a>
+                        <div
+                                class="dropdown-menu dropdown-menu-lg dropdown-menu-end py-0"
+                                aria-labelledby="alertsDropdown">
+                            <div class="dropdown-menu-header">4 New Notifications</div>
+                            <div class="list-group">
+                                <a href="#" class="list-group-item">
+                                    <div class="row g-0 align-items-center">
+                                        <div class="col-2">
+                                            <i
+                                                    class="text-danger"
+                                                    data-feather="alert-circle"></i>
+                                        </div>
+                                        <div class="col-10">
+                                            <div class="text-dark">Update completed</div>
+                                            <div class="text-muted small mt-1">
+                                                Restart server 12 to complete the update.
+                                            </div>
+                                            <div class="text-muted small mt-1">30m ago</div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a href="#" class="list-group-item">
+                                    <div class="row g-0 align-items-center">
+                                        <div class="col-2">
+                                            <i class="text-warning" data-feather="bell"></i>
+                                        </div>
+                                        <div class="col-10">
+                                            <div class="text-dark">Lorem ipsum</div>
+                                            <div class="text-muted small mt-1">
+                                                Aliquam ex eros, imperdiet vulputate hendrerit et.
+                                            </div>
+                                            <div class="text-muted small mt-1">2h ago</div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a href="#" class="list-group-item">
+                                    <div class="row g-0 align-items-center">
+                                        <div class="col-2">
+                                            <i class="text-primary" data-feather="home"></i>
+                                        </div>
+                                        <div class="col-10">
+                                            <div class="text-dark">Login from 192.186.1.8</div>
+                                            <div class="text-muted small mt-1">5h ago</div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a href="#" class="list-group-item">
+                                    <div class="row g-0 align-items-center">
+                                        <div class="col-2">
+                                            <i class="text-success" data-feather="user-plus"></i>
+                                        </div>
+                                        <div class="col-10">
+                                            <div class="text-dark">New connection</div>
+                                            <div class="text-muted small mt-1">
+                                                Christina accepted your request.
+                                            </div>
+                                            <div class="text-muted small mt-1">14h ago</div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="dropdown-menu-footer">
+                                <a href="#" class="text-muted">Show all notifications</a>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="nav-item dropdown">
+                        <a
+                                class="nav-icon dropdown-toggle d-inline-block d-sm-none"
+                                href="#"
+                                data-bs-toggle="dropdown">
+                            <i class="align-middle" data-feather="settings"></i>
+                        </a>
+
+                        <a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#" data-bs-toggle="dropdown">
+                            <img th:src="${company?.logo != null && !#strings.isEmpty(company.logo)
+											? '/uploads/logocompany/' + company.getLogo()
+											: '/Admin/images/person_3.jpg'}"
+                                 class="rounded-circle"       alt="Logo" width="50" height="50" style="width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center; font-size: 30px;" >
+
+                            <span class="text-dark fw-bold"
+                                  th:text="${#authentication.principal.companyDetails != null ? #authentication.principal.companyDetails.name : 'N/A'}">Charles Hall</span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end">
+                            <a class="dropdown-item" th:href="@{/company-account}"><i
+                                    class="align-middle me-1" data-feather="user"></i> Profile</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" th:href="@{/logout}">Log out</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <main class="content">
+            <div class="container mt-5 mb-5">
+                <h2 class="text-center mb-4 text-primary fw-bold">Hồ sơ cá nhân</h2>
+                <div th:each="profileDetailsDTO : ${profileDetails}">
+                <!-- Personal Information -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="section-title">Thông tin cá nhân</h5>
+                        <div class="row mb-2">
+                            <!-- Họ và tên -->
+                            <div class="col-md-6 mb-3">
+                                <span class="info-label">Họ và tên:</span>
+                                <p class="info-content mb-0" th:text="${profileDetailsDTO.profile.name}">Anh</p>
+                            </div>
+                            <!-- Email cá nhân -->
+                            <div class="col-md-6 mb-3">
+                                <span class="info-label">Email cá nhân:</span>
+                                <p class="info-content mb-0" th:text="${profileDetailsDTO.profile.email}">kieuanh6103@gmail.com</p>
+                            </div>
+                            <!-- Điện thoại -->
+                            <div class="col-md-6 mb-3">
+                                <span class="info-label">Điện thoại:</span>
+                                <p class="info-content mb-0" th:text="${profileDetailsDTO.profile.phone}">0886968559</p>
+                            </div>
+                            <!-- Địa chỉ phỏng vấn -->
+                            <div class="col-md-6 mb-3">
+                                <span class="info-label">Địa chỉ phỏng vấn:</span>
+                                <p class="info-content mb-0" th:text="${profileDetailsDTO.profile.address}">77 Nguyen Minh Chau</p>
+                            </div>
+                            <!-- Giới tính -->
+                            <div class="col-md-6 mb-3">
+                                <span class="info-label">Giới tính:</span>
+                                <p class="info-content mb-0" th:text="${profileDetailsDTO.profile.sex}">Nam</p>
+                            </div>
+                            <!-- Ngày sinh -->
+                            <div class="col-md-6 mb-3">
+                                <span class="info-label">Ngày sinh:</span>
+                                <p class="info-content mb-0" th:text="${profileDetailsDTO.profile.dateOfBirth}">06/01/2005</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Trường học -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="section-title">Trường học</h5>
+                        <div class="row mb-2">
+                            <div class="col-md-6 mb-3">
+                                <span class="info-label">Tên trường:</span>
+                                <p class="info-content mb-0" th:text="${profileDetailsDTO.school.schoolName}">FPT Polytechnic</p>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <span class="info-label">Bằng cấp:</span>
+                                <p class="info-content mb-0" th:text="${profileDetailsDTO.school.degree.name}">COLLEGE</p>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <span class="info-label">Ngày bắt đầu:</span>
+                                <p class="info-content mb-0" th:text="${profileDetailsDTO.school.startDate}">08/08/2022</p>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <span class="info-label">Ngày kết thúc:</span>
+                                <p class="info-content mb-0"
+                                   th:text="${#temporals.format(profileDetailsDTO.school.endDate, 'dd-MM-yyyy')}">
+                                    12/12/2024
+                                </p>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <span class="info-label">GPA:</span>
+                                <p class="info-content mb-0" th:text="${profileDetailsDTO.school.GPA}">3.5</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Kinh nghiệm -->
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="section-title">Kinh nghiệm</h5>
+                        <div class="row mb-2">
+                            <div class="col-md-6 mb-3">
+                                <span class="info-label">Tiêu đề:</span>
+                                <p class="info-content mb-0" th:text="${profileDetailsDTO.experience.jobTitle}">Intern Java Developer</p>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <span class="info-label">Công ty:</span>
+                                <p class="info-content mb-0" th:text="${profileDetailsDTO.experience.companyName}">FPT Software</p>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <span class="info-label">Ngày bắt đầu:</span>
+                                <p class="info-content mb-0" th:text="${profileDetailsDTO.experience.startDate}">16/02/2024</p>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <span class="info-label">Ngày kết thúc:</span>
+                                <p class="info-content mb-0" th:text="${profileDetailsDTO.experience.endDate}">13/12/2024</p>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <span class="info-label">Mô tả công việc:</span>
+                                <p class="info-content mb-0" th:text="${profileDetailsDTO.experience.jobDescription}">Code dự án quản lý web tuyển dụng</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+
+        </main>
+
+
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/js/app.js"></script>
+<script src="/Company/js/danhsach.js"></script>
+
+
+</body>
+
+</html>

@@ -14,6 +14,7 @@ import poly.com.Enum.Exp;
 import poly.com.Enum.JobLevel;
 import poly.com.Enum.WorkType;
 
+import poly.com.dto.request.ProfileDetailsDTO;
 import poly.com.dto.response.PageResponse;
 import poly.com.dto.response.ProfileSearchResult;
 
@@ -35,10 +36,10 @@ public class SearchController {
     // Endpoint để tìm kiếm hồ sơ
     @PreAuthorize("hasRole('ROLE_COMPANY')")
     @GetMapping("/search-profiles")
-    public String searchProfiles(@RequestParam(required = false) String name,
-                                 @RequestParam(required = false) String desiredLocation,
-                                 @RequestParam(required = false) WorkType workType,
-                                 @RequestParam(required = false) EducationLevel degree,
+    public String searchProfiles(@RequestParam(defaultValue = "") String name,
+                                 @RequestParam(defaultValue = "") String desiredLocation,
+                                 @RequestParam(defaultValue = "") WorkType workType,
+                                 @RequestParam(defaultValue = "") EducationLevel degree,
                                  @RequestParam(defaultValue = "1") Integer pageNo,
                                  Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -59,6 +60,7 @@ public class SearchController {
         model.addAttribute("profiles", response.getContent());
         model.addAttribute("totalPages", response.getTotalPages());
         model.addAttribute("totalElements", response.getTotalElements());
+        model.addAttribute("currentPage", pageNo);
 
         // Lưu lại giá trị đã chọn
         model.addAttribute("selectedName", name);
@@ -68,6 +70,18 @@ public class SearchController {
 
         // Trả về view
         return "Company/Timungvienmoi";
+    }
+
+    @GetMapping("/details/{profileId}")
+    public String getProfileDetails(@PathVariable Long profileId, Model model) {
+        // Gọi service để lấy thông tin chi tiết Profile từ 3 bảng
+        List<ProfileDetailsDTO> profileDetails = profileService.getProfileDetails(profileId);
+
+        // Thêm dữ liệu vào model
+        model.addAttribute("profileDetails", profileDetails);
+
+        // Trả về view (Thymeleaf Template)
+        return "Company/profileDetails";
     }
 
 

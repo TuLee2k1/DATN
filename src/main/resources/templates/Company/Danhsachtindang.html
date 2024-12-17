@@ -19,6 +19,7 @@
 <!--	<link th:href="@{../css/app.css}"  rel="stylesheet">-->
 	<link rel="stylesheet" href="/css/app.css">
 	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 	<style>
         body {
             background-color: #f8f9fa;
@@ -317,8 +318,8 @@
 						</li>
 						<li class="nav-item dropdown">
 							<a class="nav-icon dropdown-toggle d-inline-block d-sm-none" href="#" data-bs-toggle="dropdown">
-                <i class="align-middle" data-feather="settings"></i>
-              </a>
+								<i class="align-middle" data-feather="settings"></i>
+							  </a>
 
 							<a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#" data-bs-toggle="dropdown">
 								<img th:src="${company?.logo != null && !#strings.isEmpty(company.logo)
@@ -419,17 +420,17 @@
 									<td data-label="Ngày tạo" th:text="${#dates.format(job.createDate, 'dd/MM/yyyy')}"></td>
 									<td data-label="Thời hạn" th:text="${#dates.format(job.endDate, 'dd/MM/yyyy')}"></td>
 									<td data-label="Trạng thái duyệt">
-                        <span th:with="status=${job.statusEnum.name()}"
-							  class="badge rounded-pill text-uppercase"
-							  th:classappend="${
-                                  status == 'ACTIVE' ? 'bg-success' :
-                                  (status == 'PENDING' ? 'bg-warning text-dark' : 'bg-danger')
-                              }"
-							  th:text="${
-                                  status == 'ACTIVE' ? 'Đã xác thực' :
-                                  (status == 'PENDING' ? 'Chờ xác thực' : 'Bị từ chối')
-                              }">
-                        </span>
+										<span th:with="status=${job.statusEnum.name()}"
+											  class="badge rounded-pill text-uppercase"
+											  th:classappend="${
+												  status == 'ACTIVE' ? 'bg-success' :
+												  (status == 'PENDING' ? 'bg-warning text-dark' : 'bg-danger')
+											  }"
+											  th:text="${
+												  status == 'ACTIVE' ? 'Đã xác thực' :
+												  (status == 'PENDING' ? 'Chờ xác thực' : 'Bị từ chối')
+											  }">
+										</span>
 									</td>
 									<td data-label="Hành động">
 										<div class="btn-group btn-group-sm" role="group">
@@ -439,13 +440,12 @@
 											</a>
 											<!-- Chỉ hiển thị nút xóa khi statusEnum là PENDING hoặc REJECTED -->
 											<form th:if="${job.statusEnum == T(poly.com.Enum.StatusEnum).PENDING
-                                        || job.statusEnum == T(poly.com.Enum.StatusEnum).REJECTED}"
+                                        		|| job.statusEnum == T(poly.com.Enum.StatusEnum).REJECTED}"
 												  th:action="@{/job-posts/{id}/delete(id=${job.id})}"
 												  method="post"
 												  class="d-inline">
-												<button type="submit"
-														class="btn btn-danger delete-btn"
-														onclick="return confirm('Bạn có chắc chắn muốn xóa bài đăng này?')">
+												<button type="button" class="btn btn-danger delete-btn"
+														th:data-id="${job.id}">
 													<i class="fas fa-trash"></i>
 												</button>
 											</form>
@@ -504,7 +504,6 @@
 								</ul>
 							</nav>
 						</div>
-
 						<!-- Thêm thông báo khi không có dữ liệu -->
 						<div th:if="${#lists.isEmpty(jobListings)}" class="alert alert-info text-center" role="alert">
 							<i class="fas fa-info-circle me-2"></i>Không có tin đăng nào được tìm thấy
@@ -513,33 +512,7 @@
 				</div>
 			</main>
 
-			<!-- <footer class="footer">
-				<div class="container-fluid">
-					<div class="row text-muted">
-						<div class="col-6 text-start">
-							<p class="mb-0">
-								<a class="text-muted" href="https://adminkit.io/" target="_blank"><strong>AdminKit</strong></a> - <a class="text-muted" href="https://adminkit.io/" target="_blank"><strong>Bootstrap Admin Template</strong></a>								&copy;
-							</p>
-						</div>
-						<div class="col-6 text-end">
-							<ul class="list-inline">
-								<li class="list-inline-item">
-									<a class="text-muted" href="https://adminkit.io/" target="_blank">Support</a>
-								</li>
-								<li class="list-inline-item">
-									<a class="text-muted" href="https://adminkit.io/" target="_blank">Help Center</a>
-								</li>
-								<li class="list-inline-item">
-									<a class="text-muted" href="https://adminkit.io/" target="_blank">Privacy</a>
-								</li>
-								<li class="list-inline-item">
-									<a class="text-muted" href="https://adminkit.io/" target="_blank">Terms</a>
-								</li>
-							</ul>
-						</div>
-					</div>
-				</div>
-			</footer> -->
+
 		</div>
 	</div>
 	<script th:inline="javascript">
@@ -575,9 +548,57 @@
 				});
 			});
 		});
+		var successMessage = /*[[${successMessage}]]*/ null;
+		if (successMessage !== null) {
+			Swal.fire({
+				title: "Thành công!",
+				text: successMessage,
+				icon: "success",
+				confirmButtonText: "OK"
+			});
+		}
 
+		var errorMessage = /*[[${errorMessage}]]*/ null;
+		if (errorMessage !== null) {
+			Swal.fire({
+				title: "Lỗi!",
+				text: errorMessage,
+				icon: "error",
+				confirmButtonText: "Thử lại"
+			});
+		}
+		document.addEventListener("DOMContentLoaded", function () {
+			const deleteButtons = document.querySelectorAll(".delete-btn");
+
+			deleteButtons.forEach(button => {
+				button.addEventListener("click", function () {
+					const jobId = this.getAttribute("data-id");
+
+					Swal.fire({
+						title: "Xác nhận xóa?",
+						text: "Bạn có chắc chắn muốn xóa bài đăng này?",
+						icon: "warning",
+						showCancelButton: true,
+						confirmButtonColor: "#d33",
+						cancelButtonColor: "#3085d6",
+						confirmButtonText: "Xóa",
+						cancelButtonText: "Hủy"
+					}).then((result) => {
+						if (result.isConfirmed) {
+							// Gửi form hoặc gọi API để xóa bài đăng
+							const form = document.createElement('form');
+							form.method = "POST";
+							form.action = `/job-posts/${jobId}/delete`;
+							document.body.appendChild(form);
+							form.submit();
+						}
+					});
+				});
+			});
+		});
 	</script>
 	<script src="/js/app.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 	<script src="/Company/js/danhsach.js"></script>
 
 

@@ -365,7 +365,7 @@ public class JobPostController2 {
             redirectAttributes.addFlashAttribute("successMessage", "Xóa bài đăng thành công!");
         } catch (Exception e) {
             log.error("Lỗi khi xóa bài đăng: ", e);
-            redirectAttributes.addFlashAttribute("errorMessage", "Có lỗi xảy ra: " + e.getMessage());
+            redirectAttributes.addFlashAttribute("errorMessage", "Xóa bài đăng thất bại !");
         }
         return "redirect:/job-posts/Listing";
     }

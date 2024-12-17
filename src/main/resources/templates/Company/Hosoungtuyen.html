@@ -455,35 +455,22 @@
 											<span class="badge bg-light text-dark" th:text="${totalProfiles}">10</span>
 										</button>
 
-										<button type="submit" name="status" value="PENDING" class="btn">
+										<button type="submit" name="status" th:value="@{PENDING}" class="btn">
 											<i class="fas fa-clock"></i> Chờ đánh giá
 											<span class="badge bg-light text-dark" th:text="${pendingProfiles}">3</span>
 										</button>
 
-										<button type="submit" name="status" value="VERIFIED" class="btn">
-											<i class="fas fa-check"></i> Phù hợp
-											<span class="badge bg-light text-dark" th:text="${verifiedProfiles}">5</span>
-										</button>
 
-										<button type="submit" name="status" value="INTERVIEWING" class="btn">
-											<i class="fas fa-comments"></i> Đang phỏng vấn
-											<span class="badge bg-light text-dark" th:text="${inactiveProfiles}">2</span>
-										</button>
-
-										<button type="submit" name="status" value="HIRED" class="btn">
+										<button type="submit" name="status" th:value="@{ACTIVE}" class="btn">
 											<i class="fas fa-user-check"></i> Đã tuyển
 											<span class="badge bg-light text-dark" th:text="${activeProfiles}">1</span>
 										</button>
 
-										<button type="submit" name="status" value="REJECTED" class="btn">
+										<button type="submit" name="status" th:value="@{REJECTED}" class="btn">
 											<i class="fas fa-times"></i> Không phù hợp
 											<span class="badge bg-light text-dark" th:text="${rejectedProfiles}">4</span>
 										</button>
 
-										<button type="submit" name="status" value="DELETED" class="btn">
-											<i class="fas fa-trash"></i> Đã xóa
-											<span class="badge bg-light text-dark" th:text="${deletedProfiles}">0</span>
-										</button>
 									</from>
 								</div>
 							</div>
@@ -530,7 +517,7 @@
 									<td>
 										<div class="btn-group btn-group-sm" role="group">
 											<!-- Nút Chi tiết -->
-											<a th:href="@{/Company/ApplicationProfile/detail/{id}(id=${jobprofile.id})}"
+											<a th:href="@{/company/details/{id}(id=${jobprofile.id})}"
 											   class="btn btn-info btn-sm fw-bold" style="background-color: #17a2b8; color: white;">
 												<i class="fas fa-eye"></i> <strong>Chi tiết</strong>
 											</a>
@@ -552,7 +539,7 @@
 												<ul class="dropdown-menu">
 													<li>
 														<a class="dropdown-item"
-														   th:href="@{/Company/ApplicationProfile/updateStatus/{id}(id=${jobprofile.id}, status='APPROVED')}"
+														   th:href="@{/Company/ApplicationProfile/updateStatus/{id}(id=${jobprofile.id}, status='ACTIVE')}"
 														   onclick="return confirm('Bạn có chắc chắn muốn phê duyệt hồ sơ này?')">
 															<i class="fas fa-check-circle text-success"></i> Phê duyệt
 														</a>
@@ -573,6 +560,7 @@
 													</li>
 												</ul>
 											</div>
+
 										</div>
 									</td>
 								</tr>
@@ -586,21 +574,19 @@
 							</table>
 						</div>
 
-						<div class="footer-note text-center mt-4">
-							<i class="fas fa-exclamation-circle"></i> Hồ sơ sẽ bị xóa khỏi trang hồ sơ ứng tuyển sau 12 tháng kể từ ngày nộp
-						</div>
 
-					</form>
+
+						</form>
 								<nav class="pagination-nav" th:if="${totalPages > 1}">
 									<ul class="pagination justify-content-center">
 										<!-- Nút Trước -->
 										<li class="page-item previous-item" th:classappend="${currentPage == 1 ? 'disabled' : ''}">
 											<a class="page-link"
 											   th:href="@{/Company/ApplicationProfile(
-                   pageNo=${currentPage - 1},
-                   jobPostId=${selectedJobPostId},
-                   status=${selectedStatus ?: ''}
-               )}">
+													   pageNo=${currentPage - 1},
+													   jobPostId=${selectedJobPostId},
+													   status=${selectedStatus ?: ''}
+												   )}">
 												<i class="fas fa-chevron-left me-2"></i>Trước
 											</a>
 										</li>
@@ -609,10 +595,10 @@
 										<li class="page-item" th:if="${currentPage > 2}">
 											<a class="page-link"
 											   th:href="@{/Company/ApplicationProfile(
-                   pageNo=1,
-                   jobPostId=${selectedJobPostId},
-                   status=${selectedStatus ?: ''}
-               )}">1</a>
+											   pageNo=1,
+											   jobPostId=${selectedJobPostId},
+											   status=${selectedStatus ?: ''}
+										   )}">1</a>
 										</li>
 
 										<!-- Dấu ... nếu cách trang đầu tiên quá xa -->
@@ -627,10 +613,10 @@
 											th:if="${pageNumber > 0 && pageNumber <= totalPages}">
 											<a class="page-link"
 											   th:href="@{/Company/ApplicationProfile(
-                   pageNo=${pageNumber},
-                   jobPostId=${selectedJobPostId},
-                   status=${selectedStatus ?: ''}
-               )}"
+													   pageNo=${pageNumber},
+													   jobPostId=${selectedJobPostId},
+													   status=${selectedStatus ?: ''}
+												   )}"
 											   th:text="${pageNumber}">
 											</a>
 										</li>
@@ -644,10 +630,10 @@
 										<li class="page-item" th:if="${currentPage < totalPages - 2}">
 											<a class="page-link"
 											   th:href="@{/Company/ApplicationProfile(
-                   pageNo=${totalPages},
-                   jobPostId=${selectedJobPostId},
-                   status=${selectedStatus ?: ''}
-               )}"
+												   pageNo=${totalPages},
+												   jobPostId=${selectedJobPostId},
+												   status=${selectedStatus ?: ''}
+											   )}"
 											   th:text="${totalPages}">
 											</a>
 										</li>
@@ -656,10 +642,10 @@
 										<li class="page-item next-item" th:classappend="${currentPage == totalPages ? 'disabled' : ''}">
 											<a class="page-link"
 											   th:href="@{/Company/ApplicationProfile(
-                   pageNo=${currentPage + 1},
-                   jobPostId=${selectedJobPostId},
-                   status=${selectedStatus ?: ''}
-               )}">
+										   pageNo=${currentPage + 1},
+										   jobPostId=${selectedJobPostId},
+										   status=${selectedStatus ?: ''}
+									   )}">
 												Tiếp<i class="fas fa-chevron-right ms-2"></i>
 											</a>
 										</li>

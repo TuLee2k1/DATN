@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import poly.com.Enum.EducationLevel;
 import poly.com.Enum.WorkType;
+import poly.com.dto.request.ProfileDetailsDTO;
 import poly.com.util.AuthenticationUtil;
 import poly.com.dto.ProfileDTO;
 import poly.com.dto.request.profileRequest;
@@ -223,6 +224,10 @@ public class ProfileService {
             response.add(map);
         }
         return response;
+    }
+
+    public List<ProfileDetailsDTO> getProfileDetails(Long profileId) {
+        return profileRepository.findProfileDetailsByProfileId(profileId);
     }
 
 }

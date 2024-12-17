@@ -1,5 +1,6 @@
 package poly.com.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.service.spi.ServiceException;
@@ -142,6 +143,19 @@ public class JobProfileService {
 
     public List<JobProfile> getProfilesByCompany(Company company) {
         return jobProfileRepository.findByJobPost_Company(company);
+    }
+
+    @Transactional
+    public void updateStatus(Long id, StatusEnum status) {
+        // Tìm hồ sơ theo ID
+        JobProfile jobProfile = jobProfileRepository.findById(id)
+         .orElseThrow(() -> new RuntimeException("Không tìm thấy hồ sơ với ID: " + id));
+
+        // Cập nhật trạng thái
+        jobProfile.setStatus(status);
+
+        // Lưu thay đổi vào cơ sở dữ liệu
+        jobProfileRepository.save(jobProfile);
     }
 
 

@@ -235,6 +235,7 @@
 							</div>
 							<div class="dropdown-menu-footer">
 								<a href="#" class="text-muted">Show all notifications</a>
+
 							</div>
 						</div>
 					</li>
@@ -243,6 +244,7 @@
 							<div class="position-relative">
 								<i class="align-middle" data-feather="message-square"></i>
 							</div>
+
 						</a>
 						<div class="dropdown-menu dropdown-menu-lg dropdown-menu-end py-0" aria-labelledby="messagesDropdown">
 							<div class="dropdown-menu-header">
@@ -370,7 +372,16 @@
 												th:text="${profile.followed ? 'Hủy theo dõi' : 'Theo dõi'}">
 										</button>
 									</td>
-									<td th:text="${profile.name}">Tên hồ sơ</td>
+
+									<td>
+										<div>
+											<strong th:text="${profile.name}">Tên hồ sơ</strong>
+										</div>
+										<div>
+											<span th:text="${profile.desiredLocation}">Vị trí mong muốn</span>
+										</div>
+									</td>
+
 									<td th:text="${profile.email}">Email</td>
 									<td th:text="${profile.phone}">SĐT</td>
 									<td th:text="${#dates.format(profile.followDate, 'dd/MM/yyyy')}">Ngày lưu</td>
@@ -378,9 +389,12 @@
 								</tbody>
 							</table>
 						</div>
-						<div th:if="${#lists.isEmpty(profiles)}">
-							<p>Không tìm thấy hồ sơ nào!</p>
+
+						<div th:if="${#lists.isEmpty(profiles)}" class="text-center">
+							<p class="text-danger" style="font-size: 18px; font-weight: bold;">Không tìm thấy hồ sơ nào!</p>
 						</div>
+
+
 
 						<!-- Pagination -->
 						<nav aria-label="Page navigation">
