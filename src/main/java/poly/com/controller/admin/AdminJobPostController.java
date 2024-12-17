@@ -59,7 +59,7 @@ public class AdminJobPostController {
             redirectAttributes.addFlashAttribute("message", "Duyệt bài đăng thành công!");
             return "redirect:/admin/jobposts"; // Điều hướng lại trang danh sách JobPosts
         } catch (RuntimeException e) {
-            redirectAttributes.addFlashAttribute("error", "Bài đăng này đã bị xóa!");
+            redirectAttributes.addFlashAttribute("error", "Vui lòng không duyệt lại bài đăng này!");
             return "redirect:/admin/jobposts"; // Quay lại danh sách JobPosts nếu có lỗi
         }
     }
