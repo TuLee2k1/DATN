@@ -66,4 +66,7 @@ public interface FollowRepository extends JpaRepository<Follow, Long> {
 
     boolean existsByCompanyIdAndUserId (Long companyId, Long userid);
 
+    @Query("SELECT COUNT(f) FROM Follow f WHERE f.userId = :userId")
+    Long countBookmarksByUserId(@Param("userId") Long userId);
+
 }

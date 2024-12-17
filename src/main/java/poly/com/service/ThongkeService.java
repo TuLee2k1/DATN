@@ -1,17 +1,18 @@
 package poly.com.service;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import poly.com.repository.CompanyRepository;
-import poly.com.repository.JobPostRepository;
-import poly.com.repository.JobProfileRepository;
-import poly.com.repository.ProfileRepository;
+import poly.com.repository.*;
 
 import java.util.HashMap;
 import java.util.Map;
 
 @Service
+@RequiredArgsConstructor
 public class ThongkeService {
+    private final JobProfileRepository jobProfileRepository;
+    private final FollowRepository followRepository;
 
     @Autowired
     private CompanyRepository companyRepository;
@@ -31,6 +32,14 @@ public class ThongkeService {
         stats.put("totalJobProfiles", profileRepository.count());
 
         return stats;
+    }
+
+    // Thêm phương thức thống kê công việc đã ứng tuyển của user theo userId
+    public Long getAppliedJobsByUserId(Long userId) {
+        return jobProfileRepository.countByUserId(userId);
+    }
+    public Long getBookmarkedByUserId(Long userId) {
+        return followRepository.countBookmarksByUserId(userId);
     }
 
 }
