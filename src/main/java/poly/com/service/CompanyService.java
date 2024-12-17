@@ -117,37 +117,7 @@ public class CompanyService {
 
 
 
-    public Profile saveProfile(@Valid accountRequest request, Long id) throws IllegalAccessException {
-        // Lấy user hiện tại từ authentication
-        var currentUser = authenticationUtil.getCurrentUser();
 
-        // Tìm profile hiện tại hoặc tạo mới
-        Profile profile = profileRepository.findById(currentUser.getId())
-                .orElse(new Profile());
-
-        // Xử lý upload logo nếu có
-        if (request.getFileLogo() != null && !request.getFileLogo().isEmpty()) {
-            try {
-                if (profile.getLogo() != null) {
-                    fileStorageService.deleteProfileImageFile(profile.getLogo());
-                }
-
-                String logoUrl = fileStorageService.storeImageProfileFile(request.getFileLogo());
-                profile.setLogo(logoUrl);
-            } catch (Exception e) {
-                throw new FileStorageException("Không thể lưu ảnh đại diện", e);
-            }
-        }
-
-        // Cập nhật thông tin profile
-        profile.setName(request.getName());
-        profile.setPhone(request.getPhone());
-        profile.setAddress(request.getAddress());
-        profile.setUser_id(currentUser);
-
-        // Lưu và trả về profile
-        return profileRepository.save(profile);
-    }
 
 
     public Company save(@Valid CompanyRequest request) {

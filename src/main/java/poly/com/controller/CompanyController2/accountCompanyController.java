@@ -133,7 +133,7 @@ public class accountCompanyController {
             profileDto.setFileLogo(fileLogo);
 
             // Lưu profile
-            Profile savedProfile = companyService.saveProfile(profileDto, user.getId());
+//            Profile savedProfile = companyService.saveProfile(profileDto, user.getId());
 
             // Thêm thông báo thành công
             redirectAttributes.addFlashAttribute("successMessage", "Cập nhật thông tin thành công!");

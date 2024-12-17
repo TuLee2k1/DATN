@@ -48,14 +48,16 @@ public class JobProfileService {
     }
 
     public PageResponse<JobProfile> getALlProfileByJobPostid(Long jobPostId,Integer pageNo){
+        var company = authenticationUtil.getCurrentUser().getCompany();
        Pageable pageable = PageRequest.of(pageNo - 1, 10);
-         Page<JobProfile> jobProfiles = jobProfileRepository.findJobProfilesByJobPostId(jobPostId, pageable);
+         Page<JobProfile> jobProfiles = jobProfileRepository.findJobProfilesByJobPostId(jobPostId, company,pageable);
             return new PageResponse<>(jobProfiles);
     }
 
     public PageResponse<JobProfile> excelProfileByJobPostid(Long jobPostId){
         Pageable pageable = PageRequest.of( 0, 10);
-        Page<JobProfile> jobProfiles = jobProfileRepository.findJobProfilesByJobPostId(jobPostId, pageable);
+        var company = authenticationUtil.getCurrentUser().getCompany();
+        Page<JobProfile> jobProfiles = jobProfileRepository.findJobProfilesByJobPostId(jobPostId,company,pageable);
         return new PageResponse<>(jobProfiles);
     }
 
@@ -72,13 +74,14 @@ public class JobProfileService {
      * @return Tổng số hồ sơ
      */
     public Long countTotalProfilesByJobPost(Long jobPostId) {
+        var companyID = authenticationUtil.getCurrentUser().getCompany();
         try {
             if (jobPostId == null) {
-                // Nếu jobPostId là null, đếm tất cả hồ sơ ứng tuyển
-                return jobProfileRepository.count();
-            } else {
+                // Nếu jobPostId là null, đếm tất cả hồ sơ ứng tuyển theo công ty
+                return jobProfileRepository.countByCompany(companyID);
+            }else {
                 // Nếu jobPostId không null, đếm hồ sơ ứng tuyển theo jobPostId
-                return jobProfileRepository.countByJobPostId(jobPostId);
+                return jobProfileRepository.countByJobPostIdAndCompany(jobPostId, companyID);
             }
         } catch (Exception e) {
             log.error("Error counting total profiles for jobPostId: {}", jobPostId, e);
@@ -94,10 +97,11 @@ public class JobProfileService {
      * @return Số lượng hồ sơ theo trạng thái
      */
     public Long countProfilesByJobPostAndStatus(Long jobPostId, StatusEnum status) {
+        var companyID = authenticationUtil.getCurrentUser().getCompany();
         try {
             if (jobPostId == null) {
                 // Nếu jobPostId là null, đếm hồ sơ ứng tuyển theo trạng thái (tất cả bài đăng)
-                return jobProfileRepository.countByStatus(status);
+                return jobProfileRepository.countByStatus(status, companyID);
             } else {
                 // Nếu jobPostId không phải null, đếm hồ sơ ứng tuyển theo bài đăng và trạng thái
                 return jobProfileRepository.countByJobPostIdAndStatus(jobPostId, status);
@@ -113,8 +117,10 @@ public class JobProfileService {
         // Thiết lập Pageable cho phân trang
         Pageable pageable = PageRequest.of(pageNo - 1, 10); // Giả sử mỗi trang có 10 hồ sơ
 
+        var companyID = authenticationUtil.getCurrentUser().getCompany();
         // Truy vấn trong repository
-        Page<JobProfile> jobProfiles = jobProfileRepository.findByJobPostIdAndStatus(jobPostId, status, pageable);
+        Page<JobProfile> jobProfiles = jobProfileRepository.findByJobPostIdAndStatusAndJobPost_Company(jobPostId,
+         status, companyID, pageable);
 
         // Chuyển đổi từ Page<JobProfile> sang PageResponse<JobProfile> (nếu cần)
         return new PageResponse<>(jobProfiles);

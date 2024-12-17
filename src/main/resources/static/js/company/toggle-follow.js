@@ -37,35 +37,4 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-    document.addEventListener('DOMContentLoaded', function() {
-    // Lắng nghe sự kiện khi người dùng nhấn vào nút "Xem"
-    const buttons = document.querySelectorAll('button[data-bs-toggle="modal"]');
-
-    buttons.forEach(button => {
-    button.addEventListener('click', function() {
-    // Lấy ID của profile từ thuộc tính data-id
-    const profileId = button.getAttribute('data-id');
-
-    // Gửi yêu cầu Fetch đến server để lấy dữ liệu chi tiết của profile
-    fetch(`/company/profile/${profileId}`)
-    .then(response => response.json())  // Giả sử API trả về dữ liệu JSON
-    .then(data => {
-    // Cập nhật nội dung trong modal với dữ liệu nhận được
-    const profileInfoContainer = document.getElementById('profileInfo');
-
-    // Giả sử API trả về dữ liệu profile
-    profileInfoContainer.innerHTML = `
-                            <p><strong>Tên:</strong> ${data.name}</p>
-                            <p><strong>Email:</strong> ${data.email}</p>
-                            <p><strong>Địa chỉ:</strong> ${data.address}</p>
-                            <!-- Thêm các thông tin khác của profile -->
-                        `;
-})
-    .catch(error => {
-    console.error('Có lỗi xảy ra khi tải dữ liệu:', error);
-});
-});
-});
-});
-
 

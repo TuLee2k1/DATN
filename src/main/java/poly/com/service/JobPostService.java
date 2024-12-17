@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import poly.com.Enum.StatusEnum;
 import poly.com.dto.response.JobPost.JobListActiveResponse;
@@ -259,7 +260,8 @@ public class JobPostService {
      *
      * */
     public PageResponse<JobListingResponse> getJobListings(String jobTitle, StatusEnum statusEnum, Integer pageNo) {
-        Pageable pageable = PageRequest.of(pageNo - 1, 10);
+        Sort sort = Sort.by("createDate").descending();
+        Pageable pageable = PageRequest.of(pageNo - 1, 10, sort);
 
         // Retrieve the authenticated user
         User authenticatedUser = authenticationUtil.getAuthenticatedUser();

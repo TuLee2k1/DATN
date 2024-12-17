@@ -16,4 +16,7 @@ public class SubCategoryService {
     public List<SubCategory> getAllSubCategories() {
         return subCategoryRepository.findAll();
     }
+    public List<SubCategory> getSubCategoriesByJobCategoryId(Long jobCategoryId) {
+        return subCategoryRepository.findByJobCategoryId(jobCategoryId);
+    }
 }
